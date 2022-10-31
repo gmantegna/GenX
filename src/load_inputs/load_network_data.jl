@@ -14,6 +14,10 @@ function load_network_data!(setup::Dict, path::AbstractString, inputs_nw::Dict)
     as_vector(col::Symbol) = collect(skipmissing(network_var[!, col]))
     to_floats(col::Symbol) = convert(Array{Float64}, as_vector(col))
 
+    function to_array(col::Symbol)
+        return convert(Array{Float64}, collect(skipmissing(network_var[!, col])))
+    end
+
     # Number of zones in the network
     Z = length(as_vector(:Network_zones))
     inputs_nw["Z"] = Z
