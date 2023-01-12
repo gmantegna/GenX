@@ -29,5 +29,4 @@ function energy_share_requirement!(EP::Model, inputs::Dict, setup::Dict)
 	## Energy Share Requirements (minimum energy share from qualifying renewable resources) constraint
 	@constraint(EP, cESRShare[ESR=1:inputs["nESR"]], EP[:eESR][ESR] >= 0)
 
-
 end
