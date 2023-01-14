@@ -56,13 +56,10 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
 		dfCost[8,2] += value(EP[:eTotalCMinCapSlack])
 	end	
 
-<<<<<<< HEAD
 	if !isempty(VRE_STOR)
 		dfCost[9,2] = value(EP[:eTotalCGrid]) * (setup["ParameterScale"] == 1 ? ModelScalingFactor^2 : 1)
 	end
 
-=======
->>>>>>> ba092b5c (Adding slack variables for policy constraints)
 	if setup["ParameterScale"] == 1
 		dfCost[5,2] *= ModelScalingFactor^2
 		dfCost[6,2] *= ModelScalingFactor^2
@@ -140,15 +137,11 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
 			tempCNSE *= ModelScalingFactor^2
 			tempCStart *= ModelScalingFactor^2
 		end
-<<<<<<< HEAD
 		if setup["VreStor"] == 1
 			dfCost[!,Symbol("Zone$z")] = [tempCTotal, tempCFix, tempCVar, tempCNSE, tempCStart, "-", "-", "-", "-"]
 		else
 			dfCost[!,Symbol("Zone$z")] = [tempCTotal, tempCFix, tempCVar, tempCNSE, tempCStart, "-", "-", "-"]
 		end
-=======
-		dfCost[!,Symbol("Zone$z")] = [tempCTotal, tempCFix, tempCVar, tempCNSE, tempCStart, "-", "-", "-"]
->>>>>>> ba092b5c (Adding slack variables for policy constraints)
 	end
 	CSV.write(joinpath(path, "costs.csv"), dfCost)
 end
