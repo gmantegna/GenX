@@ -22,6 +22,18 @@ function write_esr_revenue(path::AbstractString, inputs::Dict, setup::Dict, dfPo
 		# end
 		rename!(dfESRRev, Dict(:x1 => Symbol("ESR_$i")))
 	end
+
+	# Vre-Storage Module
+	if setup["VreStor"] == 1
+		dfGen_VRE_STOR = inputs["dfGen_VRE_STOR"]
+		dfESRRevVRESTOR = DataFrame(region = dfGen_VRE_STOR[!,:region], Resource = inputs["RESOURCES_VRE_STOR"], zone = dfGen_VRE_STOR[!,:Zone], Cluster = dfGen_VRE_STOR[!,:cluster], R_ID = dfGen_VRE_STOR[!,:R_ID])
+		for i in 1:inputs["nESR"]
+			dfESRRevVRESTOR =  hcat(dfESRRevVRESTOR, dfPower[G+1:G+inputs["VRE_STOR"],:AnnualSum] .* dfGen_VRE_STOR[!,Symbol("ESR_$i")] * dfESR[i,:ESR_Price])
+			rename!(dfESRRevVRESTOR, Dict(:x1 => Symbol("ESR_$i")))
+		end
+		dfESRRev = vcat(dfESRRev, dfESRRevVRESTOR)
+	end
+
 	dfESRRev.AnnualSum = sum(eachcol(dfESRRev[:,6:inputs["nESR"]+5]))
 	CSV.write(joinpath(path, "ESR_Revenue.csv"), dfESRRev)
 	return dfESRRev

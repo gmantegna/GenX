@@ -10,6 +10,9 @@ function write_power_balance(path::AbstractString, inputs::Dict, setup::Dict, EP
 	STOR_ALL = inputs["STOR_ALL"]
 	FLEX = inputs["FLEX"]
 	VRE_STOR = inputs["VRE_STOR"]
+	if setup["VreStor"]==1
+		dfGen_VRE_STOR = inputs["dfGen_VRE_STOR"]
+	end
 	## Power balance for each zone
 	# dfPowerBalance = Array{Any}
 	Com_list = ["Generation", "Storage_Discharge", "Storage_Charge",

@@ -87,6 +87,40 @@ function write_capacity(path::AbstractString, inputs::Dict, setup::Dict, EP::Mod
 	)
 
 	if !isempty(inputs["VRE_STOR"])
+		dfGen_VRE_STOR = inputs["dfGen_VRE_STOR"]
+		VRE_STOR = inputs["VRE_STOR"]
+		dfVRECAP = DataFrame(
+			Resource = inputs["RESOURCES_VRE"], Technology = dfGen_VRE_STOR[!,:technology], Cluster=dfGen_VRE_STOR[!,:cluster], Zone = dfGen_VRE_STOR[!,:Zone],
+			StartCap = dfGen_VRE_STOR[!,:Existing_Cap_MW],
+			RetCap = value.(EP[:vRETCAP_VRE]),
+			NewCap = value.(EP[:vCAP_VRE]),
+			EndCap = value.(EP[:eTotalCap_VRE]),
+			StartEnergyCap = zeros(VRE_STOR),
+			RetEnergyCap = zeros(VRE_STOR), 
+			NewEnergyCap = zeros(VRE_STOR), 
+			EndEnergyCap = zeros(VRE_STOR), 
+			StartChargeCap = zeros(VRE_STOR), 
+			RetChargeCap = zeros(VRE_STOR), 
+			NewChargeCap = zeros(VRE_STOR), 
+			EndChargeCap = zeros(VRE_STOR)
+		)
+
+		dfSTORCAP = DataFrame(
+			Resource = inputs["RESOURCES_STOR"], Technology = dfGen_VRE_STOR[!,:technology], Cluster=dfGen_VRE_STOR[!,:cluster], Zone = dfGen_VRE_STOR[!,:Zone],
+			StartCap = dfGen_VRE_STOR[!,:Existing_Cap_MWh] .* dfGen_VRE_STOR[!,:Power_To_Energy_Ratio],
+			RetCap = value.(EP[:vRETCAPSTORAGE_VRE_STOR]) .* dfGen_VRE_STOR[!,:Power_To_Energy_Ratio],
+			NewCap = value.(EP[:vCAPSTORAGE_VRE_STOR]) .* dfGen_VRE_STOR[!,:Power_To_Energy_Ratio],
+			EndCap = value.(EP[:eTotalCap_STOR]) .* dfGen_VRE_STOR[!,:Power_To_Energy_Ratio],
+			StartEnergyCap = dfGen_VRE_STOR[!,:Existing_Cap_MWh],
+			RetEnergyCap = value.(EP[:vRETCAPSTORAGE_VRE_STOR]), 
+			NewEnergyCap = value.(EP[:vCAPSTORAGE_VRE_STOR]), 
+			EndEnergyCap = value.(EP[:eTotalCap_STOR]), 
+			StartChargeCap = zeros(VRE_STOR), 
+			RetChargeCap = zeros(VRE_STOR), 
+			NewChargeCap = zeros(VRE_STOR), 
+			EndChargeCap = zeros(VRE_STOR)
+		)
+
 		dfGRIDCAP = DataFrame(
 			Resource = inputs["RESOURCES_GRID"], Technology = dfGen_VRE_STOR[!,:technology], Cluster=dfGen_VRE_STOR[!,:cluster], Zone = dfGen_VRE_STOR[!,:Zone],
 			StartCap = dfGen_VRE_STOR[!,:Existing_Cap_Grid_MW],
@@ -102,7 +136,10 @@ function write_capacity(path::AbstractString, inputs::Dict, setup::Dict, EP::Mod
 			NewChargeCap = zeros(VRE_STOR), 
 			EndChargeCap = zeros(VRE_STOR)
 		)
-		vcat(dfCap, dfGRIDCAP)
+
+		dfCap = vcat(dfCap, dfVRECAP)
+		dfCap = vcat(dfCap, dfSTORCAP)
+		dfCap = vcat(dfCap, dfGRIDCAP)
 	end
 
 	if setup["ParameterScale"] ==1

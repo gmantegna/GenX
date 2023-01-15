@@ -76,7 +76,7 @@ function write_net_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::
 	dfNetRevenue.SubsidyRevenue = zeros(nrow(dfNetRevenue))
 	if has_duals(EP) == 1
 		dfNetRevenue.EnergyRevenue = dfEnergyRevenue[1:G,:AnnualSum] # Unit is confirmed to be US$
-	 	dfNetRevenue.SubsidyRevenue = dfSubRevenue[1:G,:SubsidyRevenue] # Unit is confirmed to be US$
+	 	dfNetRevenue.SubsidyRevenue = dfSubRevenue[!,:SubsidyRevenue] # Unit is confirmed to be US$
 	end
 
 	# Add capacity revenue to the dataframe
@@ -142,7 +142,7 @@ function write_net_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::
 		# Charge costs
 		dfNetRevenueVRESTOR.Charge_cost = zeros(nrow(dfNetRevenueVRESTOR))
 		if has_duals(EP) == 1
-			dfNetRevenueVRESTOR.Charge_cost = dfChargingcost[G+1:G+VRE_STOR,:AnnualSum] # Unit is confirmed to be US$
+			dfNetRevenueVRESTOR.Charge_cost = dfNetRevenueVRESTOR[G+1:G+VRE_STOR,:AnnualSum] # Unit is confirmed to be US$
 		end
 
 		# Energy Revenue
@@ -155,13 +155,13 @@ function write_net_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::
 		# Add capacity revenue to the dataframe
 		dfNetRevenueVRESTOR.ReserveMarginRevenue = zeros(nrow(dfNetRevenueVRESTOR))
 		if setup["CapacityReserveMargin"] > 0 && has_duals(EP) == 1 # The unit is confirmed to be $
-			dfNetRevenueVRESTOR.ReserveMarginRevenue = dfResRevenue[G+1:G+VRE_STOR,:AnnualSum]
+			dfNetRevenueVRESTOR.ReserveMarginRevenue = dfNetRevenueVRESTOR[G+1:G+VRE_STOR,:AnnualSum]
 		end
 		
 		# Add ESR revenue to the dataframe
 		dfNetRevenueVRESTOR.ESRRevenue = zeros(nrow(dfNetRevenueVRESTOR))
 		if setup["EnergyShareRequirement"] > 0 && has_duals(EP) == 1 # The unit is confirmed to be $
-			dfNetRevenue.ESRRevenue = dfESRRev[G+1:G+VRE_STOR,:AnnualSum]
+			dfNetRevenue.dfNetRevenueVRESTOR = dfESRRev[G+1:G+VRE_STOR,:AnnualSum]
 		end
 
 		# Add regional technology subsidy revenue to the dataframe

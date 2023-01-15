@@ -130,6 +130,23 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
 		tempCNSE = sum(value.(EP[:eCNSE][:,:,z]))
 		tempCTotal += tempCNSE
 
+		if setup["VreStor"] == 1
+			dfGen_VRE_STOR = inputs["dfGen_VRE_STOR"]
+			Y_ZONE_VRE_STOR = dfGen_VRE_STOR[dfGen_VRE_STOR[!,:Zone].==z,:R_ID]
+
+			# Fixed Costs
+			eCFix_VRE_STOR = sum(value.(EP[:eCFix_VRE_STOR][Y_ZONE_VRE_STOR]))
+			tempCFix += eCFix_VRE_STOR
+
+			# Variable Costs
+			eCVar_VRE_STOR = sum(value.(EP[:eCVar_out_VRE_STOR][Y_ZONE_VRE_STOR,:]))
+			tempCVar += eCVar_VRE_STOR
+
+			# Total Added Costs
+			tempCTotal += (eCFix_VRE_STOR + eCVar_VRE_STOR)
+
+		end
+
 		if setup["ParameterScale"] == 1
 			tempCTotal *= ModelScalingFactor^2
 			tempCFix *= ModelScalingFactor^2
