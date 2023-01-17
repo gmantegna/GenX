@@ -1,6 +1,6 @@
 function write_charging_cost(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
 	dfGen = inputs["dfGen"]
-	G = inputs["G"] + (setup["VreStor"]==1 ? inputs["VRE_STOR"] : 0)    # Number of resources (generators, storage, DR, co-located resources, and DERs)
+	G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
 	T = inputs["T"]     # Number of time steps (hours)
 	STOR_ALL = inputs["STOR_ALL"]
 	FLEX = inputs["FLEX"]

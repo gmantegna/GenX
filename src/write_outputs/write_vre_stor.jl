@@ -21,6 +21,10 @@ Function for writing the vre-storage internal/DC charging, discharging energy va
 """
 
 function write_vre_stor(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	dfGen_VRE_STOR = inputs["dfGen_VRE_STOR"]
+	VRE_STOR = inputs["VRE_STOR"]
+	T = inputs["T"] 
+	Z = inputs["Z"]
 
 	### CAPACITY DECISIONS ###
 	write_vre_stor_capacity(path, inputs, setup, EP)
