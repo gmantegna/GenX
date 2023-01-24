@@ -136,10 +136,7 @@ function write_capacity(path::AbstractString, inputs::Dict, setup::Dict, EP::Mod
 			NewChargeCap = zeros(VRE_STOR), 
 			EndChargeCap = zeros(VRE_STOR)
 		)
-
-		dfCap = vcat(dfCap, dfVRECAP)
-		dfCap = vcat(dfCap, dfSTORCAP)
-		dfCap = vcat(dfCap, dfGRIDCAP)
+		vcat(dfCap, dfGRIDCAP)
 	end
 
 	if setup["ParameterScale"] ==1

@@ -16,6 +16,10 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
 	else
 		dfCost = DataFrame(Costs = ["cTotal", "cFix", "cVar", "cNSE", "cStart", "cUnmetRsv", "cNetworkExp", "cUnmetPolicyPenalty"])
 	end
+<<<<<<< HEAD
+=======
+
+>>>>>>> 69c27481 (round 2 of VRE-storage syntax fixes, write outputs (except net_revenue))
 	cVar = value(EP[:eTotalCVarOut]) + (!isempty(inputs["STOR_ALL"]) ? value(EP[:eTotalCVarIn]) : 0.0) + (!isempty(inputs["FLEX"]) ? value(EP[:eTotalCVarFlexIn]) : 0.0) + (!isempty(VRE_STOR) ? value(EP[:eTotalCVar_VRE_STOR]) : 0.0)
 	cFix = value(EP[:eTotalCFix]) + (!isempty(inputs["STOR_ALL"]) ? value(EP[:eTotalCFixEnergy]) : 0.0) + (!isempty(inputs["STOR_ASYMMETRIC"]) ? value(EP[:eTotalCFixCharge]) : 0.0) + (!isempty(VRE_STOR) ? value(EP[:eTotalCFix_VRE_STOR]) : 0.0) + (!isempty(inputs["VRE_STOR_ASYM"]) ? value(EP[:eTotalCFixCharge_VRE_STOR]) : 0.0)
 	if !isempty(VRE_STOR)
@@ -55,9 +59,15 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
 	if haskey(inputs, "MinCapPriceCap")
 		dfCost[8,2] += value(EP[:eTotalCMinCapSlack])
 	end	
+<<<<<<< HEAD
 
 	if !isempty(VRE_STOR)
 		dfCost[9,2] = value(EP[:eTotalCGrid]) * (setup["ParameterScale"] == 1 ? ModelScalingFactor^2 : 1)
+=======
+	
+	if !isempty(VRE_STOR)
+		dfCost[!,2][8] = value(EP[:eTotalCGrid]) * (setup["ParameterScale"] == 1 ? ModelScalingFactor^2 : 1)
+>>>>>>> 69c27481 (round 2 of VRE-storage syntax fixes, write outputs (except net_revenue))
 	end
 
 	if setup["ParameterScale"] == 1
@@ -144,8 +154,16 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
 
 			# Total Added Costs
 			tempCTotal += (eCFix_VRE_STOR + eCVar_VRE_STOR)
-
 		end
+
+		if setup["UCommit"] >= 1
+			eCStart = sum(value.(EP[:eCStart][COMMIT_ZONE,:]))
+			tempCStart += eCStart
+			tempCTotal += eCStart
+		end
+
+		tempCNSE = sum(value.(EP[:eCNSE][:,:,z]))
+		tempCTotal += tempCNSE
 
 		if setup["ParameterScale"] == 1
 			tempCTotal *= ModelScalingFactor^2
@@ -154,7 +172,11 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
 			tempCNSE *= ModelScalingFactor^2
 			tempCStart *= ModelScalingFactor^2
 		end
+<<<<<<< HEAD
 		if setup["VreStor"] == 1
+=======
+		if !isempty(VRE_STOR)
+>>>>>>> 69c27481 (round 2 of VRE-storage syntax fixes, write outputs (except net_revenue))
 			dfCost[!,Symbol("Zone$z")] = [tempCTotal, tempCFix, tempCVar, tempCNSE, tempCStart, "-", "-", "-", "-"]
 		else
 			dfCost[!,Symbol("Zone$z")] = [tempCTotal, tempCFix, tempCVar, tempCNSE, tempCStart, "-", "-", "-"]

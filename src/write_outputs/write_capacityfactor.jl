@@ -22,7 +22,7 @@ function write_capacityfactor(path::AbstractString, inputs::Dict, setup::Dict, E
         dfCapacityfactorVRESTOR.AnnualSum[VRE_STOR] .= dfVRE_STOR[!,:EtaInverter] .* value.(EP[:vP_DC]) * inputs["omega"] * scale_factor
         dfCapacityfactorVRESTOR.Capacity[VRE_STOR] .= value.(EP[:eTotalCap_VRE]) * scale_factor
     end
-    
+
     # We only calcualte the resulted capacity factor with total capacity > 1MW and total generation > 1MWh
     EXISTING = intersect(findall(x -> x >= 1, dfCapacityfactor.AnnualSum), findall(x -> x >= 1, dfCapacityfactor.Capacity))
     # We calculate capacity factor for thermal, vre, hydro and must run. Not for storage and flexible demand

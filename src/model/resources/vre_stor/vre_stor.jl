@@ -172,27 +172,6 @@ function vre_stor!(EP::Model, inputs::Dict, setup::Dict)
 
     # Capacity Reserves Margin policy
 	if CapacityReserveMargin > 0
-        #@expression(EP, eCapResMarBalanceVREStor[res=1:inputs["NCapacityReserveMargin"], t=1:T], sum(dfGen_VRE_STOR[y,Symbol("CapRes_$res")] * (EP[:vP_VRE_STOR][y, t] - EP[:vCHARGE_VRE_STOR][y, t]) for y in 1:VRE_STOR))
-		#EP[:eCapResMarBalance] += eCapResMarBalanceVREStor
-
-        @variable(EP, vCapContribution_VRE_STOR[y in VRE_STOR, t in 1:T] >= 0)
-
-        @constraint(EP, cCapContributionLimit_SOC_VRE_STOR_START[y in VRE_STOR, t in START_SUBPERIODS], 
-        vCapContribution_VRE_STOR[y, t] <= dfGen_VRE_STOR[!,:EtaInverter][y] * (dfGen_VRE_STOR[!, :Eff_Down][y]*vS_VRE_STOR[y, t+hours_per_subperiod-1]
-            + inputs["pP_Max_VRE_STOR"][y,t]*EP[:eTotalCap_VRE][y]))
-        @constraint(EP, cCapContributionLimit_SOC_VRE_STOR_INTERIOR[y in 1:VRE_STOR, t in INTERIOR_SUBPERIODS],
-            EP[:vCapContribution_VRE_STOR][y,t] <= dfGen_VRE_STOR[!,:EtaInverter][y] * (dfGen_VRE_STOR[!,:Eff_Down][y]*(vS_VRE_STOR[y,t-1]) + 
-                inputs["pP_Max_VRE_STOR"][y,t]*EP[:eTotalCap_VRE][y]))
-
-		@constraint(EP, cCapContributionLimit_Cap_VRE_STOR[y in 1:VRE_STOR, t in 1:T], 
-			EP[:vCapContribution_VRE_STOR][y,t] <= dfGen_VRE_STOR[!,:EtaInverter][y] * (dfGen_VRE_STOR[!,:Power_To_Energy_Ratio][y]*EP[:eTotalCap_STOR][y] + 
-				inputs["pP_Max_VRE_STOR"][y,t]*EP[:eTotalCap_VRE][y])
-		)
-		@constraint(EP, cCapContributionLimit_Grid_VRE_STOR[y in 1:VRE_STOR, t in 1:T], 
-			EP[:vCapContribution_VRE_STOR][y,t] <= EP[:eTotalCap_GRID][y]
-		)
-		@expression(EP, eMinCapResVREStor[res = 1:inputs["NCapacityReserveMargin"], t=1:T], sum(dfGen_VRE_STOR[y, Symbol("CapRes_$res")] * EP[:vCapContribution_VRE_STOR][y, t] for y in 1:VRE_STOR))
-        EP[:eCapResMarBalance] += eMinCapResVREStor
 	end
 
     ## Module Expressions ##
@@ -215,15 +194,15 @@ function vre_stor!(EP::Model, inputs::Dict, setup::Dict)
     # Constraint 1: Constraint on maximum capacity (if applicable) [set input to -1 if no constraint on maximum capacity]
 	# DEV NOTE: This constraint may be violated in some cases where Existing_Cap_MW is >= Max_Cap_MW and lead to infeasabilty
     @constraint(EP, cMaxCap_STOR[y in intersect(dfGen[dfGen.Max_Cap_MWh.>=0,:R_ID], VRE_STOR)], 
-    eTotalCap_STOR[y] <= dfGen[!,:Max_Cap_MWh][y])
-    @constraint(EP, cMaxCap_GRID[y in intersect(dfVRE_STOR[dfVRE_STOR.Max_Cap_Grid_MW.>=0,:R_ID], VRE_STOR)], 
+    eTotalCap_STOR[y] <= dfGen[y,:Max_Cap_MWh])
+    @constraint(EP, cMaxCap_GRID[y in dfVRE_STOR[dfVRE_STOR.Max_Cap_Grid_MW.>=0,:R_ID]], 
     eTotalCap_GRID[y] <= by_rid(y, :Max_Cap_Grid_MW))
     
     # Constraint 2: Minimum capacity (if applicable) [set input to -1 if no constraint on minimum capacity]
     # DEV NOTE: This constraint may be violated in some cases where Existing_Cap_MW is <= Min_Cap_MW and lead to infeasabilty
     @constraint(EP, cMinCap_STOR[y in intersect(dfGen[dfGen.Min_Cap_MWh.>0,:R_ID], VRE_STOR)], 
-    eTotalCap_STOR[y] >= dfGen[!,:Min_Cap_MWh][y])
-    @constraint(EP, cMinCap_GRID[y in intersect(dfVRE_STOR[dfVRE_STOR.Min_Cap_Grid_MW.>0,:R_ID], VRE_STOR)], 
+    eTotalCap_STOR[y] >= dfGen[y,:Min_Cap_MWh])
+    @constraint(EP, cMinCap_GRID[y in dfVRE_STOR[dfVRE_STOR.Min_Cap_Grid_MW.>0,:R_ID], VRE_STOR], 
     eTotalCap_GRID[y] >= by_rid(y, :Min_Cap_Grid_MW))
 
     # Constraint 3: Inverter Ratio between capacity and grid
@@ -412,31 +391,18 @@ function investment_charge_vre_stor!(EP::Model, inputs::Dict)
 
     ## Constraints on retirements and capacity additions
 	#Cannot retire more charge capacity than existing charge capacity
-	@constraint(EP, cVreStorMaxRetCharg[y in RET_CAP_CHARGE], vRETCAPCHARGE_VRE_STOR[y] <= dfGen[y,:Existing_Charge_Cap_MW][y])
+	@constraint(EP, cVreStorMaxRetCharge[y in RET_CAP_CHARGE], vRETCAPCHARGE_VRE_STOR[y] <= dfGen[y,:Existing_Charge_Cap_MW])
 
     #Constraints on new built capacity
 
-  # Constraint on maximum charge capacity (if applicable) [set input to -1 if no constraint on maximum charge capacity]
-  # DEV NOTE: This constraint may be violated in some cases where Existing_Charge_Cap_MW is >= Max_Charge_Cap_MWh and lead to infeasabilty
-  @constraint(EP, cVreStorMaxCapCharge[y in intersect(dfGen[dfGen.Max_Charge_Cap_MW.>0,:R_ID], STOR_ASYMMETRIC)], eTotalCapCharge_VRE_STOR[y] <= dfGen[y,:Max_Charge_Cap_MW])
+    # Constraint on maximum charge capacity (if applicable) [set input to -1 if no constraint on maximum charge capacity]
+    # DEV NOTE: This constraint may be violated in some cases where Existing_Charge_Cap_MW is >= Max_Charge_Cap_MWh and lead to infeasabilty
+    @constraint(EP, cVreStorMaxCapCharge[y in MAX_VRE_STOR_ASYM], eTotalCapCharge_VRE_STOR[y] <= dfGen[y,:Max_Charge_Cap_MW])
 
-  # Constraint on minimum charge capacity (if applicable) [set input to -1 if no constraint on minimum charge capacity]
-  # DEV NOTE: This constraint may be violated in some cases where Existing_Charge_Cap_MW is <= Min_Charge_Cap_MWh and lead to infeasabilty
-  @constraint(EP, cVreStorMinCapCharge[y in intersect(dfGen[dfGen.Min_Charge_Cap_MW.>0,:R_ID], STOR_ASYMMETRIC)], eTotalCapCharge_VRE_STOR[y] >= dfGen[y,:Min_Charge_Cap_MW])
+    # Constraint on minimum charge capacity (if applicable) [set input to -1 if no constraint on minimum charge capacity]
+    # DEV NOTE: This constraint may be violated in some cases where Existing_Charge_Cap_MW is <= Min_Charge_Cap_MWh and lead to infeasabilty
+    @constraint(EP, cVreStorMinCapCharge[y in MIN_VRE_STOR_ASYM], eTotalCapCharge_VRE_STOR[y] >= dfGen[y,:Min_Charge_Cap_MW])
 
-  # Maximum charging rate must be less than charge power rating (CHECK THIS -- DON'T KNOW IF CORRECT)
-  @constraint(EP, cVreStorMaxChargingRate[y in VRE_STOR_ASYM, t in 1:T], EP[:vCHARGE_DC][y,t] <= EP[:eTotalCapCharge_VRE_STOR][y])
-end
-
-# FUNCTION TO DIFFERENTIATE TYPES OF STORAGE
-function split_LDS_and_nonLDS(df::DataFrame, inputs::Dict, setup::Dict)
-	VRE_STOR = inputs["VRE_STOR"]
-	if setup["OperationWrapping"] == 1
-		VRE_STOR_and_LDS = df[df.LDS.==1,:R_ID]
-		VRE_STOR_and_nonLDS = df[df.LDS.!=1,:R_ID]
-	else
-		VRE_STOR_and_LDS = Int[]
-		VRE_STOR_and_nonLDS = VRE_STOR
-	end
-	VRE_STOR_and_LDS, VRE_STOR_and_nonLDS
+    # Maximum charging rate must be less than charge power rating (CHECK THIS -- DON'T KNOW IF CORRECT)
+    @constraint(EP, cVreStorMaxChargingRate[y in VRE_STOR_ASYM, t in 1:T], EP[:vCHARGE_DC][y,t] <= EP[:eTotalCapCharge_VRE_STOR][y])
 end
