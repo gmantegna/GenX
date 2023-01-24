@@ -9,6 +9,7 @@ function write_charge(path::AbstractString, inputs::Dict, setup::Dict, EP::Model
 	T = inputs["T"]     # Number of time steps (hours)
 	STOR_ALL = inputs["STOR_ALL"]
 	FLEX = inputs["FLEX"]
+	VRE_STOR = inputs["VRE_STOR"]
 	# Power withdrawn to charge each resource in each time step
 	dfCharge = DataFrame(Resource = inputs["RESOURCES"], Zone = dfGen[!,:Zone], AnnualSum = Array{Union{Missing,Float64}}(undef, G))
 	charge = zeros(G,T)
@@ -16,6 +17,12 @@ function write_charge(path::AbstractString, inputs::Dict, setup::Dict, EP::Model
 	scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
 	if !isempty(STOR_ALL)
 	    charge[STOR_ALL, :] = value.(EP[:vCHARGE][STOR_ALL, :]) * scale_factor
+	end
+
+	if !isempty(VRE_STOR)
+		charge[VRE_STOR, :] = value.(EP[:vCHARGE_VRE_STOR][VRE_STOR, :]) * scale_factor
+	end
+
 	end
 	if !isempty(FLEX)
 	    charge[FLEX, :] = value.(EP[:vCHARGE_FLEX][FLEX, :]) * scale_factor
