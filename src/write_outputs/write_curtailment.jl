@@ -8,7 +8,7 @@ function write_curtailment(path::AbstractString, inputs::Dict, setup::Dict, EP::
 	G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
 	T = inputs["T"]     # Number of time steps (hours)
 	VRE = inputs["VRE"]
-	VRE_STOR = input["VRE_STOR"]
+	VRE_STOR = inputs["VRE_STOR"]
 	dfCurtailment = DataFrame(Resource = inputs["RESOURCES"], Zone = dfGen[!, :Zone], AnnualSum = Array{Union{Missing,Float64}}(undef, G))
 	curtailment = zeros(G, T)
 	curtailment[VRE, :] = scale_factor * (value.(EP[:eTotalCap][VRE]) .* inputs["pP_Max"][VRE, :] .- value.(EP[:vP][VRE, :]))
