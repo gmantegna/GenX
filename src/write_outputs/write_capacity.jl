@@ -60,7 +60,7 @@ function write_capacity(path::AbstractString, inputs::Dict, setup::Dict, EP::Mod
 		end
 		existingcapenergy[i] = MultiStage == 1 ? value(EP[:vEXISTINGCAPENERGY][i]) :  dfGen[!,:Existing_Cap_MWh][i]
 	end
-	for i in inputs["STOR_VRE_STOR"]
+	for i in inputs["VRE_STOR"]
 		if i in inputs["NEW_CAP_ENERGY_VRE_STOR"]
 			capenergy[i] = value(EP[:vCAPENERGY_VRE_STOR][i])
 		end
@@ -124,9 +124,9 @@ function write_capacity(path::AbstractString, inputs::Dict, setup::Dict, EP::Mod
 		dfGRIDCAP = DataFrame(
 			Resource = inputs["RESOURCES_GRID"], Resource_Type = dfVRE_STOR[!,:Resource_Type], Cluster=dfVRE_STOR[!,:cluster], Zone = dfVRE_STOR[!,:Zone],
 			StartCap = dfVRE_STOR[!,:Existing_Cap_Grid_MW],
-			RetCap = value.(EP[:vRETGRIDCAP]),
-			NewCap = value.(EP[:vGRIDCAP]),
-			EndCap = value.(EP[:eTotalCap_GRID]),
+			RetCap = retcapgrid[:],
+			NewCap = capgrid[:],
+			EndCap = dfVRE_STOR[!,:Existing_Cap_Grid_MW] + capgrid[:] - retcapgrid[:],
 			StartEnergyCap = zeros(VRE_STOR),
 			RetEnergyCap = zeros(VRE_STOR), 
 			NewEnergyCap = zeros(VRE_STOR), 

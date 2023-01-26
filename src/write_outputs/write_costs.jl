@@ -16,10 +16,6 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
 	else
 		dfCost = DataFrame(Costs = ["cTotal", "cFix", "cVar", "cNSE", "cStart", "cUnmetRsv", "cNetworkExp", "cUnmetPolicyPenalty"])
 	end
-<<<<<<< HEAD
-=======
-
->>>>>>> 69c27481 (round 2 of VRE-storage syntax fixes, write outputs (except net_revenue))
 	cVar = value(EP[:eTotalCVarOut]) + (!isempty(inputs["STOR_ALL"]) ? value(EP[:eTotalCVarIn]) : 0.0) + (!isempty(inputs["FLEX"]) ? value(EP[:eTotalCVarFlexIn]) : 0.0) + (!isempty(VRE_STOR) ? value(EP[:eTotalCVar_VRE_STOR]) : 0.0)
 	cFix = value(EP[:eTotalCFix]) + (!isempty(inputs["STOR_ALL"]) ? value(EP[:eTotalCFixEnergy]) : 0.0) + (!isempty(inputs["STOR_ASYMMETRIC"]) ? value(EP[:eTotalCFixCharge]) : 0.0) + (!isempty(VRE_STOR) ? value(EP[:eTotalCFix_VRE_STOR]) : 0.0)
 	if !isempty(VRE_STOR)
@@ -60,15 +56,9 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
 	if haskey(inputs, "MinCapPriceCap")
 		dfCost[8,2] += value(EP[:eTotalCMinCapSlack])
 	end	
-<<<<<<< HEAD
 
 	if !isempty(VRE_STOR)
 		dfCost[9,2] = value(EP[:eTotalCGrid]) * (setup["ParameterScale"] == 1 ? ModelScalingFactor^2 : 1)
-=======
-	
-	if !isempty(VRE_STOR)
-		dfCost[!,2][8] = value(EP[:eTotalCGrid]) * (setup["ParameterScale"] == 1 ? ModelScalingFactor^2 : 1)
->>>>>>> 69c27481 (round 2 of VRE-storage syntax fixes, write outputs (except net_revenue))
 	end
 
 	if setup["ParameterScale"] == 1
@@ -119,6 +109,8 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
 		if !isempty(VRE_STOR)
 			dfVRE_STOR = inputs["dfVRE_STOR"]
 			Y_ZONE_VRE_STOR = dfVRE_STOR[dfVRE_STOR[!,:Zone].==z,:R_ID]
+			STOR_ALL_ZONE_VRE_STOR = intersect(inputs["VRE_STOR"], Y_ZONE_VRE_STOR)
+			STOR_ASYMMETRIC_ZONE_VRE_STOR = intersect(inputs["VRE_STOR_and_ASYM"], Y_ZONE_VRE_STOR)
 
 			# Fixed Costs
 			eCFix_VRE_STOR = sum(value.(EP[:eCFix_VRE_STOR][Y_ZONE_VRE_STOR]))
@@ -128,8 +120,19 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
 			eCVar_VRE_STOR = sum(value.(EP[:eCVar_out_VRE_STOR][Y_ZONE_VRE_STOR,:]))
 			tempCVar += eCVar_VRE_STOR
 
+			# Var_In costs
+			eCVar_in_VRE_STOR = sum(value.(EP[:eCVar_in_VRE_STOR][STOR_ALL_ZONE_VRE_STOR,:]))
+			tempCVar += eCVar_in_VRE_STOR
+
+			# Asymmetric costs
+			if !isempty(STOR_ASYMMETRIC_ZONE_VRE_STOR)
+				eCFixCharge_VRE_STOR = sum(value.(EP[:eCFixCharge_VRE_STOR][STOR_ASYMMETRIC_ZONE_VRE_STOR]))
+				tempCFix += eCFixCharge_VRE_STOR
+				tempCTotal += eCFixCharge_VRE_STOR
+			end
+
 			# Total Added Costs
-			tempCTotal += (eCFix_VRE_STOR + eCVar_VRE_STOR)
+			tempCTotal += (eCFix_VRE_STOR + eCVar_VRE_STOR + eCVar_in_VRE_STOR)
 		end
 
 		if setup["UCommit"] >= 1

@@ -322,7 +322,6 @@ function load_vre_stor_data!(setup::Dict, path::AbstractString, inputs_gen::Dict
 	dfGen = inputs_gen["dfGen"]
 	inputs_gen["VRE_STOR"] = "VRE_STOR" in names(gen_in) ? gen_in[gen_in.VRE_STOR.==1,:R_ID] : Int[]
 	inputs_gen["VRE_STOR_and_ASYM"] = Int[]
-	inputs_gen["STOR_VRE_STOR"] = Int[]
 
 	# Check if VRE-STOR resources exist
 	if !isempty(inputs_gen["VRE_STOR"])
@@ -342,12 +341,9 @@ function load_vre_stor_data!(setup::Dict, path::AbstractString, inputs_gen::Dict
 		inputs_gen["RET_CAP_GRID"] = intersect(dfGen[dfGen.New_Build.!=-1,:R_ID], vre_stor_in[vre_stor_in.Existing_Cap_Grid_MW.>=0,:R_ID])
 		
 		# Names for systemwide resources, VRE-components, and storage components
-		inputs_gen["RESOURCES_VRE_STOR"] = vre_stor_in[!,:Resource][inputs_gen["VRE_STOR"]]
-		inputs_gen["RESOURCES_GRID"] = vre_stor_in[!,:Resource_Grid][inputs_gen["VRE_STOR"]]
+		inputs_gen["RESOURCES_VRE_STOR"] = collect(skipmissing(vre_stor_in[!,:Resource][1:size(inputs_gen["VRE_STOR"])[1]]))
+		inputs_gen["RESOURCES_GRID"] = collect(skipmissing(vre_stor_in[!,:Resource_Grid][1:size(inputs_gen["VRE_STOR"])[1]]))
 		
-		# All resources with storage capacities
-		inputs_gen["STOR_VRE_STOR"] = vre_stor_in[vre_stor_in.STOR.>=1,:R_ID]
-	
 		# Scale the parameters as needed
 		inputs["VRE_STOR_SYM"] = vre_stor_in[(vre_stor_in.STOR.==1),:R_ID]
     	inputs["VRE_STOR_ASYM"] = vre_stor_in[(vre_stor_in.STOR.==2),:R_ID]
