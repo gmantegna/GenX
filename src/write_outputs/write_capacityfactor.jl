@@ -13,6 +13,10 @@ function write_capacityfactor(path::AbstractString, inputs::Dict, setup::Dict, E
     MUST_RUN = inputs["MUST_RUN"]
     VRE_STOR = inputs["VRE_STOR"]
     dfVRE_STOR = inputs["dfVRE_STOR"]
+    if !isempty(VRE_STOR)
+        SOLAR = inputs["VS_SOLAR"]
+        WIND = inputs["VS_WIND"]
+    end
 
     dfCapacityfactor = DataFrame(Resource=inputs["RESOURCES"], Zone=dfGen[!, :Zone], AnnualSum=zeros(G), Capacity=zeros(G), CapacityFactor=zeros(G))
 
