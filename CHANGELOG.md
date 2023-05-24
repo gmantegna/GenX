@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Add output for dual of capacity constraint (#473)
+- Add ability of storage to contribute to capacity reserves (#475)
 
 ## [0.3.5] - 2023-05-18
 
