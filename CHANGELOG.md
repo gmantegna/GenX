@@ -26,7 +26,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   on data which has already been clustered.
 - This changelog (#424).
 
-
 ### Fixed
 
 - run_timedomainreduction did not support multi-stage problems (#441).
