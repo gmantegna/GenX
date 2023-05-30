@@ -34,7 +34,7 @@ function write_net_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::
 
 	# Add capacity constraint dual
 	dfNetRevenue[!, "Capacity_constraint_dual"] = fill(NaN, nrow(dfNetRevenue))
-	for y in intersect(dfGen[dfGen.Max_Cap_MW.>0, :R_ID], 1:G)
+	for y in dfGen[dfGen.Max_Cap_MW.>0, :R_ID]
 		dfNetRevenue[y, "Capacity_constraint_dual"] = dual.(EP[:cMaxCap][y])
 	end
 	if setup["ParameterScale"] == 1
