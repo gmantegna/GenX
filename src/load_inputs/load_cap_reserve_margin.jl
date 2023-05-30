@@ -15,45 +15,39 @@ received this license file.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 @doc raw"""
-	load_cap_reserve_margin(setup::Dict, path::AbstractString, inputs_crm::Dict)
+	load_cap_reserve_margin!(setup::Dict, path::AbstractString, inputs::Dict)
 
-Function for reading input parameters related to planning reserve margin constraints
+Read input parameters related to planning reserve margin constraints
 """
-function load_cap_reserve_margin(setup::Dict, path::AbstractString, inputs_crm::Dict)
-	# Definition of capacity reserve margin (crm) by locational deliverability area (LDA)
-	inputs_crm["dfCapRes"] = DataFrame(CSV.File(joinpath(path, "Capacity_reserve_margin.csv"), header=true), copycols=true)
+function load_cap_reserve_margin!(setup::Dict, path::AbstractString, inputs::Dict)
+    scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
+    
+    filename = "Capacity_reserve_margin_slack.csv"
+    if isfile(joinpath(path, filename))
+        df = load_dataframe(joinpath(path, filename))
+        inputs["dfCapRes_slack"] = df
+        inputs["dfCapRes_slack"][!,:PriceCap] ./= scale_factor # Million $/GW if scaled, $/MW if not scaled
+    end
 
-	# Ensure float format values:
+    filename = "Capacity_reserve_margin.csv"
+    df = load_dataframe(joinpath(path, filename))
 
-	# Identifying # of planning reserve margin constraints for the system
-	res = count(s -> startswith(String(s), "CapRes"), names(inputs_crm["dfCapRes"]))
-	first_col = findall(s -> s == "CapRes_1", names(inputs_crm["dfCapRes"]))[1]
-	last_col = findall(s -> s == "CapRes_$res", names(inputs_crm["dfCapRes"]))[1]
-	inputs_crm["dfCapRes"] = Matrix{Float64}(inputs_crm["dfCapRes"][:,first_col:last_col])
-	inputs_crm["NCapacityReserveMargin"] = res
+    mat = extract_matrix_from_dataframe(df, "CapRes")
+    inputs["dfCapRes"] = mat
+    inputs["NCapacityReserveMargin"] = size(mat, 2)
 
-	println("Capacity_reserve_margin.csv Successfully Read!")
-
-	return inputs_crm
+    println(filename * " Successfully Read!")
 end
 
 @doc raw"""
-	load_cap_reserve_margin_trans(setup::Dict, inputs_crm::Dict, network_var::DataFrame)
+	load_cap_reserve_margin_trans!(setup::Dict, inputs::Dict, network_var::DataFrame)
 
-Function for reading input parameters related to participation of transmission imports/exports in capacity reserve margin constraint.
+Read input parameters related to participation of transmission imports/exports in capacity reserve margin constraint.
 """
-function load_cap_reserve_margin_trans(setup::Dict, inputs_crm::Dict, network_var::DataFrame)
-	res = inputs_crm["NCapacityReserveMargin"]
+function load_cap_reserve_margin_trans!(setup::Dict, inputs::Dict, network_var::DataFrame)
+    mat = extract_matrix_from_dataframe(network_var, "DerateCapRes")
+    inputs["dfDerateTransCapRes"] = mat
 
-	first_col_trans_derate = findall(s -> s == "DerateCapRes_1", names(network_var))[1]
-	last_col_trans_derate = findall(s -> s == "DerateCapRes_$res", names(network_var))[1]
-	dfDerateTransCapRes = network_var[:,first_col_trans_derate:last_col_trans_derate]
-	inputs_crm["dfDerateTransCapRes"] = Matrix{Float64}(dfDerateTransCapRes[completecases(dfDerateTransCapRes),:])
-
-	first_col_trans_excl = findall(s -> s == "CapRes_Excl_1", names(network_var))[1]
-	last_col_trans_excl = findall(s -> s == "CapRes_Excl_$res", names(network_var))[1]
-	dfTransCapRes_excl = network_var[:,first_col_trans_excl:last_col_trans_excl]
-	inputs_crm["dfTransCapRes_excl"] = Matrix{Float64}(dfTransCapRes_excl[completecases(dfTransCapRes_excl),:])
-
-	return inputs_crm
+    mat = extract_matrix_from_dataframe(network_var, "CapRes_Excl")
+    inputs["dfTransCapRes_excl"] = mat
 end

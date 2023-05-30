@@ -97,7 +97,7 @@ function generate_model(setup::Dict,inputs::Dict,OPTIMIZER::MOI.OptimizerWithAtt
 
 	# Generate Energy Portfolio (EP) Model
 	EP = Model(OPTIMIZER)
-
+	set_string_names_on_creation(EP, Bool(setup["EnableJuMPStringNames"]))
 	# Introduce dummy variable fixed to zero to ensure that expressions like eTotalCap,
 	# eTotalCapCharge, eTotalCapEnergy and eAvail_Trans_Cap all have a JuMP variable
 	@variable(EP, vZERO == 0);
@@ -188,9 +188,16 @@ function generate_model(setup::Dict,inputs::Dict,OPTIMIZER::MOI.OptimizerWithAtt
 		EP = retrofit(EP, inputs)
 	end
 
+	# Model constraints, variables, expressions related to the co-located VRE-storage resources
+	if !isempty(inputs["VRE_STOR"])
+		vre_stor!(EP, inputs, setup)
+	end
+	
 	# Policies
 	# CO2 emissions limits
-	co2_cap!(EP, inputs, setup)
+	if setup["CO2Cap"] >= 1
+		co2_cap!(EP, inputs, setup)
+	end
 
 	# Endogenous Retirements
 	if setup["MultiStage"] > 0

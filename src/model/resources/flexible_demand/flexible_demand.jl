@@ -61,12 +61,7 @@ T = inputs["T"]     # Number of time steps (hours)
 Z = inputs["Z"]     # Number of zones
 FLEX = inputs["FLEX"] # Set of flexible demand resources
 
-START_SUBPERIODS = inputs["START_SUBPERIODS"]
-INTERIOR_SUBPERIODS = inputs["INTERIOR_SUBPERIODS"]
-
 hours_per_subperiod = inputs["hours_per_subperiod"] # Total number of hours per subperiod
-
-END_HOURS = START_SUBPERIODS .+ hours_per_subperiod .- 1 # Last subperiod of each representative period
 
 ### Variables ###
 
@@ -80,7 +75,7 @@ END_HOURS = START_SUBPERIODS .+ hours_per_subperiod .- 1 # Last subperiod of eac
 
 ## Power Balance Expressions ##
 @expression(EP, ePowerBalanceDemandFlex[t=1:T, z=1:Z],
-    sum(-EP[:vP][y,t]+EP[:vCHARGE_FLEX][y,t] for y in intersect(FLEX, dfGen[(dfGen[!,:Zone].==z),:][!,:R_ID])))
+    sum(-EP[:vP][y,t]+EP[:vCHARGE_FLEX][y,t] for y in intersect(FLEX, dfGen[(dfGen[!,:Zone].==z),:R_ID])))
 
 EP[:ePowerBalance] += ePowerBalanceDemandFlex
 
@@ -93,7 +88,7 @@ end
 ## Objective Function Expressions ##
 
 # Variable costs of "charging" for technologies "y" during hour "t" in zone "z"
-@expression(EP, eCVarFlex_in[y in FLEX,t=1:T], inputs["omega"][t]*dfGen[!,:Var_OM_Cost_per_MWh_In][y]*vCHARGE_FLEX[y,t])
+@expression(EP, eCVarFlex_in[y in FLEX,t=1:T], inputs["omega"][t]*dfGen[y,:Var_OM_Cost_per_MWh_In]*vCHARGE_FLEX[y,t])
 
 # Sum individual resource contributions to variable charging costs to get total variable charging costs
 @expression(EP, eTotalCVarFlexInT[t=1:T], sum(eCVarFlex_in[y,t] for y in FLEX))
@@ -142,32 +137,3 @@ end
 return EP
 end
 
-@doc raw"""
-    hoursafter(p::Int, t::Int, a::Int)
-
-Determines the time index a hours after index t in
-a landscape starting from t=1 which is separated
-into distinct periods of length p.
-
-For example, if p = 10,
-1 hour after t=9 is t=10,
-1 hour after t=10 is t=1,
-1 hour after t=11 is t=2
-"""
-function hoursafter(p::Int, t::Int, a::Int)::Int
-    period = div(t - 1, p)
-    return period * p + mod1(t + a, p)
-end
-
-@doc raw"""
-    hoursafter(p::Int, t::Int, b::UnitRange)
-
-This is a generalization of hoursafter(... b::Int)
-to allow for example a=1:3 to fetch a Vector{Int} of the three hours after
-time index t.
-"""
-function hoursafter(p::Int, t::Int, a::UnitRange{Int})::Vector{Int}
-    period = div(t - 1, p)
-    return period * p .+ mod1.(t .+ a, p)
-
-end

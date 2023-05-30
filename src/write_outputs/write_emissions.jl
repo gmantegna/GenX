@@ -39,7 +39,7 @@ function write_emissions(path::AbstractString, inputs::Dict, setup::Dict, EP::Mo
 			if has_duals(EP) == 1
 				for cap in 1:inputs["NCO2Cap"]
 					for z in findall(x->x==1, inputs["dfCO2CapZones"][:,cap])
-						tempCO2Price[z,cap] = dual.(EP[:cCO2Emissions_systemwide])[cap]
+						tempCO2Price[z,cap] = (-1) * dual.(EP[:cCO2Emissions_systemwide])[cap]
 						# when scaled, The objective function is in unit of Million US$/kton, thus k$/ton, to get $/ton, multiply 1000
 						if setup["ParameterScale"] ==1
 							tempCO2Price[z,cap] = tempCO2Price[z,cap]* ModelScalingFactor
@@ -58,14 +58,14 @@ function write_emissions(path::AbstractString, inputs::Dict, setup::Dict, EP::Mo
 			if setup["ParameterScale"]==1
 				dfEmissions[i,:AnnualSum] = sum(inputs["omega"].*value.(EP[:eEmissionsByZone][i,:]))*ModelScalingFactor
 			else
-				dfEmissions[i,:AnnualSum] = sum(inputs["omega"].*value.(EP[:eEmissionsByZone][i,:]))/ModelScalingFactor
+				dfEmissions[i,:AnnualSum] = sum(inputs["omega"].*value.(EP[:eEmissionsByZone][i,:]))
 			end
 		end
 
 		if setup["ParameterScale"]==1
 			dfEmissions = hcat(dfEmissions, DataFrame(value.(EP[:eEmissionsByZone])*ModelScalingFactor, :auto))
 		else
-			dfEmissions = hcat(dfEmissions, DataFrame(value.(EP[:eEmissionsByZone])/ModelScalingFactor, :auto))
+			dfEmissions = hcat(dfEmissions, DataFrame(value.(EP[:eEmissionsByZone]), :auto))
 		end
 
 
@@ -98,13 +98,13 @@ function write_emissions(path::AbstractString, inputs::Dict, setup::Dict, EP::Mo
 			if setup["ParameterScale"]==1
 				dfEmissions[!,:AnnualSum][i] = sum(inputs["omega"].*value.(EP[:eEmissionsByZone][i,:])) *ModelScalingFactor
 			else
-				dfEmissions[!,:AnnualSum][i] = sum(inputs["omega"].*value.(EP[:eEmissionsByZone][i,:]))/ModelScalingFactor
+				dfEmissions[!,:AnnualSum][i] = sum(inputs["omega"].*value.(EP[:eEmissionsByZone][i,:]))
 			end
 		end
 		if setup["ParameterScale"]==1
 			dfEmissions = hcat(dfEmissions, DataFrame(value.(EP[:eEmissionsByZone])*ModelScalingFactor, :auto))
 		else
-			dfEmissions = hcat(dfEmissions, DataFrame(value.(EP[:eEmissionsByZone])/ModelScalingFactor, :auto))
+			dfEmissions = hcat(dfEmissions, DataFrame(value.(EP[:eEmissionsByZone]), :auto))
 		end
 		auxNew_Names=[Symbol("Zone");Symbol("AnnualSum");[Symbol("t$t") for t in 1:T]]
 		rename!(dfEmissions,auxNew_Names)

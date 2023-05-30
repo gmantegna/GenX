@@ -34,6 +34,8 @@ function write_reserve_margin_revenue(path::AbstractString, inputs::Dict, setup:
 	STOR_ALL = inputs["STOR_ALL"]
 	FLEX = inputs["FLEX"]
 	MUST_RUN = inputs["MUST_RUN"]
+	VRE_STOR = inputs["VRE_STOR"]
+	dfVRE_STOR = inputs["dfVRE_STOR"]
 	dfResRevenue = DataFrame(Region = dfGen.region, Resource = inputs["RESOURCES"], Zone = dfGen.Zone, Cluster = dfGen.cluster)
 	annual_sum = zeros(G)
 	for i in 1:inputs["NCapacityReserveMargin"]
@@ -42,12 +44,17 @@ function write_reserve_margin_revenue(path::AbstractString, inputs::Dict, setup:
 		tempresrev[THERM_ALL] = dfGen[THERM_ALL, sym] .* (value.(EP[:eTotalCap][THERM_ALL])) * sum(dual.(EP[:cCapacityResMargin][i, :]))
 		tempresrev[VRE] = dfGen[VRE, sym] .* (value.(EP[:eTotalCap][VRE])) .* (inputs["pP_Max"][VRE, :] * (dual.(EP[:cCapacityResMargin][i, :])))
 		tempresrev[MUST_RUN] = dfGen[MUST_RUN, sym] .* (value.(EP[:eTotalCap][MUST_RUN])) .* (inputs["pP_Max"][MUST_RUN, :] * (dual.(EP[:cCapacityResMargin][i, :])))
-		tempresrev[HYDRO_RES] = dfGen[HYDRO_RES, sym] .* (value.(EP[:vP][HYDRO_RES, :]) * (dual.(EP[:cCapacityResMargin][i, :])))
+		if !isempty(HYDRO_RES)
+			tempresrev[HYDRO_RES] = dfGen[HYDRO_RES, sym] .* ((value.(EP[:vCAPCONTRHYDRO_DISCHARGE][HYDRO_RES, :]).data + value.(EP[:vCAPCONTRHYDRO_SOC][HYDRO_RES, :]).data) * (dual.(EP[:cCapacityResMargin][i, :])))
+		end
 		if !isempty(STOR_ALL)
-			tempresrev[STOR_ALL] = dfGen[STOR_ALL, sym] .* ((value.(EP[:vP][STOR_ALL, :]) - value.(EP[:vCHARGE][STOR_ALL, :]).data) * (dual.(EP[:cCapacityResMargin][i, :])))
+			tempresrev[STOR_ALL] = dfGen[STOR_ALL, sym] .* ((value.(EP[:vCAPCONTRSTOR_DISCHARGE][STOR_ALL, :]).data + value.(EP[:vCAPCONTRSTOR_SOC][STOR_ALL, :]).data) * (dual.(EP[:cCapacityResMargin][i, :])))
 		end
 		if !isempty(FLEX)
 			tempresrev[FLEX] = dfGen[FLEX, sym] .* ((value.(EP[:vCHARGE_FLEX][FLEX, :]).data - value.(EP[:vP][FLEX, :])) * (dual.(EP[:cCapacityResMargin][i, :])))
+		end
+		if !isempty(VRE_STOR)
+			tempresrev[VRE_STOR] = dfVRE_STOR[!, sym] .* ((value.(EP[:vCAPCONTRSTOR_DISCHARGE_VRE_STOR][VRE_STOR, :]).data + value.(EP[:vCAPCONTRSTOR_SOC_VRE_STOR][VRE_STOR, :]).data) * (dual.(EP[:cCapacityResMargin][i, :])))
 		end
 		if setup["ParameterScale"] == 1
 			tempresrev *= ModelScalingFactor^2

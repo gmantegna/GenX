@@ -64,7 +64,7 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
 	dfCap = write_capacity(path, inputs, setup, EP)
 	dfPower = write_power(path, inputs, setup, EP)
 	dfCharge = write_charge(path, inputs, setup, EP)
-	dfCapacityfactor = write_capacityfactor(path, inputs, setup, EP)
+	# dfCapacityfactor = write_capacityfactor(path, inputs, setup, EP)
 	elapsed_time_storage = @elapsed write_storage(path, inputs, setup, EP)
 	println("Time elapsed for writing storage is")
 	println(elapsed_time_storage)
@@ -154,7 +154,7 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
 		dfESRRev = DataFrame()
 		if setup["EnergyShareRequirement"]==1 && has_duals(EP) == 1
 			dfESR = write_esr_prices(path, inputs, setup, EP)
-			dfESRRev = write_esr_revenue(path, inputs, setup, dfPower, dfESR)
+			dfESRRev = write_esr_revenue(path, inputs, setup, dfPower, dfESR, EP)
 		end
 		dfResMar = DataFrame()
 		dfResRevenue = DataFrame()
@@ -167,12 +167,27 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
 			elapsed_time_cap_value = @elapsed write_capacity_value(path, inputs, setup, EP)
 		  println("Time elapsed for writing capacity value is")
 		  println(elapsed_time_cap_value)
+			if haskey(inputs, "dfCapRes_slack")
+				dfResMar_slack = write_reserve_margin_slack(path, inputs, setup, EP)
+			end		  
 		end
+		if setup["CO2Cap"]>0 && has_duals(EP) == 1
+			dfCO2Cap = write_co2_cap(path, inputs, setup, EP)
+		end
+		if setup["MinCapReq"] == 1 && has_duals(EP) == 1
+			dfMinCapReq = write_minimum_capacity_requirement(path, inputs, setup, EP)
+		end
+
 
 		elapsed_time_net_rev = @elapsed write_net_revenue(path, inputs, setup, EP, dfCap, dfESRRev, dfResRevenue, dfChargingcost, dfPower, dfEnergyRevenue, dfSubRevenue, dfRegSubRevenue)
 	  println("Time elapsed for writing net revenue is")
 	  println(elapsed_time_net_rev)
 	end
+
+	if !isempty(inputs["VRE_STOR"])
+		write_vre_stor(path, inputs, setup, EP)
+	end
+	
 	## Print confirmation
 	println("Wrote outputs to $path")
 

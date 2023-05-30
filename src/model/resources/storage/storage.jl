@@ -93,10 +93,10 @@ When charging, reducing the charge rate is contributing to upwards reserve and f
 	&  \Theta_{o,z,t} - f^{discharge}_{o,z,t} \geq 0 & \quad \forall o \in \mathcal{O}, z \in \mathcal{Z}, t \in \mathcal{T}
 \end{aligned}
 ```
-Additionally, when reserves are modeled, the maximum charge rate and contribution to regulation while charging can be no greater than the available energy storage capacity, or the difference between the total energy storage capacity, $\Delta^{total, energy}_{o,z}$, and the state of charge at the end of the previous time period, $\Gamma_{o,z,t-1}$. Note that for storage to contribute to reserves down while charging, the storage device must be capable of increasing the charge rate (which increase net load).
+Additionally, when reserves are modeled, the maximum charge rate and contribution to regulation while charging can be no greater than the available energy storage capacity, or the difference between the total energy storage capacity, $\Delta^{total, energy}_{o,z}$, and the state of charge at the end of the previous time period, $\Gamma_{o,z,t-1}$, while accounting for charging losses $\eta_{o,z}^{charge}$. Note that for storage to contribute to reserves down while charging, the storage device must be capable of increasing the charge rate (which increase net load).
 ```math
 \begin{aligned}
-	&  \Pi_{o,z,t} + f^{charge}_{o,z,t} \leq \Delta^{energy, total}_{o,z} - \Gamma_{o,z,t-1} & \quad \forall o \in \mathcal{O}, z \in \mathcal{Z}, t \in \mathcal{T}
+	&  \eta_{o,z}^{charge} \times (\Pi_{o,z,t} + f^{charge}_{o,z,t}) \leq \Delta^{energy, total}_{o,z} - \Gamma_{o,z,t-1} & \quad \forall o \in \mathcal{O}, z \in \mathcal{Z}, t \in \mathcal{T}
 \end{aligned}
 ```
 Finally, the constraints on maximum discharge rate are replaced by the following, to account for capacity contributed to regulation and reserves:
@@ -114,6 +114,8 @@ function storage!(EP::Model, inputs::Dict, setup::Dict)
 	dfGen = inputs["dfGen"]
 	T = inputs["T"]
 	STOR_ALL = inputs["STOR_ALL"]
+
+	p = inputs["hours_per_subperiod"] 
 
 	Reserves = setup["Reserves"]
 	OperationWrapping = setup["OperationWrapping"]
@@ -149,7 +151,18 @@ function storage!(EP::Model, inputs::Dict, setup::Dict)
 
 	# Capacity Reserves Margin policy
 	if CapacityReserveMargin > 0
-		@expression(EP, eCapResMarBalanceStor[res=1:inputs["NCapacityReserveMargin"], t=1:T], sum(dfGen[y,Symbol("CapRes_$res")] * (EP[:vP][y,t] - EP[:vCHARGE][y,t])  for y in STOR_ALL))
+		CRPL = setup["CapResPeriodLength"]
+		@variable(EP, vCAPCONTRSTOR_DISCHARGE[y in STOR_ALL, t=1:T]) # Storage capacity contribution from net discharge
+		@variable(EP, vCAPCONTRSTOR_SOC[y in STOR_ALL, t=1:T] >= 0) # Storage capacity contribution from charge held in reserve
+		@variable(EP, vMINSOCSTOR[y in STOR_ALL, t=1:T] >= 0) # Minimum SOC maintained over following n hours
+
+		@constraint(EP, cCapContrStorEnergy[y in STOR_ALL, t=1:T], vCAPCONTRSTOR_DISCHARGE[y,t] <= EP[:vP][y,t] - EP[:vCHARGE][y,t])
+		@constraint(EP, cMinSocTrackStor[y in STOR_ALL, t=1:T, n=1:CRPL], vMINSOCSTOR[y,t] <= EP[:vS][y, hoursafter(p,t,n)])
+		@constraint(EP, cCapContrStorSOC[y in STOR_ALL, t=1:T], vCAPCONTRSTOR_SOC[y,t] <= dfGen[y,:Eff_Down]*vMINSOCSTOR[y,t]/CRPL)
+		@constraint(EP, cCapContrStorSOCLim[y in STOR_ALL, t=1:T], vCAPCONTRSTOR_SOC[y,t] <= EP[:eTotalCap][y])
+		@constraint(EP, cCapContrStorSOCPartLim[y in STOR_ALL, t=1:T], vCAPCONTRSTOR_SOC[y,t] <= EP[:eTotalCap][y] - vCAPCONTRSTOR_DISCHARGE[y,t])
+
+		@expression(EP, eCapResMarBalanceStor[res=1:inputs["NCapacityReserveMargin"], t=1:T], sum(dfGen[y,Symbol("CapRes_$res")] * (vCAPCONTRSTOR_DISCHARGE[y,t] + vCAPCONTRSTOR_SOC[y,t])  for y in STOR_ALL))
 		EP[:eCapResMarBalance] += eCapResMarBalanceStor
 	end
 

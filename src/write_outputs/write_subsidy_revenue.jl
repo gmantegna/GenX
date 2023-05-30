@@ -17,7 +17,7 @@ received this license file.  If not, see <http://www.gnu.org/licenses/>.
 @doc raw"""
 	write_subsidy_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
 
-Function for reporting subsidy revenue earned if a generator specified `Min_Cap` is provided in the input file. GenX will print this file only the shadow price can be obtained form the solver. Do not confuse this with the Minimum Capacity Carveout constraint, which is for a subset of generators, and a separate revenue term will be calculated in other files. The unit is \$.
+Function for reporting subsidy revenue earned if a generator specified `Min_Cap` is provided in the input file, or if a generator is subject to a Minimum Capacity Requirement constraint. The unit is \$.
 """
 function write_subsidy_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
 	dfGen = inputs["dfGen"]
@@ -30,8 +30,15 @@ function write_subsidy_revenue(path::AbstractString, inputs::Dict, setup::Dict, 
 	### calculating tech specific subsidy revenue
 	dfRegSubRevenue = DataFrame(Region = dfGen[!, :region], Resource = inputs["RESOURCES"], Zone = dfGen[!, :Zone], Cluster = dfGen[!, :cluster], R_ID=dfGen[!, :R_ID], SubsidyRevenue = zeros(G))
 	if (setup["MinCapReq"] >= 1)
+		if !isempty(inputs["VRE_STOR"])
+			dfVRE_STOR = inputs["dfVRE_STOR"]
+		end
 		for mincap in 1:inputs["NumberOfMinCapReqs"] # This key only exists if MinCapReq >= 1, so we can't get it at the top outside of this condition.
-			MIN_CAP_GEN = dfGen[(dfGen[!, Symbol("MinCapTag_$mincap")].==1), :R_ID]
+			if !isempty(inputs["VRE_STOR"])
+				MIN_CAP_GEN = union(dfGen[(dfGen[!, Symbol("MinCapTag_$mincap")].==1), :R_ID], dfVRE_STOR[(dfVRE_STOR[!, Symbol("MinCapTag_$mincap")].==1), :R_ID])
+			else
+				MIN_CAP_GEN = dfGen[(dfGen[!, Symbol("MinCapTag_$mincap")].==1), :R_ID]
+			end
 			dfRegSubRevenue.SubsidyRevenue[MIN_CAP_GEN] .= dfRegSubRevenue.SubsidyRevenue[MIN_CAP_GEN] + (value.(EP[:eTotalCap][MIN_CAP_GEN])) * (dual.(EP[:cZoneMinCapReq][mincap]))
 		end
 	end
