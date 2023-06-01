@@ -33,6 +33,7 @@ function vre_stor!(EP::Model, inputs::Dict, setup::Dict)
     EnergyShareRequirement = setup["EnergyShareRequirement"]
 	CapacityReserveMargin = setup["CapacityReserveMargin"]
     StorageLosses = setup["StorageLosses"]
+    OperationWrapping = setup["OperationWrapping"]
 
     # Load VRE-storage inputs
 	VRE_STOR = inputs["VRE_STOR"] 	                                # Set of VRE-STOR generators
@@ -74,6 +75,15 @@ function vre_stor!(EP::Model, inputs::Dict, setup::Dict)
 
         # Grid-interfacing charge (Energy withdrawn from grid by resource VRE_STOR at hour "t") [MWh]
         vCHARGE_VRE_STOR[y in VRE_STOR,t=1:T] >= 0
+
+        # Virtual discharge contributing to capacity reserves at timestep t for storage cluster y
+        vCAPCONTRSTOR_VP_VRE_STOR[y in VRE_STOR, t=1:T] >= 0
+
+        # Virtual charge contributing to capacity reserves at timestep t for storage cluster y
+        vCAPCONTRSTOR_VCHARGE_VRE_STOR[y in VRE_STOR, t=1:T] >= 0
+
+        # Total state of charge being held in reserve at timestep t for storage cluster y
+        vCAPCONTRSTOR_VS_VRE_STOR[y in VRE_STOR, t=1:T] >= 0
     end)
    
 	### EXPRESSIONS ###
@@ -173,6 +183,41 @@ function vre_stor!(EP::Model, inputs::Dict, setup::Dict)
         # Add two potential contributions together
 		@expression(EP, eCapResMarBalanceStor_VRE_STOR[res=1:inputs["NCapacityReserveMargin"], t=1:T], sum(by_rid(y,Symbol("CapRes_$res")) * (vCAPCONTRSTOR_DISCHARGE_VRE_STOR[y,t] + vCAPCONTRSTOR_SOC_VRE_STOR[y,t])  for y in VRE_STOR))
 		EP[:eCapResMarBalance] += eCapResMarBalanceStor_VRE_STOR
+	end
+
+    # Capacity Reserve Margin policy
+	if CapacityReserveMargin == 1
+        if OperationWrapping ==1 && !isempty(inputs["VS_LDS"])
+            CONSTRAINTSET = dfVRE_STOR[(dfVRE_STOR.LDS.==0),:R_ID]
+        else
+            CONSTRAINTSET = STOR
+        end
+
+		# Constraints governing energy held in reserve when storage makes virtual capacity reserve margin contributions:
+
+		# Links energy held in reserve in first time step with decisions in last time step of each subperiod
+		# We use a modified formulation of this constraint (cVSoCBalLongDurationStorageStart) when operations wrapping and long duration storage are being modeled
+		@constraint(EP, cVreStorVSoCBalStart[t in START_SUBPERIODS, y in CONSTRAINTSET], EP[:vCAPCONTRSTOR_VS_VRE_STOR][y,t] ==
+			EP[:vCAPCONTRSTOR_VS_VRE_STOR][y,t+hours_per_subperiod-1] + (1/by_rid(y,:Eff_Down_DC) * EP[:vCAPCONTRSTOR_VP_VRE_STOR][y,t])
+			- (by_ride(y,:Eff_Up)*EP[:vCAPCONTRSTOR_VCHARGE_VRE_STOR][y,t]) - (dfGen[y,:Self_Disch] * EP[:vCAPCONTRSTOR_VS_VRE_STOR][y,t+hours_per_subperiod-1]))
+
+		# energy held in reserve for the next hour
+		@constraint(EP, cVreStorVSoCBalInterior[t in INTERIOR_SUBPERIODS, y in STOR], EP[:vCAPCONTRSTOR_VS_VRE_STOR][y,t] ==
+			EP[:vCAPCONTRSTOR_VS_VRE_STOR][y,t-1]+(1/by_rid(y,:Eff_Down_DC)*EP[:vCAPCONTRSTOR_VP_VRE_STOR][y,t])-(by_rid(y,:Eff_Up_DC)*EP[:vCAPCONTRSTOR_VCHARGE_VRE_STOR][y,t])-(dfGen[y,:Self_Disch]*EP[:vCAPCONTRSTOR_VS_VRE_STOR][y,t-1]))
+
+		# energy held in reserve acts as a lower bound on the total energy held in storage
+		@constraint(EP, cVreStorSOCMinCapRes[t in 1:T, y in STOR], EP[:vS_VRE_STOR][y,t] >= EP[:vCAPCONTRSTOR_VS_VRE_STOR][y,t])
+
+        @expression(EP, eCapResMarBalanceStor_VRE_STOR[res=1:inputs["NCapacityReserveMargin"], t=1:T], 
+		sum(by_rid(y,Symbol("CapRes_$res")) * (EP[:vP][y,t] + EP[:vCAPCONTRSTOR_VP_VRE_STOR][y,t] - EP[:vCHARGE_VRE_STOR][y,t] - EP[:vCAPCONTRSTOR_VCHARGE_VRE_STOR][y,t])  for y in STOR))
+		EP[:eCapResMarBalance] += eCapResMarBalanceStor
+	else
+		# Set values for all capacity reserve margin variables to 0
+		@constraints(EP, begin
+			[y in STOR, t in 1:T], EP[:vCAPCONTRSTOR_VS_VRE_STOR][y,t] == 0
+			[y in STOR, t in 1:T], EP[:vCAPCONTRSTOR_VP_VRE_STOR][y,t] == 0
+			[y in STOR, t in 1:T], EP[:vCAPCONTRSTOR_VCHARGE_VRE_STOR][y,t] == 0
+		end)
 	end
 end
 
@@ -581,7 +626,7 @@ function stor_vre_stor!(EP::Model, inputs::Dict, setup::Dict)
 
     ### LONG-DURATION ENERGY STORAGE RESOURCE MODULE ###
     if !isempty(VS_LDS)
-        lds_vre_stor!(EP, inputs)
+        lds_vre_stor!(EP, inputs, setup)
     end
     
 end
@@ -637,16 +682,17 @@ function split_storage_resources(df::DataFrame, inputs::Dict, setup::Dict)
 end
 
 @doc raw"""
-    lds_vre_stor!(EP::Model, inputs::Dict)
+    lds_vre_stor!(EP::Model, inputs::Dict, setup::Dict)
 
     This function activates the decision variables and constraints for LDS resources.
 """
-function lds_vre_stor!(EP::Model, inputs::Dict)
+function lds_vre_stor!(EP::Model, inputs::Dict, setup::Dict)
     println("VRE-STOR LDS Module")
 
     VS_LDS = inputs["VS_LDS"]
     dfGen = inputs["dfGen"]
     dfVRE_STOR = inputs["dfVRE_STOR"]
+    CapacityReserveMargin = setup["CapacityReserveMargin"]
 
     REP_PERIOD = inputs["REP_PERIOD"]  # Number of representative periods
 	dfPeriodMap = inputs["Period_Map"] # Dataframe that maps modeled periods to representative periods
@@ -664,6 +710,14 @@ function lds_vre_stor!(EP::Model, inputs::Dict)
     # Build up in storage inventory over each representative period w
     # Build up inventory can be positive or negative
     @variable(EP, vdSOC_VRE_STOR[y in VS_LDS, w=1:REP_PERIOD])
+
+    # State of charge held in reserve for storage at beginning of each modeled period n
+	@variable(EP, vCAPCONTRSTOR_VSOCw_VRE_STOR[y in VS_LDS, n in MODELED_PERIODS_INDEX] >= 0)
+
+	# Build up in storage inventory held in reserve over each representative period w
+	# Build up inventory can be positive or negative
+	@variable(EP, vCAPCONTRSTOR_VdSOC_VRE_STOR[y in VS_LDS, w=1:REP_PERIOD])
+
 
     # Note: tw_min = hours_per_subperiod*(w-1)+1; tw_max = hours_per_subperiod*w
     @constraint(EP, cVreStorSoCBalLongDurationStorageStart[w=1:REP_PERIOD, y in VS_LDS], 
@@ -692,6 +746,43 @@ function lds_vre_stor!(EP::Model, inputs::Dict)
     # Initial storage = Final storage - change in storage inventory across representative period
     @constraint(EP, cVreStorSoCBalLongDurationStorageSub[y in VS_LDS, r in REP_PERIODS_INDEX],
                     EP[:vSOCw_VRE_STOR][y,r] == EP[:vS_VRE_STOR][y,hours_per_subperiod*dfPeriodMap[r,:Rep_Period_Index]] - EP[:vdSOC_VRE_STOR][y,dfPeriodMap[r,:Rep_Period_Index]])
+
+    if CapacityReserveMargin == 1
+        # LDES Constraints for storage held in reserve
+
+		# Links last time step with first time step, ensuring position in hour 1 is within eligible change from final hour position
+		# Modified initial virtual state of storage for long-duration storage - initialize wth value carried over from last period
+		# Alternative to cVSoCBalStart constraint which is included when not modeling operations wrapping and long duration storage
+		# Note: tw_min = hours_per_subperiod*(w-1)+1; tw_max = hours_per_subperiod*w
+		@constraint(EP, cVreStorVSoCBalLongDurationStorageStart[w=1:REP_PERIOD, y in VS_LDS],
+        EP[:vCAPCONTRSTOR_VS_VRE_STOR][y,hours_per_subperiod*(w-1)+1] == (1-dfGen[y,:Self_Disch])*(EP[:vCAPCONTRSTOR_VS_VRE_STOR][y,hours_per_subperiod*w]-vCAPCONTRSTOR_VdSOC_VRE_STOR[y,w])
+        +(1 / by_rid(y, :Eff_Down_DC)*EP[:vCAPCONTRSTOR_VP_VRE_STOR][y,hours_per_subperiod*(w-1)+1])
+        -(by_rid(y, :Eff_Up_DC)*EP[:vCAPCONTRSTOR_VCHARGE_VRE_STOR][y,hours_per_subperiod*(w-1)+1]))
+
+        # Storage held in reserve at beginning of period w = storage at beginning of period w-1 + storage built up in period w (after n representative periods)
+        ## Multiply storage build up term from prior period with corresponding weight
+        @constraint(EP, cVreStorVSoCBalLongDurationStorageInterior[y in VS_LDS, r in MODELED_PERIODS_INDEX[1:(end-1)]],
+                vCAPCONTRSTOR_VSOCw_VRE_STOR[y,r+1] == vCAPCONTRSTOR_VSOCw_VRE_STOR[y,r] + vCAPCONTRSTOR_VdSOC_VRE_STOR[y,dfPeriodMap[r,:Rep_Period_Index]])
+
+        ## Last period is linked to first period
+        @constraint(EP, cVreSTorVSoCBalLongDurationStorageEnd[y in VS_LDS, r in MODELED_PERIODS_INDEX[end]],
+                vCAPCONTRSTOR_VSOCw_VRE_STOR[y,1] == vCAPCONTRSTOR_VSOCw_VRE_STOR[y,r] + vCAPCONTRSTOR_VdSOC_VRE_STOR[y,dfPeriodMap[r,:Rep_Period_Index]])
+
+        # Initial reserve storage level for representative periods must also adhere to sub-period storage inventory balance
+        # Initial storage = Final storage - change in storage inventory across representative period
+        @constraint(EP, cVreStorVSoCBalLongDurationStorageSub[y in VS_LDS, r in REP_PERIODS_INDEX],
+                vCAPCONTRSTOR_VSOCw_VRE_STOR[y,r] == EP[:vCAPCONTRSTOR_VS_VRE_STOR][y,hours_per_subperiod*dfPeriodMap[r,:Rep_Period_Index]] - vCAPCONTRSTOR_VdSOC_VRE_STOR[y,dfPeriodMap[r,:Rep_Period_Index]])
+
+        # energy held in reserve at the beginning of each modeled period acts as a lower bound on the total energy held in storage
+        @constraint(EP, cSOCMinCapResLongDurationStorage[y in VS_LDS, r in MODELED_PERIODS_INDEX], vSOCw_VRE_STOR[y,r] >= vCAPCONTRSTOR_VSOCw_VRE_STOR[y,r])
+    else
+        # Set values for all capacity reserve margin variables to 0
+		@constraints(EP, begin
+		[y in VS_LDS, n in MODELED_PERIODS_INDEX], EP[:vCAPCONTRSTOR_VSOCw_VRE_STOR][y,n] == 0
+		[y in VS_LDS, w=1:REP_PERIOD], EP[:vCAPCONTRSTOR_VdSOC_VRE_STOR][y,w] == 0
+		end)
+    end
+
 end
 
 @doc raw"""
@@ -789,7 +880,7 @@ function investment_charge_vre_stor!(EP::Model, inputs::Dict)
         @constraint(EP, cVreStorMinCapDischargeDC[y in MIN_DC_DISCHARGE], eTotalCapDischarge_DC[y] >= by_rid(y,:Min_Cap_Discharge_DC_MW))
 
         # Constraint 2: Maximum discharging rate must be less than discharge power rating
-        @constraint(EP, cVreStorMaxDischargingDC[y in VS_ASYM_DC_DISCHARGE, t in 1:T], EP[:vP_DC_DISCHARGE][y,t] <= EP[:eTotalCapDischarge_DC][y])
+        @constraint(EP, cVreStorMaxDischargingDC[y in VS_ASYM_DC_DISCHARGE, t in 1:T], EP[:vP_DC_DISCHARGE][y,t] + EP[:vCAPCONTRSTOR_VP_VRE_STOR][y,t]*by_rid(y, :EtaInverter) <= EP[:eTotalCapDischarge_DC][y])
     end
     
     if !isempty(VS_ASYM_DC_CHARGE)
@@ -847,7 +938,7 @@ function investment_charge_vre_stor!(EP::Model, inputs::Dict)
         @constraint(EP, cVreStorMinCapChargeDC[y in MIN_DC_CHARGE], eTotalCapCharge_DC[y] >= by_rid(y,:Min_Cap_Charge_DC_MW))
 
         # Constraint 2: Maximum charging rate must be less than charge power rating
-        @constraint(EP, cVreStorMaxChargingDC[y in VS_ASYM_DC_CHARGE, t in 1:T], EP[:vP_DC_CHARGE][y,t] <= EP[:eTotalCapCharge_DC][y])
+        @constraint(EP, cVreStorMaxChargingDC[y in VS_ASYM_DC_CHARGE, t in 1:T], EP[:vP_DC_CHARGE][y,t] + EP[:vCAPCONTRSTOR_VCHARGE_VRE_STOR][y,t]*by_rid(y,:EtaInverter) <= EP[:eTotalCapCharge_DC][y])
     end
 
     if !isempty(VS_ASYM_AC_DISCHARGE)
@@ -908,7 +999,7 @@ function investment_charge_vre_stor!(EP::Model, inputs::Dict)
         @constraint(EP, cVreStorMinCapDischargeAC[y in MIN_AC_DISCHARGE], eTotalCapDischarge_AC[y] >= by_rid(y,:Min_Cap_Discharge_AC_MW))
 
         # Constraint 2: Maximum discharging rate must be less than discharge power rating
-        @constraint(EP, cVreStorMaxDischargingAC[y in VS_ASYM_AC_DISCHARGE, t in 1:T], EP[:vP_AC_DISCHARGE][y,t] <= EP[:eTotalCapDischarge_AC][y])
+        @constraint(EP, cVreStorMaxDischargingAC[y in VS_ASYM_AC_DISCHARGE, t in 1:T], EP[:vP_AC_DISCHARGE][y,t] + EP[:vCAPCONTRSTOR_VP_VRE_STOR][y,t] <= EP[:eTotalCapDischarge_AC][y])
     end
 
     if !isempty(VS_ASYM_AC_CHARGE)
@@ -969,6 +1060,6 @@ function investment_charge_vre_stor!(EP::Model, inputs::Dict)
         @constraint(EP, cVreStorMinCapChargeAC[y in MIN_AC_CHARGE], eTotalCapCharge_AC[y] >= by_rid(y,:Min_Cap_Charge_AC_MW))
 
         # Constraint 2: Maximum charging rate must be less than charge power rating
-        @constraint(EP, cVreStorMaxChargingAC[y in VS_ASYM_AC_CHARGE, t in 1:T], EP[:vP_AC_CHARGE][y,t] <= EP[:eTotalCapCharge_AC][y])
+        @constraint(EP, cVreStorMaxChargingAC[y in VS_ASYM_AC_CHARGE, t in 1:T], EP[:vP_AC_CHARGE][y,t] + EP[:vCAPCONTRSTOR_VCHARGE_VRE_STOR][y,t]<= EP[:eTotalCapCharge_AC][y])
     end
 end

@@ -48,13 +48,13 @@ function write_reserve_margin_revenue(path::AbstractString, inputs::Dict, setup:
 			tempresrev[HYDRO_RES] = dfGen[HYDRO_RES, sym] .* ((value.(EP[:vCAPCONTRHYDRO_DISCHARGE][HYDRO_RES, :]).data + value.(EP[:vCAPCONTRHYDRO_SOC][HYDRO_RES, :]).data) * (dual.(EP[:cCapacityResMargin][i, :])))
 		end
 		if !isempty(STOR_ALL)
-			tempresrev[STOR_ALL] = dfGen[STOR_ALL, sym] .* ((value.(EP[:vCAPCONTRSTOR_DISCHARGE][STOR_ALL, :]).data + value.(EP[:vCAPCONTRSTOR_SOC][STOR_ALL, :]).data) * (dual.(EP[:cCapacityResMargin][i, :])))
+			tempresrev[STOR_ALL] = dfGen[STOR_ALL, sym] .* ((value.(EP[:vP][STOR_ALL, :]) - value.(EP[:vCHARGE][STOR_ALL, :]).data + value.(EP[:vCAPCONTRSTOR_VP][STOR_ALL, :]).data - value.(EP[:vCAPCONTRSTOR_VCHARGE][STOR_ALL, :]).data) * (dual.(EP[:cCapacityResMargin][i, :])))
 		end
 		if !isempty(FLEX)
 			tempresrev[FLEX] = dfGen[FLEX, sym] .* ((value.(EP[:vCHARGE_FLEX][FLEX, :]).data - value.(EP[:vP][FLEX, :])) * (dual.(EP[:cCapacityResMargin][i, :])))
 		end
 		if !isempty(VRE_STOR)
-			tempresrev[VRE_STOR] = dfVRE_STOR[!, sym] .* ((value.(EP[:vCAPCONTRSTOR_DISCHARGE_VRE_STOR][VRE_STOR, :]).data + value.(EP[:vCAPCONTRSTOR_SOC_VRE_STOR][VRE_STOR, :]).data) * (dual.(EP[:cCapacityResMargin][i, :])))
+			tempresrev[VRE_STOR] = dfGen[VRE_STOR, sym] .* ((value.(EP[:vP][VRE_STOR, :]) - value.(EP[:vCHARGE_VRE_STOR][VRE_STOR, :]).data + value.(EP[:vCAPCONTRSTOR_VP_VRE_STOR][VRE_STOR, :]).data - value.(EP[:vCAPCONTRSTOR_VCHARGE_VRE_STOR][VRE_STOR, :]).data) * (dual.(EP[:cCapacityResMargin][i, :])))
 		end
 		if setup["ParameterScale"] == 1
 			tempresrev *= ModelScalingFactor^2
