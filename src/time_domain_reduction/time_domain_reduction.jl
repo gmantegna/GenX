@@ -1123,6 +1123,38 @@ function cluster_inputs(inpath, settings_path, mysetup, stage_id=-99, v=false)
         if v println("Writing resource file...") end
         CSV.write(joinpath(inpath, GVar_Outfile), GVOutputData, header=NewGVColNames)
 
+        # Break up VRE-storage components if needed
+        if mysetup["VreStor"] == 1
+            gen_var = load_dataframe(joinpath(TimeDomainReductionFolder,"Generators_variability.csv"))
+
+            # Find which indexes have solar PV/wind names
+            RESOURCE_ZONES = NewGVColNames
+            println()
+            solar_col_names = []
+            wind_col_names = []
+            for r in 1:length(RESOURCE_ZONES)
+                if occursin("utilitypv", RESOURCE_ZONES[r]) || occursin("Time", RESOURCE_ZONES[r])
+                    push!(solar_col_names,r)
+                end
+                if occursin("landbasedwind", RESOURCE_ZONES[r]) || occursin("Time", RESOURCE_ZONES[r])
+                    push!(wind_col_names, r)
+                end
+            end
+            println(solar_col_names)
+            println(wind_col_names)
+
+            # Index into dataframe and output them
+            solar_var = gen_var[!, solar_col_names]
+            solar_var[!, :Time_Index] = 1:size(solar_var,1)
+            wind_var = gen_var[!, wind_col_names]
+            wind_var[!, :Time_Index] = 1:size(wind_var,1)
+
+            SolarVar_Outfile = joinpath(TimeDomainReductionFolder, "Vre_and_stor_solar_variability.csv")
+            WindVar_Outfile = joinpath(TimeDomainReductionFolder, "Vre_and_stor_wind_variability.csv")
+            CSV.write(joinpath(inpath, SolarVar_Outfile), solar_var)
+            CSV.write(joinpath(inpath, WindVar_Outfile), wind_var)
+        end
+
         ### TDR_Results/Fuels_data.csv
 
         fuel_in = load_dataframe(joinpath(inpath, "Fuels_data.csv"))

@@ -48,6 +48,10 @@ function vre_stor!(EP::Model, inputs::Dict, setup::Dict)
     STOR = inputs["VS_STOR"]                                        # Set of VRE-STOR generators with storage-component
     NONSTOR = setdiff(VRE_STOR, STOR)
 
+    START_SUBPERIODS = inputs["START_SUBPERIODS"]
+	INTERIOR_SUBPERIODS = inputs["INTERIOR_SUBPERIODS"]
+	hours_per_subperiod = inputs["hours_per_subperiod"] # total number of hours per subperiod
+
     by_rid(rid, sym) = by_rid_df(rid, sym, dfVRE_STOR)
 
     ### VARIABLES ###
@@ -162,29 +166,6 @@ function vre_stor!(EP::Model, inputs::Dict, setup::Dict)
 		EP[:eESR] += eESRVREStor		
 	end
 
-    # Capacity Reserve Margin
-	if CapacityReserveMargin > 0
-		CRPL = setup["CapResPeriodLength"]
-        p = inputs["hours_per_subperiod"] 	                                    # total number of hours per subperiod
-		@variable(EP, vCAPCONTRSTOR_DISCHARGE_VRE_STOR[y in VRE_STOR, t=1:T])   # VRE-STOR capacity contribution from net discharge
-		@variable(EP, vCAPCONTRSTOR_SOC_VRE_STOR[y in VRE_STOR, t=1:T] >= 0)    # VRE-STOR capacity contribution from charge held in reserve
-		@variable(EP, vMINSOCSTOR_VRE_STOR[y in VRE_STOR, t=1:T] >= 0)          # Minimum SOC maintained over following n hours
-
-        # Discharge capacity contribution must be less than grid discharge - charge
-		@constraint(EP, cCapContrStorEnergy_VRE_STOR[y in VRE_STOR, t=1:T], vCAPCONTRSTOR_DISCHARGE_VRE_STOR[y,t] <= EP[:vP][y,t] - EP[:vCHARGE_VRE_STOR][y,t])
-        # Minimum SOC must be less than state of charge
-        @constraint(EP, cMinSocTrackStor_VRE_STOR[y in STOR, t=1:T, n=1:CRPL], vMINSOCSTOR_VRE_STOR[y,t] <= EP[:vS_VRE_STOR][y, hoursafter(p,t,n)])
-		# Storage reserve capacity contribution must be less than efficiency down * minimum SOC
-        @constraint(EP, cCapContrStorSOC_VRE_STOR[y in STOR, t=1:T], vCAPCONTRSTOR_SOC_VRE_STOR[y,t] <= by_rid(y,:Eff_Down_DC)*vMINSOCSTOR_VRE_STOR[y,t]/CRPL)
-		# Storage reserve capacity contribution must be less than available grid conneecion
-        @constraint(EP, cCapContrStorSOCLim_VRE_STOR[y in VRE_STOR, t=1:T], vCAPCONTRSTOR_SOC_VRE_STOR[y,t] <= EP[:eTotalCap][y])
-		@constraint(EP, cCapContrStorSOCPartLim_VRE_STOR[y in VRE_STOR, t=1:T], vCAPCONTRSTOR_SOC_VRE_STOR[y,t] <= EP[:eTotalCap][y] - vCAPCONTRSTOR_DISCHARGE_VRE_STOR[y,t])
-
-        # Add two potential contributions together
-		@expression(EP, eCapResMarBalanceStor_VRE_STOR[res=1:inputs["NCapacityReserveMargin"], t=1:T], sum(by_rid(y,Symbol("CapRes_$res")) * (vCAPCONTRSTOR_DISCHARGE_VRE_STOR[y,t] + vCAPCONTRSTOR_SOC_VRE_STOR[y,t])  for y in VRE_STOR))
-		EP[:eCapResMarBalance] += eCapResMarBalanceStor_VRE_STOR
-	end
-
     # Capacity Reserve Margin policy
 	if CapacityReserveMargin == 1
         if OperationWrapping ==1 && !isempty(inputs["VS_LDS"])
@@ -199,7 +180,7 @@ function vre_stor!(EP::Model, inputs::Dict, setup::Dict)
 		# We use a modified formulation of this constraint (cVSoCBalLongDurationStorageStart) when operations wrapping and long duration storage are being modeled
 		@constraint(EP, cVreStorVSoCBalStart[t in START_SUBPERIODS, y in CONSTRAINTSET], EP[:vCAPCONTRSTOR_VS_VRE_STOR][y,t] ==
 			EP[:vCAPCONTRSTOR_VS_VRE_STOR][y,t+hours_per_subperiod-1] + (1/by_rid(y,:Eff_Down_DC) * EP[:vCAPCONTRSTOR_VP_VRE_STOR][y,t])
-			- (by_ride(y,:Eff_Up)*EP[:vCAPCONTRSTOR_VCHARGE_VRE_STOR][y,t]) - (dfGen[y,:Self_Disch] * EP[:vCAPCONTRSTOR_VS_VRE_STOR][y,t+hours_per_subperiod-1]))
+			- (by_rid(y,:Eff_Up_DC)*EP[:vCAPCONTRSTOR_VCHARGE_VRE_STOR][y,t]) - (dfGen[y,:Self_Disch] * EP[:vCAPCONTRSTOR_VS_VRE_STOR][y,t+hours_per_subperiod-1]))
 
 		# energy held in reserve for the next hour
 		@constraint(EP, cVreStorVSoCBalInterior[t in INTERIOR_SUBPERIODS, y in STOR], EP[:vCAPCONTRSTOR_VS_VRE_STOR][y,t] ==
@@ -208,15 +189,21 @@ function vre_stor!(EP::Model, inputs::Dict, setup::Dict)
 		# energy held in reserve acts as a lower bound on the total energy held in storage
 		@constraint(EP, cVreStorSOCMinCapRes[t in 1:T, y in STOR], EP[:vS_VRE_STOR][y,t] >= EP[:vCAPCONTRSTOR_VS_VRE_STOR][y,t])
 
+        @constraints(EP, begin
+			[y in NONSTOR, t in 1:T], EP[:vCAPCONTRSTOR_VS_VRE_STOR][y,t] == 0
+			[y in NONSTOR, t in 1:T], EP[:vCAPCONTRSTOR_VP_VRE_STOR][y,t] == 0
+			[y in NONSTOR, t in 1:T], EP[:vCAPCONTRSTOR_VCHARGE_VRE_STOR][y,t] == 0
+		end)
+
         @expression(EP, eCapResMarBalanceStor_VRE_STOR[res=1:inputs["NCapacityReserveMargin"], t=1:T], 
-		sum(by_rid(y,Symbol("CapRes_$res")) * (EP[:vP][y,t] + EP[:vCAPCONTRSTOR_VP_VRE_STOR][y,t] - EP[:vCHARGE_VRE_STOR][y,t] - EP[:vCAPCONTRSTOR_VCHARGE_VRE_STOR][y,t])  for y in STOR))
-		EP[:eCapResMarBalance] += eCapResMarBalanceStor
+		sum(by_rid(y,Symbol("CapRes_$res")) * (EP[:vP][y,t] + EP[:vCAPCONTRSTOR_VP_VRE_STOR][y,t] - EP[:vCHARGE_VRE_STOR][y,t] - EP[:vCAPCONTRSTOR_VCHARGE_VRE_STOR][y,t])  for y in VRE_STOR))
+		EP[:eCapResMarBalance] += eCapResMarBalanceStor_VRE_STOR
 	else
 		# Set values for all capacity reserve margin variables to 0
 		@constraints(EP, begin
-			[y in STOR, t in 1:T], EP[:vCAPCONTRSTOR_VS_VRE_STOR][y,t] == 0
-			[y in STOR, t in 1:T], EP[:vCAPCONTRSTOR_VP_VRE_STOR][y,t] == 0
-			[y in STOR, t in 1:T], EP[:vCAPCONTRSTOR_VCHARGE_VRE_STOR][y,t] == 0
+			[y in VRE_STOR, t in 1:T], EP[:vCAPCONTRSTOR_VS_VRE_STOR][y,t] == 0
+			[y in VRE_STOR, t in 1:T], EP[:vCAPCONTRSTOR_VP_VRE_STOR][y,t] == 0
+			[y in VRE_STOR, t in 1:T], EP[:vCAPCONTRSTOR_VCHARGE_VRE_STOR][y,t] == 0
 		end)
 	end
 end

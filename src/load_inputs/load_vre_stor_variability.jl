@@ -23,8 +23,9 @@ function load_vre_stor_variability!(setup::Dict, path::AbstractString, inputs_vr
 
 	# Hourly capacity factors
 	data_directory = joinpath(path, setup["TimeDomainReductionFolder"])
-	if setup["TimeDomainReduction"] == 1  && time_domain_reduced_files_exist(data_directory)
-        my_dir = data_directory
+
+    if setup["TimeDomainReduction"] == 1  && time_domain_reduced_files_exist(data_directory)
+		my_dir = data_directory
 	else
         my_dir = path
 	end

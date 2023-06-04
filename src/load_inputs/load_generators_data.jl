@@ -321,7 +321,7 @@ function load_vre_stor_data!(setup::Dict, path::AbstractString, inputs_gen::Dict
 		vre_stor_errors = check_vre_stor_validity(gen_in)
 		append!(error_strings, vre_stor_errors)
 
-		vre_stor_in = DataFrame(CSV.File(joinpath(path,"Vre_stor_data.csv"), header=true), copycols=true)
+		vre_stor_in = DataFrame(CSV.File(joinpath(path,"Vre_and_storage_data.csv"), header=true), copycols=true)
 
 		## DEFINIING ALL SETS
 
@@ -430,7 +430,7 @@ function load_vre_stor_data!(setup::Dict, path::AbstractString, inputs_gen::Dict
 			vre_stor_in[!, columns_to_scale] ./= ModelScalingFactor
 		end
 		inputs_gen["dfVRE_STOR"] = vre_stor_in
-		println("Vre_stor_data.csv Successfully Read!")
+		println("Vre_and_storage_data.csv Successfully Read!")
 	else
 		inputs_gen["dfVRE_STOR"] = DataFrame()
 	end

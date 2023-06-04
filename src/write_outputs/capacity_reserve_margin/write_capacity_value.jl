@@ -67,7 +67,7 @@ function write_capacity_value(path::AbstractString, inputs::Dict, setup::Dict, E
 			temp_capvalue[FLEX_EX, :] = temp_cap_derate[FLEX_EX, :] .* ((value.(EP[:vCHARGE_FLEX][FLEX_EX, :]).data - value.(EP[:vP][FLEX_EX, :]))) .* temp_riskyhour[FLEX_EX, :] ./ totalcap[FLEX_EX, :]
 		end
 		if !isempty(VRE_STOR)
-			temp_capvalue[VRE_STOR_EX, :] = temp_cap_derate[VRE_STOR_EX, :] .* ((value.(EP[:vP][VRE_STOR_EX, :]) - value.(EP[:vCHARGE_VRE_STOR][VRE_STOR_EX, :]).data)) .* temp_riskyhour[VRE_STOR_EX, :] ./ totalcap[VRE_STOR_EX, :]
+			temp_capvalue[VRE_STOR_EX, :] = temp_cap_derate[VRE_STOR_EX, :] .* ((value.(EP[:vP][VRE_STOR_EX, :]) - value.(EP[:vCHARGE_VRE_STOR][VRE_STOR_EX, :]).data + value.(EP[:vCAPCONTRSTOR_VP_VRE_STOR][VRE_STOR_EX, :]).data - value.(EP[:vCAPCONTRSTOR_VCHARGE_VRE_STOR][VRE_STOR_EX, :]).data)) .* temp_riskyhour[VRE_STOR_EX, :] ./ totalcap[VRE_STOR_EX, :]
 		end
 		temp_dfCapValue = hcat(temp_dfCapValue, DataFrame(temp_capvalue, :auto))
 		auxNew_Names = [Symbol("Resource"); Symbol("Zone"); Symbol("Reserve"); [Symbol("t$t") for t in 1:T]]

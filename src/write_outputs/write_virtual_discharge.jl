@@ -8,6 +8,7 @@ function write_virtual_discharge(path::AbstractString, inputs::Dict, setup::Dict
 	G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
 	T = inputs["T"]     # Number of time steps (hours)
 	STOR_ALL = inputs["STOR_ALL"]
+	VRE_STOR = inputs["VRE_STOR"]
 
 	dfVirtualDischarge = DataFrame(Resource = inputs["RESOURCES"], Zone = dfGen[!,:Zone], AnnualSum = Array{Union{Missing,Float64}}(undef, G))
 	virtual_discharge = zeros(G,T)
