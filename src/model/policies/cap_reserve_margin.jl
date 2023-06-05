@@ -34,11 +34,6 @@ function cap_reserve_margin!(EP::Model, inputs::Dict, setup::Dict)
 	NCRM = inputs["NCapacityReserveMargin"]
 	println("Capacity Reserve Margin Policies Module")
 
-	if !haskey(setup, "CapResPeriodLength")
-		println("WARNING - Capacity Reserve Margin now requires the CapResPeriodLength tag in the GenX settings when modeling storage resources")
-		println("The value of CapResPeriodLength should be equal to the longest anticipated continuous period over which a CapRes constraint is binding")
-	end
-
 	#@constraint(EP, cCapacityResMargin[res=1:inputs["NCapacityReserveMargin"], t=1:T], EP[:eCapResMarBalance][res, t]
 
 	@constraint(EP, cCapacityResMargin[res=1:NCRM, t=1:T], EP[:eCapResMarBalance][res, t]
