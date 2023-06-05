@@ -102,12 +102,6 @@ function investment_energy!(EP::Model, inputs::Dict, setup::Dict)
 		end
 	)
 
-	if setup["MinCapReq"] == 1
-		println("Storage existing minimum capacity requirement")
-		@expression(EP, eMinCapResInvestMWh[mincap = 1:inputs["NumberOfMinCapReqs"]], sum(EP[:eTotalCapEnergy][y] for y in dfGen[(dfGen[!,Symbol("MinCapTag_MWh$mincap")].== 1) ,:][!,:R_ID]))
-		EP[:eMinCapRes] += eMinCapResInvestMWh
-	end
-
 	## Objective Function Expressions ##
 
 	# Fixed costs for resource "y" = annuitized investment cost plus fixed O&M costs

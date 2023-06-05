@@ -547,7 +547,7 @@ function stor_vre_stor!(EP::Model, inputs::Dict, setup::Dict)
     # 3. Minimum Capacity Requirement Policy
     if (setup["MinCapReq"] == 1)
         println("vre-stor min cap req")
-        @expression(EP, eMinCapResStor[mincap = 1:inputs["NumberOfMinCapReqs"]], sum(EP[:eTotalCap_STOR][y] for y in intersect(STOR, dfVRE_STOR[(dfVRE_STOR[!,Symbol("MinCapTag_MWh$mincap")].== 1) ,:][!,:R_ID])))
+        @expression(EP, eMinCapResStor[mincap = 1:inputs["NumberOfMinCapReqs"]], sum(by_rid(y, :Power_to_Energy_DC) * EP[:eTotalCap_STOR][y] for y in intersect(STOR, dfVRE_STOR[(dfVRE_STOR[!,Symbol("MinCapTag_$mincap")].== 1) ,:][!,:R_ID])))
 		EP[:eMinCapRes] += eMinCapResStor
 	end
 
@@ -603,14 +603,14 @@ function stor_vre_stor!(EP::Model, inputs::Dict, setup::Dict)
         @constraint(EP, cChargeDischargeMaxDC[y in inputs["VS_SYM_DC"], t=1:T],
                         EP[:vP_DC_DISCHARGE][y,t]/by_rid(y, :Eff_Down_DC) + 
                         by_rid(y, :Eff_Up_DC)*EP[:vP_DC_CHARGE][y,t] <= 
-                        by_rid(y, :C_Rate_DC) * eTotalCap_STOR[y])
+                        by_rid(y, :Power_to_Energy_DC) * eTotalCap_STOR[y])
     end
     if !isempty(inputs["VS_SYM_AC"])
         # Constraint 4: Charging + Discharging AC Maximum 
         @constraint(EP, cChargeDischargeMaxAC[y in inputs["VS_SYM_AC"], t=1:T],
                         EP[:vP_AC_DISCHARGE][y,t]/by_rid(y, :Eff_Down_AC) + 
                         by_rid(y, :Eff_Up_AC)*EP[:vP_AC_CHARGE][y,t] <= 
-                        by_rid(y, :C_Rate_AC) * eTotalCap_STOR[y])
+                        by_rid(y, :Power_to_Energy_AC) * eTotalCap_STOR[y])
     end
 
     ### ASYMMETRIC RESOURCE MODULE ###
@@ -873,7 +873,7 @@ function investment_charge_vre_stor!(EP::Model, inputs::Dict)
         # DEV NOTE: This constraint may be violated in some cases where Existing_Charge_Cap_MW is <= Min_Charge_Cap_MWh and lead to infeasabilty
         @constraint(EP, cVreStorMinCapDischargeDC[y in MIN_DC_DISCHARGE], eTotalCapDischarge_DC[y] >= by_rid(y,:Min_Cap_Discharge_DC_MW))
 
-        # Constraint 2: Maximum discharging rate must be less than discharge power rating
+        # Constraint 2: Maximum discharging Power_to_Energy_DC must be less than discharge power rating
         @constraint(EP, cVreStorMaxDischargingDC[y in VS_ASYM_DC_DISCHARGE, t in 1:T], EP[:vP_DC_DISCHARGE][y,t] + EP[:vCAPCONTRSTOR_VP_VRE_STOR][y,t]*by_rid(y, :EtaInverter) <= EP[:eTotalCapDischarge_DC][y])
     end
     
@@ -931,7 +931,7 @@ function investment_charge_vre_stor!(EP::Model, inputs::Dict)
         # DEV NOTE: This constraint may be violated in some cases where Existing_Charge_Cap_MW is <= Min_Charge_Cap_MWh and lead to infeasabilty
         @constraint(EP, cVreStorMinCapChargeDC[y in MIN_DC_CHARGE], eTotalCapCharge_DC[y] >= by_rid(y,:Min_Cap_Charge_DC_MW))
 
-        # Constraint 2: Maximum charging rate must be less than charge power rating
+        # Constraint 2: Maximum charging Power_to_Energy_DC must be less than charge power rating
         @constraint(EP, cVreStorMaxChargingDC[y in VS_ASYM_DC_CHARGE, t in 1:T], EP[:vP_DC_CHARGE][y,t] + EP[:vCAPCONTRSTOR_VCHARGE_VRE_STOR][y,t]*by_rid(y,:EtaInverter) <= EP[:eTotalCapCharge_DC][y])
     end
 
