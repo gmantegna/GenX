@@ -158,7 +158,7 @@ function write_vre_stor_capacity(path::AbstractString, inputs::Dict, setup::Dict
 	end
 
 	dfCap = DataFrame(
-		Resource = inputs["RESOURCES_VRE_STOR"], Zone = dfVRE_STOR[!,:Zone], Resource_Type = dfVRE_STOR[!,:Resource_Type], Cluster=dfVRE_STOR[!,:cluster], 
+		Resource = inputs["RESOURCES_VRE_STOR"], Zone = dfVRE_STOR[!,:Zone], Resource_Type = dfVRE_STOR[!,:technology], Cluster=dfVRE_STOR[!,:cluster], 
 		StartCapSolar = dfVRE_STOR[!,:Existing_Cap_Solar_MW],
 		RetCapSolar = retcapsolar[:],
 		NewCapSolar = capsolar[:],

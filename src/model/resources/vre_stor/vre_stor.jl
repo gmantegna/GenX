@@ -544,6 +544,13 @@ function stor_vre_stor!(EP::Model, inputs::Dict, setup::Dict)
                                     sum(eCVar_Discharge_AC[y, t] for y in AC_CHARGE, t in 1:T))
     EP[:eObj] += (eTotalCFixStor + eTotalCVarStor)
 
+    # 3. Minimum Capacity Requirement Policy
+    if (setup["MinCapReq"] == 1)
+        println("vre-stor min cap req")
+        @expression(EP, eMinCapResStor[mincap = 1:inputs["NumberOfMinCapReqs"]], sum(EP[:eTotalCap_STOR][y] for y in intersect(STOR, dfVRE_STOR[(dfVRE_STOR[!,Symbol("MinCapTag_MWh$mincap")].== 1) ,:][!,:R_ID])))
+		EP[:eMinCapRes] += eMinCapResStor
+	end
+
     ### CONSTRAINTS ###
 
     # Constraint 0: Set generators with no storage component with no discharge/charging abiliites
