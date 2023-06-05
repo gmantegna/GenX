@@ -1125,7 +1125,7 @@ function cluster_inputs(inpath, settings_path, mysetup, stage_id=-99, v=false)
 
         # Break up VRE-storage components if needed
         if mysetup["VreStor"] == 1
-            gen_var = load_dataframe(joinpath(TimeDomainReductionFolder,"Generators_variability.csv"))
+            gen_var = load_dataframe(joinpath(inpath,TimeDomainReductionFolder,"Generators_variability.csv"))
 
             # Find which indexes have solar PV/wind names
             RESOURCE_ZONES = NewGVColNames
