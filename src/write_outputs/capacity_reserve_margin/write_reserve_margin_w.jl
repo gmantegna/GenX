@@ -51,11 +51,5 @@ function write_reserve_margin_w(path::AbstractString, inputs::Dict, setup::Dict,
 	end
 				
 
-	println("Maximum number of consecutive binding hours for a capacity reserve margin constraint is:")
-	println(maxbindinglength)
-	println("CapResPeriodLength parameter is:")
-	println(setup["CapResPeriodLength"])
-	println("Consider adjusting CapResPeriodLength if it does not match the observed binding period length")
-
 	CSV.write(joinpath(path, "ReserveMargin_w.csv"), dfResMar_w)
 end
