@@ -25,11 +25,13 @@ function load_vre_stor_variability!(setup::Dict, path::AbstractString, inputs_vr
 	data_directory = joinpath(path, setup["TimeDomainReductionFolder"])
 
     if setup["TimeDomainReduction"] == 1  && time_domain_reduced_files_exist(data_directory)
+		println("VRE-STOR TDR")
 		my_dir = data_directory
 	else
         my_dir = path
 	end
 	filename = "Vre_and_stor_solar_variability.csv"
+	println(my_dir)
 	vre_stor_solar = load_dataframe(joinpath(my_dir, filename))
 
 	filename = "Vre_and_stor_wind_variability.csv"
@@ -60,6 +62,6 @@ function load_vre_stor_variability!(setup::Dict, path::AbstractString, inputs_vr
 	# Maximum power output and variability of each energy resource
 	inputs_vre_stor["pP_Max_Solar"] = transpose(Matrix{Float64}(vre_stor_solar[1:inputs_vre_stor["T"],2:(inputs_vre_stor["G"]+1)]))
 	inputs_vre_stor["pP_Max_Wind"] = transpose(Matrix{Float64}(vre_stor_wind[1:inputs_vre_stor["T"],2:(inputs_vre_stor["G"]+1)]))
-	
+
 	println(filename * " Successfully Read!")
 end

@@ -547,7 +547,7 @@ function stor_vre_stor!(EP::Model, inputs::Dict, setup::Dict)
     # 3. Minimum Capacity Requirement Policy
     if (setup["MinCapReq"] == 1)
         println("vre-stor min cap req")
-        @expression(EP, eMinCapResStor[mincap = 1:inputs["NumberOfMinCapReqs"]], sum(by_rid(y, :Power_to_Energy_DC) * EP[:eTotalCap_STOR][y] for y in intersect(STOR, dfVRE_STOR[(dfVRE_STOR[!,Symbol("MinCapTag_$mincap")].== 1) ,:][!,:R_ID])))
+        @expression(EP, eMinCapResStor[mincap = 1:inputs["NumberOfMinCapReqs"]], sum(by_rid(y, :Power_to_Energy_DC) * EP[:eTotalCap_STOR][y] for y in intersect(STOR, dfVRE_STOR[(dfVRE_STOR[!,Symbol("MinCapTag_MWh$mincap")].== 1) ,:][!,:R_ID])))
 		EP[:eMinCapRes] += eMinCapResStor
 	end
 
@@ -684,13 +684,14 @@ function lds_vre_stor!(EP::Model, inputs::Dict, setup::Dict)
     println("VRE-STOR LDS Module")
 
     VS_LDS = inputs["VS_LDS"]
+    println(VS_LDS)
     dfGen = inputs["dfGen"]
     dfVRE_STOR = inputs["dfVRE_STOR"]
     CapacityReserveMargin = setup["CapacityReserveMargin"]
 
     REP_PERIOD = inputs["REP_PERIOD"]  # Number of representative periods
 	dfPeriodMap = inputs["Period_Map"] # Dataframe that maps modeled periods to representative periods
-	NPeriods = nrow(dfPeriodMap) # Number of modeled periods
+	NPeriods = size(inputs["Period_Map"])[1] # Number of modeled periods
     hours_per_subperiod = inputs["hours_per_subperiod"] #total number of hours per subperiod
 
 	MODELED_PERIODS_INDEX = 1:NPeriods
