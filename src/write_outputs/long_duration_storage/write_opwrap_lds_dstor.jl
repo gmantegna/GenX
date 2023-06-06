@@ -27,8 +27,10 @@ function write_opwrap_lds_dstor(path::AbstractString, inputs::Dict, setup::Dict,
 		if i in inputs["STOR_LONG_DURATION"]
 			dsoc[i,:] = value.(EP[:vdSOC])[i,:]
 		end
-		if i in inputs["VS_LDS"]
-			dsoc[i,:] = value.(EP[:vdSOC_VRE_STOR])[i,:]
+		if setup["VreStor"] == 1
+			if i in inputs["VS_LDS"]
+				dsoc[i,:] = value.(EP[:vdSOC_VRE_STOR])[i,:]
+			end
 		end
 	end
 	dfdStorage = hcat(dfdStorage, DataFrame(dsoc, :auto))

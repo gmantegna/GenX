@@ -27,8 +27,10 @@ function write_opwrap_lds_stor_init(path::AbstractString, inputs::Dict, setup::D
 		if i in inputs["STOR_LONG_DURATION"]
 			socw[i,:] = value.(EP[:vSOCw])[i,:]
 		end
-		if i in inputs["VS_LDS"]
-			socw[i, :] = value.(EP[:vSOCw_VRE_STOR][i,:])
+		if setup["VreStor"] == 1
+			if i in inputs["VS_LDS"]
+				socw[i, :] = value.(EP[:vSOCw_VRE_STOR][i,:])
+			end
 		end
 	end
 	dfStorageInit = hcat(dfStorageInit, DataFrame(socw, :auto))
