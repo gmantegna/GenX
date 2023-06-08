@@ -51,7 +51,7 @@ function write_reserve_margin_revenue(path::AbstractString, inputs::Dict, setup:
 			tempresrev[FLEX] = dfGen[FLEX, sym] .* ((value.(EP[:vCHARGE_FLEX][FLEX, :]).data - value.(EP[:vP][FLEX, :])) * (dual.(EP[:cCapacityResMargin][i, :])))
 		end
 		if !isempty(VRE_STOR)
-			tempresrev[VRE_STOR] = dfGen[VRE_STOR, sym] .* ((value.(EP[:vP][VRE_STOR, :]) - value.(EP[:vCHARGE_VRE_STOR][VRE_STOR, :]).data + value.(EP[:vCAPCONTRSTOR_VP_VRE_STOR][VRE_STOR, :]).data - value.(EP[:vCAPCONTRSTOR_VCHARGE_VRE_STOR][VRE_STOR, :]).data) * (dual.(EP[:cCapacityResMargin][i, :])))
+			tempresrev[VRE_STOR] = dfVRE_STOR[!, sym] .* ((value.(EP[:vP][VRE_STOR, :]) - value.(EP[:vCHARGE_VRE_STOR][VRE_STOR, :]).data + value.(EP[:vCAPCONTRSTOR_VP_VRE_STOR][VRE_STOR, :]).data - value.(EP[:vCAPCONTRSTOR_VCHARGE_VRE_STOR][VRE_STOR, :]).data) * (dual.(EP[:cCapacityResMargin][i, :])))
 		end
 		if setup["ParameterScale"] == 1
 			tempresrev *= ModelScalingFactor^2
