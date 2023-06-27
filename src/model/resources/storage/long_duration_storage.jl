@@ -113,7 +113,7 @@ function long_duration_storage!(EP::Model, inputs::Dict, setup::Dict)
 					vSOCw[y,r+1] == vSOCw[y,r] + vdSOC[y,dfPeriodMap[r,:Rep_Period_Index]])
 
 	## Last period is linked to first period
-	@constraint(EP, cSoCBalLongDurationStorageEnd[y in STOR_LONG_DURATION, r in MODELED_PERIODS_INDEX[end]],
+	@constraint(EP, cSoCBalLongDurationStorageEnd[y in STOR_LONG_DURATION, r in [MODELED_PERIODS_INDEX[end]]],
 					vSOCw[y,1] == vSOCw[y,r] + vdSOC[y,dfPeriodMap[r,:Rep_Period_Index]])
 
 	# Storage at beginning of each modeled period cannot exceed installed energy capacity
@@ -143,7 +143,7 @@ function long_duration_storage!(EP::Model, inputs::Dict, setup::Dict)
 						vCAPCONTRSTOR_VSOCw[y,r+1] == vCAPCONTRSTOR_VSOCw[y,r] + vCAPCONTRSTOR_VdSOC[y,dfPeriodMap[r,:Rep_Period_Index]])
 
 		## Last period is linked to first period
-		@constraint(EP, cVSoCBalLongDurationStorageEnd[y in STOR_LONG_DURATION, r in MODELED_PERIODS_INDEX[end]],
+		@constraint(EP, cVSoCBalLongDurationStorageEnd[y in STOR_LONG_DURATION, r in [MODELED_PERIODS_INDEX[end]]],
 						vCAPCONTRSTOR_VSOCw[y,1] == vCAPCONTRSTOR_VSOCw[y,r] + vCAPCONTRSTOR_VdSOC[y,dfPeriodMap[r,:Rep_Period_Index]])
 
 		# Initial reserve storage level for representative periods must also adhere to sub-period storage inventory balance
