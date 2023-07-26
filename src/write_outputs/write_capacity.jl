@@ -64,7 +64,7 @@ function write_capacity(path::AbstractString, inputs::Dict, setup::Dict, EP::Mod
 	end
 
 	dfCap = DataFrame(
-		Resource = inputs["RESOURCES"], Zone = dfGen[!,:Zone], Resource_Type = dfGen[!,:Resource_Type], Cluster=dfGen[!,:cluster], 
+		Resource = inputs["RESOURCES"], Zone = dfGen[!,:Zone],
 		StartCap = MultiStage == 1 ? value.(EP[:vEXISTINGCAP]) : dfGen[!,:Existing_Cap_MW],
 		RetCap = retcapdischarge[:],
 		NewCap = capdischarge[:],
@@ -94,7 +94,7 @@ function write_capacity(path::AbstractString, inputs::Dict, setup::Dict, EP::Mod
 		dfCap.EndChargeCap = dfCap.EndChargeCap * ModelScalingFactor
 	end
 	total = DataFrame(
-			Resource = "Total", Zone = "n/a", Resource_Type = "Total", Cluster= "n/a", 
+			Resource = "Total", Zone = "n/a",
 			StartCap = sum(dfCap[!,:StartCap]), RetCap = sum(dfCap[!,:RetCap]),
 			NewCap = sum(dfCap[!,:NewCap]), EndCap = sum(dfCap[!,:EndCap]),
 			StartEnergyCap = sum(dfCap[!,:StartEnergyCap]), RetEnergyCap = sum(dfCap[!,:RetEnergyCap]),
