@@ -14,9 +14,15 @@ function write_subsidy_revenue(path::AbstractString, inputs::Dict, setup::Dict, 
 		MIN_CAP_SOLAR = dfVRE_STOR[(dfVRE_STOR[!, :Min_Cap_Solar_MW].>0), :R_ID]
 		MIN_CAP_WIND = dfVRE_STOR[(dfVRE_STOR[!, :Min_Cap_Wind_MW].>0), :R_ID]
 		MIN_CAP_STOR = dfGen[(dfGen[!, :Min_Cap_MWh].>0), :R_ID]
-		dfSubRevenue.SubsidyRevenue[MIN_CAP_SOLAR] .+= (value.(EP[:eTotalCap_SOLAR])[MIN_CAP_SOLAR]) .* (dual.(EP[:cMinCap_Solar][MIN_CAP_SOLAR])).data
-		dfSubRevenue.SubsidyRevenue[MIN_CAP_WIND] .+= (value.(EP[:eTotalCap_WIND])[MIN_CAP_WIND]) .* (dual.(EP[:cMinCap_Wind][MIN_CAP_WIND])).data
-		dfSubRevenue.SubsidyRevenue[MIN_CAP_STOR] .+= (value.(EP[:eTotalCap_STOR])[MIN_CAP_STOR]) .* (dual.(EP[:cMinCap_Stor][MIN_CAP_STOR])).data
+		if !isempty(MIN_CAP_SOLAR)
+			dfSubRevenue.SubsidyRevenue[MIN_CAP_SOLAR] .+= (value.(EP[:eTotalCap_SOLAR])[MIN_CAP_SOLAR]) .* (dual.(EP[:cMinCap_Solar][MIN_CAP_SOLAR])).data
+		end
+		if !isempty(MIN_CAP_WIND)
+			dfSubRevenue.SubsidyRevenue[MIN_CAP_WIND] .+= (value.(EP[:eTotalCap_WIND])[MIN_CAP_WIND]) .* (dual.(EP[:cMinCap_Wind][MIN_CAP_WIND])).data
+		end
+		if !isempty(MIN_CAP_STOR)
+			dfSubRevenue.SubsidyRevenue[MIN_CAP_STOR] .+= (value.(EP[:eTotalCap_STOR])[MIN_CAP_STOR]) .* (dual.(EP[:cMinCap_Stor][MIN_CAP_STOR])).data
+		end
 	end
 	dfSubRevenue.SubsidyRevenue[MIN_CAP] .= (value.(EP[:eTotalCap])[MIN_CAP]) .* (dual.(EP[:cMinCap][MIN_CAP])).data
 	### calculating tech specific subsidy revenue

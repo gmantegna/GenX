@@ -143,8 +143,10 @@ function vre_stor!(EP::Model, inputs::Dict, setup::Dict)
 	## 2. Power Balance Expressions ##
 
     # Note: The subtraction of the charging component can be found in STOR function
-	@expression(EP, ePowerBalance_VRE_STOR[t=1:T, z=1:Z], 
-        sum(EP[:vP][y,t] for y=dfVRE_STOR[(dfVRE_STOR[!,:Zone].==z),:][!,:R_ID]))
+	@expression(EP, ePowerBalance_VRE_STOR[t=1:T, z=1:Z], JuMP.AffExpr())
+    for t=1:T, z=1:Z
+        ePowerBalance_VRE_STOR[t,z] += sum(EP[:vP][y,t] for y=dfVRE_STOR[(dfVRE_STOR[!,:Zone].==z),:][!,:R_ID])
+    end
 
     ## 3. Module Expressions ##
 
