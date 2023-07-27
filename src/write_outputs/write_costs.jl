@@ -118,36 +118,35 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
 
 			# Fixed Costs
 			eCFix_VRE_STOR = 0.0
-			if !isempty(inputs["VS_SOLAR"])
-				SOLAR_ZONE_VRE_STOR = intersect(Y_ZONE_VRE_STOR, inputs["VS_SOLAR"])
+			SOLAR_ZONE_VRE_STOR = intersect(Y_ZONE_VRE_STOR, inputs["VS_SOLAR"])
+			if !isempty(SOLAR_ZONE_VRE_STOR)
 				eCFix_VRE_STOR += sum(value.(EP[:eCFixSolar][SOLAR_ZONE_VRE_STOR]))
 			end
-			if !isempty(inputs["VS_WIND"])
-				WIND_ZONE_VRE_STOR = intersect(Y_ZONE_VRE_STOR, inputs["VS_WIND"])
+			WIND_ZONE_VRE_STOR = intersect(Y_ZONE_VRE_STOR, inputs["VS_WIND"])
+			if !isempty(WIND_ZONE_VRE_STOR)
 				eCFix_VRE_STOR += sum(value.(EP[:eCFixWind][WIND_ZONE_VRE_STOR]))
 			end
-			if !isempty(inputs["VS_DC"])
-				DC_ZONE_VRE_STOR = intersect(Y_ZONE_VRE_STOR, inputs["VS_DC"])
+			DC_ZONE_VRE_STOR = intersect(Y_ZONE_VRE_STOR, inputs["VS_DC"])
+			if !isempty(DC_ZONE_VRE_STOR)
 				eCFix_VRE_STOR += sum(value.(EP[:eCFixDC][DC_ZONE_VRE_STOR]))
 			end
-			if !isempty(inputs["VS_STOR"])
-				STOR_ALL_ZONE_VRE_STOR = intersect(inputs["VS_STOR"], Y_ZONE_VRE_STOR)
+			STOR_ALL_ZONE_VRE_STOR = intersect(inputs["VS_STOR"], Y_ZONE_VRE_STOR)
+			if !isempty(STOR_ALL_ZONE_VRE_STOR)
 				eCFix_VRE_STOR += sum(value.(EP[:eCFixEnergy_VS][STOR_ALL_ZONE_VRE_STOR]))
-				
-				if !isempty(inputs["VS_ASYM_DC_CHARGE"])
-					DC_CHARGE_ALL_ZONE_VRE_STOR = intersect(inputs["VS_ASYM_DC_CHARGE"], Y_ZONE_VRE_STOR)
+				DC_CHARGE_ALL_ZONE_VRE_STOR = intersect(inputs["VS_ASYM_DC_CHARGE"], Y_ZONE_VRE_STOR)
+				if !isempty(DC_CHARGE_ALL_ZONE_VRE_STOR)
 					eCFix_VRE_STOR += sum(value.(EP[:eCFixCharge_DC][DC_CHARGE_ALL_ZONE_VRE_STOR]))
 				end
-				if !isempty(inputs["VS_ASYM_DC_DISCHARGE"])
-					DC_DISCHARGE_ALL_ZONE_VRE_STOR = intersect(inputs["VS_ASYM_DC_DISCHARGE"], Y_ZONE_VRE_STOR)
+				DC_DISCHARGE_ALL_ZONE_VRE_STOR = intersect(inputs["VS_ASYM_DC_DISCHARGE"], Y_ZONE_VRE_STOR)
+				if !isempty(DC_DISCHARGE_ALL_ZONE_VRE_STOR)
 					eCFix_VRE_STOR += sum(value.(EP[:eCFixDischarge_DC][DC_DISCHARGE_ALL_ZONE_VRE_STOR]))
 				end
-				if !isempty(inputs["VS_ASYM_AC_DISCHARGE"])
-					AC_DISCHARGE_ALL_ZONE_VRE_STOR = intersect(inputs["VS_ASYM_AC_DISCHARGE"], Y_ZONE_VRE_STOR)
+				AC_DISCHARGE_ALL_ZONE_VRE_STOR = intersect(inputs["VS_ASYM_AC_DISCHARGE"], Y_ZONE_VRE_STOR)
+				if !isempty(AC_DISCHARGE_ALL_ZONE_VRE_STOR)
 					eCFix_VRE_STOR += sum(value.(EP[:eCFixDischarge_AC][AC_DISCHARGE_ALL_ZONE_VRE_STOR]))
 				end
-				if !isempty(inputs["VS_ASYM_AC_CHARGE"])
-					AC_CHARGE_ALL_ZONE_VRE_STOR = intersect(inputs["VS_ASYM_AC_CHARGE"], Y_ZONE_VRE_STOR)
+				AC_CHARGE_ALL_ZONE_VRE_STOR = intersect(inputs["VS_ASYM_AC_CHARGE"], Y_ZONE_VRE_STOR)
+				if !isempty(AC_CHARGE_ALL_ZONE_VRE_STOR)
 					eCFix_VRE_STOR += sum(value.(EP[:eCFixCharge_AC][AC_CHARGE_ALL_ZONE_VRE_STOR]))
 				end
 			end
@@ -155,23 +154,23 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
 
 			# Variable Costs
 			eCVar_VRE_STOR = 0.0
-			if !isempty(inputs["VS_SOLAR"])
+			if !isempty(SOLAR_ZONE_VRE_STOR)
 				eCVar_VRE_STOR += sum(value.(EP[:eCVarOutSolar][SOLAR_ZONE_VRE_STOR,:]))
 			end
-			if !isempty(inputs["VS_WIND"])
+			if !isempty(WIND_ZONE_VRE_STOR)
 				eCVar_VRE_STOR += sum(value.(EP[:eCVarOutWind][WIND_ZONE_VRE_STOR, :]))
 			end
-			if !isempty(inputs["VS_STOR"])
-				if !isempty(inputs["VS_ASYM_DC_CHARGE"])
+			if !isempty(STOR_ALL_ZONE_VRE_STOR)
+				if !isempty(DC_CHARGE_ALL_ZONE_VRE_STOR)
 					eCVar_VRE_STOR += sum(value.(EP[:eCVar_Charge_DC][DC_CHARGE_ALL_ZONE_VRE_STOR, :]))
 				end
-				if !isempty(inputs["VS_ASYM_DC_DISCHARGE"])
+				if !isempty(DC_DISCHARGE_ALL_ZONE_VRE_STOR)
 					eCVar_VRE_STOR += sum(value.(EP[:eCVar_Discharge_DC][DC_DISCHARGE_ALL_ZONE_VRE_STOR, :]))
 				end
-				if !isempty(inputs["VS_ASYM_AC_DISCHARGE"])
+				if !isempty(AC_DISCHARGE_ALL_ZONE_VRE_STOR)
 					eCVar_VRE_STOR += sum(value.(EP[:eCVar_Discharge_AC][AC_DISCHARGE_ALL_ZONE_VRE_STOR, :]))
 				end
-				if !isempty(inputs["VS_ASYM_AC_CHARGE"])
+				if !isempty(AC_CHARGE_ALL_ZONE_VRE_STOR)
 					eCVar_VRE_STOR += sum(value.(EP[:eCVar_Charge_AC][AC_CHARGE_ALL_ZONE_VRE_STOR, :]))
 				end
 			end
