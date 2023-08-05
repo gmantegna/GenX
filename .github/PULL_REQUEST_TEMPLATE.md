@@ -54,5 +54,6 @@ If applicable: What cases should we try before/after? Will this alter any output
 ### Post-approval checklist
 After the PR is approved
 
+- [ ] Branch has been 'rebased' on latest `develop` (or `main`, for hotfixes) for a clean merge
 - [ ] Developer is encouraged to tidy down the branch to 1 (or very few) commits
 - [ ] GenX core developers will be responsible for pushing the 'big green button'
