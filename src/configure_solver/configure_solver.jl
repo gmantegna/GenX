@@ -16,12 +16,12 @@ function configure_solver(solver::String, solver_settings_path::String)
     path = joinpath(solver_settings_path, solver*"_settings.yml")
 
     configure_functions = Dict(
-                               "highs" => configure_highs,
+                            #    "highs" => configure_highs,
                                "gurobi" => configure_gurobi,
-                               "cplex" => configure_cplex,
-                               "clp" => configure_clp,
-                               "cbc" => configure_cbc,
-                               "scip" => configure_scip,
+                            #    "cplex" => configure_cplex,
+                            #    "clp" => configure_clp,
+                            #    "cbc" => configure_cbc,
+                            #    "scip" => configure_scip,
                               )
 
     return configure_functions[solver](path)

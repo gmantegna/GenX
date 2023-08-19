@@ -68,7 +68,12 @@ end
 
 include_all_in_folder("case_runners")
 include_all_in_folder("configure_settings")
-include_all_in_folder("configure_solver")
+# include_all_in_folder("configure_solver")
+include("configure_solver/configure_solver.jl")
+using Requires
+function __init__()
+    @require Gurobi="2e9cd046-0924-5485-92f1-d5272153d98b" include("configure_solver/configure_gurobi.jl")
+end
 include_all_in_folder("load_inputs")
 include_all_in_folder("model")
 include_all_in_folder("write_outputs")
