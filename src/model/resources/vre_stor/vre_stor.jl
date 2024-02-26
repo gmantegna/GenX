@@ -1896,6 +1896,7 @@ function vre_stor_capres!(EP::Model, inputs::Dict, setup::Dict)
     by_rid(rid, sym) = by_rid_df(rid, sym, dfVRE_STOR)
 
     virtual_discharge_cost = inputs["VirtualChargeDischargeCost"]
+    StorageVirtualDischarge = setup["StorageVirtualDischarge"]
     
     ### VARIABLES ###
 
@@ -2022,13 +2023,23 @@ function vre_stor_capres!(EP::Model, inputs::Dict, setup::Dict)
     @constraint(EP, cVreStorSOCMinCapRes[y in STOR, t=1:T], EP[:vS_VRE_STOR][y,t] >= vCAPRES_VS_VRE_STOR[y,t])
 
     # Constraint 3: Add capacity reserve margin contributions from VRE-STOR resources to capacity reserve margin constraint
-    @expression(EP, eCapResMarBalanceStor_VRE_STOR[res=1:inputs["NCapacityReserveMargin"], t=1:T],(
+    if StorageVirtualDischarge > 0
+        @expression(EP, eCapResMarBalanceStor_VRE_STOR[res=1:inputs["NCapacityReserveMargin"], t=1:T],(
         sum(by_rid(y,Symbol("CapResVreStor_$res"))*by_rid(y,:EtaInverter)*inputs["pP_Max_Solar"][y,t]*EP[:eTotalCap_SOLAR][y] for y in inputs["VS_SOLAR"])
         + sum(by_rid(y,Symbol("CapResVreStor_$res"))*inputs["pP_Max_Wind"][y,t]*EP[:eTotalCap_WIND][y] for y in inputs["VS_WIND"])
         + sum(by_rid(y,Symbol("CapResVreStor_$res"))*by_rid(y,:EtaInverter)*(EP[:vP_DC_DISCHARGE][y,t]+vCAPRES_DC_DISCHARGE[y,t]) for y in DC_DISCHARGE)
         + sum(by_rid(y,Symbol("CapResVreStor_$res"))*(EP[:vP_AC_DISCHARGE][y,t]+vCAPRES_AC_DISCHARGE[y,t]) for y in AC_DISCHARGE)
         - sum(by_rid(y,Symbol("CapResVreStor_$res"))*(EP[:vP_DC_CHARGE][y,t]+vCAPRES_DC_CHARGE[y,t])/by_rid(y,:EtaInverter) for y in DC_CHARGE)
         - sum(by_rid(y,Symbol("CapResVreStor_$res"))*(EP[:vP_AC_CHARGE][y,t]+vCAPRES_AC_CHARGE[y,t]) for y in AC_CHARGE)))
+    else
+        @expression(EP, eCapResMarBalanceStor_VRE_STOR[res=1:inputs["NCapacityReserveMargin"], t=1:T],(
+        sum(by_rid(y,Symbol("CapResVreStor_$res"))*by_rid(y,:EtaInverter)*inputs["pP_Max_Solar"][y,t]*EP[:eTotalCap_SOLAR][y] for y in inputs["VS_SOLAR"])
+        + sum(by_rid(y,Symbol("CapResVreStor_$res"))*inputs["pP_Max_Wind"][y,t]*EP[:eTotalCap_WIND][y] for y in inputs["VS_WIND"])
+        + sum(by_rid(y,Symbol("CapResVreStor_$res"))*by_rid(y,:EtaInverter)*(EP[:vP_DC_DISCHARGE][y,t]) for y in DC_DISCHARGE)
+        + sum(by_rid(y,Symbol("CapResVreStor_$res"))*(EP[:vP_AC_DISCHARGE][y,t]) for y in AC_DISCHARGE)
+        - sum(by_rid(y,Symbol("CapResVreStor_$res"))*(EP[:vP_DC_CHARGE][y,t])/by_rid(y,:EtaInverter) for y in DC_CHARGE)
+        - sum(by_rid(y,Symbol("CapResVreStor_$res"))*(EP[:vP_AC_CHARGE][y,t]) for y in AC_CHARGE)))
+    end
     EP[:eCapResMarBalance] += EP[:eCapResMarBalanceStor_VRE_STOR]
 
     ### OBJECTIVE FUNCTION ADDITIONS ###

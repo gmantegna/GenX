@@ -70,6 +70,9 @@ Note that all settings parameters are case sensitive.
 |PrintModel | Flag for printing the model equations as .lp file.|
 ||1 = including the model equation as an output|
 ||0 = the model equation won't be included as an output|
+|StorageVirtualDischarge| Flag for whether to include the ability for storage to have a "virtual" charge and discharge that contributes to the capacity reserve margin.
+||1 (default) = include virtual charging and discharging||
+||0 = do not include virtual charging and discharging||
 
 Additionally, Solver related settings parameters are specified in the appropriate .yml file (e.g. `gurobi_settings.yml` or `cplex_settings.yml`),
 which should be located in the current working directory.
