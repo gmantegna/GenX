@@ -123,6 +123,8 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
         create_empty_expression!(EP, :eH2DemandRes, inputs["NumberOfH2DemandReqs"])
     end
 
+
+
     # Infrastructure
     discharge!(EP, inputs, setup)
 
@@ -250,6 +252,12 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
     if setup["ModelingToGenerateAlternatives"] == 1
         mga!(EP, inputs, setup)
     end
+
+    # Planning Reserve Margin
+    if setup["PlanningReserveMargin"] == 1
+		planning_reserve_margin!(EP, inputs, setup)
+	end
+
 
     ## Define the objective function
     @objective(EP, Min, setup["ObjScale"]*EP[:eObj])

@@ -25,7 +25,7 @@ function default_settings()
         "MethodofMorris" => 0,
         "IncludeLossesInESR" => 0,
         "HydrogenMinimumProduction" => 0,
-        "EnableJuMPStringNames" => false,
+        "EnableJuMPStringNames" => true,
         "HourlyMatching" => 0,
         "HydrogenHourlyMatching" => 0,
         "DC_OPF" => 0,
@@ -36,7 +36,9 @@ function default_settings()
         "ResourcePoliciesFolder" => "policy_assignments",
         "SystemFolder" => "system",
         "PoliciesFolder" => "policies",
-        "ObjScale" => 1)
+        "ObjScale" => 1,
+        "PlanningReserveMargin" => 0       # enable Reliability Pricing Model using ELCC validate_multistage_settings
+        )
 end
 
 @doc raw"""
