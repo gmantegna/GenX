@@ -1,0 +1,12 @@
+ParameterScale: 0
+NetworkExpansion: 0
+Trans_Loss_Segments: 0
+UCommit: 2
+StorageLosses: 0
+CO2Cap: 1
+MaxCapReq: 1
+CapacityReserveMargin: 0
+EnergyShareRequirement: 1
+WriteShadowPrices: 1
+PortfolioManagment: 0
+PrintModel: 1
