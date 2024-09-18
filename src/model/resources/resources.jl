@@ -699,6 +699,7 @@ end
 function qualified_supply(r::AbstractResource; tag::Int64)
     get(r, Symbol("qualified_supply_$tag"), default_zero)
 end
+elcc(r::AbstractResource; tag::Int64) = get(r, Symbol("elcc_$tag"), 1)
 
 # write_outputs
 region(r::AbstractResource) = r.region
