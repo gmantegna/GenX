@@ -66,6 +66,10 @@ function load_inputs(setup::Dict, path::AbstractString)
         load_co2_cap!(setup, policies_path, inputs)
     end
 
+    if setup["PlanningReserveMargin"] == 1
+        load_planning_reserve_margin!(setup, policies_path, inputs)
+    end  
+
     if !isempty(inputs["VRE_STOR"])
         load_vre_stor_variability!(setup, path, inputs)
     end
@@ -84,6 +88,9 @@ function load_inputs(setup::Dict, path::AbstractString)
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
     inputs["VirtualChargeDischargeCost"] = setup["VirtualChargeDischargeCost"] /
                                            scale_factor
+
+    
+                                     
 
     println("CSV Files Successfully Read In From $path")
 

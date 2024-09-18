@@ -472,6 +472,13 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
             println(elapsed_time_net_rev)
         end
     end
+
+    if setup["PlanningReserveMargin"] == 1   
+        elapsed_time_prm_penalties= @elapsed write_prm_prices(path, inputs, setup, EP)
+        println("Time elapsed for writing prm penalties is")
+        println(elapsed_time_prm_penalties)
+    end
+
     ## Print confirmation
     println("Wrote outputs to $path")
 
