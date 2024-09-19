@@ -82,6 +82,10 @@ function curtailable_variable_renewable!(EP::Model, inputs::Dict, setup::Dict)
         sum(EP[:vP][y, t]
         for y in intersect(inputs["VRE"], resources_in_zone_by_rid(gen, z))))
     add_similar_to_expression!(EP[:eGenerationByZone], eGenerationByVRE)
+
+    #### Add it to total generation by zone
+    add_similar_to_expression!(EP[:eTotalGenerationByZone], eGenerationByVRE)
+
 end
 
 @doc raw"""

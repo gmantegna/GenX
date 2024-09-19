@@ -94,6 +94,10 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
     # Energy losses related to technologies
     create_empty_expression!(EP, :eELOSSByZone, Z)
 
+    # Total Generation from all resources
+    create_empty_expression!(EP, :eTotalGenerationByZone, (Z, T))
+
+
     # Initialize Capacity Reserve Margin Expression
     if setup["CapacityReserveMargin"] > 0
         create_empty_expression!(EP,
@@ -256,6 +260,11 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
     # Planning Reserve Margin
     if setup["PlanningReserveMargin"] == 1
 		planning_reserve_margin!(EP, inputs, setup)
+	end
+
+    # Energy trading with markets
+	if setup["Markets"] == 1
+		markets!(EP, inputs, setup)
 	end
 
 

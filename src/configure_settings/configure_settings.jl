@@ -37,7 +37,8 @@ function default_settings()
         "SystemFolder" => "system",
         "PoliciesFolder" => "policies",
         "ObjScale" => 1,
-        "PlanningReserveMargin" => 0       # enable Reliability Pricing Model using ELCC validate_multistage_settings
+        "PlanningReserveMargin" => 0,       # enable Reliability Pricing Model using ELCC validate_multistage_settings
+        "Markets" => 1
         )
 end
 

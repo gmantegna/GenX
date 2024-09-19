@@ -96,6 +96,12 @@ function storage_all!(EP::Model, inputs::Dict, setup::Dict)
         for y in intersect(resources_in_zone_by_rid(gen, z), STOR_ALL)))
     add_similar_to_expression!(EP[:ePowerBalance], ePowerBalanceStor)
 
+    ## Storage Generation by zone --manar
+    @expression(EP, eGenerationByStor[z = 1:Z, t = 1:T], # the unit is GW
+    sum(EP[:vP][y, t] for y in intersect(STOR_ALL, resources_in_zone_by_rid(gen, z))))
+    add_similar_to_expression!(EP[:eTotalGenerationByZone], eGenerationByStor)
+
+
     ### Constraints ###
 
     ## Storage energy capacity and state of charge related constraints:
