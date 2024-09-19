@@ -1,0 +1,12 @@
+Resource,Zone,Num_VRE_Bins,New_Build,Can_Retire,Existing_Cap_MW,Max_Cap_MW,Min_Cap_MW,Inv_Cost_per_MWyr,Fixed_OM_Cost_per_MWyr,Var_OM_Cost_per_MWh,Reg_Max,Rsv_Max,Reg_Cost,Rsv_Cost,curtailment_cost_per_mwh,region,cluster
+Aquamarine_Westside,1,1,0,0,50,0,0,0,81704.2,0,1,1,0,0,5,CCA,1
+Arizona_Solar,1,1,1,0,0,9999,0,34309.5,21618.9,0,1,1,0,0,5,CCA,1
+Humboldt_Bay_Offshore_Wind,1,1,1,0,0,0,0,184823.7,94569.2,0,1,1,0,0,5,CCA,1
+Morro_Bay_Offshore_Wind,1,1,1,0,0,0,0,189596.3,98470.1,0,1,1,0,0,5,CCA,1
+New_Mexico_Wind,1,1,1,0,0,9999,0,154345.8,46772.7,0,1,1,0,0,5,CCA,1
+Northern_California_Solar,1,1,1,0,0,9999,0,41581.1,21977,0,1,1,0,0,5,CCA,1
+Northern_California_Wind,1,1,1,0,0,9999,0,70893.1,47994.1,0,1,1,0,0,5,CCA,1
+NW_Ext_Tx_Wind,1,1,1,0,0,9999,0,97287.8,46777.6,0,1,1,0,0,5,CCA,1
+Riverside_Palm_Springs_Wind,1,1,1,0,0,9999,0,60181.7,47994.1,0,1,1,0,0,5,CCA,1
+Riverside_Solar,1,1,1,0,0,9999,0,33012.7,22028.7,0,1,1,0,0,5,CCA,1
+Wyoming_Wind,1,1,1,0,0,9999,0,168679.6,46777.6,0,1,1,0,0,5,CCA,1

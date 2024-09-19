@@ -1,0 +1,8 @@
+Resource,Zone,Model,New_Build,Can_Retire,Existing_Cap_MW,Max_Cap_MW,Min_Cap_MW,Inv_Cost_per_MWyr,Fixed_OM_Cost_per_MWyr,Var_OM_Cost_per_MWh,Heat_Rate_MMBTU_per_MWh,Fuel,region,cluster
+FishLake,1,1,0,0,0.4,0,0,0,599417.8,0,7.61,Geothermal,CCA,1
+Greater_Imperial_Geothermal,1,1,1,0,0,9999,0,288138.2,121381.4,1.09,7.61,Geothermal,CCA,1
+IndianValley_Hydro,1,1,0,0,0,0,0,0,0,0,0,DefaultFuel,CCA,1
+InState_Biomass,1,1,1,0,0,9999,0,387495.1,183749.5,1.55,7.61,Biomass,CCA,1
+Northern_California_Geothermal,1,1,1,0,0,9999,0,287841.3,121306.5,1.09,7.61,Geothermal,CCA,1
+Ormat_Portfolio,1,1,0,0,4.6,0,0,0,580916,0,7.61,Geothermal,CCA,1
+Southern_Nevada_Geothermal,1,1,1,0,0,9999,0,270076.1,116823.6,1.09,7.61,Geothermal,CCA,1
