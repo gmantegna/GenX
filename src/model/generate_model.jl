@@ -97,6 +97,10 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
     # Total Generation from all resources
     create_empty_expression!(EP, :eTotalGenerationByZone, (Z, T))
 
+    # Curtailment from all resources
+    # if resource is a renewable resource it is equal MaxCapacity-vP, otherwise = 0
+    G = inputs["G"]
+    create_empty_expression!(EP, :eCurtailment, (G, T))
 
     # Initialize Capacity Reserve Margin Expression
     if setup["CapacityReserveMargin"] > 0

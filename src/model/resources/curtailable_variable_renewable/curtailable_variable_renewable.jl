@@ -86,6 +86,18 @@ function curtailable_variable_renewable!(EP::Model, inputs::Dict, setup::Dict)
     #### Add it to total generation by zone
     add_similar_to_expression!(EP[:eTotalGenerationByZone], eGenerationByVRE)
 
+    # Calculate curtailment for enech resource
+    gen_VRE = inputs["RESOURCES"].Vre                                   # Set of VRE-STOR generators (objects)
+    by_rid(rid, sym) = by_rid_res(rid, sym, gen_VRE)
+
+    for g in VRE, t = 1:T
+        EP[:eCurtailment][g,t] = (inputs["pP_Max"][g, t] * EP[:eTotalCap][g] - EP[:vP][g, t])
+    end
+
+    @expression(EP, eCurailmentCostVre[g in VRE , t = 1:T], curtailment_cost_per_mwh(gen[g]) * EP[:eCurtailment][g,t] * inputs["omega"][t])
+    @expression(EP, eTotalCurailmentCostVre, sum(eCurailmentCostVre[g, t] for t in 1:T, g in VRE))
+    add_to_expression!(EP[:eObj], eTotalCurailmentCostVre)
+
 end
 
 @doc raw"""
