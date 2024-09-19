@@ -180,6 +180,10 @@ function hydro_res!(EP::Model, inputs::Dict, setup::Dict)
     @expression(EP, eGenerationByHydroRes[z = 1:Z, t = 1:T], # the unit is GW
         sum(EP[:vP][y, t] for y in intersect(HYDRO_RES, resources_in_zone_by_rid(gen, z))))
     add_similar_to_expression!(EP[:eGenerationByZone], eGenerationByHydroRes)
+
+    # Add generation to total genenration by zone
+    add_similar_to_expression!(EP[:eTotalGenerationByZone], eGenerationByHydroRes)
+
 end
 
 @doc raw"""

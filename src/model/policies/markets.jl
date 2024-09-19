@@ -26,7 +26,7 @@ function markets!(EP::Model, inputs::Dict, setup::Dict)
     if z in MZ
         vMKT_BUY[z,t] - vMKT_SELL[z,t] 
     else
-        0
+        EP[:vZERO]
     end)
 
     # Add market purchased and sold energy to power balance expression

@@ -26,6 +26,8 @@ function thermal!(EP::Model, inputs::Dict, setup::Dict)
         for y in intersect(inputs["THERM_ALL"], resources_in_zone_by_rid(gen, z))))
     add_similar_to_expression!(EP[:eGenerationByZone], eGenerationByThermAll)
 
+    add_similar_to_expression!(EP[:eTotalGenerationByZone], eGenerationByThermAll)
+
     # Capacity Reserves Margin policy
     if setup["CapacityReserveMargin"] > 0
         ncapres = inputs["NCapacityReserveMargin"]

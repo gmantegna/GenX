@@ -137,6 +137,12 @@ function vre_stor!(EP::Model, inputs::Dict, setup::Dict)
         end
     end
 
+    # Add VRE_Stor generation to total generation by zone
+    @expression(EP, eGenerationByVreStor[z = 1:Z, t = 1:T], # the unit is GW
+    sum(EP[:vP][y, t] for y in intersect(VRE_STOR, resources_in_zone_by_rid(gen, z))))
+
+    add_similar_to_expression!(EP[:eTotalGenerationByZone], eGenerationByVreStor)
+
     ## 3. Module Expressions ##
 
     # Inverter AC Balance
