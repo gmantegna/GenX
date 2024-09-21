@@ -13,7 +13,7 @@ q^{mS}_{m,t},q^{mS}_{m,t}, P \ge 0
 
 """
 function ro!(EP::Model, inputs::Dict, setup::Dict)
-    Gamma = inputs["ro_settings"]["UncertaintyBudget"]
+    Gamma = inputs["ro_settings"]["UncertaintyBudget"] * inputs["count_uncertain_param"]
    
     # define dual variables
     @variable(EP, p >= 0)
