@@ -70,6 +70,13 @@ function flexible_demand!(EP::Model, inputs::Dict, setup::Dict)
         for y in intersect(FLEX, resources_in_zone_by_rid(gen, z))))
     add_similar_to_expression!(EP[:ePowerBalance], ePowerBalanceDemandFlex)
 
+    ##Flexible demand Generation by zone --manar
+    @expression(EP, eGenerationByFlexDemand[z = 1:Z, t = 1:T], # the unit is GW
+        sum(EP[:vP][y, t] for y in intersect(FLEX, resources_in_zone_by_rid(gen, z))))
+    add_similar_to_expression!(EP[:eTotalGenerationByZone], eGenerationByFlexDemand)
+
+
+
     # Capacity Reserves Margin policy
     if setup["CapacityReserveMargin"] > 0
         @expression(EP,

@@ -1,0 +1,88 @@
+@doc raw"""
+	ro_markets!(EP::Model, inputs::Dict, setup::Dict)
+Use RO to model uncertainty in market prices, the following is the dual of the subproblem that calculates the effect of having 
+```math
+\begin{aligned}
+\min \sum_{m \in M} \sum_{t \in T} q^{mB}_t + \sum_{m \in M} \sum_{t \in T} q^{mS}_{m,t} + \Gamma p \\
+s.t.\\
+q^{mB}_{m,t} + p \ge \Delta BPrice_{m,t}  \times MBUY \quad \forall m\in M, t \in T\\
+q^{mS}_{m,t} + p \ge \Delta SPrice_{m,t}  \times MSELL \quad \forall m\in M, t \in T\\
+q^{mS}_{m,t},q^{mS}_{m,t}, P \ge 0
+\end{aligned}
+```
+
+"""
+function ro!(EP::Model, inputs::Dict, setup::Dict)
+    Gamma = inputs["ro_settings"]["UncertaintyBudget"]
+   
+    # define dual variables
+    @variable(EP, p >= 0)
+
+    @expression(EP, eRODualObj, Gamma * p)
+    println("inputs[ro_settings]")
+    if inputs["ro_settings"]["MarketPrices"] == 1
+        println("if inputs[ro_settings][MarketPrices] == 1")
+        ro_markets!(EP, inputs, setup)
+    end
+
+    if inputs["ro_settings"]["FuelsCost"] == 1
+        ro_fuels_cost!(EP, inputs, setup)
+    end   
+    
+    # Add the dual of the maximization subproblem to objective function
+    EP[:eObj] += eRODualObj
+end
+
+
+function ro_markets!(EP::Model, inputs::Dict, setup::Dict)
+    println("Consider robustness in market pices")
+    T = inputs["T"]     # Number of time steps
+    MZ = inputs["MZ"] 
+
+    Delta_SellPrice = inputs["Market_SellPrices_Delta"] 
+    Delta_BuyPrice = inputs["Market_BuyPrices_Delta"] 
+
+    # define dual variables
+    @variables(EP, begin
+        qms[m in MZ, t = 1:T] >= 0   # q for market sell
+        qmb[m in MZ, t = 1:T] >= 0   # q for market buy
+    end)
+
+    # Constraints on the dual variables for the RO formulation
+    @constraint(EP, cDualSmb[m in MZ, t = 1:T], qmb[m, t] + EP[:p] >= Delta_BuyPrice[m,t] * EP[:vMKT_BUY][m, t])
+    @constraint(EP, cDualSms[m in MZ, t = 1:T], qms[m, t] + EP[:p] >= Delta_SellPrice[m,t] * EP[:vMKT_SELL][m, t] )
+
+    add_to_expression!(EP[:eRODualObj], sum(qms[m, t] for t in 1:T, m in MZ) + sum(qmb[m, t] for t in 1:T, m in MZ))
+end
+
+# Write a function that bring resources by fuel type
+
+function ro_fuels_cost!(EP::Model, inputs::Dict, setup::Dict)
+    T = inputs["T"]     # Number of time steps
+    G = inputs["G"]
+    gen = inputs["RESOURCES"]
+    Fuels = inputs["fuels"]
+    Delta_FuelCost = inputs["fuel_delta_costs"]
+
+    # group resources by fuel type
+    resources_by_fuel = Dict{AbstractString, Array{Int}}()
+
+    for g in 1:G
+        key = fuel(gen[g])
+        if !haskey(resources_by_fuel, key)
+            resources_by_fuel[key] = Int[]
+        end
+        push!(resources_by_fuel[key], g)
+    end
+
+
+    # define dual variables for fuel cost
+    @variables(EP, begin
+        qfc[f in Fuels, t = 1:T] >= 0  
+    end)
+
+    # Constraints on the dual variables for the RO formulation
+    @constraint(EP, cDualSfc[f in Fuels, t = 1:T], qfc[f, t] + EP[:p] >= Delta_FuelCost[f][t] * sum(EP[:vFuel][y,t] + EP[:vStartFuel][y, t] for y in resources_by_fuel[f]))
+
+    add_to_expression!(EP[:eRODualObj], sum(qfc[f, t] for t in 1:T, f in Fuels))
+end

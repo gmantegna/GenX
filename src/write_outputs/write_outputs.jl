@@ -113,6 +113,10 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
         elapsed_time_power_balance = @elapsed write_power_balance(path, inputs, setup, EP)
         println("Time elapsed for writing power balance is")
         println(elapsed_time_power_balance)
+
+        elapsed_time_power_balance_m = @elapsed write_power_balance_markets(path, inputs, setup, EP)
+        println("Time elapsed for writing power balance is")
+        println(elapsed_time_power_balance_m)
     end
 
     if inputs["Z"] > 1
@@ -479,6 +483,19 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
         println(elapsed_time_prm_penalties)
     end
 
+    if setup["Markets"] == 1   
+        elapsed_time_markets= @elapsed write_market(path, inputs, setup, EP)
+        println("Time elapsed for writing markets purhases and sales is")
+        println(elapsed_time_markets)
+    end
+
+    
+    if setup["RO"] == 1
+        elapsed_time_ro= @elapsed write_ro(path, inputs, setup, EP)
+        println("Time elapsed for writing duals of RO is")
+        println(elapsed_time_ro)
+    end
+    
     ## Print confirmation
     println("Wrote outputs to $path")
 

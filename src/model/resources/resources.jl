@@ -621,6 +621,10 @@ function fixed_om_cost_charge_per_mwyr(r::AbstractResource)
 end
 start_cost_per_mw(r::AbstractResource) = get(r, :start_cost_per_mw, default_zero)
 
+curtailment_cost_per_mwh(r::Vre) = get(r, :curtailment_cost_per_mwh, default_zero)
+curtailment_cost_per_mwh(r::VreStorage) = get(r, :curtailment_cost_per_mwh, default_zero)
+
+
 # fuel
 fuel(r::AbstractResource) = get(r, :fuel, "None")
 function start_fuel_mmbtu_per_mw(r::AbstractResource)

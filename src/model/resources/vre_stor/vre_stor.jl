@@ -137,6 +137,12 @@ function vre_stor!(EP::Model, inputs::Dict, setup::Dict)
         end
     end
 
+    # Add VRE_Stor generation to total generation by zone
+    @expression(EP, eGenerationByVreStor[z = 1:Z, t = 1:T], # the unit is GW
+    sum(EP[:vP][y, t] for y in intersect(VRE_STOR, resources_in_zone_by_rid(gen, z))))
+
+    add_similar_to_expression!(EP[:eTotalGenerationByZone], eGenerationByVreStor)
+
     ## 3. Module Expressions ##
 
     # Inverter AC Balance
@@ -692,6 +698,17 @@ function solar_vre_stor!(EP::Model, inputs::Dict, setup::Dict)
     @constraint(EP,
         cInverterRatio_Solar[y in ids_with_positive(gen_VRE_STOR, inverter_ratio_solar)],
         EP[:eTotalCap_SOLAR][y]==by_rid(y, :inverter_ratio_solar) * EP[:eTotalCap_DC][y])
+
+    
+    # Calculate curtailment cost for resources
+    for g in SOLAR, t = 1:T
+        EP[:eCurtailment][g,t] = ( EP[:eTotalCap_SOLAR][g] * inputs["pP_Max_Solar"][g, t] - 
+                                    EP[:vP_SOLAR][g, t]) * by_rid(g, :etainverter)
+    end
+
+    @expression(EP, eCurailmentCostVS_Solar[g in SOLAR , t = 1:T], by_rid(g, :curtailment_cost_per_mwh) * EP[:eCurtailment][g,t] * inputs["omega"][t])
+    @expression(EP, eTotalCurailmentCostVS_Solar, sum(eCurailmentCostVS_Solar[g, t] for t in 1:T, g in SOLAR))
+    add_to_expression!(EP[:eObj], eTotalCurailmentCostVS_Solar)  
 end
 
 @doc raw"""
@@ -868,6 +885,16 @@ function wind_vre_stor!(EP::Model, inputs::Dict, setup::Dict)
     @constraint(EP,
         cInverterRatio_Wind[y in ids_with_positive(gen_VRE_STOR, inverter_ratio_wind)],
         EP[:eTotalCap_WIND][y]==by_rid(y, :inverter_ratio_wind) * EP[:eTotalCap][y])
+
+    ### Calculate curtailment and curtailment cost for colocated wind sources 
+    for g in WIND, t = 1:T
+        EP[:eCurtailment][g,t] = (EP[:eTotalCap_WIND][g] * inputs["pP_Max_Wind"][g, t] - EP[:vP_WIND][g, t] )
+    end
+
+    @expression(EP, eCurailmentCostVS_Wind[g in WIND , t = 1:T], by_rid(g, :curtailment_cost_per_mwh) * EP[:eCurtailment][g,t] * inputs["omega"][t])
+    @expression(EP, eTotalCurailmentCostVS_Wind, sum(eCurailmentCostVS_Wind[g, t] for t in 1:T, g in WIND))
+    add_to_expression!(EP[:eObj], eTotalCurailmentCostVS_Wind)  
+    
 end
 
 @doc raw"""

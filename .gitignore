@@ -36,4 +36,4 @@ test/TDR/TDR_results_test
 
 # Don't include example_systems during development
 example_systems/*
-!/path/to/directory/.gitkeep
+!example_systems/.gitkeep

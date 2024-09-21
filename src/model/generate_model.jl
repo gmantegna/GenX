@@ -94,6 +94,14 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
     # Energy losses related to technologies
     create_empty_expression!(EP, :eELOSSByZone, Z)
 
+    # Total Generation from all resources
+    create_empty_expression!(EP, :eTotalGenerationByZone, (Z, T))
+
+    # Curtailment from all resources
+    # if resource is a renewable resource it is equal MaxCapacity-vP, otherwise = 0
+    G = inputs["G"]
+    create_empty_expression!(EP, :eCurtailment, (G, T))
+
     # Initialize Capacity Reserve Margin Expression
     if setup["CapacityReserveMargin"] > 0
         create_empty_expression!(EP,
@@ -258,6 +266,16 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
 		planning_reserve_margin!(EP, inputs, setup)
 	end
 
+    # Energy trading with markets
+	if setup["Markets"] == 1
+		markets!(EP, inputs, setup)
+	end
+
+     
+    # Apply robust optimization on the scaled objective function?
+	if setup["RO"] == 1
+        ro!(EP, inputs, setup)
+    end
 
     ## Define the objective function
     @objective(EP, Min, setup["ObjScale"]*EP[:eObj])

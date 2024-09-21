@@ -63,5 +63,27 @@ function write_curtailment(path::AbstractString, inputs::Dict, setup::Dict, EP::
             @info("Writing Full Time Series for Curtailment")
         end
     end
+    
+    # Write amount of power curtailed from renewable resources  
+    dfResourceCurtailment = DataFrame(Resource = inputs["RESOURCE_NAMES"],
+                            Zone = zone_id.(gen),
+                            AnnualSum = zeros(G))
+    
+    curt_all = scale_factor * value.(EP[:eCurtailment])
+    dfResourceCurtailment.AnnualSum .= curt_all * inputs["omega"]
+
+
+    filename = joinpath(path, "resource_curtailment.csv")
+    if setup["WriteOutputs"] == "annual"
+        write_annual(filename, dfResourceCurtailment)
+    else 
+        write_fulltimeseries(filename, curt_all, dfResourceCurtailment)
+        if setup["OutputFullTimeSeries"] == 1 && setup["TimeDomainReduction"] == 1
+            write_full_time_series_reconstruction(path, setup, df_Curtailment, "curtail")
+            @info("Writing Full Time Series for Curtailment")
+        end
+    end
+
+
     return nothing
 end
