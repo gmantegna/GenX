@@ -33,3 +33,7 @@ test/Logs
 # Test files
 test/TDR/TDR_results_test
 !test/TDR/TDR_results_true
+
+# Don't include example_systems during development
+example_systems/*
+!/path/to/directory/.gitkeep

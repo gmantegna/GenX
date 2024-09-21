@@ -54,8 +54,9 @@ function load_demand_data!(setup::Dict, path::AbstractString, inputs::Dict)
 
     # Total number of periods and subperiods
     inputs["REP_PERIOD"] = convert(Int16, as_vector(:Rep_Periods)[1])
+    println("inputs[REP_PERIOD]", inputs["REP_PERIOD"])
     inputs["H"] = convert(Int64, as_vector(:Timesteps_per_Rep_Period)[1])
-
+    println("inputs[H]", inputs["H"])
     # Creating sub-period weights from weekly weights
     for w in 1:inputs["REP_PERIOD"]
         for h in 1:inputs["H"]
