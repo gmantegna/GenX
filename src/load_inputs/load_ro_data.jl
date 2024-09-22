@@ -37,7 +37,7 @@ function load_market_buy_price_bound_data!(setup::Dict, path::AbstractString, in
         @warn """Hourly buy prices should be provided for every market""" maxlog=1
     end
 
-    inputs["Market_SellPrices_Delta"] = transpose(delta_sell_price_mat)
+    inputs["Market_SellPrices_Delta"] = transpose(delta_buy_price_mat)
     #only include markets that have non zero columns
     nmarkets = count(!all(iszero, col) for col in eachcol(bprice_df))
     inputs["count_uncertain_param"] += nmarkets * inputs["T"]
@@ -116,11 +116,11 @@ function load_ro_data!(setup::Dict, path::AbstractString, inputs::Dict)
     load_ro_settings(setup, path, inputs)
 
     if inputs["ro_settings"]["MarketBuyPrices"] == 1
-        load_market_price_bound_data!(setup, path, inputs)
+        load_market_buy_price_bound_data!(setup, path, inputs)
     end
 
     if inputs["ro_settings"]["MarketSellPrices"] == 1
-        load_market_price_bound_data!(setup, path, inputs)
+        load_market_sell_price_bound_data!(setup, path, inputs)
     end
 
     if inputs["ro_settings"]["FuelsCost"] == 1
