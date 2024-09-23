@@ -1,1 +1,0 @@
-set the availability value of geothermal resources to the average of nonzero values all periods

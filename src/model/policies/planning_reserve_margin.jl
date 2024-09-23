@@ -9,7 +9,7 @@ function planning_reserve_margin!(EP::Model, inputs::Dict, setup::Dict)
     gen = inputs["RESOURCES"]
     by_rid(rid, sym) = by_rid_res(rid, sym, gen)
 
-    prm_zrequirement = Dict(inputs["PRM"].Zone .=> inputs["PRM"].PRM_Requirement)
+    prm_zrequirement = Dict(inputs["PRM"].Zone .=> inputs["PRM"].PRM_Requirement_MW)
     prm_zpricecap = Dict(inputs["PRM"].Zone .=> inputs["PRM"].Price_Cap) 
     
     PRM_Z = inputs["PRM"].Zone

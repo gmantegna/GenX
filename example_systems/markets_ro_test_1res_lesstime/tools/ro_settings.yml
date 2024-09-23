@@ -1,3 +1,0 @@
-UncertaintyBudget: 2630
-MarketPrices: 1 # Binary value if = 1, include market prices in robust formulation, else don't
-FuelsCost: 0 # Binary value if = 1, include fuel cost in robust formulation, else don't

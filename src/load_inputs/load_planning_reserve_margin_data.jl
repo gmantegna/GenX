@@ -10,6 +10,7 @@ function load_planning_reserve_margin!(setup::Dict, path::AbstractString, inputs
 
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
     df[!, :Price_Cap] ./= scale_factor 
+    df[!, :PRM_Requirement_MW] ./=scale_factor
     inputs["nPRM"] = nrow(df)
     inputs["PRM"] = df
 
