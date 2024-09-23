@@ -20,9 +20,12 @@ function ro!(EP::Model, inputs::Dict, setup::Dict)
 
     @expression(EP, eRODualObj, Gamma * p)
     println("inputs[ro_settings]")
-    if inputs["ro_settings"]["MarketPrices"] == 1
-        println("if inputs[ro_settings][MarketPrices] == 1")
-        ro_markets!(EP, inputs, setup)
+    if inputs["ro_settings"]["MarketBuyPrices"] == 1
+        ro_markets_buy!(EP, inputs, setup)
+    end
+
+    if inputs["ro_settings"]["MarketSellPrices"] == 1
+        ro_markets_sell!(EP, inputs, setup)
     end
 
     if inputs["ro_settings"]["FuelsCost"] == 1
@@ -34,28 +37,38 @@ function ro!(EP::Model, inputs::Dict, setup::Dict)
 end
 
 
-function ro_markets!(EP::Model, inputs::Dict, setup::Dict)
-    println("Consider robustness in market pices")
+function ro_markets_buy!(EP::Model, inputs::Dict, setup::Dict)
+    println("Consider robustness in market buy prices")
+    T = inputs["T"]     # Number of time steps
+    MZ = inputs["MZ"] 
+
+    Delta_BuyPrice = inputs["Market_BuyPrices_Delta"] 
+
+    # define dual variables
+    @variable(EP, qmb[m in MZ, t = 1:T] >= 0)   # q for market buy
+
+    # Constraints on the dual variables for the RO formulation
+    @constraint(EP, cDualSmb[m in MZ, t = 1:T], qmb[m, t] + EP[:p] >= Delta_BuyPrice[m,t] * EP[:vMKT_BUY][m, t])
+
+    add_to_expression!(EP[:eRODualObj], sum(qmb[m, t] for t in 1:T, m in MZ))
+end
+
+
+function ro_markets_sell!(EP::Model, inputs::Dict, setup::Dict)
+    println("Consider robustness in market sell prices")
     T = inputs["T"]     # Number of time steps
     MZ = inputs["MZ"] 
 
     Delta_SellPrice = inputs["Market_SellPrices_Delta"] 
-    Delta_BuyPrice = inputs["Market_BuyPrices_Delta"] 
 
     # define dual variables
-    @variables(EP, begin
-        qms[m in MZ, t = 1:T] >= 0   # q for market sell
-        qmb[m in MZ, t = 1:T] >= 0   # q for market buy
-    end)
+    @variable(EP, qms[m in MZ, t = 1:T] >= 0 ) # q for market sell
 
     # Constraints on the dual variables for the RO formulation
-    @constraint(EP, cDualSmb[m in MZ, t = 1:T], qmb[m, t] + EP[:p] >= Delta_BuyPrice[m,t] * EP[:vMKT_BUY][m, t])
     @constraint(EP, cDualSms[m in MZ, t = 1:T], qms[m, t] + EP[:p] >= Delta_SellPrice[m,t] * EP[:vMKT_SELL][m, t] )
 
-    add_to_expression!(EP[:eRODualObj], sum(qms[m, t] for t in 1:T, m in MZ) + sum(qmb[m, t] for t in 1:T, m in MZ))
+    add_to_expression!(EP[:eRODualObj], sum(qms[m, t] for t in 1:T, m in MZ))
 end
-
-# Write a function that bring resources by fuel type
 
 function ro_fuels_cost!(EP::Model, inputs::Dict, setup::Dict)
     T = inputs["T"]     # Number of time steps
