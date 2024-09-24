@@ -623,7 +623,7 @@ start_cost_per_mw(r::AbstractResource) = get(r, :start_cost_per_mw, default_zero
 
 curtailment_cost_per_mwh(r::Vre) = get(r, :curtailment_cost_per_mwh, default_zero)
 curtailment_cost_per_mwh(r::VreStorage) = get(r, :curtailment_cost_per_mwh, default_zero)
-
+can_chrg_from_grid(r::VreStorage) = get(r, :can_chrg_from_grid, 1)
 
 # fuel
 fuel(r::AbstractResource) = get(r, :fuel, "None")
