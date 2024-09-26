@@ -24,23 +24,24 @@ function load_market_buy_price_bound_data!(setup::Dict, path::AbstractString, in
     # should we add a validation that number of rows = # of prices in t
 
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
-    bprice_df ./= scale_factor
+    
     if nrow(bprice_df) != inputs["T"]
         @warn """Number of inputs for delta in market hourly prices doesn't match number of hours 
         in the system """ maxlog=1
     end
       
     delta_buy_price_mat = extract_matrix_from_dataframe(bprice_df, "BuyPriceDelta")
+    delta_buy_price_mat ./= scale_factor
 
     #insure that we have price value for every market
     if size(delta_buy_price_mat, 2) != inputs["Z"]
         @warn """Hourly buy prices should be provided for every market""" maxlog=1
     end
 
+    ro_markets = sum(all(!iszero, delta_buy_price_mat[:, col]) for col in axes(delta_buy_price_mat, 2))
+
     inputs["Market_BuyPrices_Delta"] = transpose(delta_buy_price_mat)
-    #only include markets that have non zero columns
-    nmarkets = count(!all(iszero, col) for col in eachcol(bprice_df))
-    inputs["count_uncertain_param"] += nmarkets * inputs["T"]
+    inputs["count_uncertain_param"] += ro_markets * inputs["T"]
     
     println(filename * " Successfully Read!")
 end
@@ -52,7 +53,6 @@ function load_market_sell_price_bound_data!(setup::Dict, path::AbstractString, i
     # should we add a validation that number of rows = # of prices in t
 
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
-    sprice_df ./= scale_factor
 
     if nrow(sprice_df) != inputs["T"]
         @warn """Number of inputs for delta in market hourly prices doesn't match number of hours 
@@ -60,16 +60,17 @@ function load_market_sell_price_bound_data!(setup::Dict, path::AbstractString, i
     end
       
     delta_sell_price_mat = extract_matrix_from_dataframe(sprice_df, "SellPriceDelta")
+    delta_sell_price_mat ./= scale_factor
 
     #insure that we have price value for every market
     if size(delta_sell_price_mat, 2) != inputs["Z"]
         @warn """Hourly sell prices should be provided for every market""" maxlog=1
     end
 
+    ro_markets = sum(all(!iszero, delta_sell_price_mat[:, col]) for col in axes(delta_sell_price_mat, 2))
+
     inputs["Market_SellPrices_Delta"] = transpose(delta_sell_price_mat)
-    #only include markets that have non zero columns
-    nmarkets = count(!all(iszero, col) for col in eachcol(sprice_df))
-    inputs["count_uncertain_param"] += nmarkets * inputs["T"]
+    inputs["count_uncertain_param"] += ro_markets * inputs["T"]
     
     println(filename * " Successfully Read!")
 end
@@ -78,18 +79,14 @@ end
 function load_fuel_bound_data!(setup::Dict, path::AbstractString, inputs::Dict)
     filename = "Fuels_data_bounds.csv"
     df_fuels = load_dataframe(joinpath(path, filename))
-
+    
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
-    df_fuels ./= scale_factor
-
+    
     if nrow(df_fuels) != inputs["T"]
         @warn """Number of inputs for delta in market hourly fuel prices doesn't match number of hours 
         in the system """ maxlog=1
     end
-
-    nfuels = count(!all(iszero, col) for col in eachcol(df_fuels))
-    inputs["count_uncertain_param"] += nfuels * inputs["T"]
-
+    
     # Fuel delta costs for each fuel type
     existing_fuels = names(df_fuels)[2:end]
     for f in inputs["fuels"]
@@ -97,15 +94,13 @@ function load_fuel_bound_data!(setup::Dict, path::AbstractString, inputs::Dict)
             df_fuels[!,f] .= 0
         end
     end
-
-    delta_costs = Matrix(df_fuels[1:end, 2:end])
-    fuel_delta_costs = Dict{AbstractString, Array{Float64}}()
-
-    for i in 1:length(inputs["fuels"])
-        # fuel delta cost is in $/MMBTU w/o scaling, $/Billon BTU w/ scaling
-        fuel_delta_costs[inputs["fuels"][i]] = delta_costs[:, i]
-    end
-   
+    
+    fuel_delta_costs = Containers.DenseAxisArray(transpose(Matrix(df_fuels[1:end, 2:end])), inputs["fuels"],1:nrow(df_fuels))
+    
+    fuel_delta_costs /= scale_factor
+    ro_fuels = sum(all(!iszero, fuel_delta_costs[f,:]) for f in axes(fuel_delta_costs, 1))
+    
+    inputs["count_uncertain_param"] += ro_fuels * inputs["T"]
     inputs["fuel_delta_costs"] = fuel_delta_costs
 
     println(filename * " Successfully Read!")
