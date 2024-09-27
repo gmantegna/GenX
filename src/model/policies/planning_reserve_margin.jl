@@ -24,8 +24,9 @@ function planning_reserve_margin!(EP::Model, inputs::Dict, setup::Dict)
             add_to_expression!(ePRM[z], vPRMSlack[z])
         end
 
-        @expression(EP, eCPRMSlack[z in PRM_slack_zones], vPRMSlack[z] * prm_zpricecap[z])
-        add_to_expression!(EP[:eObj], sum(eCPRMSlack[z] for z in PRM_slack_zones))
+        #@expression(EP, eCPRMSlack[z in PRM_slack_zones], vPRMSlack[z] * prm_zpricecap[z])
+        @expression(EP, eCPRMSlack[z in Z], (z in PRM_slack_zones) ? vPRMSlack[z] * prm_zpricecap[z] : EP[:vZERO])
+        add_to_expression!(EP[:eObj], sum(eCPRMSlack[z] for z in Z))
     end
 
     @constraint(EP, cPRM[z in PRM_Z], ePRM[z] >= prm_zrequirement[z])
