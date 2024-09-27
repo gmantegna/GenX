@@ -35,13 +35,13 @@ function markets!(EP::Model, inputs::Dict, setup::Dict)
 
     #### Objective function   
     Market_Buy_Prices = inputs["Market_BuyPrices"]
-    @expression(EP, eMarketTotalBuy, sum( Market_Buy_Prices[m,t] * vMKT_BUY[m,t] * inputs["omega"][t] for m in MZ, t in 1:T))
+    @expression(EP, eCMarketBuy[m in MZ], sum( Market_Buy_Prices[m,t] * vMKT_BUY[m,t] * inputs["omega"][t] for t in 1:T))
 
     Market_Sell_Prices = inputs["Market_SellPrices"]
-    @expression(EP, eMarketTotalSell, -1 * sum( Market_Sell_Prices[m,t] * vMKT_SELL[m,t] * inputs["omega"][t] for m in MZ, t in 1:T))
+    @expression(EP, eCMarketSell[m in MZ], -1 * sum( Market_Sell_Prices[m,t] * vMKT_SELL[m,t] * inputs["omega"][t] for t in 1:T))
 
-    add_to_expression!(EP[:eObj], eMarketTotalBuy)
-    add_to_expression!(EP[:eObj], eMarketTotalSell)
+    add_to_expression!(EP[:eObj], sum(eCMarketBuy[m] for m in MZ))
+    add_to_expression!(EP[:eObj], sum(eCMarketSell[m] for m in MZ))
 
 end
 

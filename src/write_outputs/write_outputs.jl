@@ -63,6 +63,7 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
 
     if output_settings_d["WriteCosts"]
         elapsed_time_costs = @elapsed write_costs(path, inputs, setup, EP)
+        write_costs_markets(path, inputs, setup, EP)
         println("Time elapsed for writing costs is")
         println(elapsed_time_costs)
     end

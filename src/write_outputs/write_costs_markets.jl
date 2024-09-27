@@ -3,36 +3,52 @@
 
 Function for writing the costs pertaining to the objective function (fixed, variable O&M etc.).
 """
-function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+
+"""
+Cost components
+    1- "cTotal",
+    2- "cFix",
+    3- "cVar",
+    4- "cFuel",
+    5- "cNSE",
+    6- "cStart",
+    7- "cUnmetRsv",
+    8-  "cNetworkExp",
+    9-  "cUnmetPolicyPenalty",
+    10- "cCO2"
+    -------
+    11- "cGridConnection"
+    12- "cHydrogenRevenue"
+    13- "cMarketPurshase"
+    14- "cMarketSales"
+"""
+
+mutable struct CostComponent
+    total_cost::Union{Float64, Missing}
+    zonal_cost::Vector{Union{Float64, Missing}}
+    
+    function CostComponent(total_cost = missing, z = 1)
+        new(total_cost, zeros(z))#
+    end
+end
+
+function write_costs_markets(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+    Z = inputs["Z"]     # Number of zones
+   
+    
     ## Cost results
     gen = inputs["RESOURCES"]
-    SEG = inputs["SEG"]  # Number of lines
-    Z = inputs["Z"]     # Number of zones
-    T = inputs["T"]     # Number of time steps (hours)
     VRE_STOR = inputs["VRE_STOR"]
     VS_ELEC = !isempty(VRE_STOR) ? inputs["VS_ELEC"] : Vector{Int}[]
     ELECTROLYZER_ALL = !isempty(VS_ELEC) ? union(VS_ELEC, inputs["ELECTROLYZER"]) :
                        inputs["ELECTROLYZER"]
+    cost_dict = Dict()
 
-    cost_list = [
-        "cTotal",
-        "cFix",
-        "cVar",
-        "cFuel",
-        "cNSE",
-        "cStart",
-        "cUnmetRsv",
-        "cNetworkExp",
-        "cUnmetPolicyPenalty",
-        "cCO2"
-    ]
-    if !isempty(VRE_STOR)
-        push!(cost_list, "cGridConnection")
-    end
-    if !isempty(ELECTROLYZER_ALL)
-        push!(cost_list, "cHydrogenRevenue")
-    end
-    dfCost = DataFrame(Costs = cost_list)
+    # if setup["RO"] == 1   
+    #     (inputs["ro_settings"]["MarketBuyPrices"] == 1) && push!(cost_list, "cROMarketPurshase")
+    #     (inputs["ro_settings"]["MarketSellPrices"] == 1) && push!(cost_list, "cROMarketSales")
+    #     (inputs["ro_settings"]["FuelsCost"] == 1) && push!(cost_list, "cROFuel")
+    # end
 
     cVar = value(EP[:eTotalCVarOut]) +
            (!isempty(inputs["STOR_ALL"]) ? value(EP[:eTotalCVarIn]) : 0.0) +
@@ -61,113 +77,75 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
                       value(EP[:eTotalCFixDischarge_AC]) : 0.0))
             cVar += (!isempty(inputs["VS_STOR"]) ? value(EP[:eTotalCVarStor]) : 0.0)
         end
-        total_cost = [
-            value(EP[:eObj]),
-            cFix,
-            cVar,
-            cFuel,
-            value(EP[:eTotalCNSE]),
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        ]
+
+        cost_dict["cTotal"] = CostComponent(value(EP[:eObj]), Z)
+        cost_dict["cFix"] = CostComponent(cFix, Z)
+        cost_dict["cVar"] = CostComponent(cVar, Z)
+        cost_dict["cFuel"] = CostComponent(cFuel, Z)
+        cost_dict["cNSE"] = CostComponent(value(EP[:eTotalCNSE]), Z)
+
     else
-        total_cost = [
-            value(EP[:eObj]),
-            cFix,
-            cVar,
-            cFuel,
-            value(EP[:eTotalCNSE]),
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        ]
+        cost_dict["cTotal"] = CostComponent(value(EP[:eObj]), Z)
+        cost_dict["cFix"] = CostComponent(cFix, Z)
+        cost_dict["cVar"] = CostComponent(cVar, Z)
+        cost_dict["cFuel"] = CostComponent(cFuel, Z)
+        cost_dict["cNSE"] = CostComponent(value(EP[:eTotalCNSE]), Z)
     end
 
     if !isempty(ELECTROLYZER_ALL)
-        push!(total_cost, -1 * value(EP[:eTotalHydrogenValue]))
+        cost_dict["cHydrogenRevenue"] = CostComponent(-1 * value(EP[:eTotalHydrogenValue]), Z)
     end
 
     if setup["Markets"] == 1   
-        push!(cost_list, "cMarketPurshase")
-        push!(cost_list, "cMarketSales")
-    end
-    if setup["RO"] == 1   
-        (inputs["ro_settings"]["MarketBuyPrices"] == 1) && push!(cost_list, "cROMarketPurshase")
-        (inputs["ro_settings"]["MarketSellPrices"] == 1) && push!(cost_list, "cROMarketSales")
-        (inputs["ro_settings"]["FuelsCost"] == 1) && push!(cost_list, "cROFuel")
-    end
-    
-    dfCost[!, Symbol("Total")] = total_cost
-
-    if setup["ParameterScale"] == 1
-        dfCost.Total *= ModelScalingFactor^2
+        MZ = inputs["MZ"]
+        cost_dict["cMarketPurshase"] = CostComponent(sum(value(EP[:eCMarketBuy][m]) for m in MZ), Z)
+        cost_dict["cMarketSales"] = CostComponent(sum(value(EP[:eCMarketSell][m]) for m in MZ), Z)
     end
 
     if setup["UCommit"] >= 1
-        dfCost[6, 2] = value(EP[:eTotalCStart]) + value(EP[:eTotalCFuelStart])
+        cost_dict["cStart"] = CostComponent(value(EP[:eTotalCStart]) + value(EP[:eTotalCFuelStart]), Z)
     end
 
     if setup["OperationalReserves"] == 1
-        dfCost[7, 2] = value(EP[:eTotalCRsvPen])
+        cost_dict["cUnmetRsv"] = CostComponent(value(EP[:eTotalCRsvPen]), Z)
     end
 
     if setup["NetworkExpansion"] == 1 && Z > 1
-        dfCost[8, 2] = value(EP[:eTotalCNetworkExp])
+        cost_dict["cNetworkExp"] = CostComponent(value(EP[:eTotalCNetworkExp]), Z)
     end
 
+    cost_dict["cUnmetPolicyPenalty"] = CostComponent(0, Z)
     if haskey(inputs, "dfCapRes_slack")
-        dfCost[9, 2] += value(EP[:eCTotalCapResSlack])
+        cost_dict["cUnmetPolicyPenalty"].total_cost += value(EP[:eCTotalCapResSlack])
     end
 
     if haskey(inputs, "dfESR_slack")
-        dfCost[9, 2] += value(EP[:eCTotalESRSlack])
+        cost_dict["cUnmetPolicyPenalty"].total_cost += value(EP[:eCTotalESRSlack])
     end
 
     if haskey(inputs, "dfCO2Cap_slack")
-        dfCost[9, 2] += value(EP[:eCTotalCO2CapSlack])
+        cost_dict["cUnmetPolicyPenalty"].total_cost += value(EP[:eCTotalCO2CapSlack])
     end
 
     if haskey(inputs, "MinCapPriceCap")
-        dfCost[9, 2] += value(EP[:eTotalCMinCapSlack])
+        cost_dict["cUnmetPolicyPenalty"].total_cost += value(EP[:eTotalCMinCapSlack])
     end
 
     if haskey(inputs, "H2DemandPriceCap")
-        dfCost[9, 2] += value(EP[:eTotalCH2DemandSlack])
+        cost_dict["cUnmetPolicyPenalty"].total_cost += value(EP[:eTotalCH2DemandSlack])
     end
 
     if !isempty(VRE_STOR)
-        dfCost[!, 2][11] = value(EP[:eTotalCGrid]) *
-                           (setup["ParameterScale"] == 1 ? ModelScalingFactor^2 : 1)
+        cost_dict["cGridConnection"] = CostComponent(value(EP[:eTotalCGrid]), Z)
     end
 
     if any(co2_capture_fraction.(gen) .!= 0)
-        dfCost[10, 2] += value(EP[:eTotaleCCO2Sequestration])
+        cost_dict["cCO2"].total_cost += CostComponent(value(EP[:eTotaleCCO2Sequestration]), Z)
     end
 
-    if setup["ParameterScale"] == 1
-        dfCost[6, 2] *= ModelScalingFactor^2
-        dfCost[7, 2] *= ModelScalingFactor^2
-        dfCost[8, 2] *= ModelScalingFactor^2
-        dfCost[9, 2] *= ModelScalingFactor^2
-        dfCost[10, 2] *= ModelScalingFactor^2
-    end
+
 
     for z in 1:Z
-        tempCTotal = 0.0
-        tempCFix = 0.0
-        tempCVar = 0.0
-        tempCFuel = 0.0
-        tempCStart = 0.0
-        tempCNSE = 0.0
-        tempHydrogenValue = 0.0
-        tempCCO2 = 0.0
-
         Y_ZONE = resources_in_zone_by_rid(gen, z)
         STOR_ALL_ZONE = intersect(inputs["STOR_ALL"], Y_ZONE)
         STOR_ASYMMETRIC_ZONE = intersect(inputs["STOR_ASYMMETRIC"], Y_ZONE)
@@ -177,32 +155,32 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
         CCS_ZONE = intersect(inputs["CCS"], Y_ZONE)
 
         eCFix = sum(value.(EP[:eCFix][Y_ZONE]))
-        tempCFix += eCFix
-        tempCTotal += eCFix
+        cost_dict["cFix"].zonal_cost[z] += eCFix
+        cost_dict["cTotal"].zonal_cost[z] += eCFix
+        cost_dict["cVar"].zonal_cost[z] = sum(value.(EP[:eCVar_out][Y_ZONE, :]))
+        cost_dict["cTotal"].zonal_cost[z] = sum(value.(EP[:eCVar_out][Y_ZONE, :]))
 
-        tempCVar = sum(value.(EP[:eCVar_out][Y_ZONE, :]))
-        tempCTotal += tempCVar
-
-        tempCFuel = sum(value.(EP[:ePlantCFuelOut][Y_ZONE, :]))
-        tempCTotal += tempCFuel
+        cost_dict["cFuel"].zonal_cost[z] = sum(value.(EP[:ePlantCFuelOut][Y_ZONE, :]))
+        cost_dict["cTotal"].zonal_cost[z] += sum(value.(EP[:ePlantCFuelOut][Y_ZONE, :]))
 
         if !isempty(STOR_ALL_ZONE)
             eCVar_in = sum(value.(EP[:eCVar_in][STOR_ALL_ZONE, :]))
-            tempCVar += eCVar_in
+            cost_dict["cVar"].zonal_cost[z] += eCVar_in
             eCFixEnergy = sum(value.(EP[:eCFixEnergy][STOR_ALL_ZONE]))
-            tempCFix += eCFixEnergy
-            tempCTotal += eCVar_in + eCFixEnergy
+            cost_dict["cFix"].zonal_cost[z] += eCFixEnergy
+            cost_dict["cTotal"].zonal_cost[z] += eCVar_in + eCFixEnergy
         end
         if !isempty(STOR_ASYMMETRIC_ZONE)
             eCFixCharge = sum(value.(EP[:eCFixCharge][STOR_ASYMMETRIC_ZONE]))
-            tempCFix += eCFixCharge
-            tempCTotal += eCFixCharge
+            cost_dict["cFix"].zonal_cost[z] += eCFixCharge
+            cost_dict["cTotal"].zonal_cost[z] += eCFixCharge
         end
         if !isempty(FLEX_ZONE)
             eCVarFlex_in = sum(value.(EP[:eCVarFlex_in][FLEX_ZONE, :]))
-            tempCVar += eCVarFlex_in
-            tempCTotal += eCVarFlex_in
+            cost_dict["cVar"].zonal_cost[z] += eCVarFlex_in
+            cost_dict["cTotal"].zonal_cost[z] += eCVarFlex_in
         end
+
         if !isempty(VRE_STOR)
             gen_VRE_STOR = gen.VreStorage
             Y_ZONE_VRE_STOR = resources_in_zone_by_rid(gen_VRE_STOR, z)
@@ -249,7 +227,7 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
                     eCFix_VRE_STOR += sum(value.(EP[:eCFixCharge_AC][AC_CHARGE_ALL_ZONE_VRE_STOR]))
                 end
             end
-            tempCFix += eCFix_VRE_STOR
+            cost_dict["cFix"].zonal_cost[z] += eCFix_VRE_STOR
 
             # Variable Costs
             eCVar_VRE_STOR = 0.0
@@ -270,69 +248,60 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
                     end
                 end
             end
-            tempCVar += eCVar_VRE_STOR
+            cost_dict["cVar"].zonal_cost[z] += eCVar_VRE_STOR
 
             # Total Added Costs
-            tempCTotal += (eCFix_VRE_STOR + eCVar_VRE_STOR)
+            cost_dict["cTotal"].zonal_cost[z] += (eCFix_VRE_STOR + eCVar_VRE_STOR)
         end
 
         if setup["UCommit"] >= 1 && !isempty(COMMIT_ZONE)
             eCStart = sum(value.(EP[:eCStart][COMMIT_ZONE, :])) +
                       sum(value.(EP[:ePlantCFuelStart][COMMIT_ZONE, :]))
-            tempCStart += eCStart
-            tempCTotal += eCStart
+            cost_dict["cStart"].zonal_cost[z] += eCStart
+            cost_dict["cTotal"].zonal_cost[z] += eCStart
         end
 
         if !isempty(ELECTROLYZER_ALL) # both electrolyzers and VRE+storage with electrolyzer component
-            tempHydrogenValue = 0.0
             if !isempty(ELECTROLYZERS_ZONE)
-                tempHydrogenValue -= sum(value.(EP[:eHydrogenValue][ELECTROLYZERS_ZONE, :]))
+                cost_dict["cHydrogenRevenue"].zonal_cost[z] -= sum(value.(EP[:eHydrogenValue][ELECTROLYZERS_ZONE, :]))
             end
             if !isempty(VRE_STOR) && !isempty(ELEC_ZONE_VRE_STOR)
-                tempHydrogenValue -= sum(value.(EP[:eHydrogenValue_vs][ELEC_ZONE_VRE_STOR, :]))
+                cost_dict["cHydrogenRevenue"].zonal_cost[z] -= sum(value.(EP[:eHydrogenValue_vs][ELEC_ZONE_VRE_STOR, :]))
             end
-            tempCTotal += tempHydrogenValue
+            cost_dict["cTotal"].zonal_cost[z] += cost_dict["cHydrogenRevenue"].zonal_cost[z] 
         end
 
-        tempCNSE = sum(value.(EP[:eCNSE][:, :, z]))
-        tempCTotal += tempCNSE
+        cost_dict["cNSE"].zonal_cost[z] = sum(value.(EP[:eCNSE][:, :, z]))
+        cost_dict["cTotal"].zonal_cost[z] += sum(value.(EP[:eCNSE][:, :, z]))
 
         # if any(dfGen.CO2_Capture_Fraction .!=0)
         if !isempty(CCS_ZONE)
-            tempCCO2 = sum(value.(EP[:ePlantCCO2Sequestration][CCS_ZONE]))
-            tempCTotal += tempCCO2
+            cost_dict["cCO2"].zonal_cost[z]  = sum(value.(EP[:ePlantCCO2Sequestration][CCS_ZONE]))
+            cost_dict["cTotal"].zonal_cost[z] += cost_dict["cCO2"].zonal_cost[z]
         end
 
-        if setup["ParameterScale"] == 1
-            tempCTotal *= ModelScalingFactor^2
-            tempCFix *= ModelScalingFactor^2
-            tempCVar *= ModelScalingFactor^2
-            tempCFuel *= ModelScalingFactor^2
-            tempCNSE *= ModelScalingFactor^2
-            tempCStart *= ModelScalingFactor^2
-            tempHydrogenValue *= ModelScalingFactor^2
-            tempCCO2 *= ModelScalingFactor^2
+        if setup["Markets"] == 1   
+            if z in inputs["MZ"] 
+                cost_dict["cMarketPurshase"].zonal_cost[z] = value(EP[:eCMarketBuy][z])
+                cost_dict["cMarketSales"].zonal_cost[z] = value(EP[:eCMarketSell][z])
+            end
         end
-        temp_cost_list = [
-            tempCTotal,
-            tempCFix,
-            tempCVar,
-            tempCFuel,
-            tempCNSE,
-            tempCStart,
-            "-",
-            "-",
-            "-",
-            tempCCO2
-        ]
-        if !isempty(VRE_STOR)
-            push!(temp_cost_list, "-")
-        end
-        if !isempty(ELECTROLYZER_ALL)
-            push!(temp_cost_list, tempHydrogenValue)
-        end
-
-        dfCost[!, Symbol("Zone$z")] = temp_cost_list
     end
-    CSV.write(joinpath(path, "costs.csv"), dfCost)
+
+    scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
+
+    for k in collect(keys(cost_dict))
+        cost_dict[k].total_cost *= scale_factor^2
+        for z in Z
+            cost_dict[k].zonal_cost[z] *= scale_factor^2
+        end
+    end
+    
+    
+    dfCost = DataFrame( Costs = collect(keys(cost_dict)),
+                        Total = [v.total_cost for v in values(cost_dict)]  )
+    for z in 1:Z
+        dfCost[!, "Zone$(z)"] = [v.zonal_cost[z] for v in values(cost_dict)]
+    end
+    CSV.write(joinpath(path, "costs_markets.csv"), dfCost)
 end
