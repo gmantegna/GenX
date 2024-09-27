@@ -478,7 +478,7 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
         end
     end
 
-    if setup["PlanningReserveMargin"] == 1   
+    if haskey(inputs, "PRM_slack")  
         elapsed_time_prm_penalties= @elapsed write_prm_prices(path, inputs, setup, EP)
         println("Time elapsed for writing prm penalties is")
         println(elapsed_time_prm_penalties)

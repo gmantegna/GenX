@@ -8,28 +8,24 @@ function planning_reserve_margin!(EP::Model, inputs::Dict, setup::Dict)
     println("Planning Reserve Margin Policies Module")
     gen = inputs["RESOURCES"]
     by_rid(rid, sym) = by_rid_res(rid, sym, gen)
-
-    prm_zrequirement = Dict(inputs["PRM"].Zone .=> inputs["PRM"].PRM_Requirement_MW)
-    prm_zpricecap = Dict(inputs["PRM"].Zone .=> inputs["PRM"].Price_Cap) 
-    
-    PRM_Z = inputs["PRM"].Zone
-    PRM_slack_zones = inputs["PRM"].Zone[inputs["PRM"].Allow_Violation .== 1]
+ 
+    PRM_Z = collect(keys(inputs["PRM"]))
 
     @expression(EP, ePRM[z in PRM_Z], sum(EP[:eTotalCap][y] * elcc(gen[y], tag = 1) for y in resources_in_zone_by_rid(gen, z)))
 
-    if !isempty(PRM_slack_zones)
-        @variable(EP, vPRMSlack[z in PRM_slack_zones] >=0)
+    if haskey(inputs, "PRM_slack")
+        PRM_SZ = collect(keys(inputs["PRM_slack"]))
+        @variable(EP, vPRMSlack[z in PRM_SZ] >=0)
         
-        for z in PRM_slack_zones
+        for z in PRM_SZ
             add_to_expression!(ePRM[z], vPRMSlack[z])
         end
 
-        #@expression(EP, eCPRMSlack[z in PRM_slack_zones], vPRMSlack[z] * prm_zpricecap[z])
-        @expression(EP, eCPRMSlack[z in Z], (z in PRM_slack_zones) ? vPRMSlack[z] * prm_zpricecap[z] : EP[:vZERO])
-        add_to_expression!(EP[:eObj], sum(eCPRMSlack[z] for z in Z))
+        @expression(EP, eCPRMSlack[z in PRM_SZ], vPRMSlack[z] * inputs["PRM_slack"][z])
+        add_to_expression!(EP[:eObj], sum(eCPRMSlack[z] for z in PRM_SZ))
     end
 
-    @constraint(EP, cPRM[z in PRM_Z], ePRM[z] >= prm_zrequirement[z])
+    @constraint(EP, cPRM[z in PRM_Z], ePRM[z] >= inputs["PRM"][z])
 
    
 end

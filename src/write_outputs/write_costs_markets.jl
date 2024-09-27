@@ -4,25 +4,6 @@
 Function for writing the costs pertaining to the objective function (fixed, variable O&M etc.).
 """
 
-"""
-Cost components
-    1- "cTotal",
-    2- "cFix",
-    3- "cVar",
-    4- "cFuel",
-    5- "cNSE",
-    6- "cStart",
-    7- "cUnmetRsv",
-    8-  "cNetworkExp",
-    9-  "cUnmetPolicyPenalty",
-    10- "cCO2"
-    -------
-    11- "cGridConnection"
-    12- "cHydrogenRevenue"
-    13- "cMarketPurshase"
-    14- "cMarketSales"
-"""
-
 mutable struct CostComponent
     total_cost::Union{Float64, Missing}
     zonal_cost::Vector{Union{Float64, Missing}}
@@ -135,6 +116,10 @@ function write_costs_markets(path::AbstractString, inputs::Dict, setup::Dict, EP
         cost_dict["cUnmetPolicyPenalty"].total_cost += value(EP[:eTotalCH2DemandSlack])
     end
 
+    if haskey(inputs, "PRM_slack")
+        cost_dict["cUnmetPolicyPenalty"].total_cost += sum(value.(EP[:eCPRMSlack]))
+    end
+
     if !isempty(VRE_STOR)
         cost_dict["cGridConnection"] = CostComponent(value(EP[:eTotalCGrid]), Z)
     end
@@ -142,8 +127,6 @@ function write_costs_markets(path::AbstractString, inputs::Dict, setup::Dict, EP
     if any(co2_capture_fraction.(gen) .!= 0)
         cost_dict["cCO2"].total_cost += CostComponent(value(EP[:eTotaleCCO2Sequestration]), Z)
     end
-
-
 
     for z in 1:Z
         Y_ZONE = resources_in_zone_by_rid(gen, z)
@@ -271,6 +254,8 @@ function write_costs_markets(path::AbstractString, inputs::Dict, setup::Dict, EP
             cost_dict["cTotal"].zonal_cost[z] += cost_dict["cHydrogenRevenue"].zonal_cost[z] 
         end
 
+
+
         cost_dict["cNSE"].zonal_cost[z] = sum(value.(EP[:eCNSE][:, :, z]))
         cost_dict["cTotal"].zonal_cost[z] += sum(value.(EP[:eCNSE][:, :, z]))
 
@@ -286,6 +271,7 @@ function write_costs_markets(path::AbstractString, inputs::Dict, setup::Dict, EP
                 cost_dict["cMarketSales"].zonal_cost[z] = value(EP[:eCMarketSell][z])
             end
         end
+
     end
 
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
@@ -297,11 +283,14 @@ function write_costs_markets(path::AbstractString, inputs::Dict, setup::Dict, EP
         end
     end
     
-    
-    dfCost = DataFrame( Costs = collect(keys(cost_dict)),
-                        Total = [v.total_cost for v in values(cost_dict)]  )
+    basic_costs = ["cTotal", "cFix", "cVar", "cFuel", "cNSE"]
+    all_costs = collect(keys(cost_dict))
+    basic_costs = append!(basic_costs, setdiff(all_costs, basic_costs))
+
+    dfCost = DataFrame( Costs = basic_costs,
+                        Total = [cost_dict[v].total_cost for v in basic_costs]  )
     for z in 1:Z
-        dfCost[!, "Zone$(z)"] = [v.zonal_cost[z] for v in values(cost_dict)]
+        dfCost[!, "Zone$(z)"] = [cost_dict[v].zonal_cost[z] for v in basic_costs]
     end
     CSV.write(joinpath(path, "costs_markets.csv"), dfCost)
 end
