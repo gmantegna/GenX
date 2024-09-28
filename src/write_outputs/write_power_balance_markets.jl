@@ -91,8 +91,8 @@ function write_power_balance_markets(path::AbstractString, inputs::Dict, setup::
         
         if setup["Markets"] == 1
             if z in inputs["MZ"]
-                powerbalance[(z - 1) * L + Com_idx["Market_Sell"], :] =value.(EP[:vMKT_SELL][z, :])
-                powerbalance[(z - 1) * L + Com_idx["Market_Buy"], :] =value.(EP[:vMKT_BUY][z, :])
+                powerbalance[(z - 1) * L + Com_idx["Market_Sell"], :] =value.(EP[:vMSELL][z, :])
+                powerbalance[(z - 1) * L + Com_idx["Market_Buy"], :] =value.(EP[:vMBUY][z, :])
             else
                 powerbalance[(z - 1) * L + Com_idx["Market_Sell"], :] .= 0
                 powerbalance[(z - 1) * L + Com_idx["Market_Buy"], :] .= 0

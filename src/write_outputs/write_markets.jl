@@ -30,8 +30,8 @@ function write_market(path::AbstractString, inputs::Dict, setup::Dict, EP::Model
     
     for i in 1:Z
         if i in MZ
-            markets[2*i-1, :] = value.(EP[:vMKT_BUY][i,:]).data
-            markets[2*i, :] = value.(EP[:vMKT_SELL][i,:]).data
+            markets[2*i-1, :] = value.(EP[:vMBUY][i,:]).data
+            markets[2*i, :] = value.(EP[:vMSELL][i,:]).data
         else
             markets[2*i-1, :] = zeros(T)
             markets[2*i, :] = zeros(T)

@@ -10,21 +10,21 @@ function markets!(EP::Model, inputs::Dict, setup::Dict)
 
     ### Variables ###
     # 1- Amount of energy purchased/imported by each zone z at time t from the associated market
-    @variable(EP, vMKT_BUY[m in MZ, t = 1:T] >= 0);   
-    @variable(EP, vMKT_SELL[m in MZ, t = 1:T] >= 0);
+    @variable(EP, vMBUY[m in MZ, t = 1:T] >= 0);   
+    @variable(EP, vMSELL[m in MZ, t = 1:T] >= 0);
 
     # # 3- Amount of energy sold/exported by each zone z at time t to the associated market
-    @constraint(EP, cMaxSell[m in MZ, t = 1:T], vMKT_SELL[m,t] <= EP[:eTotalGenerationByZone][1,t])
+    @constraint(EP, cMaxSell[m in MZ, t = 1:T], vMSELL[m,t] <= EP[:eTotalGenerationByZone][1,t])
     
     ### Constraints ###
     # 1. Maximum energy to buy from market or sell to market
-    @constraint(EP, cMaxMarketBuy[m in MZ, t = 1:T], vMKT_BUY[m, t] <= inputs["Mrkt_Max_Buy"][m] ) 
-    @constraint(EP, cMaxMarketSell_1[m in MZ, t = 1:T], vMKT_SELL[m, t] <= inputs["Mrkt_Max_Sell"][m] )
+    @constraint(EP, cMaxMarketBuy[m in MZ, t = 1:T], vMBUY[m, t] <= inputs["Mrkt_Max_Buy"][m] ) 
+    @constraint(EP, cMaxMarketSell_1[m in MZ, t = 1:T], vMSELL[m, t] <= inputs["Mrkt_Max_Sell"][m] )
     
     # 4. Power balance constraint       
     @expression(EP, eZonalNetMarkets[t = 1:T, z =1:Z], 
     if z in MZ
-        vMKT_BUY[z,t] - vMKT_SELL[z,t] 
+        vMBUY[z,t] - vMSELL[z,t] 
     else
         EP[:vZERO]
     end)
@@ -35,10 +35,10 @@ function markets!(EP::Model, inputs::Dict, setup::Dict)
 
     #### Objective function   
     Market_Buy_Prices = inputs["Market_BuyPrices"]
-    @expression(EP, eCMarketBuy[m in MZ], sum( Market_Buy_Prices[m,t] * vMKT_BUY[m,t] * inputs["omega"][t] for t in 1:T))
+    @expression(EP, eCMarketBuy[m in MZ], sum( Market_Buy_Prices[m,t] * vMBUY[m,t] * inputs["omega"][t] for t in 1:T))
 
     Market_Sell_Prices = inputs["Market_SellPrices"]
-    @expression(EP, eCMarketSell[m in MZ], -1 * sum( Market_Sell_Prices[m,t] * vMKT_SELL[m,t] * inputs["omega"][t] for t in 1:T))
+    @expression(EP, eCMarketSell[m in MZ], -1 * sum( Market_Sell_Prices[m,t] * vMSELL[m,t] * inputs["omega"][t] for t in 1:T))
 
     add_to_expression!(EP[:eObj], sum(eCMarketBuy[m] for m in MZ))
     add_to_expression!(EP[:eObj], sum(eCMarketSell[m] for m in MZ))

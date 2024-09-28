@@ -48,7 +48,7 @@ function ro_markets_buy!(EP::Model, inputs::Dict, setup::Dict)
     @variable(EP, qmb[m in MZ, t = 1:T] >= 0)   # q for market buy
 
     # Constraints on the dual variables for the RO formulation
-    @constraint(EP, cDualSmb[m in MZ, t = 1:T], qmb[m, t] + EP[:p] >= Delta_BuyPrice[m,t] * EP[:vMKT_BUY][m, t])
+    @constraint(EP, cDualSmb[m in MZ, t = 1:T], qmb[m, t] + EP[:p] >= Delta_BuyPrice[m,t] * EP[:vMBUY][m, t])
 
     add_to_expression!(EP[:eRODualObj], sum(qmb[m, t] for t in 1:T, m in MZ))
 end
@@ -65,7 +65,7 @@ function ro_markets_sell!(EP::Model, inputs::Dict, setup::Dict)
     @variable(EP, qms[m in MZ, t = 1:T] >= 0 ) # q for market sell
 
     # Constraints on the dual variables for the RO formulation
-    @constraint(EP, cDualSms[m in MZ, t = 1:T], qms[m, t] + EP[:p] >= Delta_SellPrice[m,t] * EP[:vMKT_SELL][m, t] )
+    @constraint(EP, cDualSms[m in MZ, t = 1:T], qms[m, t] + EP[:p] >= Delta_SellPrice[m,t] * EP[:vMSELL][m, t] )
 
     add_to_expression!(EP[:eRODualObj], sum(qms[m, t] for t in 1:T, m in MZ))
 end

@@ -15,21 +15,12 @@ end
 
 function write_costs_markets(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
     Z = inputs["Z"]     # Number of zones
-   
-    
-    ## Cost results
     gen = inputs["RESOURCES"]
     VRE_STOR = inputs["VRE_STOR"]
     VS_ELEC = !isempty(VRE_STOR) ? inputs["VS_ELEC"] : Vector{Int}[]
     ELECTROLYZER_ALL = !isempty(VS_ELEC) ? union(VS_ELEC, inputs["ELECTROLYZER"]) :
                        inputs["ELECTROLYZER"]
     cost_dict = Dict()
-
-    # if setup["RO"] == 1   
-    #     (inputs["ro_settings"]["MarketBuyPrices"] == 1) && push!(cost_list, "cROMarketPurshase")
-    #     (inputs["ro_settings"]["MarketSellPrices"] == 1) && push!(cost_list, "cROMarketSales")
-    #     (inputs["ro_settings"]["FuelsCost"] == 1) && push!(cost_list, "cROFuel")
-    # end
 
     cVar = value(EP[:eTotalCVarOut]) +
            (!isempty(inputs["STOR_ALL"]) ? value(EP[:eTotalCVarIn]) : 0.0) +
@@ -124,8 +115,13 @@ function write_costs_markets(path::AbstractString, inputs::Dict, setup::Dict, EP
         cost_dict["cGridConnection"] = CostComponent(value(EP[:eTotalCGrid]), Z)
     end
 
+    cost_dict["cCO2"] = CostComponent(0, Z)
     if any(co2_capture_fraction.(gen) .!= 0)
-        cost_dict["cCO2"].total_cost += CostComponent(value(EP[:eTotaleCCO2Sequestration]), Z)
+        cost_dict["cCO2"].total_cost += value(EP[:eTotaleCCO2Sequestration])
+    end
+    
+    if setup["RO"] == 1 
+        cost_dict["cRO"] = CostComponent(value.(EP[:eRODualObj]), Z)
     end
 
     for z in 1:Z
