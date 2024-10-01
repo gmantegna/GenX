@@ -1,9 +1,16 @@
 function default_ro_settings()
     Dict{Any, Any}(
-        "UncertaintyBudget" => 0, # percentage of uncertain parameters that can take their worst case value
-        "MarketBuyPrices" => 0,
+        "BudgetOfUncertainty": 0.2, # percentage of uncertain parameters that can take their worst case value, -1 if we want to apply budget for each variable separatly
+        "BudgetOfUncertainty_MarketBuyPrices" => -1,
+        "BudgetOfUncertainty_MarketSellPrices" => -1,
+        "BudgetOfUncertainty_FuelPrices" => -1,
+        "BudgetOfUncertainty_InvestmentCost" => -1,
+        "BudgetOfUncertainty_FixedOMCost"=> -1,
+        "MarketBuyPrices" => 0, 
         "MarketSellPrices" => 0,
-        "FuelsCost" => 0
+        "FuelsCost" => 0,
+        "InvestmentCost" => 0,
+        "FixedOMCost" => 0
         )
 end
 
@@ -92,6 +99,34 @@ function load_fuel_bound_data!(setup::Dict, path::AbstractString, inputs::Dict)
     for f in inputs["fuels"]
         if f ∉ existing_fuels
             df_fuels[!,f] .= 0
+        end
+    end
+    
+    fuel_delta_costs = Containers.DenseAxisArray(transpose(Matrix(df_fuels[1:end, 2:end])), inputs["fuels"],1:nrow(df_fuels))
+    
+    fuel_delta_costs /= scale_factor
+    ro_fuels = sum(all(!iszero, fuel_delta_costs[f,:]) for f in axes(fuel_delta_costs, 1))
+    
+    inputs["count_uncertain_param"] += ro_fuels * inputs["T"]
+    inputs["fuel_delta_costs"] = fuel_delta_costs
+
+    println(filename * " Successfully Read!")
+end
+
+
+function load_investment_cost_bound_data!(setup::Dict, path::AbstractString, inputs::Dict)
+    filename = "Investment_cost_bounds.csv"
+    df_costs = load_dataframe(joinpath(path, filename))
+    
+    scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
+    df_costs[!,:Inv_Cost_per_MWyr_bounds] ./= scale_factor
+
+    
+    # Fuel delta costs for each fuel type
+    existing_resources = df_costs.Resource
+    for f in inputs["Resource"]
+        if f ∉ existing_resources
+            push!(df_costs, f, 0)
         end
     end
     
