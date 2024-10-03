@@ -19,7 +19,6 @@ function ro!(EP::Model, inputs::Dict, setup::Dict)
     @variable(EP, p >= 0)
 
     @expression(EP, eRODualObj, Gamma * p)
-    println("inputs[ro_settings]")
     if inputs["ro_settings"]["MarketBuyPrices"] == 1
         ro_markets_buy!(EP, inputs, setup)
     end

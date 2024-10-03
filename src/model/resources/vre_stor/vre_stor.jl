@@ -1107,7 +1107,6 @@ function stor_vre_stor!(EP::Model, inputs::Dict, setup::Dict)
     # 2. Enable/disable grid-interfacing charge
     for y in STOR, t in 1:T
         if can_chrg_from_grid(gen[y]) == 0
-            println(gen[y].resource)
             fix(vCHARGE_VRE_STOR[y,t], 0; force=true)
         end
     end
