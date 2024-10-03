@@ -35,7 +35,7 @@ function write_ro_market_buy(path::AbstractString, inputs::Dict, setup::Dict, EP
                         Symbol("AnnualSum");
                         [Symbol("t$t") for t in 1:T]]
     rename!(dfmarkets, auxNew_Names)
-    CSV.write(joinpath(path, "ro_market_buy.csv"), dftranspose(dfmarkets, false))
+    CSV.write(joinpath(path, "ro_market_buy.csv"), dftranspose(dfmarkets, false), writeheader = false)
 end
 
 function write_ro_market_sell(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
@@ -69,7 +69,7 @@ function write_ro_market_sell(path::AbstractString, inputs::Dict, setup::Dict, E
                         Symbol("AnnualSum");
                         [Symbol("t$t") for t in 1:T]]
     rename!(dfmarkets, auxNew_Names)
-    CSV.write(joinpath(path, "ro_market_sell.csv"), dftranspose(dfmarkets, false))
+    CSV.write(joinpath(path, "ro_market_sell.csv"), dftranspose(dfmarkets, false), writeheader = false)
 end
 
 function write_ro(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)

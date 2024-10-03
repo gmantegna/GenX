@@ -16,10 +16,12 @@ end
 function write_costs_markets(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
     Z = inputs["Z"]     # Number of zones
     gen = inputs["RESOURCES"]
+    VRE = inputs["VRE"]
     VRE_STOR = inputs["VRE_STOR"]
     VS_ELEC = !isempty(VRE_STOR) ? inputs["VS_ELEC"] : Vector{Int}[]
     ELECTROLYZER_ALL = !isempty(VS_ELEC) ? union(VS_ELEC, inputs["ELECTROLYZER"]) :
                        inputs["ELECTROLYZER"]
+
     cost_dict = Dict()
 
     cVar = value(EP[:eTotalCVarOut]) +
@@ -30,6 +32,7 @@ function write_costs_markets(path::AbstractString, inputs::Dict, setup::Dict, EP
            (!isempty(inputs["STOR_ASYMMETRIC"]) ? value(EP[:eTotalCFixCharge]) : 0.0)
 
     cFuel = value.(EP[:eTotalCFuelOut])
+    cost_dict["cCurtailment"] = !isempty(VRE) ? CostComponent(value(EP[:eTotalCurailmentCostVre]), Z) : CostComponent(0, Z)
 
     if !isempty(VRE_STOR)
         cFix += ((!isempty(inputs["VS_DC"]) ? value(EP[:eTotalCFixDC]) : 0.0) +
@@ -37,6 +40,7 @@ function write_costs_markets(path::AbstractString, inputs::Dict, setup::Dict, EP
                  (!isempty(inputs["VS_WIND"]) ? value(EP[:eTotalCFixWind]) : 0.0))
         cVar += ((!isempty(inputs["VS_SOLAR"]) ? value(EP[:eTotalCVarOutSolar]) : 0.0) +
                  (!isempty(inputs["VS_WIND"]) ? value(EP[:eTotalCVarOutWind]) : 0.0))
+        cost_dict["cCurtailment"].total_cost += value(EP[:eTotalCurailmentCostVreStore])
         if !isempty(inputs["VS_STOR"])
             cFix += ((!isempty(inputs["VS_STOR"]) ? value(EP[:eTotalCFixStor]) : 0.0) +
                      (!isempty(inputs["VS_ASYM_DC_CHARGE"]) ?
@@ -126,6 +130,7 @@ function write_costs_markets(path::AbstractString, inputs::Dict, setup::Dict, EP
 
     for z in 1:Z
         Y_ZONE = resources_in_zone_by_rid(gen, z)
+        VRE_ZONE = intersect(VRE, Y_ZONE)
         STOR_ALL_ZONE = intersect(inputs["STOR_ALL"], Y_ZONE)
         STOR_ASYMMETRIC_ZONE = intersect(inputs["STOR_ASYMMETRIC"], Y_ZONE)
         FLEX_ZONE = intersect(inputs["FLEX"], Y_ZONE)
@@ -141,7 +146,10 @@ function write_costs_markets(path::AbstractString, inputs::Dict, setup::Dict, EP
 
         cost_dict["cFuel"].zonal_cost[z] = sum(value.(EP[:ePlantCFuelOut][Y_ZONE, :]))
         cost_dict["cTotal"].zonal_cost[z] += sum(value.(EP[:ePlantCFuelOut][Y_ZONE, :]))
-
+        
+        if !isempty(VRE_ZONE)
+            cost_dict["cCurtailment"].zonal_cost[z] += sum(value.(EP[:eCurailmentCostVre][VRE_ZONE,:]))
+        end
         if !isempty(STOR_ALL_ZONE)
             eCVar_in = sum(value.(EP[:eCVar_in][STOR_ALL_ZONE, :]))
             cost_dict["cVar"].zonal_cost[z] += eCVar_in
@@ -200,8 +208,7 @@ function write_costs_markets(path::AbstractString, inputs::Dict, setup::Dict, EP
                 if !isempty(AC_DISCHARGE_ALL_ZONE_VRE_STOR)
                     eCFix_VRE_STOR += sum(value.(EP[:eCFixDischarge_AC][AC_DISCHARGE_ALL_ZONE_VRE_STOR]))
                 end
-                AC_CHARGE_ALL_ZONE_VRE_STOR = intersect(inputs["VS_ASYM_AC_CHARGE"],
-                    Y_ZONE_VRE_STOR)
+                AC_CHARGE_ALL_ZONE_VRE_STOR = intersect(inputs["VS_ASYM_AC_CHARGE"], Y_ZONE_VRE_STOR)
                 if !isempty(AC_CHARGE_ALL_ZONE_VRE_STOR)
                     eCFix_VRE_STOR += sum(value.(EP[:eCFixCharge_AC][AC_CHARGE_ALL_ZONE_VRE_STOR]))
                 end
@@ -231,6 +238,11 @@ function write_costs_markets(path::AbstractString, inputs::Dict, setup::Dict, EP
 
             # Total Added Costs
             cost_dict["cTotal"].zonal_cost[z] += (eCFix_VRE_STOR + eCVar_VRE_STOR)
+
+            # Curtailment cost
+            if !isempty(Y_ZONE_VRE_STOR)
+                cost_dict["cCurtailment"].zonal_cost[z] += sum(value.(EP[:eCurailmentCostVreStore][Y_ZONE_VRE_STOR,:]))
+            end
         end
 
         if setup["UCommit"] >= 1 && !isempty(COMMIT_ZONE)

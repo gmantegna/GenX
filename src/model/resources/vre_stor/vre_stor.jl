@@ -151,6 +151,9 @@ function vre_stor!(EP::Model, inputs::Dict, setup::Dict)
     # Grid Exports
     @expression(EP, eGridExport[y in VRE_STOR, t = 1:T], JuMP.AffExpr())
 
+    # Curtailment cost expression
+    @expression(EP, eCurailmentCostVreStore[g in VRE_STOR , t = 1:T], JuMP.AffExpr())
+
     ### COMPONENT MODULE CONSTRAINTS ###
 
     # Activate inverter module constraints
@@ -178,6 +181,8 @@ function vre_stor!(EP::Model, inputs::Dict, setup::Dict)
         elec_vre_stor!(EP, inputs, setup)
     end
 
+    @expression(EP, eTotalCurailmentCostVreStore, sum(eCurailmentCostVreStore[g, t] for t in 1:T, g in VRE_STOR))
+    add_to_expression!(EP[:eObj], eTotalCurailmentCostVreStore)  
     ### POLICIES AND POWER BALANCE ###
 
     # Energy Share Requirement
@@ -704,11 +709,8 @@ function solar_vre_stor!(EP::Model, inputs::Dict, setup::Dict)
     for g in SOLAR, t = 1:T
         EP[:eCurtailment][g,t] = ( EP[:eTotalCap_SOLAR][g] * inputs["pP_Max_Solar"][g, t] - 
                                     EP[:vP_SOLAR][g, t]) * by_rid(g, :etainverter)
+        EP[:eCurailmentCostVreStore][g, t] =  by_rid(g, :curtailment_cost_per_mwh) * EP[:eCurtailment][g,t] * inputs["omega"][t]                          
     end
-
-    @expression(EP, eCurailmentCostVS_Solar[g in SOLAR , t = 1:T], by_rid(g, :curtailment_cost_per_mwh) * EP[:eCurtailment][g,t] * inputs["omega"][t])
-    @expression(EP, eTotalCurailmentCostVS_Solar, sum(eCurailmentCostVS_Solar[g, t] for t in 1:T, g in SOLAR))
-    add_to_expression!(EP[:eObj], eTotalCurailmentCostVS_Solar)  
 end
 
 @doc raw"""
@@ -889,12 +891,8 @@ function wind_vre_stor!(EP::Model, inputs::Dict, setup::Dict)
     ### Calculate curtailment and curtailment cost for colocated wind sources 
     for g in WIND, t = 1:T
         EP[:eCurtailment][g,t] = (EP[:eTotalCap_WIND][g] * inputs["pP_Max_Wind"][g, t] - EP[:vP_WIND][g, t] )
-    end
-
-    @expression(EP, eCurailmentCostVS_Wind[g in WIND , t = 1:T], by_rid(g, :curtailment_cost_per_mwh) * EP[:eCurtailment][g,t] * inputs["omega"][t])
-    @expression(EP, eTotalCurailmentCostVS_Wind, sum(eCurailmentCostVS_Wind[g, t] for t in 1:T, g in WIND))
-    add_to_expression!(EP[:eObj], eTotalCurailmentCostVS_Wind)  
-    
+        EP[:eCurailmentCostVreStore][g, t] =  by_rid(g, :curtailment_cost_per_mwh) * EP[:eCurtailment][g,t] * inputs["omega"][t]                          
+    end 
 end
 
 @doc raw"""
