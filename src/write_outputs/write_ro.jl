@@ -107,8 +107,20 @@ function write_ro(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
         for i in fuels
             df_duals[!,"S_"*fuels] = dual.(EP[:cDualSfc][i,:]).data
         end
-    end   
+    end 
+    newdf = DataFrame()
+    if inputs["ro_settings"]["InvestmentCost"] == 1
+        newdf[!, :IC] = dual.(EP[:cDualSic]).data
+    end
+    if inputs["ro_settings"]["FixedOMCost"] == 1
+        newdf[!, :FX] = dual.(EP[:cDualSfxc]).data
+    end 
+    
+    CSV.write(joinpath(path, "ro_dual2.csv"), newdf)
+
     CSV.write(joinpath(path, "ro_dual.csv"), df_duals)
+
+
     
     return nothing
 end

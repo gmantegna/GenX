@@ -17,20 +17,24 @@ function ro!(EP::Model, inputs::Dict, setup::Dict)
    
     # define dual variables
     @variable(EP, p >= 0)
-
     @expression(EP, eRODualObj, Gamma * p)
+    
+    println("inputs[ro_settings]")
     if inputs["ro_settings"]["MarketBuyPrices"] == 1
         ro_markets_buy!(EP, inputs, setup)
     end
-
     if inputs["ro_settings"]["MarketSellPrices"] == 1
         ro_markets_sell!(EP, inputs, setup)
     end
-
     if inputs["ro_settings"]["FuelsCost"] == 1
         ro_fuels_cost!(EP, inputs, setup)
     end   
-    
+    if inputs["ro_settings"]["InvestmentCost"] == 1
+        ro_investment_cost!(EP, inputs, setup)
+    end
+    if inputs["ro_settings"]["FixedOMCost"] == 1
+        ro_investment_cost!(EP, inputs, setup)
+    end 
     # Add the dual of the maximization subproblem to objective function
     EP[:eObj] += eRODualObj
 end
@@ -97,4 +101,55 @@ function ro_fuels_cost!(EP::Model, inputs::Dict, setup::Dict)
     @constraint(EP, cDualSfc[f in Fuels, t = 1:T], qfc[f, t] + EP[:p] >= Delta_FuelCost[f,t] * sum(EP[:vFuel][y,t] + EP[:vStartFuel][y, t] for y in resources_by_fuel[f]))
 
     add_to_expression!(EP[:eRODualObj], sum(qfc[f, t] for t in 1:T, f in Fuels))
+end
+
+
+function ro_investment_cost!(EP::Model, inputs::Dict, setup::Dict)
+    println("ro investment cost")
+    G = inputs["G"]
+    gen = inputs["RESOURCES"]
+    Delta_InvestmentCost = inputs["delta_investment_costs"]
+    NEW_CAP = inputs["NEW_CAP"] # Set of all resources eligible for new capacity
+    COMMIT = inputs["COMMIT"]
+
+    by_rid(rid, sym) = by_rid_res(rid, sym, gen)
+    
+    @expression(EP, eCapacity[y in 1:G],
+    if y in NEW_CAP # Resources eligible for new capacity (Non-Retrofit)
+        if y in COMMIT
+            cap_size(gen[y]) * EP[:vCAP][y] 
+        else
+            EP[:vCAP][y] 
+        end
+    end)
+
+    # define dual variables for fuel cost
+    @variable(EP, qic[y in 1:G] >= 0)
+
+    # Constraints on the dual variables for the RO formulation
+    @constraint(EP, cDualSic[y in 1:G], qic[y] + EP[:p] >=
+     Delta_InvestmentCost[by_rid(y, :resource)] * EP[:eCapacity][y])
+
+    add_to_expression!(EP[:eRODualObj], sum(qic[y] for y in 1:G))
+    return nothing
+end
+
+function ro_fixed_om_cost!(EP::Model, inputs::Dict, setup::Dict)
+    println("ro fixed om cost")
+
+    G = inputs["G"]
+    gen = inputs["RESOURCES"]
+    Delta_FixedOMCost = inputs["delta_fixed_om_costs"]
+
+    by_rid(rid, sym) = by_rid_res(rid, sym, gen)
+    
+    # define dual variables for fuel cost
+    @variable(EP, qfxc[y in 1:G] >= 0)
+
+    # Constraints on the dual variables for the RO formulation
+    @constraint(EP, cDualSfxc[y in 1:G], qfxc[y] + EP[:p] >=
+    Delta_FixedOMCost[by_rid(y, :resource)] * EP[:eTotalCap][y])
+
+    add_to_expression!(EP[:eRODualObj], sum(qfxc[y] for y in 1:G))
+    return nothing
 end

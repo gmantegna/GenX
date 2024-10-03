@@ -1,6 +1,6 @@
 function default_ro_settings()
     Dict{Any, Any}(
-        "BudgetOfUncertainty": 0.2, # percentage of uncertain parameters that can take their worst case value, -1 if we want to apply budget for each variable separatly
+        "BudgetOfUncertainty"=> 0.2, # percentage of uncertain parameters that can take their worst case value, -1 if we want to apply budget for each variable separatly
         "BudgetOfUncertainty_MarketBuyPrices" => -1,
         "BudgetOfUncertainty_MarketSellPrices" => -1,
         "BudgetOfUncertainty_FuelPrices" => -1,
@@ -116,27 +116,43 @@ end
 
 function load_investment_cost_bound_data!(setup::Dict, path::AbstractString, inputs::Dict)
     filename = "Investment_cost_bounds.csv"
-    df_costs = load_dataframe(joinpath(path, filename))
+    df_costs_bounds = load_dataframe(joinpath(path, filename))
     
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
-    df_costs[!,:Inv_Cost_per_MWyr_bounds] ./= scale_factor
-
+    df_costs_bounds[!,:Inv_Cost_per_MWyr_bounds] ./= scale_factor
     
-    # Fuel delta costs for each fuel type
-    existing_resources = df_costs.Resource
-    for f in inputs["Resource"]
+    # delta investment costs for each fuel type
+    existing_resources = df_costs_bounds.Resource
+    for f in inputs["RESOURCE_NAMES"]
         if f ∉ existing_resources
-            push!(df_costs, f, 0)
+            push!(df_costs_bounds, (f, 0))
         end
-    end
+    end 
     
-    fuel_delta_costs = Containers.DenseAxisArray(transpose(Matrix(df_fuels[1:end, 2:end])), inputs["fuels"],1:nrow(df_fuels))
+    inputs["count_uncertain_param"] += inputs["G"]
+    inputs["delta_investment_costs"] = Dict(df_costs_bounds[!,:Resource] .=> df_costs_bounds[!,:Inv_Cost_per_MWyr_bounds])
+
+    println(filename * " Successfully Read!")
+end
+
+
+function load_fixed_om_cost_bound_data!(setup::Dict, path::AbstractString, inputs::Dict)
+    filename = "Fixed_OM_cost_bounds.csv"
+    df_costs_bounds = load_dataframe(joinpath(path, filename))
     
-    fuel_delta_costs /= scale_factor
-    ro_fuels = sum(all(!iszero, fuel_delta_costs[f,:]) for f in axes(fuel_delta_costs, 1))
+    scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
+    df_costs_bounds[!,:Fixed_OM_Cost_per_Mwyr_bound] ./= scale_factor
     
-    inputs["count_uncertain_param"] += ro_fuels * inputs["T"]
-    inputs["fuel_delta_costs"] = fuel_delta_costs
+    # delta investment costs for each fuel type
+    existing_resources = df_costs_bounds.Resource
+    for f in inputs["RESOURCE_NAMES"]
+        if f ∉ existing_resources
+            push!(df_costs_bounds, (f, 0))
+        end
+    end  
+    
+    inputs["count_uncertain_param"] += inputs["G"]
+    inputs["delta_fixed_om_costs"] = Dict(df_costs_bounds[!,:Resource] .=> df_costs_bounds[!,:Fixed_OM_Cost_per_Mwyr_bound])
 
     println(filename * " Successfully Read!")
 end
@@ -155,5 +171,13 @@ function load_ro_data!(setup::Dict, path::AbstractString, inputs::Dict)
 
     if inputs["ro_settings"]["FuelsCost"] == 1
         load_fuel_bound_data!(setup, path, inputs)
+    end
+    
+    if inputs["ro_settings"]["InvestmentCost"] == 1
+        load_investment_cost_bound_data!(setup, path, inputs)
+    end
+
+    if inputs["ro_settings"]["FixedOMCost"] == 1
+        load_fixed_om_cost_bound_data!(setup, path, inputs)
     end
 end
