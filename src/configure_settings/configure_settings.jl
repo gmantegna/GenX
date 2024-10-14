@@ -39,7 +39,7 @@ function default_settings()
         "ToolsFolder" => "tools",
         "ObjScale" => 1,
         "PlanningReserveMargin" => 0,       # enable Reliability Pricing Model using ELCC validate_multistage_settings
-        "Markets" => 1,
+        "Markets" => 0,
         "RO" => 0                           # enable robust optimization for certain costs
         )
 end

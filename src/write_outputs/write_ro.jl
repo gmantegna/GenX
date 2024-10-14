@@ -72,6 +72,40 @@ function write_ro_market_sell(path::AbstractString, inputs::Dict, setup::Dict, E
     CSV.write(joinpath(path, "ro_market_sell.csv"), dftranspose(dfmarkets, false), writeheader = false)
 end
 
+
+
+function write_ro_investment_cost(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+    G = inputs["G"]
+    gen = inputs["RESOURCES"]
+    by_rid(rid, sym) = by_rid_res(rid, sym, gen)
+
+    df_cost = DataFrame(Resource = inputs["RESOURCE_NAMES"])
+    gen = inputs["RESOURCES"]
+    df_cost[!, :StartCapacity] = [existing_cap_mw(gen[i]) for i in 1:G]
+    df_cost[!, :EndCapacity] = value.(EP[:eTotalCap])
+    df_cost[!, :InvestmentCost]= [inv_cost_per_mwyr(gen[i]) for i in 1:G]
+    df_cost[!, :DeltaInvestmentCost]= [inputs["delta_investment_costs"][by_rid(i, :resource)] for i in 1:G]
+    df_cost[!, :SIC] = dual.(EP[:cDualSic])
+   
+    CSV.write(joinpath(path, "ro_investment_cost.csv"), df_cost)
+end
+
+function write_ro_fixed_om_cost(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+    G = inputs["G"]
+    gen = inputs["RESOURCES"]
+    by_rid(rid, sym) = by_rid_res(rid, sym, gen)
+
+    df_cost = DataFrame(Resource = inputs["RESOURCE_NAMES"])
+    gen = inputs["RESOURCES"]
+    df_cost[!, :StartCapacity] = [existing_cap_mw(gen[i]) for i in 1:G]
+    df_cost[!, :EndCapacity] = value.(EP[:eTotalCap])
+    df_cost[!, :FixedOMCost]= [fixed_om_cost_per_mwyr(gen[i]) for i in 1:G]
+    df_cost[!, :DeltaFixedOMCost]= [inputs["delta_fixed_om_costs"][by_rid(i, :resource)] for i in 1:G]
+    df_cost[!, :SFX] = dual.(EP[:cDualSfxc])
+  
+    CSV.write(joinpath(path, "ro_fixed_om_cost.csv"), df_cost)
+end
+
 function write_ro(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
     df_duals = DataFrame()
     T = inputs["T"]
@@ -79,9 +113,10 @@ function write_ro(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
     if inputs["ro_settings"]["MarketBuyPrices"] == 1
         Z = inputs["Z"] 
         MZ = inputs["MZ"]
+        write_ro_market_buy(path, inputs, setup, EP)
+
         for i in 1:Z
             if i in MZ
-                write_ro_market_buy(path, inputs, setup, EP)
                 df_duals[!, "S_MarketBuy_$(i)"] =  vec(dual.(EP[:cDualSmb][i,:]).data)
             else
                 df_duals[!, "S_MarketBuy_$(i)"] = zeros(T)
@@ -92,9 +127,10 @@ function write_ro(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
     if inputs["ro_settings"]["MarketSellPrices"] == 1
         Z = inputs["Z"] 
         MZ = inputs["MZ"]
+        write_ro_market_sell(path, inputs, setup, EP)
+
         for i in Z
             if i in MZ
-                write_ro_market_sell(path, inputs, setup, EP)
                 df_duals[!, "S_MarketSell_$(i)"] = vec(dual.(EP[:cDualSms][i,:]).data)
             else
                 df_duals[!, "S_MarketSell_$(i)"] = zeros(T)
@@ -105,22 +141,20 @@ function write_ro(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
     if inputs["ro_settings"]["FuelsCost"] == 1
         fuels = inputs["fuels"]
         for i in fuels
-            df_duals[!,"S_"*fuels] = dual.(EP[:cDualSfc][i,:]).data
+            df_duals[!,"S_"*i] = dual.(EP[:cDualSfc][i,:]).data
         end
     end 
-    newdf = DataFrame()
     if inputs["ro_settings"]["InvestmentCost"] == 1
-        newdf[!, :IC] = dual.(EP[:cDualSic]).data
+        write_ro_investment_cost(path, inputs, setup, EP)
+        sic_col = dual.(EP[:cDualSic])
+        df_duals[!, :S_IC] = [sic_col; fill(missing, nrow(df_duals) - length(sic_col))]
     end
     if inputs["ro_settings"]["FixedOMCost"] == 1
-        newdf[!, :FX] = dual.(EP[:cDualSfxc]).data
+        write_ro_fixed_om_cost(path, inputs, setup, EP)
+        sfxc_col = dual.(EP[:cDualSfxc])
+        df_duals[!, :S_FX] = [sfxc_col; fill(missing, nrow(df_duals) - length(sfxc_col))]
     end 
     
-    CSV.write(joinpath(path, "ro_dual2.csv"), newdf)
-
-    CSV.write(joinpath(path, "ro_dual.csv"), df_duals)
-
-
-    
+    CSV.write(joinpath(path, "ro_dual.csv"), df_duals)  
     return nothing
 end

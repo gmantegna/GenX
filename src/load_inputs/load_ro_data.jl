@@ -18,10 +18,10 @@ function load_ro_settings(setup::Dict, path::AbstractString, inputs::Dict)
     println("Configuring RO Settings")
     filename = "ro_settings.yml"
     ro_settings = YAML.load(open(joinpath(path, filename)))
-
-    merge!(default_ro_settings(), ro_settings)
-
-    inputs["ro_settings"] = ro_settings
+    new_ro_settings = default_ro_settings()
+    merge!(new_ro_settings, ro_settings)
+    println(new_ro_settings)
+    inputs["ro_settings"] = new_ro_settings
     inputs["count_uncertain_param"] = 0
 end
 
@@ -173,6 +173,7 @@ function load_ro_data!(setup::Dict, path::AbstractString, inputs::Dict)
         load_fuel_bound_data!(setup, path, inputs)
     end
     
+    println(inputs["ro_settings"])
     if inputs["ro_settings"]["InvestmentCost"] == 1
         load_investment_cost_bound_data!(setup, path, inputs)
     end

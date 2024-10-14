@@ -45,15 +45,15 @@ ExtremePeriods:
       Integral:
         Min: 0
         Max: 0
-UseExtremePeriods: 1
-MinPeriods: 5
-MaxPeriods: 5
+UseExtremePeriods: 1 # include outliers like extreme demand minimum solar or so
+MinPeriods: 12 # we want 12 period a week from each month [But does it really take consecutive time points to represent month
+MaxPeriods: 12
 DemandWeight: 1
-ClusterFuelPrices: 0
+ClusterFuelPrices: 1
 nReps: 100
 Threshold: 0.05
-TimestepsPerRepPeriod: 24
+TimestepsPerRepPeriod: 168 # The length of each representitive period in hours? 24 hours for 1 day, 168 for 1 week
 IterateMethod: "cluster"
-ScalingMethod: "S"
-ClusterMethod: "kmeans"
+ScalingMethod: "S" # standardize(mean 0, variance 1) or normalized[0, 1]
+ClusterMethod: "kmedoids" # or kmeans
 WeightTotal: 8760

@@ -33,7 +33,7 @@ function ro!(EP::Model, inputs::Dict, setup::Dict)
         ro_investment_cost!(EP, inputs, setup)
     end
     if inputs["ro_settings"]["FixedOMCost"] == 1
-        ro_investment_cost!(EP, inputs, setup)
+        ro_fixed_om_cost!(EP, inputs, setup)
     end 
     # Add the dual of the maximization subproblem to objective function
     EP[:eObj] += eRODualObj
@@ -121,6 +121,8 @@ function ro_investment_cost!(EP::Model, inputs::Dict, setup::Dict)
         else
             EP[:vCAP][y] 
         end
+    else
+        EP[:vZERO]
     end)
 
     # define dual variables for fuel cost
