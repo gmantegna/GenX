@@ -342,8 +342,8 @@ function vre_stor!(EP::Model, inputs::Dict, setup::Dict)
         EP[:eChargeDischargeMaxDC][y,
             t]<=by_rid(y, :power_to_energy_dc) * EP[:eTotalCap_STOR][y])
     @constraint(EP, cChargeDischargeMaxAC[y in inputs["VS_SYM_AC"], t = 1:T],
-        EP[:eChargeDischargeMaxAC][y,
-            t]<=by_rid(y, :power_to_energy_ac) * EP[:eTotalCap_STOR][y])
+        EP[:eChargeDischargeMaxAC][y, t] <= 
+        by_rid(y, :power_to_energy_ac) * EP[:eTotalCap_STOR][y])
 
     # Constraint 7: Asymmetric Storage Resources (implemented in main module due to potential capacity reserve margin and operating reserve constraints)
     @constraint(EP,

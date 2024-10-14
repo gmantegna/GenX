@@ -46,8 +46,8 @@ ExtremePeriods:
         Min: 0
         Max: 0
 UseExtremePeriods: 1
-MinPeriods: 5
-MaxPeriods: 5
+MinPeriods: 12
+MaxPeriods: 12
 DemandWeight: 1
 ClusterFuelPrices: 0
 nReps: 100

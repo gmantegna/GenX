@@ -1,0 +1,11 @@
+Resource,Zone,Lower_bound,Upper_bound,Parameter,Group,p_steps,total_num_trajectory,num_trajectory,len_design_mat,policy
+MA_natural_gas_combined_cycle,1,-10,10,Inv_Cost_per_MWyr,ng,20,3,3,15,reference
+CT_natural_gas_combined_cycle,2,-10,10,Inv_Cost_per_MWyr,ng,20,,,,
+ME_natural_gas_combined_cycle,3,-10,10,Inv_Cost_per_MWyr,ng,20,,,,
+MA_solar_pv,1,-10,10,Inv_Cost_per_MWyr,solar,20,,,,
+CT_onshore_wind,2,-10,10,Inv_Cost_per_MWyr,wind,20,,,,
+CT_solar_pv,2,-10,10,Inv_Cost_per_MWyr,wind,21,,,,
+ME_onshore_wind,3,-10,10,Inv_Cost_per_MWyr,wind,22,,,,
+MA_battery,1,-10,10,Inv_Cost_per_MWyr,wind,23,,,,
+CT_battery,2,-10,10,Inv_Cost_per_MWyr,wind,24,,,,
+ME_battery,3,-10,10,Inv_Cost_per_MWyr,wind,25,,,,
