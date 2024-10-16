@@ -65,8 +65,8 @@ function parse_data(myinputs)
     var_col_names = []
     for r in 1:length(RESOURCE_ZONES)
         if occursin("PV", RESOURCE_ZONES[r]) || occursin("pv", RESOURCE_ZONES[r]) ||
-           occursin("Pv", RESOURCE_ZONES[r]) || occursin("Solar", RESOURCE_ZONES[r]) ||
-           occursin("SOLAR", RESOURCE_ZONES[r]) || occursin("solar", RESOURCE_ZONES[r])
+            occursin("Pv", RESOURCE_ZONES[r]) || occursin("Solar", RESOURCE_ZONES[r]) ||
+            occursin("SOLAR", RESOURCE_ZONES[r]) || occursin("solar", RESOURCE_ZONES[r])
             push!(solar_col_names, RESOURCE_ZONES[r])
             push!(solar_profiles, myinputs["pP_Max"][r, :])
         elseif occursin("Wind", RESOURCE_ZONES[r]) || occursin("WIND", RESOURCE_ZONES[r]) ||
