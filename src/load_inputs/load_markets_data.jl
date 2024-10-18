@@ -17,7 +17,16 @@ function load_zones_markets!(setup::Dict, path::AbstractString, inputs::Dict)
         row.Zone => row.Market_Max_Sell 
         for row in eachrow(zones_markets) 
         if row.Market == 1   )
-            
+
+    LZ_Markets = Dict(i => [] for i in 1: inputs["Z"])
+    for l in 1:inputs["L"]
+        z_source = findfirst(x -> x == 1, inputs["pNet_Map"][l, :])
+        z_sink = findfirst(x -> x == -1, inputs["pNet_Map"][l, :])
+        if z_source in inputs["MZ"]
+            push!(LZ_Markets[z_sink], z_source)
+        end    
+    end
+    inputs["LZ_Markets"] = LZ_Markets
     println(filename * " Successfully Read!")
 end
 
