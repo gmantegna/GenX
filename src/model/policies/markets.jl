@@ -13,9 +13,10 @@ function markets!(EP::Model, inputs::Dict, setup::Dict)
     @variable(EP, vMBUY[m in MZ, t = 1:T] >= 0);   
     @variable(EP, vMSELL[m in MZ, t = 1:T] >= 0);
 
-    # # 3- Amount of energy sold/exported by each zone z at time t to the associated market
-    @constraint(EP, cMaxSell[m in MZ, t = 1:T], vMSELL[m,t] <= EP[:eTotalGenerationByZone][1,t])
-    
+    # # 3- Amount of energy sold/exported by each zone z at time t to the associated market   
+    LZ = [k for (k, v) in inputs["LZ_Markets"] if !isempty(v)]
+    @constraint(EP, cMaxSell[z in LZ, t = 1:T], EP[:eTotalGenerationByZone][z,t] >= sum(vMSELL[m,t] for m in inputs["LZ_Markets"][z] ) )
+
     ### Constraints ###
     # 1. Maximum energy to buy from market or sell to market
     @constraint(EP, cMaxMarketBuy[m in MZ, t = 1:T], vMBUY[m, t] <= inputs["Mrkt_Max_Buy"][m] ) 
