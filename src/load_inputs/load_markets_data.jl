@@ -18,6 +18,11 @@ function load_zones_markets!(setup::Dict, path::AbstractString, inputs::Dict)
         for row in eachrow(zones_markets) 
         if row.Market == 1   )
 
+    inputs["Mrkt_CO2_tons_MWh"] = Dict(
+        row.Zone => row.CO2_tons_MWh 
+        for row in eachrow(zones_markets) 
+        if row.Market == 1   )        
+
     LZ_Markets = Dict(i => [] for i in 1: inputs["Z"])
     for l in 1:inputs["L"]
         z_source = findfirst(x -> x == 1, inputs["pNet_Map"][l, :])

@@ -33,6 +33,12 @@ function markets!(EP::Model, inputs::Dict, setup::Dict)
     # Add market purchased and sold energy to power balance expression
     add_similar_to_expression!(EP[:ePowerBalance], eZonalNetMarkets)
 
+    @expression(EP, eMPurshaseEmissions[m in 1:Z, t = 1:T], 
+    m in MZ ? vMBUY[m,t] * inputs["Mrkt_CO2_tons_MWh"][m] : 0.0)
+    
+    for z in 1:Z, t = 1:T
+        add_to_expression!(EP[:eTotalEmissionsByZone][z,t], eMPurshaseEmissions[z, t] )
+    end
 
     #### Objective function   
     Market_Buy_Prices = inputs["Market_BuyPrices"]

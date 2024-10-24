@@ -31,7 +31,7 @@ function load_co2_cap!(setup::Dict, path::AbstractString, inputs::Dict)
         inputs["dfMaxCO2"] = mat * 1e6 / scale_factor
 
     elseif setup["CO2Cap"] == 2 || setup["CO2Cap"] == 3
-        #  CO2 emissions rate applied per MWh
+        # CO2 emissions rate applied per MWh
         mat = extract_matrix_from_dataframe(df, "CO_2_Max_tons_MWh")
         # no scale_factor is needed since this is a ratio
         inputs["dfMaxCO2Rate"] = mat

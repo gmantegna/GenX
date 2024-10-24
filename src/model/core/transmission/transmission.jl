@@ -146,6 +146,7 @@ function transmission!(EP::Model, inputs::Dict, setup::Dict)
         eLosses_By_Zone[z = 1:Z, t = 1:T],
         sum(abs(inputs["pNet_Map"][l, z]) * (1 / 2) * vTLOSS[l, t] for l in LOSS_LINES))
 
+
     ## Power Balance Expressions ##
 
     @expression(EP, ePowerBalanceNetExportFlows[t = 1:T, z = 1:Z],

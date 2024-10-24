@@ -302,7 +302,8 @@ function endogenous_retirement_charge!(EP::Model,
     @expression(EP,
         eNewCapTrackCharge[y in RET_CAP_CHARGE],
         sum(EP[:vCAPTRACKCHARGE][y, p]
-        for p in 1:get_retirement_stage(cur_stage, lifetime(gen[y]), stage_lens)))
+        for p in 1:
+            (cur_stage, lifetime(gen[y]), stage_lens)))
     @expression(EP,
         eMinRetCapTrackCharge[y in RET_CAP_CHARGE],
         cum_min_retired_charge_cap_mw(gen[y]))
@@ -888,7 +889,8 @@ function endogenous_retirement_vre_stor_discharge_ac!(EP::Model,
     @expression(EP,
         eNewCapTrackDischargeAC[y in RET_CAP_DISCHARGE_AC],
         sum(EP[:vCAPTRACKDISCHARGEAC][y, p]
-        for p in 1:get_retirement_stage(cur_stage, lifetime(gen[y]), stage_lens)))
+        for p in 1:
+            (cur_stage, lifetime(gen[y]), stage_lens)))
     @expression(EP,
         eMinRetCapTrackDischargeAC[y in RET_CAP_DISCHARGE_AC],
         cum_min_retired_cap_discharge_ac_mw(gen[y]))

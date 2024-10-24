@@ -97,6 +97,9 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
     # Total Generation from all resources
     create_empty_expression!(EP, :eTotalGenerationByZone, (Z, T))
 
+    # Total CO2 emissions by zone (fuel burning emissions + market emissions)
+    create_empty_expression!(EP, :eTotalEmissionsByZone, (Z, T))
+
     # Curtailment from all resources
     # if resource is a renewable resource it is equal MaxCapacity-vP, otherwise = 0
     G = inputs["G"]
@@ -214,6 +217,10 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
         electrolyzer!(EP, inputs, setup)
     end
     # Policies
+    # Energy trading with markets
+    if setup["Markets"] == 1
+        markets!(EP, inputs, setup)
+    end
 
     if setup["OperationalReserves"] > 0
         operational_reserves_constraints!(EP, inputs)
@@ -266,12 +273,9 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
 		planning_reserve_margin!(EP, inputs, setup)
 	end
 
-    # Energy trading with markets
-	if setup["Markets"] == 1
-		markets!(EP, inputs, setup)
-	end
+   
 
-     
+    
     # Apply robust optimization on the scaled objective function?
 	if setup["RO"] == 1
         ro!(EP, inputs, setup)
