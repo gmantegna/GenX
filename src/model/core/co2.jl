@@ -139,7 +139,8 @@ function co2!(EP::Model, inputs::Dict)
         sum(eEmissionsByPlant[y, t] for y in resources_in_zone_by_rid(gen, z)))
 
     for z in 1:Z, t = 1:T
-        add_to_expression!(EP[:eTotalEmissionsByZone][z,t], eEmissionsByPlant[z, t] )
+        add_to_expression!(EP[:eTotalEmissionsByZone][z,t], eEmissionsByZone[z, t] )
     end
+
     return EP
 end

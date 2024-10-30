@@ -70,7 +70,7 @@ function co2_cap!(EP::Model, inputs::Dict, setup::Dict)
 
     SEG = inputs["SEG"]  # Number of lines
     T = inputs["T"]     # Number of time steps (hours)
-
+    Z = inputs["Z"]
     ### Variable ###
     # if input files are present, add CO2 cap slack variables
     if haskey(inputs, "dfCO2Cap_slack")
@@ -121,4 +121,5 @@ function co2_cap!(EP::Model, inputs::Dict, setup::Dict)
                 EP[:eGenerationByZone][z, t]
             for t in 1:T, z in findall(x -> x == 1, inputs["dfCO2CapZones"][:, cap])))
     end
+
 end

@@ -316,4 +316,17 @@ function transmission!(EP::Model, inputs::Dict, setup::Dict)
             for z in findall(x -> x > 0, inputs["dfESR"][:, ESR])))
         add_similar_to_expression!(EP[:eESR], -eESRTran)
     end
+
+    # # CO2 emissions from energy transmissions
+    # @variable(EP, vTRANS_EMISSIONS[l in 1:L, t = 1:T] >= 0)
+    # @constraint(EP, eTransmissionEmissions[l in 1:L, t = 1:T], vTRANS_EMISSIONS[l, t] >= inputs["CO2_tons_MWh"][l] * vFLOW[l, t] )
+    
+    # # add emission cost to the zone where the line start
+    # for l in 1:L, t = 1:T
+    #     z = findall(isequal(1), inputs["pNet_Map"][l,:])
+    #     add_term_to_expression!(EP[:eTotalEmissionsByZone][z,t], vTRANS_EMISSIONS[l, t] )
+    # end
+
+    # add_to_expression!(EP[:eObj], sum(vTRANS_EMISSIONS[l,t] * 0.0001 for l in 1:L, t = 1:T))
+
 end

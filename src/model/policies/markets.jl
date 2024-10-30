@@ -6,12 +6,14 @@ function markets!(EP::Model, inputs::Dict, setup::Dict)
     T = inputs["T"]     # Number of time steps
     MZ = inputs["MZ"]     # Number of markets
     Z = inputs["Z"]
+    ML = inputs["Market_Line"]
    # generators_markets = inputs["Generator_Market"]
 
     ### Variables ###
     # 1- Amount of energy purchased/imported by each zone z at time t from the associated market
     @variable(EP, vMBUY[m in MZ, t = 1:T] >= 0);   
     @variable(EP, vMSELL[m in MZ, t = 1:T] >= 0);
+    @variable(EP, vMB_ACTIVE[m in MZ, t = 1:T], Bin)
 
     # # 3- Amount of energy sold/exported by each zone z at time t to the associated market   
     LZ = [k for (k, v) in inputs["LZ_Markets"] if !isempty(v)]
@@ -19,8 +21,8 @@ function markets!(EP::Model, inputs::Dict, setup::Dict)
 
     ### Constraints ###
     # 1. Maximum energy to buy from market or sell to market
-    @constraint(EP, cMaxMarketBuy[m in MZ, t = 1:T], vMBUY[m, t] <= inputs["Mrkt_Max_Buy"][m] ) 
-    @constraint(EP, cMaxMarketSell_1[m in MZ, t = 1:T], vMSELL[m, t] <= inputs["Mrkt_Max_Sell"][m] )
+    @constraint(EP, cMaxMarketBuy[m in MZ, t = 1:T], vMBUY[m, t] <= inputs["Mrkt_Max_Buy"][m] * vMB_ACTIVE[m,t]) 
+    @constraint(EP, cMaxMarketSell[m in MZ, t = 1:T], vMSELL[m, t] <= inputs["Mrkt_Max_Sell"][m] * (1 - vMB_ACTIVE[m,t]) )
     
     # 4. Power balance constraint       
     @expression(EP, eZonalNetMarkets[t = 1:T, z =1:Z], 
@@ -33,12 +35,13 @@ function markets!(EP::Model, inputs::Dict, setup::Dict)
     # Add market purchased and sold energy to power balance expression
     add_similar_to_expression!(EP[:ePowerBalance], eZonalNetMarkets)
 
-    @expression(EP, eMPurshaseEmissions[m in 1:Z, t = 1:T], 
-    m in MZ ? vMBUY[m,t] * inputs["Mrkt_CO2_tons_MWh"][m] : 0.0)
-    
-    for z in 1:Z, t = 1:T
-        add_to_expression!(EP[:eTotalEmissionsByZone][z,t], eMPurshaseEmissions[z, t] )
+    # CO2 emissions from market purchased energy
+    # add emission cost to the zone where the line start
+    for m in MZ, t = 1:T
+        add_term_to_expression!(EP[:eTotalEmissionsByZone][m,t], inputs["CO2_tons_MWh"][ML[m], t] * vMBUY[m,t] )
     end
+
+    # add_to_expression!(EP[:eObj], sum(vTRANS_EMISSIONS[l,t] * 0.0001 for l in 1:L, t = 1:T))
 
     #### Objective function   
     Market_Buy_Prices = inputs["Market_BuyPrices"]

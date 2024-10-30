@@ -8,6 +8,16 @@ function load_zones_markets!(setup::Dict, path::AbstractString, inputs::Dict)
     filename = "Zones_markets.csv"
     zones_markets = load_dataframe(joinpath(path, filename))    
     inputs["MZ"] = findall(zones_markets.Market .== 1)
+
+    Market_Line = Dict()
+    for l in 1:inputs["L"] 
+        if findfirst(isequal(1), inputs["pNet_Map"][l,:]) in inputs["MZ"]
+            Market_Line[findfirst(isequal(1), inputs["pNet_Map"][l,:])] = l
+        end
+    end
+    inputs["Market_Line"] = Market_Line
+    inputs["MZ"] = collect(keys(inputs["Market_Line"]))
+
     inputs["Mrkt_Max_Buy"] = Dict(
         row.Zone => row.Market_Max_Buy 
         for row in eachrow(zones_markets) 
@@ -17,11 +27,6 @@ function load_zones_markets!(setup::Dict, path::AbstractString, inputs::Dict)
         row.Zone => row.Market_Max_Sell 
         for row in eachrow(zones_markets) 
         if row.Market == 1   )
-
-    inputs["Mrkt_CO2_tons_MWh"] = Dict(
-        row.Zone => row.CO2_tons_MWh 
-        for row in eachrow(zones_markets) 
-        if row.Market == 1   )        
 
     LZ_Markets = Dict(i => [] for i in 1: inputs["Z"])
     for l in 1:inputs["L"]

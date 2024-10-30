@@ -24,6 +24,7 @@ function load_inputs(setup::Dict, path::AbstractString)
     # Read input data about power network topology, operating and expansion attributes
     if isfile(joinpath(system_path, "Network.csv"))
         network_var = load_network_data!(setup, system_path, inputs)
+        load_network_emissions_data!(setup, system_path, inputs)
     else
         inputs["Z"] = 1
         inputs["L"] = 0
