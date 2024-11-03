@@ -1,0 +1,8 @@
+,Network_zones,CO_2_Max_Mtons_1,CO_2_Cap_Zone_1
+BANC,z1,25,1
+CAISO,z2,0,1
+CAISO_NW_Hydro,z3,0,1
+IID,z4,0,1
+LDWP,z5,0,1
+NW,z6,0,1
+SW,z7,0,1
