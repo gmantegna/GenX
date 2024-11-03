@@ -11,6 +11,8 @@ function write_subsidy_revenue(path::AbstractString, inputs::Dict, setup::Dict, 
     rid = resource_id.(gen)
 
     G = inputs["G"]
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
 
     dfSubRevenue = DataFrame(Region = regions,
         Resource = inputs["RESOURCE_NAMES"],

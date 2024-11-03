@@ -8,13 +8,15 @@ function write_power(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
     zones = zone_id.(gen)
 
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     T = inputs["T"]     # Number of time steps (hours)
 
     # Power injected by each resource in each time step
-    dfPower = DataFrame(Resource = inputs["RESOURCE_NAMES"],
-        Zone = zones,
-        AnnualSum = Array{Union{Missing, Float64}}(undef, G))
-    power = value.(EP[:vP])
+    dfPower = DataFrame(Resource = inputs["RESOURCE_NAMES"][generators],
+        Zone = zones[generators],
+        AnnualSum = Array{Union{Missing, Float64}}(undef, length(generators)))
+    power = value.(EP[:vP]).data
     if setup["ParameterScale"] == 1
         power *= ModelScalingFactor
     end

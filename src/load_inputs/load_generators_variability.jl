@@ -12,8 +12,10 @@ function load_generators_variability!(setup::Dict, path::AbstractString, inputs:
 
     filename = "Generators_variability.csv"
     gen_var = load_dataframe(joinpath(my_dir, filename))
-
-    all_resources = inputs["RESOURCE_NAMES"]
+    
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:inputs["G"]),assets)
+    all_resources = inputs["RESOURCE_NAMES"][generators]
 
     existing_variability = names(gen_var)
     for r in all_resources
@@ -28,7 +30,7 @@ function load_generators_variability!(setup::Dict, path::AbstractString, inputs:
 
     # Maximum power output and variability of each energy resource
     inputs["pP_Max"] = transpose(Matrix{Float64}(gen_var[1:inputs["T"],
-        2:(inputs["G"] + 1)]))
+        2:(length(generators) + 1)]))
 
     println(filename * " Successfully Read!")
 end

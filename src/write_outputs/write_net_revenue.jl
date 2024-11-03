@@ -18,15 +18,18 @@ function write_net_revenue(path::AbstractString,
         dfVreStor::DataFrame,
         dfOpRegRevenue::DataFrame,
         dfOpRsvRevenue::DataFrame)
-    gen = inputs["RESOURCES"]
+
+    G = inputs["G"]     # Number of generators
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
+    COMMIT = inputs["COMMIT"]# Thermal units for unit commitment
+    STOR_ALL = inputs["STOR_ALL"]
+    gen = inputs["RESOURCES"][generators]
+
     zones = zone_id.(gen)
     regions = region.(gen)
     clusters = cluster.(gen)
     rid = resource_id.(gen)
-
-    G = inputs["G"]     # Number of generators
-    COMMIT = inputs["COMMIT"]# Thermal units for unit commitment
-    STOR_ALL = inputs["STOR_ALL"]
 
     if setup["OperationalReserves"] >= 1
         RSV = inputs["RSV"]# Generators contributing to operating reserves
@@ -50,16 +53,16 @@ function write_net_revenue(path::AbstractString,
 
     # Create a NetRevenue dataframe
     dfNetRevenue = DataFrame(region = regions,
-        Resource = inputs["RESOURCE_NAMES"],
+        Resource = inputs["RESOURCE_NAMES"][generators],
         zone = zones,
         Cluster = clusters,
         R_ID = rid)
 
     # Add investment cost to the dataframe
-    dfNetRevenue.Inv_cost_MW = inv_cost_per_mwyr.(gen) .* dfCap[1:G, :NewCap]
-    dfNetRevenue.Inv_cost_MWh = inv_cost_per_mwhyr.(gen) .* dfCap[1:G, :NewEnergyCap]
+    dfNetRevenue.Inv_cost_MW = inv_cost_per_mwyr.(gen) .* dfCap[generators, :NewCap]
+    dfNetRevenue.Inv_cost_MWh = inv_cost_per_mwhyr.(gen) .* dfCap[generators, :NewEnergyCap]
     dfNetRevenue.Inv_cost_charge_MW = inv_cost_charge_per_mwyr.(gen) .*
-                                      dfCap[1:G, :NewChargeCap]
+                                      dfCap[generators, :NewChargeCap]
     if !isempty(VRE_STOR)
         # Doesn't include charge capacities
         if !isempty(SOLAR)
@@ -82,13 +85,13 @@ function write_net_revenue(path::AbstractString,
     end
 
     # Add operations and maintenance cost to the dataframe
-    dfNetRevenue.Fixed_OM_cost_MW = fixed_om_cost_per_mwyr.(gen) .* dfCap[1:G, :EndCap]
+    dfNetRevenue.Fixed_OM_cost_MW = fixed_om_cost_per_mwyr.(gen) .* dfCap[generators, :EndCap]
     dfNetRevenue.Fixed_OM_cost_MWh = fixed_om_cost_per_mwhyr.(gen) .*
-                                     dfCap[1:G, :EndEnergyCap]
+                                     dfCap[generators, :EndEnergyCap]
     dfNetRevenue.Fixed_OM_cost_charge_MW = fixed_om_cost_charge_per_mwyr.(gen) .*
-                                           dfCap[1:G, :EndChargeCap]
+                                           dfCap[generators, :EndChargeCap]
 
-    dfNetRevenue.Var_OM_cost_out = var_om_cost_per_mwh.(gen) .* dfPower[1:G, :AnnualSum]
+    dfNetRevenue.Var_OM_cost_out = var_om_cost_per_mwh.(gen) .* dfPower[generators, :AnnualSum]
     if !isempty(VRE_STOR)
         if !isempty(SOLAR)
             dfNetRevenue.Fixed_OM_cost_MW[VRE_STOR] += fixed_om_solar_cost_per_mwyr.(gen_VRE_STOR) .*
@@ -131,7 +134,7 @@ function write_net_revenue(path::AbstractString,
     end
 
     # Add fuel cost to the dataframe
-    dfNetRevenue.Fuel_cost = sum(value.(EP[:ePlantCFuelOut]), dims = 2)
+    dfNetRevenue.Fuel_cost = sum(value.(EP[:ePlantCFuelOut]).data, dims = 2)
     if setup["ParameterScale"] == 1
         dfNetRevenue.Fuel_cost *= ModelScalingFactor^2 # converting Million US$ to US$
     end
@@ -164,7 +167,7 @@ function write_net_revenue(path::AbstractString,
     dfNetRevenue.StartCost = zeros(nrow(dfNetRevenue))
     if setup["UCommit"] >= 1 && !isempty(COMMIT)
         start_costs = vec(sum(value.(EP[:eCStart][COMMIT, :]).data, dims = 2))
-        start_fuel_costs = vec(value.(EP[:ePlantCFuelStart][COMMIT]))
+        start_fuel_costs = vec(value.(EP[:ePlantCFuelStart][COMMIT]).data)
         dfNetRevenue.StartCost[COMMIT] .= start_costs + start_fuel_costs
     end
     if setup["ParameterScale"] == 1
@@ -173,7 +176,7 @@ function write_net_revenue(path::AbstractString,
     # Add charge cost to the dataframe
     dfNetRevenue.Charge_cost = zeros(nrow(dfNetRevenue))
     if has_duals(EP)
-        dfNetRevenue.Charge_cost = dfChargingcost[1:G, :AnnualSum] # Unit is confirmed to be US$
+        dfNetRevenue.Charge_cost = dfChargingcost[generators, :AnnualSum] # Unit is confirmed to be US$
     end
 
     # Add CO2 releated sequestration cost or credit (e.g. 45 Q) to the dataframe
@@ -190,8 +193,8 @@ function write_net_revenue(path::AbstractString,
     dfNetRevenue.EnergyRevenue = zeros(nrow(dfNetRevenue))
     dfNetRevenue.SubsidyRevenue = zeros(nrow(dfNetRevenue))
     if has_duals(EP)
-        dfNetRevenue.EnergyRevenue = dfEnergyRevenue[1:G, :AnnualSum] # Unit is confirmed to be US$
-        dfNetRevenue.SubsidyRevenue = dfSubRevenue[1:G, :SubsidyRevenue] # Unit is confirmed to be US$
+        dfNetRevenue.EnergyRevenue = dfEnergyRevenue[generators, :AnnualSum] # Unit is confirmed to be US$
+        dfNetRevenue.SubsidyRevenue = dfSubRevenue[generators, :SubsidyRevenue] # Unit is confirmed to be US$
     end
 
     # Add energy and subsidy revenue to the dataframe
@@ -205,13 +208,13 @@ function write_net_revenue(path::AbstractString,
     # Add capacity revenue to the dataframe
     dfNetRevenue.ReserveMarginRevenue = zeros(nrow(dfNetRevenue))
     if setup["CapacityReserveMargin"] > 0 && has_duals(EP) # The unit is confirmed to be $
-        dfNetRevenue.ReserveMarginRevenue = dfResRevenue[1:G, :AnnualSum]
+        dfNetRevenue.ReserveMarginRevenue = dfResRevenue[generators, :AnnualSum]
     end
 
     # Add RPS/CES revenue to the dataframe
     dfNetRevenue.ESRRevenue = zeros(nrow(dfNetRevenue))
     if setup["EnergyShareRequirement"] > 0 && has_duals(EP) # The unit is confirmed to be $
-        dfNetRevenue.ESRRevenue = dfESRRev[1:G, :Total]
+        dfNetRevenue.ESRRevenue = dfESRRev[generators, :Total]
     end
 
     # Calculate emissions cost
@@ -223,7 +226,7 @@ function write_net_revenue(path::AbstractString,
             GEN_IN_ZONE = resource_id.(gen[[y in CO2ZONES for y in zone_id.(gen)]])
             if setup["CO2Cap"] == 1 || setup["CO2Cap"] == 2 # Mass-based or Demand + Rate-based
                 # Cost = sum(sum(emissions for zone z * dual(CO2 constraint[cap]) for z in Z) for cap in setup["NCO2"])
-                temp_vec = value.(EP[:eEmissionsByPlant][GEN_IN_ZONE, :]) * inputs["omega"]
+                temp_vec = value.(EP[:eEmissionsByPlant][GEN_IN_ZONE, :]).data * inputs["omega"]
                 dfNetRevenue.EmissionsCost[GEN_IN_ZONE] += -co2_cap_dual * temp_vec
             elseif setup["CO2Cap"] == 3 # Generation + Rate-based
                 SET_WITH_MAXCO2RATE = union(inputs["THERM_ALL"],
@@ -247,7 +250,7 @@ function write_net_revenue(path::AbstractString,
     # Add regional technology subsidy revenue to the dataframe
     dfNetRevenue.RegSubsidyRevenue = zeros(nrow(dfNetRevenue))
     if setup["MinCapReq"] >= 1 && has_duals(EP)# The unit is confirmed to be US$
-        dfNetRevenue.RegSubsidyRevenue = dfRegSubRevenue[1:G, :SubsidyRevenue]
+        dfNetRevenue.RegSubsidyRevenue = dfRegSubRevenue[generators, :SubsidyRevenue]
     end
 
     dfNetRevenue.Revenue = dfNetRevenue.EnergyRevenue

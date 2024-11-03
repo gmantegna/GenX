@@ -173,7 +173,7 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
         tempCVar = sum(value.(EP[:eCVar_out][Y_ZONE, :]))
         tempCTotal += tempCVar
 
-        tempCFuel = sum(value.(EP[:ePlantCFuelOut][Y_ZONE, :]))
+        tempCFuel = sum(value.(EP[:ePlantCFuelOut][Y_ZONE]))
         tempCTotal += tempCFuel
 
         if !isempty(STOR_ALL_ZONE)
@@ -268,7 +268,7 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
 
         if setup["UCommit"] >= 1 && !isempty(COMMIT_ZONE)
             eCStart = sum(value.(EP[:eCStart][COMMIT_ZONE, :])) +
-                      sum(value.(EP[:ePlantCFuelStart][COMMIT_ZONE, :]))
+                      sum(value.(EP[:ePlantCFuelStart][COMMIT_ZONE]))
             tempCStart += eCStart
             tempCTotal += eCStart
         end

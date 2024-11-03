@@ -15,7 +15,8 @@ function _get_resource_info()
         flex_demand = (filename = "Flex_demand.csv", type = FlexDemand),
         must_run = (filename = "Must_run.csv", type = MustRun),
         electrolyzer = (filename = "Electrolyzer.csv", type = Electrolyzer),
-        vre_stor = (filename = "Vre_stor.csv", type = VreStorage))
+        vre_stor = (filename = "Vre_stor.csv", type = VreStorage),
+        generic_assets = (filename = "Generic_assets.csv", type = GenericAsset))
     return resource_info
 end
 
@@ -63,7 +64,8 @@ function _get_summary_map()
         :Thermal => "Thermal",
         :Vre => "VRE",
         :MustRun => "Must_run",
-        :VreStorage => "VRE_and_storage")
+        :VreStorage => "VRE_and_storage",
+        :GenericAsset => "Generic_assets")
     max_length = maximum(length.(values(names_map)))
     for (k, v) in names_map
         names_map[k] = v * repeat(" ", max_length - length(v))
@@ -1056,6 +1058,9 @@ function add_resources_to_input_data!(inputs::Dict,
     ## MUST_RUN
     # Set of must-run plants - could be behind-the-meter PV, hydro run-of-river, must-run fossil or thermal plants
     inputs["MUST_RUN"] = must_run(gen)
+
+    ## GENERIC_ASSET
+    inputs["GENERIC_ASSETS"] = generic_asset(gen)
 
     ## ELECTROLYZER
     # Set of hydrogen electolyzer resources:

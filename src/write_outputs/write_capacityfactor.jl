@@ -7,6 +7,8 @@ Function for writing the capacity factor of different resources. For co-located 
 function write_capacityfactor(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
     gen = inputs["RESOURCES"]
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     T = inputs["T"]     # Number of time steps (hours)
     THERM_ALL = inputs["THERM_ALL"]
     VRE = inputs["VRE"]
@@ -21,7 +23,7 @@ function write_capacityfactor(path::AbstractString, inputs::Dict, setup::Dict, E
         Capacity = zeros(G),
         CapacityFactor = zeros(G))
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
-    dfCapacityfactor.AnnualSum .= value.(EP[:vP]) * inputs["omega"] * scale_factor
+    dfCapacityfactor.AnnualSum .= 0.0 #value.(EP[:vP]).data * inputs["omega"] * scale_factor
     dfCapacityfactor.Capacity .= value.(EP[:eTotalCap]) * scale_factor
 
     if !isempty(VRE_STOR)

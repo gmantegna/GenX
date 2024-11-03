@@ -8,6 +8,8 @@ function write_charge(path::AbstractString, inputs::Dict, setup::Dict, EP::Model
     zones = zone_id.(gen)
 
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     T = inputs["T"]     # Number of time steps (hours)
     STOR_ALL = inputs["STOR_ALL"]
     FLEX = inputs["FLEX"]

@@ -384,14 +384,14 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
                 println(elapsed_time_rsv_slack)
             end
 
-            if output_settings_d["WriteCapacityValue"]
-                elapsed_time_cap_value = @elapsed write_capacity_value(path,
-                    inputs,
-                    setup,
-                    EP)
-                println("Time elapsed for writing capacity value is")
-                println(elapsed_time_cap_value)
-            end
+            # if output_settings_d["WriteCapacityValue"]
+            #     elapsed_time_cap_value = @elapsed write_capacity_value(path,
+            #         inputs,
+            #         setup,
+            #         EP)
+            #     println("Time elapsed for writing capacity value is")
+            #     println(elapsed_time_cap_value)
+            # end
         end
 
         dfOpRegRevenue = DataFrame()

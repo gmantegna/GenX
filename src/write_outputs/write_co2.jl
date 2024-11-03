@@ -15,12 +15,14 @@ function write_co2_emissions_plant(path::AbstractString,
         EP::Model)
     gen = inputs["RESOURCES"]
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
 
     # CO2 emissions by plant
-    dfEmissions_plant = DataFrame(Resource = inputs["RESOURCE_NAMES"],
-        Zone = zone_id.(gen),
-        AnnualSum = zeros(G))
-    emissions_plant = value.(EP[:eEmissionsByPlant])
+    dfEmissions_plant = DataFrame(Resource = inputs["RESOURCE_NAMES"][generators],
+        Zone = zone_id.(gen)[generators],
+        AnnualSum = zeros(length(generators)))
+    emissions_plant = value.(EP[:eEmissionsByPlant]).data
 
     if setup["ParameterScale"] == 1
         emissions_plant *= ModelScalingFactor
@@ -45,6 +47,8 @@ end
 function write_co2_capture_plant(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
     gen = inputs["RESOURCES"]
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     CCS = inputs["CCS"]
     T = inputs["T"]     # Number of time steps (hours)
     Z = inputs["Z"]     # Number of zones

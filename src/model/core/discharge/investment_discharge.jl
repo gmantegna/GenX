@@ -39,6 +39,8 @@ function investment_discharge!(EP::Model, inputs::Dict, setup::Dict)
     gen = inputs["RESOURCES"]
 
     G = inputs["G"] # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
 
     NEW_CAP = inputs["NEW_CAP"] # Set of all resources eligible for new capacity
     RET_CAP = inputs["RET_CAP"] # Set of all resources eligible for capacity retirements
