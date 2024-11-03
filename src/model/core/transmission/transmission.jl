@@ -167,6 +167,21 @@ function transmission!(EP::Model, inputs::Dict, setup::Dict)
         end
     end
 
+    ### Objective Function Expressions ###
+    @expression(
+        EP,
+        eCHurdle[l = 1:L, t = 1:T],
+        (
+            inputs["omega"][t]*(inputs["Hurdle_Rate_Forward"][l] * vTAUX_POS[l, t])
+            + inputs["omega"][t]*(inputs["Hurdle_Rate_Reverse"][l] * vTAUX_NEG[l, t])
+        )
+    )
+    # Sum hurdle costs
+    @expression(EP, eTotalCHurdleT[t = 1:T], sum(eCHurdle[l, t] for l in 1:L))
+    @expression(EP, eTotalCHurdle, sum(eTotalCHurdleT[t] for t in 1:T))
+    # Add total hurdle cost to objective function
+    add_to_expression!(EP[:eObj], eTotalCHurdle)
+
     ### Constraints ###
 
     ## Power flow and transmission (between zone) loss related constraints
