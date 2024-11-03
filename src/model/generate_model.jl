@@ -132,8 +132,6 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
 
     fuel!(EP, inputs, setup)
 
-    co2!(EP, inputs)
-
     if setup["OperationalReserves"] > 0
         operational_reserves!(EP, inputs, setup)
     end
@@ -142,6 +140,8 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
         investment_transmission!(EP, inputs, setup)
         transmission!(EP, inputs, setup)
     end
+
+    co2!(EP, inputs)
 
     if Z > 1 && setup["DC_OPF"] != 0
         dcopf_transmission!(EP, inputs, setup)
