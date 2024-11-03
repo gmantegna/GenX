@@ -101,6 +101,15 @@ function load_network_data!(setup::Dict, path::AbstractString, inputs_nw::Dict)
         inputs_nw["NO_EXPANSION_LINES"] = findall(inputs_nw["pMax_Line_Reinforcement"] .< 0)
     end
 
+    ## Hurdle rates
+    if hasproperty(network_var, "Hurdle_Rate_Forward")
+        inputs_nw["Hurdle_Rate_Forward"] = to_floats(:Hurdle_Rate_Forward)
+        inputs_nw["Hurdle_Rate_Reverse"] = to_floats(:Hurdle_Rate_Reverse)
+    else
+        inputs_nw["Hurdle_Rate_Forward"]=0.0 .* as_vector(:Network_Lines)
+        inputs_nw["Hurdle_Rate_Reverse"]=0.0 .* as_vector(:Network_Lines)
+    end
+
     println(filename * " Successfully Read!")
 
     return network_var
