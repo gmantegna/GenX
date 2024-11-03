@@ -76,7 +76,7 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
 
     # Generate Energy Portfolio (EP) Model
     EP = Model(OPTIMIZER)
-    set_string_names_on_creation(EP, Bool(setup["EnableJuMPStringNames"]))
+    # set_string_names_on_creation(EP, Bool(setup["EnableJuMPStringNames"]))
 
     # Initialize Power Balance Expression
     # Expression for "baseline" power balance constraint
