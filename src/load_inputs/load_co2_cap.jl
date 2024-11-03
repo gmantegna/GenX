@@ -39,3 +39,11 @@ function load_co2_cap!(setup::Dict, path::AbstractString, inputs::Dict)
 
     println(filename * " Successfully Read!")
 end
+
+function load_co2_cap_trans!(setup::Dict, inputs::Dict, network_var::DataFrame)
+    mat = extract_matrix_from_dataframe(network_var, "EF_Forward_CO_2_Cap_Zone")
+    inputs["dfTransEFForward"] = mat
+
+    mat = extract_matrix_from_dataframe(network_var, "EF_Reverse_CO_2_Cap_Zone")
+    inputs["dfTransEFReverse"] = mat
+end

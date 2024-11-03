@@ -70,6 +70,7 @@ function co2_cap!(EP::Model, inputs::Dict, setup::Dict)
 
     SEG = inputs["SEG"]  # Number of lines
     T = inputs["T"]     # Number of time steps (hours)
+    L = inputs["L"]
 
     ### Variable ###
     # if input files are present, add CO2 cap slack variables
@@ -90,12 +91,30 @@ function co2_cap!(EP::Model, inputs::Dict, setup::Dict)
 
     ## Mass-based: Emissions constraint in absolute emissions limit (tons)
     if setup["CO2Cap"] == 1
-        @constraint(EP, cCO2Emissions_systemwide[cap = 1:inputs["NCO2Cap"]],
-            sum(inputs["omega"][t] * EP[:eEmissionsByZone][z, t]
-            for z in findall(x -> x == 1, inputs["dfCO2CapZones"][:, cap]), t in 1:T) -
-            vCO2Cap_slack[cap]<=
-            sum(inputs["dfMaxCO2"][z, cap]
-            for z in findall(x -> x == 1, inputs["dfCO2CapZones"][:, cap])))
+        @constraint(
+            EP,
+            cCO2Emissions_systemwide[cap = 1:inputs["NCO2Cap"]],
+            sum(
+                inputs["omega"][t] * EP[:eEmissionsByZone][z, t]
+                for
+                    z in findall(x -> x == 1, inputs["dfCO2CapZones"][:, cap]),
+                    t in 1:T
+            )
+            + sum(
+                inputs["omega"][t] * (
+                    EP[:vTAUX_POS][l, t] * inputs["dfTransEFForward"][l,cap]
+                    + EP[:vTAUX_NEG][l, t] * inputs["dfTransEFReverse"][l,cap]
+                )
+                for
+                    l in findall(x->x!=0,inputs["dfTransEFForward"][:,cap]),
+                    t in 1:T
+            )
+            - vCO2Cap_slack[cap]
+            <= sum(
+                inputs["dfMaxCO2"][z, cap]
+                for z in findall(x -> x == 1, inputs["dfCO2CapZones"][:, cap])
+            )
+        )
 
         ## (fulfilled) demand + Rate-based: Emissions constraint in terms of rate (tons/MWh)
     elseif setup["CO2Cap"] == 2 ##This part moved to non_served_energy.jl

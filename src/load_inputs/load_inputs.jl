@@ -64,6 +64,9 @@ function load_inputs(setup::Dict, path::AbstractString)
 
     if setup["CO2Cap"] >= 1
         load_co2_cap!(setup, policies_path, inputs)
+        if inputs["Z"] > 1
+            load_co2_cap_trans!(setup, inputs, network_var)
+        end
     end
 
     if !isempty(inputs["VRE_STOR"])
