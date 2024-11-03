@@ -27,6 +27,8 @@ function curtailable_variable_renewable!(EP::Model, inputs::Dict, setup::Dict)
     T = inputs["T"]     # Number of time steps (hours)
     Z = inputs["Z"]     # Number of zones
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
 
     VRE = inputs["VRE"]
 

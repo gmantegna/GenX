@@ -55,6 +55,8 @@ function co2!(EP::Model, inputs::Dict)
 
     gen = inputs["RESOURCES"]
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     T = inputs["T"]     # Number of time steps (hours)
     Z = inputs["Z"]     # Number of zones
     MULTI_FUELS = inputs["MULTI_FUELS"]
@@ -72,7 +74,7 @@ function co2!(EP::Model, inputs::Dict)
     # If all the CO2 capture fractions from Generators_data are zeros, the CO2 emissions from thermal generators are determined by fuel consumption times CO2 content per MMBTU 
 
     if isempty(CCS)
-        @expression(EP, eEmissionsByPlant[y = 1:G, t = 1:T],
+        @expression(EP, eEmissionsByPlant[y = generators, t = 1:T],
             if y in SINGLE_FUEL
                 ((1 - biomass(gen[y])) * (EP[:vFuel][y, t] + EP[:vStartFuel][y, t]) *
                  fuel_CO2[fuel(gen[y])])
@@ -86,7 +88,7 @@ function co2!(EP::Model, inputs::Dict)
         # CO2_Capture_Fraction refers to the CO2 capture rate of CCS equiped power plants at a steady state 
         # CO2_Capture_Fraction_Startup refers to the CO2 capture rate of CCS equiped power plants during startup events
 
-        @expression(EP, eEmissionsByPlant[y = 1:G, t = 1:T],
+        @expression(EP, eEmissionsByPlant[y = generators, t = 1:T],
             if y in SINGLE_FUEL
                 (1 - biomass(gen[y]) - co2_capture_fraction(gen[y])) * EP[:vFuel][y, t] *
                 fuel_CO2[fuel(gen[y])] +

@@ -9,6 +9,8 @@ function write_power(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
     zones = zone_id.(gen)
 
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     T = inputs["T"]     # Number of time steps (hours)
     
     weight = inputs["omega"]

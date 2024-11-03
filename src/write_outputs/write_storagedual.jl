@@ -8,6 +8,8 @@ function write_storagedual(path::AbstractString, inputs::Dict, setup::Dict, EP::
     zones = zone_id.(gen)
 
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     T = inputs["T"]     # Number of time steps (hours)
 
     START_SUBPERIODS = inputs["START_SUBPERIODS"]

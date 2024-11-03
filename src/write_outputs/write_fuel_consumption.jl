@@ -28,8 +28,8 @@ function write_fuel_consumption_plant(path::AbstractString,
         Fuel = fuel.(gen[HAS_FUEL]),
         Zone = zone_id.(gen[HAS_FUEL]),
         AnnualSumCosts = zeros(length(HAS_FUEL)))
-    tempannualsum = value.(EP[:ePlantCFuelOut][HAS_FUEL]) +
-                    value.(EP[:ePlantCFuelStart][HAS_FUEL])
+    tempannualsum = value.(EP[:ePlantCFuelOut][HAS_FUEL]).data +
+                    value.(EP[:ePlantCFuelStart][HAS_FUEL]).data
 
     if !isempty(MULTI_FUELS)
         fuel_cols_num = inputs["FUEL_COLS"]# TODO: rename it
@@ -77,7 +77,7 @@ function write_fuel_consumption_ts(path::AbstractString,
 
     # Fuel consumption by each resource per time step, unit is MMBTU
     dfPlantFuel_TS = DataFrame(Resource = inputs["RESOURCE_NAMES"][HAS_FUEL])
-    tempts = value.(EP[:ePlantFuel_generation] + EP[:ePlantFuel_start])[HAS_FUEL, :]
+    tempts = (value.(EP[:ePlantFuel_generation]).data + value.(EP[:ePlantFuel_start]).data)[HAS_FUEL, :]
     if setup["ParameterScale"] == 1
         tempts *= ModelScalingFactor # kMMBTU to MMBTU
     end

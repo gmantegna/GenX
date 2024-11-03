@@ -6,6 +6,8 @@ Function for writing the "virtual" discharge of each storage technology. Virtual
 """
 function write_virtual_discharge(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     T = inputs["T"]     # Number of time steps (hours)
     STOR_ALL = inputs["STOR_ALL"]
 

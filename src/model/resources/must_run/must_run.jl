@@ -20,6 +20,8 @@ function must_run!(EP::Model, inputs::Dict, setup::Dict)
     T = inputs["T"]     # Number of time steps (hours)
     Z = inputs["Z"]     # Number of zones
     G = inputs["G"] # Number of generators
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
 
     MUST_RUN = inputs["MUST_RUN"]
     CapacityReserveMargin = setup["CapacityReserveMargin"]

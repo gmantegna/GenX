@@ -19,10 +19,12 @@ function write_co2_emissions_plant(path::AbstractString,
     zones = zone_id.(gen)
 
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
 
     weight = inputs["omega"]
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
-
+    
     emissions_plant = value.(EP[:eEmissionsByPlant])
     emissions_plant *= scale_factor
 
@@ -36,6 +38,10 @@ function write_co2_emissions_plant(path::AbstractString,
 end
 
 function write_co2_capture_plant(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+    gen = inputs["RESOURCES"]
+    G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     gen = inputs["RESOURCES"]   # Resources (objects)
     CCS = inputs["CCS"]
 

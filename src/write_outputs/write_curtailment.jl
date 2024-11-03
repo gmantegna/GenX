@@ -10,6 +10,8 @@ function write_curtailment(path::AbstractString, inputs::Dict, setup::Dict, EP::
     zones = zone_id.(gen)
 
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     T = inputs["T"]     # Number of time steps (hours)
     VRE = inputs["VRE"]
     VRE_STOR = inputs["VRE_STOR"]

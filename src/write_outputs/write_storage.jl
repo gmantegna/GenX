@@ -10,6 +10,8 @@ function write_storage(path::AbstractString, inputs::Dict, setup::Dict, EP::Mode
 
     T = inputs["T"]     # Number of time steps (hours)
     G = inputs["G"]
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     STOR_ALL = inputs["STOR_ALL"]
     HYDRO_RES = inputs["HYDRO_RES"]
     FLEX = inputs["FLEX"]

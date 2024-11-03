@@ -20,7 +20,8 @@ const resource_types = (:Thermal,
     :MustRun,
     :FlexDemand,
     :VreStorage,
-    :Electrolyzer)
+    :Electrolyzer,
+    :GenericAsset)
 
 # Create composite types (structs) for each resource type in resource_types
 for r in resource_types
@@ -851,6 +852,15 @@ var_om_cost_per_mwh_in(r::FlexDemand) = get(r, :var_om_cost_per_mwh_in, default_
 Returns the indices of all must-run resources in the vector `rs`.
 """
 must_run(rs::Vector{T}) where {T <: AbstractResource} = findall(r -> isa(r, MustRun), rs)
+
+
+# GENERIC_ASSET interface
+"""
+    generic_asset(rs::Vector{T}) where T <: AbstractResource
+
+Returns the indices of all generic asset resources in the vector `rs`.
+"""
+generic_asset(rs::Vector{T}) where {T <: AbstractResource} = findall(r -> isa(r, GenericAsset), rs)
 
 # VRE_STOR interface
 """

@@ -22,6 +22,8 @@ function write_esr_revenue(path::AbstractString,
         Cluster = clusters,
         R_ID = rid)
     G = inputs["G"]
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     nESR = inputs["nESR"]
     weight = inputs["omega"]
     # Load VRE-storage inputs
@@ -39,7 +41,7 @@ function write_esr_revenue(path::AbstractString,
     for i in 1:nESR
         esr_col = Symbol("ESR_$i")
         price = dfESR[i, :ESR_Price]
-        derated_annual_net_generation = dfPower[1:G, :AnnualSum] .* esr.(gen, tag = i)
+        derated_annual_net_generation = dfPower[generators, :AnnualSum] .* esr.(gen, tag = i)
         derated_annual_net_generation[FUSION] .+= thermal_fusion_annual_parasitic_power(
             EP, inputs, setup) .* esr.(gen[FUSION], tag = i)
         revenue = derated_annual_net_generation * price

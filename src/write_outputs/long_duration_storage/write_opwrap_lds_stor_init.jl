@@ -7,12 +7,14 @@ function write_opwrap_lds_stor_init(path::AbstractString,
     zones = zone_id.(gen)
 
     G = inputs["G"]
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
 
     # Initial level of storage in each modeled period
     NPeriods = size(inputs["Period_Map"])[1]
     dfStorageInit = DataFrame(Resource = inputs["RESOURCE_NAMES"], Zone = zones)
     socw = zeros(G, NPeriods)
-    for i in 1:G
+    for i in generators
         if i in inputs["STOR_LONG_DURATION"]
             socw[i, :] = value.(EP[:vSOCw])[i, :]
         end

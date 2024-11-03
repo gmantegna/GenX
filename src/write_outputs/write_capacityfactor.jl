@@ -7,6 +7,8 @@ Function for writing the capacity factor of different resources. For co-located 
 function write_capacityfactor(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
     gen = inputs["RESOURCES"]
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     T = inputs["T"]     # Number of time steps (hours)
     THERM_ALL = inputs["THERM_ALL"]
     VRE = inputs["VRE"]
