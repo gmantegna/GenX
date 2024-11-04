@@ -36,6 +36,12 @@ function load_inputs(setup::Dict, path::AbstractString)
     # Read in generator/resource availability profiles
     load_generators_variability!(setup, path, inputs)
 
+    # Read custom constraints, if the folder exists
+    custom_constraint_path = joinpath(system_path,"custom_constraints")
+    if isdir(custom_constraint_path)
+        load_custom_constraints!(setup,custom_constraint_path,inputs)
+    end
+
     validatetimebasis(inputs)
 
     if setup["CapacityReserveMargin"] == 1
