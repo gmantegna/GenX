@@ -180,16 +180,3 @@ function network_map_matrix_format_deprecation_warning()
                    3,          2,        3,
   """ maxlog=1
 end
-
-function load_network_emissions_data!(setup::Dict, path::AbstractString, inputs::Dict)
-    filename = "Network_emissions.csv"
-    emissions_df = load_dataframe(joinpath(path, filename))
-
-    co2_emissions_mat = extract_matrix_from_dataframe(emissions_df, "CO2_tons_MWh")
-    #insure that we have price value for every market
-    if size(co2_emissions_mat, 2) != inputs["L"]
-        @warn """Hourly co2 emissions should be provided for every network line""" maxlog=1
-    end
-
-    inputs["CO2_tons_MWh"] = transpose(co2_emissions_mat)
-end

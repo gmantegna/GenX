@@ -24,7 +24,6 @@ function load_inputs(setup::Dict, path::AbstractString)
     # Read input data about power network topology, operating and expansion attributes
     if isfile(joinpath(system_path, "Network.csv"))
         network_var = load_network_data!(setup, system_path, inputs)
-        load_network_emissions_data!(setup, system_path, inputs)
     else
         inputs["Z"] = 1
         inputs["L"] = 0
@@ -90,6 +89,8 @@ function load_inputs(setup::Dict, path::AbstractString)
     if setup["Markets"] == 1
         load_zones_markets!(setup, system_path, inputs)
         load_market_price_data!(setup, system_path, inputs)
+        load_market_purchase_emissions_data!(setup, system_path, inputs)
+        set_market_network!(setup, system_path, inputs)
     end 
 
     if setup["RO"] == 1

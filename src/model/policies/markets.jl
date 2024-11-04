@@ -2,20 +2,18 @@
 
 function markets!(EP::Model, inputs::Dict, setup::Dict)
 
-    G = inputs["G"]     # Number of generators
     T = inputs["T"]     # Number of time steps
-    MZ = inputs["MZ"]     # Number of markets
     Z = inputs["Z"]
+    MZ = inputs["MZ"]     # Number of markets
     ML = inputs["Market_Line"]
-   # generators_markets = inputs["Generator_Market"]
 
     ### Variables ###
     # 1- Amount of energy purchased/imported by each zone z at time t from the associated market
-    @variable(EP, vMBUY[m in MZ, t = 1:T] >= 0);   
-    @variable(EP, vMSELL[m in MZ, t = 1:T] >= 0);
-    @variable(EP, vMB_ACTIVE[m in MZ, t = 1:T], Bin)
+    @variable(EP, vMBUY[m in MZ, t = 1:T] >= 0)  
+    @variable(EP, vMSELL[m in MZ, t = 1:T] >= 0)
+    @variable(EP, vMB_ACTIVE[m in MZ, t = 1:T], Bin) # Disable simultaneous market buy and sell 
 
-    # # 3- Amount of energy sold/exported by each zone z at time t to the associated market   
+    # 3- Limit amount of energy sold/exported by each zone z at time t to the associated market   
     LZ = [k for (k, v) in inputs["LZ_Markets"] if !isempty(v)]
     @constraint(EP, cMaxSell[z in LZ, t = 1:T], EP[:eTotalGenerationByZone][z,t] >= sum(vMSELL[m,t] for m in inputs["LZ_Markets"][z] ) )
 
@@ -38,10 +36,8 @@ function markets!(EP::Model, inputs::Dict, setup::Dict)
     # CO2 emissions from market purchased energy
     # add emission cost to the zone where the line start
     for m in MZ, t = 1:T
-        add_term_to_expression!(EP[:eTotalEmissionsByZone][m,t], inputs["CO2_tons_MWh"][ML[m], t] * vMBUY[m,t] )
+        add_term_to_expression!(EP[:eTotalEmissionsByZone][m,t], inputs["Line_CO2_tons_MWh"][ML[m], t] * vMBUY[m,t] )
     end
-
-    # add_to_expression!(EP[:eObj], sum(vTRANS_EMISSIONS[l,t] * 0.0001 for l in 1:L, t = 1:T))
 
     #### Objective function   
     Market_Buy_Prices = inputs["Market_BuyPrices"]
@@ -52,6 +48,5 @@ function markets!(EP::Model, inputs::Dict, setup::Dict)
 
     add_to_expression!(EP[:eObj], sum(eCMarketBuy[m] for m in MZ))
     add_to_expression!(EP[:eObj], sum(eCMarketSell[m] for m in MZ))
-
 end
 
