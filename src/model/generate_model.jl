@@ -194,6 +194,11 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
         vre_stor!(EP, inputs, setup)
     end
 
+    # Custom constraints
+    if haskey(inputs,"custom_constraints")
+        custom_constraints!(EP, inputs, setup)
+    end
+
     # Model constraints, variables, expressions related to telectrolyzers
     if !isempty(inputs["ELECTROLYZER"]) ||
        (!isempty(inputs["VRE_STOR"]) && !isempty(inputs["VS_ELEC"]))
