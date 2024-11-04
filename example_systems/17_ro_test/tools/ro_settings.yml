@@ -1,5 +1,5 @@
-BudgetOfUncertainty: 0.2
-BudgetOfUncertainty_MarketBuyPrices: -1
+BudgetOfUncertainty: -1
+BudgetOfUncertainty_MarketBuyPrices: 0.2
 BudgetOfUncertainty_MarketSellPrices: -1
 BudgetOfUncertainty_FuelPrices: -1
 BudgetOfUncertainty_InvestmentCost: -1

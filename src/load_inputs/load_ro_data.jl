@@ -47,7 +47,8 @@ function load_market_buy_price_bound_data!(setup::Dict, path::AbstractString, in
     ro_markets = sum(all(!iszero, delta_buy_price_mat[:, col]) for col in axes(delta_buy_price_mat, 2))
 
     inputs["Market_BuyPrices_Delta"] = transpose(delta_buy_price_mat)
-    inputs["count_uncertain_param"] += ro_markets * inputs["T"]
+    inputs["count_uncertain_mbuy_param"] = ro_markets * inputs["T"]
+    inputs["count_uncertain_param"] += inputs["count_uncertain_mbuy_param"]  
     
     println(filename * " Successfully Read!")
 end
@@ -76,8 +77,9 @@ function load_market_sell_price_bound_data!(setup::Dict, path::AbstractString, i
     ro_markets = sum(all(!iszero, delta_sell_price_mat[:, col]) for col in axes(delta_sell_price_mat, 2))
 
     inputs["Market_SellPrices_Delta"] = transpose(delta_sell_price_mat)
-    inputs["count_uncertain_param"] += ro_markets * inputs["T"]
-    
+    inputs["count_uncertain_msell_param"] = ro_markets * inputs["T"]
+    inputs["count_uncertain_param"] += inputs["count_uncertain_msell_param"]  
+        
     println(filename * " Successfully Read!")
 end
 
@@ -104,10 +106,11 @@ function load_fuel_bound_data!(setup::Dict, path::AbstractString, inputs::Dict)
     fuel_delta_costs = Containers.DenseAxisArray(transpose(Matrix(df_fuels[1:end, 2:end])), inputs["fuels"],1:nrow(df_fuels))
     
     fuel_delta_costs /= scale_factor
-    ro_fuels = sum(all(!iszero, fuel_delta_costs[f,:]) for f in axes(fuel_delta_costs, 1))
-    
-    inputs["count_uncertain_param"] += ro_fuels * inputs["T"]
     inputs["fuel_delta_costs"] = fuel_delta_costs
+
+    ro_fuels = sum(all(!iszero, fuel_delta_costs[f,:]) for f in axes(fuel_delta_costs, 1))
+    inputs["count_uncertain_fuel_param"] = ro_fuels * inputs["T"]
+    inputs["count_uncertain_param"] += inputs["count_uncertain_fuel_param"]  
 
     println(filename * " Successfully Read!")
 end
@@ -127,9 +130,10 @@ function load_investment_cost_bound_data!(setup::Dict, path::AbstractString, inp
             push!(df_costs_bounds, (f, 0))
         end
     end 
-    
-    inputs["count_uncertain_param"] += inputs["G"]
     inputs["delta_investment_costs"] = Dict(df_costs_bounds[!,:Resource] .=> df_costs_bounds[!,:Inv_Cost_per_MWyr_bounds])
+
+    inputs["count_uncertain_invest_param"] = inputs["G"]
+    inputs["count_uncertain_param"] += inputs["count_uncertain_invest_param"]  
 
     println(filename * " Successfully Read!")
 end
@@ -149,9 +153,10 @@ function load_fixed_om_cost_bound_data!(setup::Dict, path::AbstractString, input
             push!(df_costs_bounds, (f, 0))
         end
     end  
-    
-    inputs["count_uncertain_param"] += inputs["G"]
     inputs["delta_fixed_om_costs"] = Dict(df_costs_bounds[!,:Resource] .=> df_costs_bounds[!,:Fixed_OM_Cost_per_Mwyr_bound])
+    
+    inputs["count_uncertain_fixedom_param"] = inputs["G"]
+    inputs["count_uncertain_param"] += inputs["count_uncertain_fixedom_param"]  
 
     println(filename * " Successfully Read!")
 end
