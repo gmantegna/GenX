@@ -24,30 +24,57 @@ function custom_constraints!(EP, inputs, setup)
             constraint_target = target[target[!,"Sum Range ID"].==constraint,"Target"][1]
             if haskey(contents,"vCAP")
                 vCAP=contents["vCAP"]
-                vCAP_cur = vCAP[vCAP[!,"Sum Range ID"].==constraint,:]
-                for resource in vCAP_cur[:,"Index 1"]
-                    matching_rids = findall(>(0),[String(x)==resource for x in resource_names])
-                    if length(matching_rids) > 1
-                        throw("more than one matching RID found for resource $resource")
-                    end
-                    if length(matching_rids) == 0
-                        println("did  not find matching resource for resource $resource")
-                    else
-                        rid=matching_rids[1]
-                        if rid in axes(EP[:vCAP])[1]
-                            EP[exp_name] += EP[:vCAP][rid] * vCAP_cur[vCAP_cur[!,"Index 1"].==resource,"Multiplier"][1]
+                if constraint in vCAP[!,"Sum Range ID"]
+                    vCAP_cur = vCAP[vCAP[!,"Sum Range ID"].==constraint,:]
+                    for resource in vCAP_cur[:,"Index 1"]
+                        matching_rids = findall(>(0),[String(x)==resource for x in resource_names])
+                        if length(matching_rids) > 1
+                            throw("more than one matching RID found for resource $resource")
+                        end
+                        if length(matching_rids) == 0
+                            println("did  not find matching resource for resource $resource")
+                        else
+                            rid=matching_rids[1]
+                            if rid in axes(EP[:vCAP])[1]
+                                EP[exp_name] += EP[:vCAP][rid] * vCAP_cur[vCAP_cur[!,"Index 1"].==resource,"Multiplier"][1]
+                            else
+                                println("did not find vCAP for resource $resource")
+                            end
                         end
                     end
                 end
             end
 
+            if haskey(contents,"eTotalCap")
+                eTotalCap=contents["eTotalCap"]
+                if constraint in eTotalCap[!,"Sum Range ID"]
+                    eTotalCap_cur = eTotalCap[eTotalCap[!,"Sum Range ID"].==constraint,:]
+                    for resource in eTotalCap_cur[:,"Index 2"]
+                        matching_rids = findall(>(0),[String(x)==resource for x in resource_names])
+                        if length(matching_rids) > 1
+                            throw("more than one matching RID found for resource $resource")
+                        end
+                        if length(matching_rids) == 0
+                            println("did  not find matching resource for resource $resource")
+                        else
+                            rid=matching_rids[1]
+                            if rid in axes(EP[:eTotalCap])[1]
+                                EP[exp_name] += EP[:eTotalCap][rid] * eTotalCap_cur[eTotalCap_cur[!,"Index 2"].==resource,"Multiplier"][1]
+                            else
+                                println("did not find eTotalCap for resource $resource")
+                            end
+                        end
+                    end
+                end
+            end
+            
             if EP[exp_name] != 0
                 if constraint_equality_type == "=="
-                    @constraint(EP,EP[exp_name] == constraint_target)
+                    @constraint(EP,EP[exp_name] == constraint_target,base_name=String(constraint))
                 elseif constraint_equality_type == "<="
-                    @constraint(EP,EP[exp_name] <= constraint_target)
+                    @constraint(EP,EP[exp_name] <= constraint_target,base_name=String(constraint))
                 elseif constraint_equality_type == ">="
-                    @constraint(EP,EP[exp_name] >= constraint_target)
+                    @constraint(EP,EP[exp_name] >= constraint_target,base_name=String(constraint))
                 else
                     throw("not a valid constraint equality type")
                 end
