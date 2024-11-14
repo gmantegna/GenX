@@ -1,11 +1,11 @@
 BudgetOfUncertainty: -1
-BudgetOfUncertainty_MarketBuyPrices: 0.2
+BudgetOfUncertainty_MarketBuyPrices: 0.05
 BudgetOfUncertainty_MarketSellPrices: -1
 BudgetOfUncertainty_FuelPrices: -1
 BudgetOfUncertainty_InvestmentCost: -1
 BudgetOfUncertainty_FixedOMCost: -1
 MarketBuyPrices: 1 # Binary value if = 1, include market prices in robust formulation, else don't
-MarketSellPrices: 1 # Binary value if = 1, include market prices in robust formulation, else don't
-FuelsCost: 1 # Binary value if = 1, include fuel cost in robust formulation, else don't
-InvestmentCost: 1
-FixedOMCost: 1
+MarketSellPrices: 0 # Binary value if = 1, include market prices in robust formulation, else don't
+FuelsCost: 0 # Binary value if = 1, include fuel cost in robust formulation, else don't
+InvestmentCost: 0
+FixedOMCost: 0

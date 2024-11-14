@@ -125,7 +125,27 @@ function write_costs_markets(path::AbstractString, inputs::Dict, setup::Dict, EP
     end
     
     if setup["RO"] == 1 
-        cost_dict["cRO"] = CostComponent(value.(EP[:eRODualObj]), Z)
+        ro_cost = 0
+        if inputs["ro_settings"]["BudgetOfUncertainty"] > 0
+            ro_cost += value.(EP[:eRODualObj])
+        else
+            if inputs["ro_settings"]["BudgetOfUncertainty_MarketBuyPrices"] > 0
+                ro_cost += value.(EP[:eRODualObj_mb])
+            end    
+            if inputs["ro_settings"]["BudgetOfUncertainty_MarketSellPrices"] > 0
+                ro_cost += value.(EP[:eRODualObj_ms])
+            end
+            if inputs["ro_settings"]["BudgetOfUncertainty_FuelPrices"] > 0
+                ro_cost += value.(EP[:eRODualObj_fc])
+            end  
+            if inputs["ro_settings"]["BudgetOfUncertainty_InvestmentCost"] > 0
+                ro_cost += value.(EP[:eRODualObj_ic])
+            end    
+            if inputs["ro_settings"]["BudgetOfUncertainty_FixedOMCost"] > 0
+                ro_cost += value.(EP[:eRODualObj_fxc])
+            end
+        end              
+        cost_dict["cRO"] = CostComponent(ro_cost, Z)
     end
 
     for z in 1:Z

@@ -11,7 +11,6 @@ function markets!(EP::Model, inputs::Dict, setup::Dict)
     # 1- Amount of energy purchased/imported by each zone z at time t from the associated market
     @variable(EP, vMBUY[m in MZ, t = 1:T] >= 0)  
     @variable(EP, vMSELL[m in MZ, t = 1:T] >= 0)
-    @variable(EP, vMB_ACTIVE[m in MZ, t = 1:T], Bin) # Disable simultaneous market buy and sell 
 
     # 3- Limit amount of energy sold/exported by each zone z at time t to the associated market   
     LZ = [k for (k, v) in inputs["LZ_Markets"] if !isempty(v)]
@@ -19,8 +18,8 @@ function markets!(EP::Model, inputs::Dict, setup::Dict)
 
     ### Constraints ###
     # 1. Maximum energy to buy from market or sell to market
-    @constraint(EP, cMaxMarketBuy[m in MZ, t = 1:T], vMBUY[m, t] <= inputs["Mrkt_Max_Buy"][m] * vMB_ACTIVE[m,t]) 
-    @constraint(EP, cMaxMarketSell[m in MZ, t = 1:T], vMSELL[m, t] <= inputs["Mrkt_Max_Sell"][m] * (1 - vMB_ACTIVE[m,t]) )
+    @constraint(EP, cMaxMarketBuy[m in MZ, t = 1:T], vMBUY[m, t] <= inputs["Mrkt_Max_Buy"][m]) 
+    @constraint(EP, cMaxMarketSell[m in MZ, t = 1:T], vMSELL[m, t] <= inputs["Mrkt_Max_Sell"][m]  )
     
     # 4. Power balance constraint       
     @expression(EP, eZonalNetMarkets[t = 1:T, z =1:Z], 
