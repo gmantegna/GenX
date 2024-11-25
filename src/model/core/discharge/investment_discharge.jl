@@ -107,6 +107,26 @@ function investment_discharge!(EP::Model, inputs::Dict, setup::Dict)
             eExistingCap[y]
         end)
 
+    if setup["Hourly_Pmin"] == 1
+        @constraint(
+            EP,
+            [t = 1:inputs["T"], g in generators],
+            EP[:vP][g,t] >= inputs["pP_Min"][g, t] * EP[:eTotalCap][g]
+        )
+    end
+
+    if setup["Fixed_Dispatch"] == 1
+        df_fixed_dispatch=inputs["df_fixed_dispatch"]
+        resource_names = inputs["RESOURCE_NAMES"]
+        fixed_dispatch_rids = [x for x in 1:length(resource_names) if resource_names[x] in names(df_fixed_dispatch)]
+        @constraint(
+            EP,
+            [t =1:inputs["T"], g in fixed_dispatch_rids],
+            EP[:vP][g,t] == df_fixed_dispatch[t,resource_names[g]]
+        )
+    end
+    
+
     ### Need editting ##
     @expression(EP, eCFix[y in 1:G],
         if y in NEW_CAP # Resources eligible for new capacity (Non-Retrofit)

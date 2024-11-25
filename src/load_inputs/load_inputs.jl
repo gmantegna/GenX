@@ -36,6 +36,14 @@ function load_inputs(setup::Dict, path::AbstractString)
     # Read in generator/resource availability profiles
     load_generators_variability!(setup, path, inputs)
 
+    if setup["Hourly_Pmin"] == 1
+        load_generators_pmin!(setup,path,inputs)
+    end
+
+    if setup["Fixed_Dispatch"] == 1
+        load_generators_fixed_dispatch!(setup,path,inputs)
+    end
+
     # Read custom constraints, if the folder exists
     custom_constraint_path = joinpath(system_path,"custom_constraints")
     if isdir(custom_constraint_path)
@@ -49,6 +57,10 @@ function load_inputs(setup::Dict, path::AbstractString)
         if inputs["Z"] > 1
             load_cap_reserve_margin_trans!(setup, inputs, network_var)
         end
+    end
+
+    if setup["CapResELCC"] == 1
+        load_ELCC_inputs!(setup,path,inputs)
     end
 
     # Read in general configuration parameters for operational reserves (resource-specific reserve parameters are read in load_resources_data)
