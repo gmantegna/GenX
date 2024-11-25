@@ -123,54 +123,54 @@ function hydro_res!(EP::Model, inputs::Dict, setup::Dict)
         CONSTRAINTSET = HYDRO_RES
     end
 
-    @constraint(EP,
-        cHydroReservoirStart[y in CONSTRAINTSET, t in START_SUBPERIODS],
-        EP[:vS_HYDRO][y,
-            t]==EP[:vS_HYDRO][y, hoursbefore(p, t, 1)] -
-                (1 / efficiency_down(gen[y]) * EP[:vP][y, t]) - vSPILL[y, t] +
-                inputs["pP_Max"][y, t] * EP[:eTotalCap][y])
+    # @constraint(EP,
+    #     cHydroReservoirStart[y in CONSTRAINTSET, t in START_SUBPERIODS],
+    #     EP[:vS_HYDRO][y,
+    #         t]==EP[:vS_HYDRO][y, hoursbefore(p, t, 1)] -
+    #             (1 / efficiency_down(gen[y]) * EP[:vP][y, t]) - vSPILL[y, t] +
+    #             inputs["pP_Max"][y, t] * EP[:eTotalCap][y])
 
-    ### Constraints commmon to all reservoir hydro (y in set HYDRO_RES) ###
-    @constraints(EP,
-        begin
-            ### NOTE: time coupling constraints in this block do not apply to first hour in each sample period;
-            # Energy stored in reservoir at end of each other hour is equal to energy at end of prior hour less generation and spill and + inflows in the current hour
-            # The ["pP_Max"][y,t] term here refers to inflows as a fraction of peak discharge power capacity.
-            # DEV NOTE: Last inputs["pP_Max"][y,t] term above is inflows; currently part of capacity factors inputs in Generators_variability.csv but should be moved to its own Hydro_inflows.csv input in future.
+    # ### Constraints commmon to all reservoir hydro (y in set HYDRO_RES) ###
+    # @constraints(EP,
+    #     begin
+    #         ### NOTE: time coupling constraints in this block do not apply to first hour in each sample period;
+    #         # Energy stored in reservoir at end of each other hour is equal to energy at end of prior hour less generation and spill and + inflows in the current hour
+    #         # The ["pP_Max"][y,t] term here refers to inflows as a fraction of peak discharge power capacity.
+    #         # DEV NOTE: Last inputs["pP_Max"][y,t] term above is inflows; currently part of capacity factors inputs in Generators_variability.csv but should be moved to its own Hydro_inflows.csv input in future.
 
-            # Constraints for reservoir hydro
-            cHydroReservoirInterior[y in HYDRO_RES, t in INTERIOR_SUBPERIODS],
-            EP[:vS_HYDRO][y, t] == (EP[:vS_HYDRO][y, hoursbefore(p, t, 1)] -
-             (1 / efficiency_down(gen[y]) * EP[:vP][y, t]) - vSPILL[y, t] +
-             inputs["pP_Max"][y, t] * EP[:eTotalCap][y])
+    #         # Constraints for reservoir hydro
+    #         cHydroReservoirInterior[y in HYDRO_RES, t in INTERIOR_SUBPERIODS],
+    #         EP[:vS_HYDRO][y, t] == (EP[:vS_HYDRO][y, hoursbefore(p, t, 1)] -
+    #          (1 / efficiency_down(gen[y]) * EP[:vP][y, t]) - vSPILL[y, t] +
+    #          inputs["pP_Max"][y, t] * EP[:eTotalCap][y])
 
-            # Maximum ramp up and down
-            cRampUp[y in HYDRO_RES, t in 1:T],
-            EP[:vP][y, t] + regulation_term[y, t] + reserves_term[y, t] -
-            EP[:vP][y, hoursbefore(p, t, 1)] <=
-            ramp_up_fraction(gen[y]) * EP[:eTotalCap][y]
-            cRampDown[y in HYDRO_RES, t in 1:T],
-            EP[:vP][y, hoursbefore(p, t, 1)] - EP[:vP][y, t] - regulation_term[y, t] +
-            reserves_term[y, hoursbefore(p, t, 1)] <=
-            ramp_down_fraction(gen[y]) * EP[:eTotalCap][y]
-            # Minimum streamflow running requirements (power generation and spills must be >= min value) in all hours
-            cHydroMinFlow[y in HYDRO_RES, t in 1:T],
-            EP[:vP][y, t] + EP[:vSPILL][y, t] >= min_power(gen[y]) * EP[:eTotalCap][y]
-            # DEV NOTE: When creating new hydro inputs, should rename Min_Power with Min_flow or similar for clarity since this includes spilled water as well
+    #         # Maximum ramp up and down
+    #         cRampUp[y in HYDRO_RES, t in 1:T],
+    #         EP[:vP][y, t] + regulation_term[y, t] + reserves_term[y, t] -
+    #         EP[:vP][y, hoursbefore(p, t, 1)] <=
+    #         ramp_up_fraction(gen[y]) * EP[:eTotalCap][y]
+    #         cRampDown[y in HYDRO_RES, t in 1:T],
+    #         EP[:vP][y, hoursbefore(p, t, 1)] - EP[:vP][y, t] - regulation_term[y, t] +
+    #         reserves_term[y, hoursbefore(p, t, 1)] <=
+    #         ramp_down_fraction(gen[y]) * EP[:eTotalCap][y]
+    #         # Minimum streamflow running requirements (power generation and spills must be >= min value) in all hours
+    #         cHydroMinFlow[y in HYDRO_RES, t in 1:T],
+    #         EP[:vP][y, t] + EP[:vSPILL][y, t] >= min_power(gen[y]) * EP[:eTotalCap][y]
+    #         # DEV NOTE: When creating new hydro inputs, should rename Min_Power with Min_flow or similar for clarity since this includes spilled water as well
 
-            # Maximum discharging rate must be less than power rating OR available stored energy at start of hour, whichever is less
-            # DEV NOTE: We do not currently account for hydro power plant outages - leave it for later to figure out if we should.
-            # DEV NOTE (CONTD): If we defin pPMax as hourly availability of the plant and define inflows as a separate parameter, then notation will be consistent with its use for other resources
-            cHydroMaxPower[y in HYDRO_RES, t in 1:T], EP[:vP][y, t] <= EP[:eTotalCap][y]
-            cHydroMaxOutflow[y in HYDRO_RES, t in 1:T],
-            EP[:vP][y, t] <= EP[:vS_HYDRO][y, hoursbefore(p, t, 1)]
-        end)
+    #         # Maximum discharging rate must be less than power rating OR available stored energy at start of hour, whichever is less
+    #         # DEV NOTE: We do not currently account for hydro power plant outages - leave it for later to figure out if we should.
+    #         # DEV NOTE (CONTD): If we defin pPMax as hourly availability of the plant and define inflows as a separate parameter, then notation will be consistent with its use for other resources
+    #         cHydroMaxPower[y in HYDRO_RES, t in 1:T], EP[:vP][y, t] <= EP[:eTotalCap][y]
+    #         cHydroMaxOutflow[y in HYDRO_RES, t in 1:T],
+    #         EP[:vP][y, t] <= EP[:vS_HYDRO][y, hoursbefore(p, t, 1)]
+    #     end)
 
-    ### Constraints to limit maximum energy in storage based on known limits on reservoir energy capacity (only for HYDRO_RES_KNOWN_CAP)
-    # Maximum energy stored in reservoir must be less than energy capacity in all hours - only applied to HYDRO_RES_KNOWN_CAP
-    @constraint(EP,
-        cHydroMaxEnergy[y in HYDRO_RES_KNOWN_CAP, t in 1:T],
-        EP[:vS_HYDRO][y, t]<=hydro_energy_to_power_ratio(gen[y]) * EP[:eTotalCap][y])
+    # ### Constraints to limit maximum energy in storage based on known limits on reservoir energy capacity (only for HYDRO_RES_KNOWN_CAP)
+    # # Maximum energy stored in reservoir must be less than energy capacity in all hours - only applied to HYDRO_RES_KNOWN_CAP
+    # @constraint(EP,
+    #     cHydroMaxEnergy[y in HYDRO_RES_KNOWN_CAP, t in 1:T],
+    #     EP[:vS_HYDRO][y, t]<=hydro_energy_to_power_ratio(gen[y]) * EP[:eTotalCap][y])
 
     if setup["OperationalReserves"] == 1
         ### Reserve related constraints for reservoir hydro resources (y in HYDRO_RES), if used
