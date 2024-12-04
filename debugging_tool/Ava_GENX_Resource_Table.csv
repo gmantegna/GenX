@@ -10,7 +10,7 @@ Aramis,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,30,30,0,0,0
 CALP01RA2027,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,30,30,0,0,0
 CHEV01RA2024,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,30,30,0,0,0
 CHEV01RA2025,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,30,30,0,0,0
-DaggettSolarPower3,TRUE,Vre_stor,1,Solar,0,0,DefaultFuel,CCA,30,30,0,0,0
+DaggettSolarPower3,TRUE,Vre_stor,1,Solar_Hybrid,0,0,DefaultFuel,CCA,30,30,0,0,0
 EBMUD01RA2024,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,30,30,0,0,0
 EdwardsSolarII,TRUE,Vre,1,Solar,0,0,DefaultFuel,CCA,30,30,0,0,0
 FervoFECNevada1,TRUE,Must_run,1,Geothermal,0,0,Geothermal,CCA,30,30,0,0,0
@@ -25,7 +25,7 @@ Oberon,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,30,30,0,0,0
 OhmConnect,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,30,30,0,0,0
 RosamondCentral,TRUE,Vre,1,Solar,0,0,DefaultFuel,CCA,30,30,0,0,0
 Sanborn,TRUE,Storage,1,Li_Battery,0,0,,CCA,30,30,0,0,0
-Scarlet,TRUE,Vre_stor,1,Solar,0,0,DefaultFuel,CCA,30,30,0,0,0
+Scarlet,TRUE,Vre_stor,1,Solar_Hybrid,0,0,DefaultFuel,CCA,30,30,0,0,0
 SDGE01RA2024,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,30,30,0,0,0
 SENA01RA2027,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,30,30,0,0,0
 SummitWind,TRUE,Vre,1,Wind,0,0,DefaultFuel,CCA,30,30,0,0,0
@@ -61,5 +61,5 @@ Riverside_West_Pumped_Storage,TRUE,Storage,1,Pumped_Hydro,1,0,,CCA,30,30,0,0,0
 Southern_Nevada_Geothermal,TRUE,Must_run,1,Geothermal,1,0,Geothermal,CCA,30,30,0,0,0
 Tehachapi_Pumped_Storage,TRUE,Storage,1,Pumped_Hydro,1,0,,CCA,30,30,0,0,0
 Wyoming_Wind,TRUE,Vre,1,Wind,1,0,DefaultFuel,CCA,30,30,0,0,0
-Hybrid_Solar_Test,TRUE,Vre_stor,1,Solar,1,0,DefaultFuel,CCA,30,30,0,0,0
-Hybrid_Wind_Test,TRUE,Vre_stor,1,Wind,1,0,DefaultFuel,CCA,30,30,0,0,0
+Hybrid_Solar_Test,TRUE,Vre_stor,1,Solar_Hybrid,1,0,DefaultFuel,CCA,30,30,0,0,0
+Hybrid_Wind_Test,TRUE,Vre_stor,1,Wind_Hybrid,1,0,DefaultFuel,CCA,30,30,0,0,0
