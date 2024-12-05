@@ -11,6 +11,11 @@ function custom_constraints!(EP, inputs, setup)
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
     assets = inputs["GENERIC_ASSETS"]
     generators = setdiff(collect(1:G),assets)
+    THERM_COMMIT = inputs["THERM_COMMIT"]
+
+    if setup["ParameterScale"] == 1
+        throw("Custom constraints with ParameterScale=1 not impelemented")
+    end
 
     for (constraint_type,contents) in inputs["custom_constraints"]
         println(constraint_type)
@@ -36,7 +41,11 @@ function custom_constraints!(EP, inputs, setup)
                         else
                             rid=matching_rids[1]
                             if rid in axes(EP[:vCAP])[1]
-                                EP[exp_name] += EP[:vCAP][rid] * vCAP_cur[vCAP_cur[!,"Index 1"].==resource,"Multiplier"][1]
+                                if rid in THERM_COMMIT
+                                    EP[exp_name] += EP[:vCAP][rid] * cap_size(gen[rid]) * vCAP_cur[vCAP_cur[!,"Index 1"].==resource,"Multiplier"][1]
+                                else
+                                    EP[exp_name] += EP[:vCAP][rid] * vCAP_cur[vCAP_cur[!,"Index 1"].==resource,"Multiplier"][1]
+                                end
                             else
                                 println("did not find vCAP for resource $resource")
                             end
@@ -59,7 +68,11 @@ function custom_constraints!(EP, inputs, setup)
                         else
                             rid=matching_rids[1]
                             if rid in axes(EP[:eTotalCap])[1]
-                                EP[exp_name] += EP[:eTotalCap][rid] * eTotalCap_cur[eTotalCap_cur[!,"Index 2"].==resource,"Multiplier"][1]
+                                if rid in THERM_COMMIT
+                                    EP[exp_name] += EP[:eTotalCap][rid] * cap_size(gen[rid]) * eTotalCap_cur[eTotalCap_cur[!,"Index 2"].==resource,"Multiplier"][1]
+                                else
+                                    EP[exp_name] += EP[:eTotalCap][rid] * eTotalCap_cur[eTotalCap_cur[!,"Index 2"].==resource,"Multiplier"][1]
+                                end
                             else
                                 println("did not find eTotalCap for resource $resource")
                             end
