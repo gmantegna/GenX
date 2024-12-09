@@ -1,12 +1,16 @@
 function write_prm_prices(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
-    Z = collect(keys(inputs["PRM_slack"]))
-    columns  = [:Zone, :PRM_Price, :PRM_AnnualSlack, :PRM_AnnualPenalty]
+    gen = inputs["RESOURCES"]
+    G = inputs["G"]
     
+    Z = collect(keys(inputs["PRM_slack"]))
+    columns  = [:Zone, :PRM_AnnualRequirement, :PRM_TotalCapacity, :PRM_AnnualSlack, :PRM_Price,  :PRM_AnnualPenalty]
+
     dfPRM = DataFrame([name => [] for name in columns])
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
-
+            
     for z in Z
-        push!(dfPRM, [z, dual.(EP[:cPRM][z]),value.(EP[:vPRMSlack][z]),  value.(EP[:eCPRMSlack][z])])    
+        prm_capacity = sum([GenX.elcc(gen[y], tag = 1) .* value(EP[:eTotalCap][y]) for y in GenX.resources_in_zone_by_rid(gen, z)])
+        push!(dfPRM, [z, inputs["PRM"][z], prm_capacity, value.(EP[:vPRMSlack][z]), dual.(EP[:cPRM][z]), value.(EP[:eCPRMSlack][z])])    
     end
 
     dfPRM .*= scale_factor
