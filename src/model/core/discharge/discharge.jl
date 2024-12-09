@@ -42,7 +42,7 @@ function discharge!(EP::Model, inputs::Dict, setup::Dict)
     # ESR Policy
     if setup["EnergyShareRequirement"] >= 1
         @expression(EP, eESRDischarge[ESR = 1:inputs["nESR"]],
-            +sum(inputs["omega"][t] * esr(gen[y], tag = ESR) * EP[:vP][y, t]
+            + sum(inputs["omega"][t] * esr(gen[y], tag = ESR) * EP[:vP][y, t]
             for y in ids_with_policy(gen, esr, tag = ESR), t in 1:T)
             -sum(inputs["dfESR"][z, ESR] * inputs["omega"][t] * inputs["pD"][t, z]
             for t in 1:T, z in findall(x -> x > 0, inputs["dfESR"][:, ESR])))

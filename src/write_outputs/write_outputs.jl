@@ -319,6 +319,13 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
 
         dfESRRev = DataFrame()
         if setup["EnergyShareRequirement"] == 1 && has_duals(EP)
+            elapsed_time_esr_resource_shares = @elapsed dfESR = write_esr_resource_shares(path,
+                    inputs,
+                    setup,
+                    EP)
+            println("Time elapsed for writing esr resource shares is")
+            println(elapsed_time_esr_resource_shares)
+
             dfESR = DataFrame()
             if output_settings_d["WriteESRPrices"] ||
                output_settings_d["WriteESRRevenue"] || output_settings_d["WriteNetRevenue"]
@@ -478,10 +485,19 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
         end
     end
 
+    if setup["PlanningReserveMargin"] == 1  
+        elapsed_time_prm_resource_capacity= @elapsed write_prm_resource_capacity(path, inputs, setup, EP)
+        println("Time elapsed for writing prm resource capacities is")
+        println(elapsed_time_prm_resource_capacity)
+    end
+
     if haskey(inputs, "PRM_slack")  
         elapsed_time_prm_penalties= @elapsed write_prm_prices(path, inputs, setup, EP)
         println("Time elapsed for writing prm penalties is")
         println(elapsed_time_prm_penalties)
+
+
+        
     end
 
     if setup["Markets"] == 1   
