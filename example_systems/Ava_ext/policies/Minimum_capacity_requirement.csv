@@ -1,0 +1,4 @@
+MinCapReqConstraint,ConstraintDescription,Min_MW,PriceCap
+1,Storage_Min,25,9999
+2,Solar_Min,25,9999
+3,Wind_Min,25,9999

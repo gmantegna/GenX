@@ -1,0 +1,4 @@
+MaxCapReqConstraint,ConstraintDescription,Max_MW,PriceCap
+1,Storage_Max,100,9999
+2,Solar_Max,100,9999
+3,Wind_Max,100,9999

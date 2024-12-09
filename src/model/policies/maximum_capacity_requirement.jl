@@ -29,5 +29,5 @@ function maximum_capacity_requirement!(EP::Model, inputs::Dict, setup::Dict)
 
     @constraint(EP,
         cZoneMaxCapReq[maxcap = 1:NumberOfMaxCapReqs],
-        EP[:eMaxCapRes][maxcap]<=inputs["MaxCapReq"][maxcap])
+        EP[:eMaxCapRes][maxcap] <= inputs["MaxCapReq"][maxcap])
 end
