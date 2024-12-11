@@ -38,6 +38,10 @@ function markets!(EP::Model, inputs::Dict, setup::Dict)
         add_term_to_expression!(EP[:eTotalEmissionsByZone][m,t], inputs["Line_CO2_tons_MWh"][ML[m], t] * vMBUY[m,t] )
     end
 
+    for m in MZ, t = 1:T
+        add_term_to_expression!(EP[:eTotalEmissionsByZone][m,t], inputs["Market_CO2_tons_MWh"][m, t] * vMBUY[m,t] )
+    end
+
     #### Objective function   
     Market_Buy_Prices = inputs["Market_BuyPrices"]
     @expression(EP, eCMarketBuy[m in MZ], sum( Market_Buy_Prices[m,t] * vMBUY[m,t] * inputs["omega"][t] for t in 1:T))

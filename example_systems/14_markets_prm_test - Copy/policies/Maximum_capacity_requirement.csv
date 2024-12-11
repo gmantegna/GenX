@@ -1,0 +1,6 @@
+MaxCapReqConstraint,ConstraintDescription,Max_MW,PriceCap
+1,Wind_MaxBuild,0,999999
+2,Solar_MaxBuild,50,999999
+3,Battery_MaxBuild,45,999999
+4,CleanFirm_MaxBuild,0,999999
+5,Battery_LC_MaxBuild,5,999999
