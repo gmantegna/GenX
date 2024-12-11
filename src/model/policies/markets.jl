@@ -13,8 +13,10 @@ function markets!(EP::Model, inputs::Dict, setup::Dict)
     @variable(EP, vMSELL[m in MZ, t = 1:T] >= 0)
 
     # 3- Limit amount of energy sold/exported by each zone z at time t to the associated market   
-    LZ = [k for (k, v) in inputs["LZ_Markets"] if !isempty(v)]
-    @constraint(EP, cMaxSell[z in LZ, t = 1:T], EP[:eTotalGenerationByZone][z,t] >= sum(vMSELL[m,t] for m in inputs["LZ_Markets"][z] ) )
+    # LZ = [k for (k, v) in inputs["LZ_Markets"] if !isempty(v)]
+    # @constraint(EP, cMaxSell[z in LZ, t = 1:T], EP[:eTotalGenerationByZone][z,t] >= sum(vMSELL[m,t] for m in inputs["LZ_Markets"][z] ) )
+    @constraint(EP, cMaxSell[m in MZ, t = 1:T], EP[:eTotalGenerationByZone][m,t] >= vMSELL[m,t] )
+
 
     ### Constraints ###
     # 1. Maximum energy to buy from market or sell to market
@@ -34,9 +36,9 @@ function markets!(EP::Model, inputs::Dict, setup::Dict)
 
     # CO2 emissions from market purchased energy
     # add emission cost to the zone where the line start
-    for m in MZ, t = 1:T
-        add_term_to_expression!(EP[:eTotalEmissionsByZone][m,t], inputs["Line_CO2_tons_MWh"][ML[m], t] * vMBUY[m,t] )
-    end
+    # for m in MZ, t = 1:T
+    #     add_term_to_expression!(EP[:eTotalEmissionsByZone][m,t], inputs["Line_CO2_tons_MWh"][ML[m], t] * vMBUY[m,t] )
+    # end
 
     for m in MZ, t = 1:T
         add_term_to_expression!(EP[:eTotalEmissionsByZone][m,t], inputs["Market_CO2_tons_MWh"][m, t] * vMBUY[m,t] )

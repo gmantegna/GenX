@@ -79,8 +79,8 @@ function load_market_purchase_emissions_data_m!(setup::Dict, path::AbstractStrin
 
     co2_emissions_mat = extract_matrix_from_dataframe(emissions_df, "CO2_tons_MWh")
 
-    if size(co2_emissions_mat, 2) != inputs["L"]
-        @warn """Hourly CO2 emissions should be provided for every network line""" maxlog=1
+    if size(co2_emissions_mat, 2) != length(inputs["MZ"])
+        @warn """Hourly CO2 emissions should be provided for every market""" maxlog=1
     end
 
     inputs["Market_CO2_tons_MWh"] = transpose(co2_emissions_mat)
