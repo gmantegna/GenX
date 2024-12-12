@@ -44,7 +44,6 @@ using Statistics
 #using MOI
 #using SCIP
 using HiGHS
-using Clp
 using Cbc
 
 # Global scaling factor used when ParameterScale is on to shift values from MW to GW
