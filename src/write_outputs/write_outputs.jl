@@ -85,11 +85,11 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
         println(elapsed_time_charge)
     end
 
-    if output_settings_d["WriteCapacityFactor"]
-        elapsed_time_capacityfactor = @elapsed write_capacityfactor(path, inputs, setup, EP)
-        println("Time elapsed for writing capacity factor is")
-        println(elapsed_time_capacityfactor)
-    end
+    # if output_settings_d["WriteCapacityFactor"]
+    #     elapsed_time_capacityfactor = @elapsed write_capacityfactor(path, inputs, setup, EP)
+    #     println("Time elapsed for writing capacity factor is")
+    #     println(elapsed_time_capacityfactor)
+    # end
 
     if output_settings_d["WriteStorage"]
         elapsed_time_storage = @elapsed write_storage(path, inputs, setup, EP)

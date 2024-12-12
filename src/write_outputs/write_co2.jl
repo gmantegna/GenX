@@ -25,12 +25,12 @@ function write_co2_emissions_plant(path::AbstractString,
     weight = inputs["omega"]
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
     
-    emissions_plant = value.(EP[:eEmissionsByPlant])
+    emissions_plant = value.(EP[:eEmissionsByPlant]).data
     emissions_plant *= scale_factor
 
-    df = DataFrame(Resource = resources,
-        Zone = zones,
-        AnnualSum = zeros(G))
+    df = DataFrame(Resource = resources[generators],
+        Zone = zones[generators],
+        AnnualSum = zeros(length(generators)))
     df.AnnualSum .= emissions_plant * weight
 
     write_temporal_data(df, emissions_plant, path, setup, "emissions_plant")
