@@ -1,0 +1,4 @@
+MaxCapReqConstraint,ConstraintDescription,Max_MW,PriceCap
+1,max_cap_BESS,500,100000
+2,max_cap_solar,500,100000
+3,max_cap_wind,500,100000
