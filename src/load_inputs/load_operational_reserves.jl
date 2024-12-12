@@ -43,6 +43,9 @@ function load_operational_reserves!(setup::Dict, path::AbstractString, inputs::D
     # Spinning up reserve requirement as a percent of hourly wind and solar generation (which is summed across all zones)
     inputs["pRsv_Req_VRE"] = float(res_in[1, :Rsv_Req_Percent_VRE])
 
+    # Zone to apply reserves to
+    inputs["pOpRsv_Zone"]=float(res_in[1, :OpRsv_Zone])
+
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
 
     # Penalty for not meeting hourly spinning reserve requirement

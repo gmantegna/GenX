@@ -226,6 +226,8 @@ function operational_reserves_core!(EP::Model, inputs::Dict, setup::Dict)
     pP_Max(y, t) = inputs["pP_Max"][y, t]
 
     systemwide_hourly_demand = sum(pDemand, dims = 2)
+    demand_target_zone=pDemand[:,Int(inputs["pOpRsv_Zone"])]
+
     function must_run_vre_generation(t)
         sum(
             pP_Max(y, t) * EP[:eTotalCap][y]
@@ -257,14 +259,14 @@ function operational_reserves_core!(EP::Model, inputs::Dict, setup::Dict)
     @expression(EP,
         eRegReq[t = 1:T],
         inputs["pReg_Req_Demand"] *
-        systemwide_hourly_demand[t]+
+        demand_target_zone[t]+
         inputs["pReg_Req_VRE"] * must_run_vre_generation(t))
     # Operating reserve up / contingency reserve requirements as ˚a percentage of demand and scheduled variable renewable energy production in each hour
     # and the largest single contingency (generator or transmission line outage)
     @expression(EP,
         eRsvReq[t = 1:T],
         inputs["pRsv_Req_Demand"] *
-        systemwide_hourly_demand[t]+
+        demand_target_zone[t]+
         inputs["pRsv_Req_VRE"] * must_run_vre_generation(t))
 
     # N-1 contingency requirement is considered only if Unit Commitment is being modeled
