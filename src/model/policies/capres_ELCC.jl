@@ -37,7 +37,7 @@ function capres_ELCC!(EP::Model, inputs::Dict, setup::Dict)
         else
             rid=matching_rids[1]
             if rid in axes(EP[:eTotalCap])[1]
-                EP[:eNQC] += EP[:eTotalCap][rid] * df_NQC[df_NQC[!,"Resource"].==resource,"NQC_derate"][1]
+                EP[:eNQC] += EP[:vReliabilityCap][rid] * df_NQC[df_NQC[!,"Resource"].==resource,"NQC_derate"][1]
             else
                 println("did not find eTotalCap for resource $resource")
             end
@@ -70,7 +70,7 @@ function capres_ELCC!(EP::Model, inputs::Dict, setup::Dict)
                 df_facets[(df_facets[!,"ELCC_Surface"].==elcc_surface_names[s]) .& (df_facets[!,"Facet"].==elcc_facet_names[f]),"Axis_1"][1]
                 * sum(
                     get_elcc_multiplier(df_elcc_multipliers,elcc_surface_names,resource_names,s,g,1)
-                    * EP[:eTotalCap][g]
+                    * EP[:vReliabilityCap][g]
                     for g in 1:G
                 )
             )
@@ -78,7 +78,7 @@ function capres_ELCC!(EP::Model, inputs::Dict, setup::Dict)
                 df_facets[(df_facets[!,"ELCC_Surface"].==elcc_surface_names[s]) .& (df_facets[!,"Facet"].==elcc_facet_names[f]),"Axis_2"][1]
                 * sum(
                     get_elcc_multiplier(df_elcc_multipliers,elcc_surface_names,resource_names,s,g,2)
-                    * EP[:eTotalCap][g]
+                    * EP[:vReliabilityCap][g]
                     for g in 1:G
                 )
             )

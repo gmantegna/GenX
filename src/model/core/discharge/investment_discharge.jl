@@ -107,6 +107,10 @@ function investment_discharge!(EP::Model, inputs::Dict, setup::Dict)
             eExistingCap[y]
         end)
 
+    # add vReliability Cap for purposes of de-rating resources' capacity to PRM via custom constraints
+    @variable(EP, vReliabilityCap[y in 1:G]>=0)
+    @constraint(EP, cReliabilityCap[y in 1:G], vReliabilityCap[y]<=eTotalCap[y])
+
     if setup["Hourly_Pmin"] == 1
         @constraint(
             EP,
