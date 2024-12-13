@@ -1,0 +1,16 @@
+Sum Range ID,Index 1,MODEL_YEARS,Multiplier
+Minimum_Thermal_Retention_CAISO_CCGT1,CAISO_CCGT1,2035,1.0
+Minimum_Local_Area_Capacity,CAISO_CCGT1,2035,1.0
+Minimum_Thermal_Retention_CAISO_CCGT2,CAISO_CCGT2,2035,1.0
+Minimum_Local_Area_Capacity,CAISO_CCGT2,2035,1.0
+Minimum_Thermal_Retention_CAISO_Coal,CAISO_Coal,2035,1.0
+Minimum_Local_Area_Capacity,CAISO_Coal,2035,1.0
+Minimum_Local_Area_Capacity,CAISO_Li_Battery_4hr_Dispatch,2035,1.0
+Minimum_Thermal_Retention_CAISO_Peaker1,CAISO_Peaker1,2035,1.0
+Minimum_Local_Area_Capacity,CAISO_Peaker1,2035,1.0
+Minimum_Thermal_Retention_CAISO_Peaker2,CAISO_Peaker2,2035,1.0
+Minimum_Local_Area_Capacity,CAISO_Peaker2,2035,1.0
+Minimum_Thermal_Retention_CAISO_Reciprocating_Engine,CAISO_Reciprocating_Engine,2035,1.0
+Minimum_Local_Area_Capacity,CAISO_Reciprocating_Engine,2035,1.0
+Minimum_Thermal_Retention_CAISO_ST,CAISO_ST,2035,1.0
+Minimum_Local_Area_Capacity,CAISO_ST,2035,1.0

@@ -1,0 +1,7 @@
+Resource,Zone,New_Build,Can_Retire,Existing_Cap_MW,Max_Cap_MW,Inv_Cost_per_MWyr,Fixed_OM_Cost_per_MWyr,Min_Cap_MW,Var_OM_Cost_per_MWh,Heat_Rate_MMBTU_per_MWh,Fuel,Min_Power,Ramp_Up_Percentage,Ramp_Dn_Percentage,Hydro_Energy_to_Power_Ratio,LDS,Reg_Max,Rsv_Max,Reg_Cost,Rsv_Cost,region,cluster
+BANC_Hydro,1,0,0,2550.0,2550.0,0,0,0,0.0,0,None,0.0,1.0,1.0,9999,0,0,0,0.01,0.01,BANC,1
+CAISO_Hydro,2,0,0,8327.38344025,8327.38344025,0,0,0,0.0,0,None,0.0,0.1233,0.1233,9999,0,1,1,0.01,0.01,CAISO,1
+LDWP_Hydro,5,0,0,1256.82148275,1256.82148275,0,0,0,0.0,0,None,0.0,1.0,1.0,9999,0,0,0,0.01,0.01,LDWP,1
+NW_Hydro,6,0,0,25659.8673416765,25659.8673416765,0,0,0,0.0,0,None,0.0,0.0666,0.0666,9999,0,0,0,0.01,0.01,NW,1
+NW_Hydro_for_CAISO,3,0,0,2326.1743208235002,2326.1743208235002,0,0,0,0.0,0,None,0.0,0.0666,0.0666,9999,0,0,0,0.01,0.01,CAISO_NW_Hydro,1
+SW_Hydro,7,0,0,3242.652291375,3242.652291375,0,0,0,0.0,0,None,0.0,1.0,1.0,9999,0,0,0,0.01,0.01,SW,1

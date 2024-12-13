@@ -1,0 +1,9 @@
+Sum Range ID,Operator
+Minimum_Thermal_Retention_CAISO_CCGT1,>=
+Minimum_Thermal_Retention_CAISO_CCGT2,>=
+Minimum_Thermal_Retention_CAISO_Coal,>=
+Minimum_Thermal_Retention_CAISO_Peaker1,>=
+Minimum_Thermal_Retention_CAISO_Peaker2,>=
+Minimum_Thermal_Retention_CAISO_Reciprocating_Engine,>=
+Minimum_Thermal_Retention_CAISO_ST,>=
+Minimum_Local_Area_Capacity,>=
