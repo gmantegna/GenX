@@ -1,0 +1,17 @@
+Resource,Zone,Num_VRE_Bins,New_Build,Can_Retire,Reg_Max,Rsv_Max,Reg_Cost,Rsv_Cost,region,cluster,Existing_Cap_MW,Max_Cap_MW,Min_Cap_MW,Inv_Cost_per_MWyr,Fixed_OM_Cost_per_MWyr,Var_OM_Cost_per_MWh,curtailment_cost_per_mwh
+EdwardsSolarII,1,1,0,0,1,1,0,0,CCA,1,100.0,100.0,0,0,67030,0.0,20
+BTM_Solar,1,0,0,0,1,1,0,0,CCA,1,718.6,718.6,0,0,0,0.0,0
+Wyoming_Wind,1,1,1,0,1,1,0,0,CCA,1,0.0,1000.0,0,187224,41053,0.0,20
+NW_Ext_Tx_Wind,1,1,1,0,1,1,0,0,CCA,1,0.0,1000.0,0,115889,41994,0.0,20
+Humboldt_Bay_Offshore_Wind,1,1,1,0,1,1,0,0,CCA,1,0.0,1000.0,0,151745,73083,0.0,20
+Riverside_Solar,1,1,1,0,1,1,0,0,CCA,1,0.0,1000.0,0,57658,19588,0.0,20
+Arizona_Solar,1,1,1,0,1,1,0,0,CCA,1,0.0,1000.0,0,56171,18965,0.0,20
+RosamondCentral,1,1,0,0,1,1,0,0,CCA,1,112.0,112.0,0,0,82232,0.0,20
+TulareSolarCenter,1,1,0,0,1,1,0,0,CCA,1,55.8,55.8,0,0,66989,0.0,20
+Riverside_Palm_Springs_Wind,1,1,1,0,1,1,0,0,CCA,1,0.0,1000.0,0,113508,35190,0.0,20
+SummitWind,1,1,0,0,1,1,0,0,CCA,1,56.2,56.2,0,0,172776,0.0,20
+Northern_California_Solar,1,1,1,0,1,1,0,0,CCA,1,0.0,1000.0,0,57658,19588,0.0,20
+Tecolote,1,1,0,0,1,1,0,0,CCA,1,100.0,100.0,0,0,147470,0.0,20
+Northern_California_Wind,1,1,1,0,1,1,0,0,CCA,1,0.0,1000.0,0,72231,41943,0.0,20
+New_Mexico_Wind,1,1,1,0,1,1,0,0,CCA,1,0.0,1000.0,0,174363,40714,0.0,20
+Morro_Bay_Offshore_Wind,1,1,1,0,1,1,0,0,CCA,1,0.0,1000.0,0,155468,74776,0.0,20
