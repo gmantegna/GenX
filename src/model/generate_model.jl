@@ -272,10 +272,7 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
     if setup["PlanningReserveMargin"] == 1
 		planning_reserve_margin!(EP, inputs, setup)
 	end
-
    
-
-    
     # Apply robust optimization on the scaled objective function?
 	if setup["RO"] == 1
         ro!(EP, inputs, setup)
