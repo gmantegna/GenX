@@ -123,8 +123,9 @@ function vre_stor!(EP::Model, inputs::Dict, setup::Dict)
         else
             fixed_om_cost_per_mwyr(gen[y]) * EP[:eTotalCap][y]
         end)
+    # This value was calculated in discharge investment and added to the objective function
+    # it was calculated here so it can be printed in costs file
     @expression(EP, eTotalCGrid, sum(eCGrid[y] for y in VRE_STOR))
-    EP[:eObj] += eTotalCGrid
     
     ## 2. Power Balance Expressions ##
 
