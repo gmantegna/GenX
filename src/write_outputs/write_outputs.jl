@@ -433,15 +433,35 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
             println(elapsed_time_min_cap_req)
         end
 
+        if setup["MinBuildCapReq"] == 1 && has_duals(EP) == 1 &&
+            output_settings_d["WriteMinBuildCapReq"]
+             elapsed_time_min_build_cap_req = @elapsed write_minimum_build_capacity_requirement(path,
+                 inputs,
+                 setup,
+                 EP)
+             println("Time elapsed for writing minimum build capacity requirement is")
+             println(elapsed_time_min_build_cap_req)
+        end
+
         if setup["MaxCapReq"] == 1 && has_duals(EP) == 1 &&
            output_settings_d["WriteMaxCapReq"]
-            elapsed_time_max_cap_req = @elapsed write_maximum_capacity_requirement(path,
+            elapsed_time_max_cap_req = @elapsed write_maximum_build_capacity_requirement(path,
                 inputs,
                 setup,
                 EP)
             println("Time elapsed for writing maximum capacity requirement is")
             println(elapsed_time_max_cap_req)
         end
+
+        if setup["MaxBuildCapReq"] == 1 && has_duals(EP) == 1 &&
+            output_settings_d["WriteMaxBuildCapReq"]
+             elapsed_time_max_build_cap_req = @elapsed write_maximum_build_capacity_requirement(path,
+                 inputs,
+                 setup,
+                 EP)
+             println("Time elapsed for writing maximum build capacity requirement is")
+             println(elapsed_time_max_build_cap_req)
+         end
 
         if setup["HydrogenMinimumProduction"] == 1 && has_duals(EP)
             if output_settings_d["WriteHydrogenPrices"]

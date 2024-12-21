@@ -11,6 +11,8 @@ function default_settings()
         "VirtualChargeDischargeCost" => 1,  # $/MWh
         "MinCapReq" => 0,
         "MaxCapReq" => 0,
+        "MinBuildCapReq" => 0,
+        "MaxBuildCapReq" => 0,
         "ParameterScale" => 0,
         "WriteShadowPrices" => 0,
         "UCommit" => 0,
@@ -121,6 +123,8 @@ function default_writeoutput()
         "WriteMaintenance" => true,
         "WriteMaxCapReq" => true,
         "WriteMinCapReq" => true,
+        "WriteMaxBuildCapReq" => true,
+        "WriteMinBuildCapReq" => true,
         "WriteNetRevenue" => true,
         "WriteNSE" => true,
         "WriteNWExpansion" => true,

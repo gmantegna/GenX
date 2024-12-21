@@ -34,6 +34,8 @@ function _get_policyfile_info()
     cap_res_filenames = ["Resource_capacity_reserve_margin.csv"]
     min_cap_filenames = ["Resource_minimum_capacity_requirement.csv"]
     max_cap_filenames = ["Resource_maximum_capacity_requirement.csv"]
+    min_build_cap_filenames = ["Resource_minimum_build_capacity_requirement.csv"]
+    max_build_cap_filenames = ["Resource_maximum_build_capacity_requirement.csv"]
     h2_demand_filenames = ["Resource_hydrogen_demand.csv"]
     hourly_matching_filenames = ["Resource_hourly_matching.csv"]
     prm_filenames = ["Resource_elcc.csv"]
@@ -43,6 +45,8 @@ function _get_policyfile_info()
         cap_res = (filenames = cap_res_filenames, setup_param = "CapacityReserveMargin"),
         min_cap = (filenames = min_cap_filenames, setup_param = "MinCapReq"),
         max_cap = (filenames = max_cap_filenames, setup_param = "MaxCapReq"),
+        min_build_cap = (filenames = min_build_cap_filenames, setup_param = "MinBuildCapReq"),
+        max_build_cap = (filenames = max_build_cap_filenames, setup_param = "MaxBuildCapReq"),
         h2_demand = (
             filenames = h2_demand_filenames, setup_param = "HydrogenMinimumProduction"),
         hourly_matching = (
@@ -619,7 +623,7 @@ function validate_policy_dataframe!(filename::AbstractString, policy_in::DataFra
 
     accepted_cols = ["derating_factor", "esr", "esr_vrestor",
         "h2_demand", "qualified_supply", "elcc",
-        [string(cap, type) for cap in ["min_cap", "max_cap"]
+        [string(cap, type) for cap in ["min_cap", "max_cap", "min_build_cap", "max_build_cap"]
          for type in ("", "_stor", "_solar", "_wind")]...]
 
     # Check that all policy columns have names in accepted_cols

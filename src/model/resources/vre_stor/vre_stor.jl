@@ -104,6 +104,8 @@ function vre_stor!(EP::Model, inputs::Dict, setup::Dict)
     CapacityReserveMargin = setup["CapacityReserveMargin"]
     MinCapReq = setup["MinCapReq"]
     MaxCapReq = setup["MaxCapReq"]
+    MinBuildCapReq = setup["MinBuildCapReq"]
+    MaxBuildCapReq = setup["MaxBuildCapReq"]
     IncludeLossesInESR = setup["IncludeLossesInESR"]
     OperationalReserves = setup["OperationalReserves"]
 
@@ -300,6 +302,104 @@ function vre_stor!(EP::Model, inputs::Dict, setup::Dict)
             EP[:eMaxCapRes] += eMaxCapResDCStor
         end
     end
+
+    ############## Code added by Manar for min.max build cap
+    # Minimum Build Capacity Requirement
+    if MinBuildCapReq == 1
+        @expression(EP, eMinBuildCapResSolar[mincap = 1:inputs["NumberOfMinBuildCapReqs"]],
+            sum(by_rid(y, :etainverter) * EP[:vSOLARCAP][y]
+            for y in intersect(SOLAR,
+                ids_with_policy(gen_VRE_STOR, min_build_cap_solar, tag = mincap))))
+        EP[:eMinBuildCapRes] += eMinBuildCapResSolar
+
+        @expression(EP, eMinBuildCapResWind[mincap = 1:inputs["NumberOfMinBuildCapReqs"]],
+            sum(EP[:vWINDCAP][y]
+            for y in intersect(WIND,
+                ids_with_policy(gen_VRE_STOR, min_build_cap_wind, tag = mincap))))
+        EP[:eMinBuildCapRes] += eMinBuildCapResWind
+
+        if !isempty(inputs["VS_ASYM_AC_DISCHARGE"])
+            @expression(EP, eMinBuildCapResACDis[mincap = 1:inputs["NumberOfMinBuildCapReqs"]],
+                sum(EP[:vCAPDISCHARGE_AC][y]
+                for y in intersect(inputs["VS_ASYM_AC_DISCHARGE"],
+                    ids_with_policy(gen_VRE_STOR, min_build_cap_stor, tag = mincap))))
+            EP[:eMinBuildCapRes] += eMinBuildCapResACDis
+        end
+
+        if !isempty(inputs["VS_ASYM_DC_DISCHARGE"])
+            @expression(EP, eMinBuildCapResDCDis[mincap = 1:inputs["NumberOfMinBuildCapReqs"]],
+                sum(EP[:vCAPDISCHARGE_DC][y]
+                for y in intersect(inputs["VS_ASYM_DC_DISCHARGE"],
+                    ids_with_policy(gen_VRE_STOR, min_build_cap_stor, tag = mincap))))
+            EP[:eMinBuildCapRes] += eMinBuildCapResDCDis
+        end
+
+        if !isempty(inputs["VS_SYM_AC"])
+            @expression(EP, eMinBuildCapResACStor[mincap = 1:inputs["NumberOfMinBuildCapReqs"]],
+                sum(by_rid(y, :power_to_energy_ac) * EP[:vCAPENERGY_VS][y]
+                for y in intersect(inputs["VS_SYM_AC"],
+                    ids_with_policy(gen_VRE_STOR, min_build_cap_stor, tag = mincap))))
+            EP[:eMinBuildCapRes] += eMinBuildCapResACStor
+        end
+
+        if !isempty(inputs["VS_SYM_DC"])
+            @expression(EP, eMinBuildCapResDCStor[mincap = 1:inputs["NumberOfMinBuildCapReqs"]],
+                sum(by_rid(y, :power_to_energy_dc) * EP[:vCAPENERGY_VS][y]
+                for y in intersect(inputs["VS_SYM_DC"],
+                    ids_with_policy(gen_VRE_STOR, min_build_cap_stor, tag = mincap))))
+            EP[:eMinBuildCapRes] += eMinBuildCapResDCStor
+        end
+    end
+
+    # Maximum Build Capacity Requirement
+    if MaxBuildCapReq == 1
+        @expression(EP, eMaxBuildCapResSolar[maxcap = 1:inputs["NumberOfMaxBuildCapReqs"]],
+            sum(by_rid(y, :etainverter) * EP[:vSOLARCAP][y]
+            for y in intersect(SOLAR,
+                ids_with_policy(gen_VRE_STOR, max_build_cap_solar, tag = maxcap))))
+        EP[:eMaxBuildCapRes] += eMaxBuildCapResSolar
+
+        @expression(EP, eMaxBuildCapResWind[maxcap = 1:inputs["NumberOfMaxBuildCapReqs"]],
+            sum(EP[:vWINDCAP][y]
+            for y in intersect(WIND,
+                ids_with_policy(gen_VRE_STOR, max_build_cap_wind, tag = maxcap))))
+        EP[:eMaxBuildCapRes] += eMaxBuildCapResWind
+
+        if !isempty(inputs["VS_ASYM_AC_DISCHARGE"])
+            @expression(EP, eMaxBuildCapResACDis[maxcap = 1:inputs["NumberOfMaxBuildCapReqs"]],
+                sum(EP[:vCAPDISCHARGE_AC][y]
+                for y in intersect(inputs["VS_ASYM_AC_DISCHARGE"],
+                    ids_with_policy(gen_VRE_STOR, max_build_cap_stor, tag = maxcap))))
+            EP[:eMaxBuildCapRes] += eMaxBuildCapResACDis
+        end
+
+        if !isempty(inputs["VS_ASYM_DC_DISCHARGE"])
+            @expression(EP, eMaxBuildCapResDCDis[maxcap = 1:inputs["NumberOfMaxBuildCapReqs"]],
+                sum(EP[:vCAPDISCHARGE_DC][y]
+                for y in intersect(inputs["VS_ASYM_DC_DISCHARGE"],
+                    ids_with_policy(gen_VRE_STOR, max_build_cap_stor, tag = maxcap))))
+            EP[:eMaxBuildCapRes] += eMaxBuildCapResDCDis
+        end
+
+        if !isempty(inputs["VS_SYM_AC"])
+            @expression(EP, eMaxBuildCapResACStor[maxcap = 1:inputs["NumberOfMaxBuildCapReqs"]],
+                sum(by_rid(y, :power_to_energy_ac) * EP[:vCAPENERGY_VS][y]
+                for y in intersect(inputs["VS_SYM_AC"],
+                    ids_with_policy(gen_VRE_STOR, max_build_cap_stor, tag = maxcap))))
+            EP[:eMaxBuildCapRes] += eMaxBuildCapResACStor
+        end
+
+        if !isempty(inputs["VS_SYM_DC"])
+            @expression(EP, eMaxBuildCapResDCStor[maxcap = 1:inputs["NumberOfMaxBuildCapReqs"]],
+                sum(by_rid(y, :power_to_energy_dc) * EP[:vCAPENERGY_VS][y]
+                for y in intersect(inputs["VS_SYM_DC"],
+                    ids_with_policy(gen_VRE_STOR, max_build_cap_stor, tag = maxcap))))
+            EP[:eMaxBuildCapRes] += eMaxBuildCapResDCStor
+        end
+    end
+
+    ################
+
 
     # Capacity Reserve Margin Requirement
     if CapacityReserveMargin > 0

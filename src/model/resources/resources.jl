@@ -697,6 +697,8 @@ mga(r::AbstractResource) = get(r, :mga, default_zero)
 esr(r::AbstractResource; tag::Int64) = get(r, Symbol("esr_$tag"), default_zero)
 min_cap(r::AbstractResource; tag::Int64) = get(r, Symbol("min_cap_$tag"), default_zero)
 max_cap(r::AbstractResource; tag::Int64) = get(r, Symbol("max_cap_$tag"), default_zero)
+min_build_cap(r::AbstractResource; tag::Int64) = get(r, Symbol("min_build_cap_$tag"), default_zero)
+max_build_cap(r::AbstractResource; tag::Int64) = get(r, Symbol("max_build_cap_$tag"), default_zero)
 function derating_factor(r::AbstractResource; tag::Int64)
     get(r, Symbol("derating_factor_$tag"), default_zero)
 end
@@ -1082,6 +1084,12 @@ end
 function max_cap_stor(r::AbstractResource; tag::Int64)
     get(r, Symbol("max_cap_stor_$tag"), default_zero)
 end
+function min_build_cap_stor(r::AbstractResource; tag::Int64)
+    get(r, Symbol("min_build_cap_stor_$tag"), default_zero)
+end
+function max_build_cap_stor(r::AbstractResource; tag::Int64)
+    get(r, Symbol("max_build_cap_stor_$tag"), default_zero)
+end
 # vre part
 function min_cap_solar(r::AbstractResource; tag::Int64)
     get(r, Symbol("min_cap_solar_$tag"), default_zero)
@@ -1089,11 +1097,24 @@ end
 function max_cap_solar(r::AbstractResource; tag::Int64)
     get(r, Symbol("max_cap_solar_$tag"), default_zero)
 end
+function min_build_cap_solar(r::AbstractResource; tag::Int64)
+    get(r, Symbol("min_build_cap_solar_$tag"), default_zero)
+end
+function max_build_cap_solar(r::AbstractResource; tag::Int64)
+    get(r, Symbol("max_build_cap_solar_$tag"), default_zero)
+end
+
 function min_cap_wind(r::AbstractResource; tag::Int64)
     get(r, Symbol("min_cap_wind_$tag"), default_zero)
 end
 function max_cap_wind(r::AbstractResource; tag::Int64)
     get(r, Symbol("max_cap_wind_$tag"), default_zero)
+end
+function min_build_cap_wind(r::AbstractResource; tag::Int64)
+    get(r, Symbol("min_build_cap_wind_$tag"), default_zero)
+end
+function max_build_cap_wind(r::AbstractResource; tag::Int64)
+    get(r, Symbol("max_build_cap_wind_$tag"), default_zero)
 end
 function h2_demand(r::AbstractResource; tag::Int64)
     get(r, Symbol("h2_demand_$tag"), default_zero)

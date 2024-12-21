@@ -179,4 +179,21 @@ function investment_discharge!(EP::Model, inputs::Dict, setup::Dict)
             sum(EP[:eTotalCap][y] for y in ids_with_policy(gen, max_cap, tag = maxcap)))
         add_similar_to_expression!(EP[:eMaxCapRes], eMaxCapResInvest)
     end
+
+    ############ Annual build capacity
+    
+    if setup["MinBuildCapReq"] == 1
+        @expression(EP,
+            eMinBuildCapResInvest[mincap = 1:inputs["NumberOfMinBuildCapReqs"]],
+            sum(EP[:vCAP][y] for y in intersect(ids_with_policy(gen, min_build_cap, tag = mincap), NEW_CAP)))
+        add_similar_to_expression!(EP[:eMinBuildCapRes], eMinBuildCapResInvest)
+    end
+
+    if setup["MaxBuildCapReq"] == 1
+        @expression(EP,
+            eMaxBuildCapResInvest[maxcap = 1:inputs["NumberOfMaxBuildCapReqs"]],
+            sum(EP[:vCAP][y] for y in intersect(ids_with_policy(gen, max_build_cap, tag = maxcap), NEW_CAP)))
+        add_similar_to_expression!(EP[:eMaxBuildCapRes], eMaxBuildCapResInvest)
+    end
+    ############## end of added code
 end

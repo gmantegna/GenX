@@ -4,7 +4,7 @@ Trans_Loss_Segments: 0
 UCommit: 2
 StorageLosses: 0
 CO2Cap: 1
-MaxCapReq: 1
+MaxCapReq: 0
 CapacityReserveMargin: 0
 EnergyShareRequirement: 1
 WriteShadowPrices: 1
@@ -12,3 +12,5 @@ PortfolioManagment: 0
 PrintModel: 1
 Markets: 1
 PlanningReserveMargin: 1
+MinBuildCapReq: 1
+MaxBuildCapReq: 0

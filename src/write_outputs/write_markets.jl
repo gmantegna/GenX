@@ -14,6 +14,8 @@ function write_market(path::AbstractString, inputs::Dict, setup::Dict, EP::Model
     col_names = String[]
     zones = Int[]
     for i in 1:Z
+        push!(col_names, "Market_Active_$i")
+        push!(zones, i)
         push!(col_names, "Market_Buy_$i")
         push!(zones, i)
         push!(col_names, "Market_Sell_$i")
@@ -27,16 +29,27 @@ function write_market(path::AbstractString, inputs::Dict, setup::Dict, EP::Model
         
     # Fill the matrix with zeros
     fill!(markets, 0.0)
-    
     for i in 1:Z
         if i in MZ
-            markets[2*i-1, :] = value.(EP[:vMBUY][i,:]).data
-            markets[2*i, :] = value.(EP[:vMSELL][i,:]).data
+            markets[3*i-2, :] = value.(EP[:vMACTIVE][i,:]).data
+            markets[3*i-1, :] = value.(EP[:vMBUY][i,:]).data
+            markets[3*i, :] = value.(EP[:vMSELL][i,:]).data
         else
-            markets[2*i-1, :] = zeros(T)
-            markets[2*i, :] = zeros(T)
+            markets[3*i-2, :] = zeros(T)
+            markets[3*i-1, :] = zeros(T)
+            markets[3*i, :] = zeros(T)
         end
     end
+
+    # for i in 1:Z
+    #     if i in MZ
+    #         markets[2*i-1, :] = value.(EP[:vMBUY][i,:]).data
+    #         markets[2*i, :] = value.(EP[:vMSELL][i,:]).data
+    #     else
+    #         markets[2*i-1, :] = zeros(T)
+    #         markets[2*i, :] = zeros(T)
+    #     end
+    # end
     markets .*=scale_factor
     dfmarkets.AnnualSum .= markets * inputs["omega"]
     

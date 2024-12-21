@@ -130,6 +130,14 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
         create_empty_expression!(EP, :eMaxCapRes, inputs["NumberOfMaxCapReqs"])
     end
 
+    if setup["MinBuildCapReq"] == 1
+        create_empty_expression!(EP, :eMinBuildCapRes, inputs["NumberOfMinBuildCapReqs"])
+    end
+
+    if setup["MaxBuildCapReq"] == 1
+        create_empty_expression!(EP, :eMaxBuildCapRes, inputs["NumberOfMaxBuildCapReqs"])
+    end
+
     if setup["HydrogenMinimumProduction"] > 0
         create_empty_expression!(EP, :eH2DemandRes, inputs["NumberOfH2DemandReqs"])
     end
@@ -259,6 +267,14 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
         maximum_capacity_requirement!(EP, inputs, setup)
     end
 
+    if (setup["MinBuildCapReq"] == 1)
+        minimum_build_capacity_requirement!(EP, inputs, setup)
+    end
+
+    if setup["MaxBuildCapReq"] == 1
+        maximum_build_capacity_requirement!(EP, inputs, setup)
+    end
+    
     # Hydrogen demand limits
     if setup["HydrogenMinimumProduction"] > 0
         hydrogen_demand!(EP, inputs, setup)
