@@ -326,6 +326,14 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
             println("Time elapsed for writing esr resource shares is")
             println(elapsed_time_esr_resource_shares)
 
+            
+            elapsed_time_esr_detailed = @elapsed write_esr_detailed(path,
+                    inputs,
+                    setup,
+                    EP)
+            println("Time elapsed for writing esr detailed is")
+            println(elapsed_time_esr_detailed)
+
             dfESR = DataFrame()
             if output_settings_d["WriteESRPrices"] ||
                output_settings_d["WriteESRRevenue"] || output_settings_d["WriteNetRevenue"]

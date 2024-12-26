@@ -13,4 +13,4 @@ PrintModel: 1
 Markets: 1
 PlanningReserveMargin: 1
 MinBuildCapReq: 1
-MaxBuildCapReq: 0
+MaxBuildCapReq: 1

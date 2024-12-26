@@ -111,6 +111,14 @@ function write_costs_markets(path::AbstractString, inputs::Dict, setup::Dict, EP
         cost_dict["cUnmetPolicyPenalty"].total_cost += value(EP[:eTotalCMaxCapSlack])
     end
 
+    if haskey(inputs, "MinBuildCapPriceCap")
+        cost_dict["cUnmetPolicyPenalty"].total_cost += value(EP[:eTotalCMinBuildCapSlack])
+    end
+
+    if haskey(inputs, "MaxBuildCapPriceCap")
+        cost_dict["cUnmetPolicyPenalty"].total_cost += value(EP[:eTotalCMaxBuildCapSlack])
+    end
+
     if haskey(inputs, "H2DemandPriceCap")
         cost_dict["cUnmetPolicyPenalty"].total_cost += value(EP[:eTotalCH2DemandSlack])
     end
