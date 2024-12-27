@@ -54,25 +54,6 @@ function load_market_price_data!(setup::Dict, path::AbstractString, inputs::Dict
 
 end
 
-@doc raw"""
-    function load_market_purchase_emissions_data!(setup::Dict, path::AbstractString, inputs::Dict)
-
-    Function loads and processes CO2 emissions data for all network transmission lines from the Network_emissions.csv file.
-"""
-function load_market_purchase_emissions_data!(setup::Dict, path::AbstractString, inputs::Dict)
-    filename = "Network_emissions.csv"
-    emissions_df = load_dataframe(joinpath(path, filename))
-
-    co2_emissions_mat = extract_matrix_from_dataframe(emissions_df, "CO2_tons_MWh")
-
-    if size(co2_emissions_mat, 2) != inputs["L"]
-        @warn """Hourly CO2 emissions should be provided for every network line""" maxlog=1
-    end
-
-    inputs["Line_CO2_tons_MWh"] = transpose(co2_emissions_mat)
-    println(filename * " Successfully Read!")
-end
-
 function load_market_purchase_emissions_data_m!(setup::Dict, path::AbstractString, inputs::Dict)
     filename = "Market_emissions.csv"
     emissions_df = load_dataframe(joinpath(path, filename))

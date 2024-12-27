@@ -13,5 +13,5 @@ TimeDomainReduction: 0 # Time domain reduce (i.e. cluster) inputs based on Deman
 OutputFullTimeSeries: 0
 ModelingToGenerateAlternatives: 1
 ModelingtoGenerateAlternativeSlack: 0.05 # accept a solution that is 5% more expensive 
-ModelingToGenerateAlternativeIterations: 2 # will give 4 solutions, each iteration give 2
+ModelingToGenerateAlternativeIterations: 3 # will give 4 solutions, each iteration give 2
 MGAAnnualGeneration: 1
