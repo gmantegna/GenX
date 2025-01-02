@@ -54,7 +54,7 @@ function load_market_price_data!(setup::Dict, path::AbstractString, inputs::Dict
 
 end
 
-function load_market_purchase_emissions_data_m!(setup::Dict, path::AbstractString, inputs::Dict)
+function load_market_purchase_emissions_data!(setup::Dict, path::AbstractString, inputs::Dict)
     filename = "Market_emissions.csv"
     emissions_df = load_dataframe(joinpath(path, filename))
 

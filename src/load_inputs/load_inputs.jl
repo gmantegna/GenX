@@ -97,7 +97,6 @@ function load_inputs(setup::Dict, path::AbstractString)
         load_zones_markets!(setup, system_path, inputs)
         load_market_price_data!(setup, system_path, inputs)
         load_market_purchase_emissions_data!(setup, system_path, inputs)
-        load_market_purchase_emissions_data_m!(setup, system_path, inputs)
         set_market_network!(setup, system_path, inputs)
     end 
 
