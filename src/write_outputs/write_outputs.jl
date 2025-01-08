@@ -44,6 +44,10 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
         end
     end
 
+    if !has_duals(EP)
+        println("Warning: No dual values found in the model. All dual-dependent calculations have been replaced with zeros.")
+    end
+
     # Dict containing the list of outputs to write
     output_settings_d = setup["WriteOutputsSettingsDict"]
     write_settings_file(path, setup)
@@ -431,6 +435,12 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
             println("Time elapsed for writing co2 cap is")
             println(elapsed_time_co2_cap)
         end
+        if setup["CO2Cap"] > 0 && has_duals(EP) == 1 && output_settings_d["WriteCO2CapDetailed"]
+            elapsed_time_co2_cap_detailed = @elapsed write_co2_cap_detailed(path, inputs, setup, EP)
+            println("Time elapsed for writing co2 cap detailed is")
+            println(elapsed_time_co2_cap_detailed)
+        end
+
         if setup["MinCapReq"] == 1 && has_duals(EP) == 1 &&
            output_settings_d["WriteMinCapReq"]
             elapsed_time_min_cap_req = @elapsed write_minimum_capacity_requirement(path,

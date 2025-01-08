@@ -111,6 +111,7 @@ function default_writeoutput()
         "WriteChargingCost" => true,
         "WriteCO2" => true,
         "WriteCO2Cap" => true,
+        "WriteCO2CapDetailed" => true,
         "WriteCommit" => true,
         "WriteCurtailment" => true,
         "WriteEmissions" => true,
