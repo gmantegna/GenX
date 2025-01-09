@@ -96,10 +96,9 @@ function load_inputs(setup::Dict, path::AbstractString)
     if setup["Markets"] == 1
         load_zones_markets!(setup, system_path, inputs)
         load_market_price_data!(setup, system_path, inputs)
-        # load_market_purchase_emissions_data!(setup, system_path, inputs)
-        load_market_purchase_emissions_data_m!(setup, system_path, inputs)
+        load_market_purchase_emissions_data!(setup, system_path, inputs)
         set_market_network!(setup, system_path, inputs)
-    end 
+    end
 
     if setup["RO"] == 1
         load_ro_data!(setup, tools_path, inputs)

@@ -265,7 +265,7 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
     end
 
     # Temporary! Suppress these outputs until we know that they are compatable with multi-stage modeling
-    if setup["MultiStage"] == 0
+#    if setup["MultiStage"] == 0
         dfEnergyRevenue = DataFrame()
         dfChargingcost = DataFrame()
         dfSubRevenue = DataFrame()
@@ -511,7 +511,7 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
             println("Time elapsed for writing net revenue is")
             println(elapsed_time_net_rev)
         end
-    end
+    #end end multistage condition
 
     if setup["PlanningReserveMargin"] == 1  
         elapsed_time_prm_resource_capacity= @elapsed write_prm_resource_capacity(path, inputs, setup, EP)
@@ -522,10 +522,7 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
     if haskey(inputs, "PRM_slack")  
         elapsed_time_prm_penalties= @elapsed write_prm_prices(path, inputs, setup, EP)
         println("Time elapsed for writing prm penalties is")
-        println(elapsed_time_prm_penalties)
-
-
-        
+        println(elapsed_time_prm_penalties)      
     end
 
     if setup["Markets"] == 1   
