@@ -209,6 +209,10 @@ function transmission!(EP::Model, inputs::Dict, setup::Dict)
                 # Sum of auxiliary flow variables in either direction cannot exceed maximum line flow capacity
                 cTAuxLimit[l in LOSS_LINES, t = 1:T],
                 vTAUX_POS[l, t] + vTAUX_NEG[l, t] <= EP[:eAvail_Trans_Cap][l]
+
+                # Directional flows cannot exceed maximum set by profile
+                cTAuxPosProfile[l in LOSS_LINES, t = 1:T], vTAUX_POS[l, t] <= EP[:eAvail_Trans_Cap][l] * inputs["Profile_Forward"][l]
+                cTAuxNegProfile[l in LOSS_LINES, t = 1:T], vTAUX_NEG[l, t] <= EP[:eAvail_Trans_Cap][l] * inputs["Profile_Reverse"][l]
             end)
 
         if UCommit == 1

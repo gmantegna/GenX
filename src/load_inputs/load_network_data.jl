@@ -110,6 +110,15 @@ function load_network_data!(setup::Dict, path::AbstractString, inputs_nw::Dict)
         inputs_nw["Hurdle_Rate_Reverse"]=0.0 .* as_vector(:Network_Lines)
     end
 
+    ## Profiles
+    if hasproperty(network_var, "Profile_Forward")
+        inputs_nw["Profile_Forward"] = to_floats(:Profile_Forward)
+        inputs_nw["Profile_Reverse"] = to_floats(:Profile_Reverse)
+    else
+        inputs_nw["Profile_Forward"]=1.0 .* as_vector(:Network_Lines)
+        inputs_nw["Profile_Reverse"]=1.0 .* as_vector(:Network_Lines)
+    end
+
     println(filename * " Successfully Read!")
 
     return network_var
