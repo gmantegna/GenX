@@ -3,7 +3,7 @@
 # define file path 
 root_directory = pwd()
 folder_directory = "Jim_Examples\\"
-model_name = "15_updated_mgenx\\"
+model_name = "16_run15_TY_test\\"
 file_name = "Run.jl"
 file_path = joinpath(root_directory, folder_directory, model_name, file_name)
 

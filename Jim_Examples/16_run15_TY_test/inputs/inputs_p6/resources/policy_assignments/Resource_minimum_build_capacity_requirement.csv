@@ -41,7 +41,7 @@ Arizona_Li_Battery,0,0,0,0,0,0,0,0,0,0,0,0
 Arizona_Solar,0,0,0,0,0,0,0,0,0,0,0,0
 CAISO_Advanced_CCGT_candidate,0,0,0,0,0,0,0,0,0,0,0,0
 CAISO_Aero_CT_candidate,0,0,0,0,0,0,0,0,0,0,0,0
-CAISO_New_Flow_Battery,0,0,0,0,0,0,0,0,0,0,0,0
+CAISO_New_Flow_Battery,1,0,0,0,0,0,0,0,0,0,0,0
 CAISO_Reciprocating_Engine_candidate,0,0,0,0,0,0,0,0,0,0,0,0
 CAISO_Shed_DR_Tranche1,0,0,0,0,0,0,0,0,0,0,0,0
 Greater_Imperial_Geothermal,0,0,0,0,0,0,0,0,0,0,0,0
@@ -57,9 +57,9 @@ NW_Ext_Tx_Wind,0,0,0,0,0,0,0,0,0,0,0,0
 Riverside_Li_Battery,0,0,0,0,0,0,0,0,0,0,0,0
 Riverside_Palm_Springs_Wind,0,0,0,0,0,0,0,0,0,0,0,0
 Riverside_Solar,0,0,0,0,0,0,0,0,0,0,0,0
-Riverside_West_Pumped_Storage,0,0,0,0,0,0,0,0,0,0,0,0
+Riverside_West_Pumped_Storage,1,0,0,0,0,0,0,0,0,0,0,0
 Southern_Nevada_Geothermal,0,0,0,0,0,0,0,0,0,0,0,0
-Tehachapi_Pumped_Storage,0,0,0,0,0,0,0,0,0,0,0,0
+Tehachapi_Pumped_Storage,1,0,0,0,0,0,0,0,0,0,0,0
 Wyoming_Wind,0,0,0,0,0,0,0,0,0,0,0,0
 Hybrid_Solar_Test,0,0,0,0,0,0,0,0,0,0,0,0
 Hybrid_Wind_Test,0,0,0,0,0,0,0,0,0,0,0,0
