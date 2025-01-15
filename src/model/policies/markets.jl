@@ -11,7 +11,7 @@ function markets!(EP::Model, inputs::Dict, setup::Dict)
     # 1- Amount of energy purchased/imported by each zone z at time t from the associated market
     @variable(EP, vMBUY[m in MZ, t = 1:T] >= 0)  
     @variable(EP, vMSELL[m in MZ, t = 1:T] >= 0)
-    @variable(EP, 0 <= vMACTIVE[m in MZ, t = 1:T] <= 1)
+    @variable(EP, vMACTIVE[m in MZ, t = 1:T], Bin)
 
     @constraint(EP, cActiveBuy[m in MZ, t = 1:T], vMBUY[m, t] <= inputs["Mrkt_Max_Buy"][m] * vMACTIVE[m, t] ) 
     @constraint(EP, cActiveSell[m in MZ, t = 1:T], vMSELL[m, t] <=  inputs["Mrkt_Max_Sell"][m] * (1 - vMACTIVE[m, t]))
