@@ -1,65 +1,65 @@
-Resource,Active,GENX Resource Type File,Zone,Resource_Type,New_Build,Can_Retire,Fuel,region,MW_PCC,MW_Gen,MW_Stor,MWh
-BTM_Solar,TRUE,Vre,1,BTM_Solar,0,0,DefaultFuel,CCA,617.8,617.8,0,0
-CAM_CAM_RA_i,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,44.4,44.4,0,0
-CAM_CAM_RA_ii,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,2.8,2.8,0,0
-CAM_CAM_RA_iii,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,24.7,24.7,0,0
-CAM_DR_RA,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,17.9305,17.9305,0,0
-CAM_CPE_RA_i,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,151.85,151.85,0,0
-CAM_CPE_RA_ii,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,0,0,0,0
-Aramis,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,10,10,0,0
-CALP01RA2027,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,100,100,0,0
-CHEV01RA2024,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,50,50,0,0
-CHEV01RA2025,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,75,75,0,0
-DaggettSolarPower3,TRUE,Vre_stor,1,Solar_Hybrid,0,0,DefaultFuel,CCA,50,50,50,50
-EBMUD01RA2024,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,2.4,2.4,0,0
-EdwardsSolarII,TRUE,Vre,1,Solar,0,0,DefaultFuel,CCA,100,100,0,0
-FervoFECNevada1,TRUE,Must_run,1,Geothermal,0,0,Geothermal,CCA,0,0,0,0
-GEN01RA2026,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,54,54,0,0
-HDP01RA2027,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,100,100,0,0
-HDP01RA2028,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,100,100,0,0
-HDP01RA2030,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,100,100,0,0
-HenriettaStorage,TRUE,Storage,1,4hr_batteries,0,0,,CCA,10,10,0,0
-MRL01RA2030,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,100,100,0,0
-NEXT01RA2026,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,32,32,0,0
-Oberon,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,125,125,0,0
-OhmConnect,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,10,10,0,0
-RosamondCentral,TRUE,Vre,1,Solar,0,0,DefaultFuel,CCA,112,112,0,0
-Sanborn,TRUE,Storage,1,4hr_batteries,0,0,,CCA,47,47,0,0
-Scarlet,TRUE,Vre_stor,1,Solar_Hybrid,0,0,DefaultFuel,CCA,100,100,100,120
-SDGE01RA2024,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,0,0,0,0
-SENA01RA2027,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,25,25,0,0
-SummitWind,TRUE,Vre,1,In-State Wind,0,0,DefaultFuel,CCA,56.2,56.2,0,0
-SUN01RA2031,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,0.5,0.5,0,0
-Tecolote,TRUE,Vre,1,Out-of-State Wind,0,0,DefaultFuel,CCA,100,100,0,0
-TPS01RA2024,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,100,100,0,0
-TulareSolarCenter,TRUE,Vre,1,Solar,0,0,DefaultFuel,CCA,55.8,55.8,0,0
-Tumbleweed,TRUE,Storage,1,4hr_batteries,0,0,,CCA,50,50,0,0
-Generic_6hr_battery,TRUE,Storage,1,6hr_batteries,1,0,,CCA,0,0,0,0
-Generic_8hr_battery,TRUE,Storage,1,8hr_batteries,1,0,,CCA,0,0,0,0
-Generic_RA_Only,TRUE,Thermal,1,RA_Only,1,0,Conventional_DR,CCA,0,0,0,0
-Arizona_Li_Battery,TRUE,Storage,1,4hr_batteries,1,0,,CCA,0,0,0,0
-Arizona_Solar,TRUE,Vre,1,Solar,1,0,DefaultFuel,CCA,0,0,0,0
-CAISO_Advanced_CCGT_candidate,TRUE,Thermal,1,NG,1,0,CA_Natural_Gas,CCA,0,0,0,0
-CAISO_Aero_CT_candidate,TRUE,Thermal,1,NG,1,0,CA_Natural_Gas,CCA,0,0,0,0
-CAISO_New_Flow_Battery,TRUE,Storage,1,Flow_Battery,1,0,,CCA,0,0,0,0
-CAISO_Reciprocating_Engine_candidate,TRUE,Thermal,1,NG,1,0,CA_Natural_Gas,CCA,0,0,0,0
-CAISO_Shed_DR_Tranche1,TRUE,Thermal,1,RA_Only,1,0,Conventional_DR,CCA,0,0,0,0
-Greater_Imperial_Geothermal,TRUE,Must_run,1,Geothermal,1,0,Geothermal,CCA,0,0,0,0
-Humboldt_Bay_Offshore_Wind,TRUE,Vre,1,Offshore Wind,1,0,DefaultFuel,CCA,0,0,0,0
-InState_Biomass,TRUE,Must_run,1,Biomass,1,0,Biomass,CCA,0,0,0,0
-Morro_Bay_Offshore_Wind,TRUE,Vre,1,Offshore Wind,1,0,DefaultFuel,CCA,0,0,0,0
-New_Mexico_Wind,TRUE,Vre,1,Out-of-State Wind,1,0,DefaultFuel,CCA,0,0,0,0
-Northern_California_Geothermal,TRUE,Must_run,1,Geothermal,1,0,Geothermal,CCA,0,0,0,0
-Northern_California_Li_Battery,TRUE,Storage,1,4hr_batteries,1,0,,CCA,0,0,0,0
-Northern_California_Solar,TRUE,Vre,1,Solar,1,0,DefaultFuel,CCA,0,0,0,0
-Northern_California_Wind,TRUE,Vre,1,In-State Wind,1,0,DefaultFuel,CCA,0,0,0,0
-NW_Ext_Tx_Wind,TRUE,Vre,1,Out-of-State Wind,1,0,DefaultFuel,CCA,0,0,0,0
-Riverside_Li_Battery,TRUE,Storage,1,4hr_batteries,1,0,,CCA,0,0,0,0
-Riverside_Palm_Springs_Wind,TRUE,Vre,1,In-State Wind,1,0,DefaultFuel,CCA,0,0,0,0
-Riverside_Solar,TRUE,Vre,1,Solar,1,0,DefaultFuel,CCA,0,0,0,0
-Riverside_West_Pumped_Storage,TRUE,Storage,1,Pumped_Hydro,1,0,,CCA,0,0,0,0
-Southern_Nevada_Geothermal,TRUE,Must_run,1,Geothermal,1,0,Geothermal,CCA,0,0,0,0
-Tehachapi_Pumped_Storage,TRUE,Storage,1,Pumped_Hydro,1,0,,CCA,0,0,0,0
-Wyoming_Wind,TRUE,Vre,1,Out-of-State Wind,1,0,DefaultFuel,CCA,0,0,0,0
-Hybrid_Solar_Test,TRUE,Vre_stor,1,Solar_Hybrid,1,0,DefaultFuel,CCA,0,0,0,0
-Hybrid_Wind_Test,TRUE,Vre_stor,1,Wind_Hybrid,1,0,DefaultFuel,CCA,0,0,0,0
+Resource,Active,GENX Resource Type File,Zone,Resource_Type,New_Build,Can_Retire,Fuel,region,MW_PCC,MW_Gen,MW_Stor,MWh,Gen_Storage
+BTM_Solar,TRUE,Vre,1,BTM_Solar,0,0,DefaultFuel,CCA,617.8,617.8,0,0,non_emitting_gen
+CAM_CAM_RA_i,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,44.4,44.4,0,0,non_emitting_gen
+CAM_CAM_RA_ii,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,2.8,2.8,0,0,non_emitting_gen
+CAM_CAM_RA_iii,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,24.7,24.7,0,0,non_emitting_gen
+CAM_DR_RA,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,17.9305,17.9305,0,0,non_emitting_gen
+CAM_CPE_RA_i,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,151.85,151.85,0,0,non_emitting_gen
+CAM_CPE_RA_ii,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,0,0,0,0,non_emitting_gen
+Aramis,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,10,10,0,0,non_emitting_gen
+CALP01RA2027,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,100,100,0,0,non_emitting_gen
+CHEV01RA2024,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,50,50,0,0,non_emitting_gen
+CHEV01RA2025,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,75,75,0,0,non_emitting_gen
+DaggettSolarPower3,TRUE,Vre_stor,1,Solar_Hybrid,0,0,DefaultFuel,CCA,50,50,50,50,hybrid
+EBMUD01RA2024,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,2.4,2.4,0,0,non_emitting_gen
+EdwardsSolarII,TRUE,Vre,1,Solar,0,0,DefaultFuel,CCA,100,100,0,0,non_emitting_gen
+FervoFECNevada1,TRUE,Must_run,1,Geothermal,0,0,Geothermal,CCA,0,0,0,0,non_emitting_gen
+GEN01RA2026,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,54,54,0,0,non_emitting_gen
+HDP01RA2027,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,100,100,0,0,non_emitting_gen
+HDP01RA2028,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,100,100,0,0,non_emitting_gen
+HDP01RA2030,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,100,100,0,0,non_emitting_gen
+HenriettaStorage,TRUE,Storage,1,4hr_batteries,0,0,,CCA,10,10,0,0,storage
+MRL01RA2030,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,100,100,0,0,non_emitting_gen
+NEXT01RA2026,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,32,32,0,0,non_emitting_gen
+Oberon,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,125,125,0,0,non_emitting_gen
+OhmConnect,TRUE,Thermal,1,Demand_Response,0,0,Conventional_DR,CCA,10,10,0,0,non_emitting_gen
+RosamondCentral,TRUE,Vre,1,Solar,0,0,DefaultFuel,CCA,112,112,0,0,non_emitting_gen
+Sanborn,TRUE,Storage,1,4hr_batteries,0,0,,CCA,47,47,0,0,storage
+Scarlet,TRUE,Vre_stor,1,Solar_Hybrid,0,0,DefaultFuel,CCA,100,100,100,120,hybrid
+SDGE01RA2024,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,0,0,0,0,non_emitting_gen
+SENA01RA2027,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,25,25,0,0,non_emitting_gen
+SummitWind,TRUE,Vre,1,In-State Wind,0,0,DefaultFuel,CCA,56.2,56.2,0,0,non_emitting_gen
+SUN01RA2031,TRUE,Thermal,1,Demand_Response,0,0,Conventional_DR,CCA,0.5,0.5,0,0,non_emitting_gen
+Tecolote,TRUE,Vre,1,Out-of-State Wind,0,0,DefaultFuel,CCA,100,100,0,0,non_emitting_gen
+TPS01RA2024,TRUE,Thermal,1,RA_Only,0,0,Conventional_DR,CCA,100,100,0,0,non_emitting_gen
+TulareSolarCenter,TRUE,Vre,1,Solar,0,0,DefaultFuel,CCA,55.8,55.8,0,0,non_emitting_gen
+Tumbleweed,TRUE,Storage,1,4hr_batteries,0,0,,CCA,50,50,0,0,storage
+Generic_6hr_battery,TRUE,Storage,1,6hr_batteries,1,0,,CCA,0,0,0,0,storage
+Generic_8hr_battery,TRUE,Storage,1,8hr_batteries,1,0,,CCA,0,0,0,0,storage
+Generic_RA_Only,TRUE,Thermal,1,RA_Only,1,0,Conventional_DR,CCA,0,0,0,0,non_emitting_gen
+Arizona_Li_Battery,TRUE,Storage,1,4hr_batteries,1,0,,CCA,0,0,0,0,storage
+Arizona_Solar,TRUE,Vre,1,Solar,1,0,DefaultFuel,CCA,0,0,0,0,non_emitting_gen
+CAISO_Advanced_CCGT_candidate,TRUE,Thermal,1,NG,1,0,CA_Natural_Gas,CCA,0,0,0,0,emitting_gen
+CAISO_Aero_CT_candidate,TRUE,Thermal,1,NG,1,0,CA_Natural_Gas,CCA,0,0,0,0,emitting_gen
+CAISO_New_Flow_Battery,TRUE,Storage,1,Flow_Battery,1,0,,CCA,0,0,0,0,storage
+CAISO_Reciprocating_Engine_candidate,TRUE,Thermal,1,NG,1,0,CA_Natural_Gas,CCA,0,0,0,0,emitting_gen
+CAISO_Shed_DR_Tranche1,TRUE,Thermal,1,RA_Only,1,0,Conventional_DR,CCA,0,0,0,0,non_emitting_gen
+Greater_Imperial_Geothermal,TRUE,Must_run,1,Geothermal,1,0,Geothermal,CCA,0,0,0,0,non_emitting_gen
+Humboldt_Bay_Offshore_Wind,TRUE,Vre,1,Offshore Wind,1,0,DefaultFuel,CCA,0,0,0,0,non_emitting_gen
+InState_Biomass,TRUE,Must_run,1,Biomass,1,0,Biomass,CCA,0,0,0,0,non_emitting_gen
+Morro_Bay_Offshore_Wind,TRUE,Vre,1,Offshore Wind,1,0,DefaultFuel,CCA,0,0,0,0,non_emitting_gen
+New_Mexico_Wind,TRUE,Vre,1,Out-of-State Wind,1,0,DefaultFuel,CCA,0,0,0,0,non_emitting_gen
+Northern_California_Geothermal,TRUE,Must_run,1,Geothermal,1,0,Geothermal,CCA,0,0,0,0,non_emitting_gen
+Northern_California_Li_Battery,TRUE,Storage,1,4hr_batteries,1,0,,CCA,0,0,0,0,storage
+Northern_California_Solar,TRUE,Vre,1,Solar,1,0,DefaultFuel,CCA,0,0,0,0,non_emitting_gen
+Northern_California_Wind,TRUE,Vre,1,In-State Wind,1,0,DefaultFuel,CCA,0,0,0,0,non_emitting_gen
+NW_Ext_Tx_Wind,TRUE,Vre,1,Out-of-State Wind,1,0,DefaultFuel,CCA,0,0,0,0,non_emitting_gen
+Riverside_Li_Battery,TRUE,Storage,1,4hr_batteries,1,0,,CCA,0,0,0,0,storage
+Riverside_Palm_Springs_Wind,TRUE,Vre,1,In-State Wind,1,0,DefaultFuel,CCA,0,0,0,0,non_emitting_gen
+Riverside_Solar,TRUE,Vre,1,Solar,1,0,DefaultFuel,CCA,0,0,0,0,non_emitting_gen
+Riverside_West_Pumped_Storage,TRUE,Storage,1,Pumped_Hydro,1,0,,CCA,0,0,0,0,storage
+Southern_Nevada_Geothermal,TRUE,Must_run,1,Geothermal,1,0,Geothermal,CCA,0,0,0,0,non_emitting_gen
+Tehachapi_Pumped_Storage,TRUE,Storage,1,Pumped_Hydro,1,0,,CCA,0,0,0,0,storage
+Wyoming_Wind,TRUE,Vre,1,Out-of-State Wind,1,0,DefaultFuel,CCA,0,0,0,0,non_emitting_gen
+Hybrid_Solar_Test,TRUE,Vre_stor,1,Solar_Hybrid,1,0,DefaultFuel,CCA,0,0,0,0,hybrid
+Hybrid_Wind_Test,TRUE,Vre_stor,1,Wind_Hybrid,1,0,DefaultFuel,CCA,0,0,0,0,hybrid
