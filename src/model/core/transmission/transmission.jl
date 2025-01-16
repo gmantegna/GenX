@@ -214,6 +214,25 @@ function transmission!(EP::Model, inputs::Dict, setup::Dict)
                 cTAuxPosProfile[l in LOSS_LINES, t = 1:T], vTAUX_POS[l, t] <= EP[:eAvail_Trans_Cap][l] * inputs["Profile_Forward"][l]
                 cTAuxNegProfile[l in LOSS_LINES, t = 1:T], vTAUX_NEG[l, t] <= EP[:eAvail_Trans_Cap][l] * inputs["Profile_Reverse"][l]
             end)
+        
+        if haskey(inputs,"df_simflow")
+            df_simflow=inputs["df_simflow"]
+            simultaneous_flow_constraint_names=unique(df_simflow[!,"Simultaneous Flow Group"])
+            for constraint in simultaneous_flow_constraint_names
+                cur_constraint_lines=df_simflow[df_simflow[!,"Simultaneous Flow Group"].==constraint,:Line_Number]
+                direction=unique(df_simflow[df_simflow[!,"Simultaneous Flow Group"].==constraint,:Direction])[1]
+                if length(unique(df_simflow[df_simflow[!,"Simultaneous Flow Group"].==constraint,:Direction])) != 1
+                    throw("simultaneous flow constraints with differing directions for one constraint not implemented")
+                end
+                limit=unique(df_simflow[df_simflow[!,"Simultaneous Flow Group"].==constraint,:limit_MW])[1]
+                constraint_name="cSimFlow"*constraint
+                if direction=="forward"
+                    @constraint(EP,[t=1:T],sum(vTAUX_POS[l,t] for l in cur_constraint_lines) <= limit,base_name=constraint_name)
+                else
+                    @constraint(EP,[t=1:T],sum(vTAUX_NEG[l,t] for l in cur_constraint_lines) <= limit,base_name=constraint_name)
+                end
+            end
+        end
 
         if UCommit == 1
             # Constraints to limit phantom losses that can occur to avoid discrete cycling costs/opportunity costs due to min down

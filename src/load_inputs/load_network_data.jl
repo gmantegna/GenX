@@ -121,6 +121,11 @@ function load_network_data!(setup::Dict, path::AbstractString, inputs_nw::Dict)
 
     println(filename * " Successfully Read!")
 
+    filename="Simultaneous_Flow_Constraints.csv"
+    if isfile(joinpath(path, filename))
+        inputs_nw["df_simflow"] = load_dataframe(joinpath(path, filename))
+        println(filename * " Successfully Read!")
+    end
     return network_var
 end
 
