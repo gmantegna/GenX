@@ -59,7 +59,6 @@ function ro_markets_buy!(EP::Model, inputs::Dict, setup::Dict)
         add_to_expression!(EP[:eRODualObj], sum(qmb[m, t] for t in 1:T, m in MZ))
     elseif inputs["ro_settings"]["BudgetOfUncertainty_MarketBuyPrices"] > 0
         Gamma_mb = inputs["ro_settings"]["BudgetOfUncertainty_MarketBuyPrices"] * inputs["count_uncertain_mbuy_param"]
-        println("mbuy ro",Gamma_mb, "  " , inputs["count_uncertain_mbuy_param"])
 
         @variable(EP, p_mb >= 0)
         @expression(EP, eRODualObj_mb, Gamma_mb * p_mb)
