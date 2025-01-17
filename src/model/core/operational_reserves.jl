@@ -235,6 +235,10 @@ function operational_reserves_core!(EP::Model, inputs::Dict, setup::Dict)
             init = 0)
     end
 
+    function vre_generation(t)
+        sum(EP[:vP][y, t] for y in intersect(inputs["VRE"], resources_in_zone_by_rid(gen, Int(inputs["pOpRsv_Zone"]))); init=0) 
+    end
+
     ### Variables ###
 
     ## Integer Unit Commitment configuration for variables
@@ -260,14 +264,14 @@ function operational_reserves_core!(EP::Model, inputs::Dict, setup::Dict)
         eRegReq[t = 1:T],
         inputs["pReg_Req_Demand"] *
         demand_target_zone[t]+
-        inputs["pReg_Req_VRE"] * must_run_vre_generation(t))
+        inputs["pReg_Req_VRE"] * vre_generation(t))
     # Operating reserve up / contingency reserve requirements as ˚a percentage of demand and scheduled variable renewable energy production in each hour
     # and the largest single contingency (generator or transmission line outage)
     @expression(EP,
         eRsvReq[t = 1:T],
         inputs["pRsv_Req_Demand"] *
         demand_target_zone[t]+
-        inputs["pRsv_Req_VRE"] * must_run_vre_generation(t))
+        inputs["pRsv_Req_VRE"] * vre_generation(t))
 
     # N-1 contingency requirement is considered only if Unit Commitment is being modeled
     if UCommit >= 1 &&
