@@ -7,6 +7,36 @@ Function for reporting time-dependent CO2 emissions by zone.
 function write_co2(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
     write_co2_emissions_plant(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
     write_co2_capture_plant(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+    write_co2_emissions_line(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+end
+
+function write_co2_emissions_line(path::AbstractString,
+    inputs::Dict,
+    setup::Dict,
+    EP::Model)
+
+    L = inputs["L"]
+    weight = inputs["omega"]
+    scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
+
+    emissions_line_forward = value.(EP[:eForwardEmissionsByLine])
+    emissions_line_forward *= scale_factor
+
+    df = DataFrame(Line = 1:L,
+        Zone = zeros(L)*NaN,
+        AnnualSum = zeros(L))
+    df.AnnualSum .= emissions_line_forward * weight
+    write_temporal_data(df, emissions_line_forward, path, setup, "emissions_line_forward")
+
+    emissions_line_reverse = value.(EP[:eReverseEmissionsByLine])
+    emissions_line_reverse *= scale_factor
+
+    df = DataFrame(Line = 1:L,
+        Zone = zeros(L)*NaN,
+        AnnualSum = zeros(L))
+    df.AnnualSum .= emissions_line_reverse * weight
+    write_temporal_data(df, emissions_line_reverse, path, setup, "emissions_line_reverse")
+    return nothing
 end
 
 function write_co2_emissions_plant(path::AbstractString,

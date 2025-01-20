@@ -116,6 +116,15 @@ function co2_cap!(EP::Model, inputs::Dict, setup::Dict)
             )
         )
 
+        @expression(EP,
+            eForwardEmissionsByLine[l = 1:L, t = 1:T],
+            sum(EP[:vTAUX_POS][l, t] * inputs["dfTransEFForward"][l,cap] for cap in 1:inputs["NCO2Cap"])
+            )
+        @expression(EP,
+            eReverseEmissionsByLine[l = 1:L, t = 1:T],
+            sum(EP[:vTAUX_NEG][l, t] * inputs["dfTransEFReverse"][l,cap] for cap in 1:inputs["NCO2Cap"])
+            )
+
         ## (fulfilled) demand + Rate-based: Emissions constraint in terms of rate (tons/MWh)
     elseif setup["CO2Cap"] == 2 ##This part moved to non_served_energy.jl
         @constraint(EP, cCO2Emissions_systemwide[cap = 1:inputs["NCO2Cap"]],

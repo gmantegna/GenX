@@ -14,8 +14,10 @@ function custom_constraints!(EP, inputs, setup)
     THERM_COMMIT = inputs["THERM_COMMIT"]
 
     if setup["ParameterScale"] == 1
-        throw("Custom constraints with ParameterScale=1 not impelemented")
+        throw("Custom constraints with ParameterScale=1 not implemented")
     end
+
+    constraint_name_list=[]
 
     for (constraint_type,contents) in inputs["custom_constraints"]
         println(constraint_type)
@@ -119,7 +121,10 @@ function custom_constraints!(EP, inputs, setup)
                     throw("not a valid constraint equality type")
                 end
             end
+            push!(constraint_name_list,String(constraint))
         end
     end
+
+    inputs["CustomConstraintList"]=constraint_name_list
 
 end
