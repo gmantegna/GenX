@@ -194,7 +194,6 @@ Bellota_Weber_offpeak,Southern_PGAE_Flow_Battery_174,2035,-1.0
 Bellota_Weber_offpeak,Southern_PGAE_Flow_Battery_176,2035,-1.0
 Bellota_Weber_offpeak,Subacco_group,2035,-1.0
 Bellota_Weber_SSN,Subacco_group,2035,-1.0
-Birds_Landing_Contra_Costa_HSN,Birds_Landing_Contra_Costa_group,2035,-1.0
 Birds_Landing_Contra_Costa_offpeak,Northern_California_Solar_126,2035,0.68
 Birds_Landing_Contra_Costa_offpeak,Northern_California_Solar_127,2035,0.68
 Birds_Landing_Contra_Costa_offpeak,Northern_California_Solar_150,2035,0.68
@@ -244,8 +243,6 @@ Birds_Landing_Contra_Costa_offpeak,Northern_California_Flow_Battery_80,2035,-1.0
 Birds_Landing_Contra_Costa_offpeak,Northern_California_Flow_Battery_83,2035,-1.0
 Birds_Landing_Contra_Costa_offpeak,Northern_California_Flow_Battery_85,2035,-1.0
 Birds_Landing_Contra_Costa_offpeak,Northern_California_Flow_Battery_94,2035,-1.0
-Birds_Landing_Contra_Costa_offpeak,Birds_Landing_Contra_Costa_group,2035,-1.0
-Birds_Landing_Contra_Costa_SSN,Birds_Landing_Contra_Costa_group,2035,-1.0
 Borden_Storey_HSN,Borden_Storey_group,2035,-1.0
 Borden_Storey_offpeak,Northern_California_Solar_166,2035,0.79
 Borden_Storey_offpeak,Southern_PGAE_Solar_117,2035,0.79
@@ -322,10 +319,6 @@ Calcite_Lugo_offpeak,Greater_Kramer_Li_Battery_8hr_103,2035,-1.0
 Calcite_Lugo_offpeak,Greater_Kramer_Flow_Battery_103,2035,-1.0
 Calcite_Lugo_offpeak,Calcite_Lugo_group,2035,-1.0
 Calcite_Lugo_SSN,Calcite_Lugo_group,2035,-1.0
-Cape_Mendocino_Offshore_Line_HSN,Cape_Mendocino_Offshore_Line_group,2035,-1.0
-Cape_Mendocino_Offshore_Line_offpeak,Cape_Mendocino_Offshore_Wind_Asset,2035,1.0
-Cape_Mendocino_Offshore_Line_offpeak,Cape_Mendocino_Offshore_Line_group,2035,-1.0
-Cape_Mendocino_Offshore_Line_SSN,Cape_Mendocino_Offshore_Line_group,2035,-1.0
 Capistrano_San_Onofre_HSN,Capistrano_San_Onofre_group,2035,-1.0
 Capistrano_San_Onofre_offpeak,Riverside_Solar_129,2035,0.77
 Capistrano_San_Onofre_offpeak,Riverside_Li_Battery_4hr_129,2035,-1.0
@@ -344,7 +337,6 @@ Chicarita_138_HSN,Chicarita_138_group,2035,-1.0
 Chicarita_138_offpeak,San_Diego_Pumped_Storage_119,2035,-1.0
 Chicarita_138_offpeak,Chicarita_138_group,2035,-1.0
 Chicarita_138_SSN,Chicarita_138_group,2035,-1.0
-Chowchilla_Le_Grand_HSN,Chowchilla_Le_Grand_group,2035,-1.0
 Chowchilla_Le_Grand_offpeak,Northern_California_Solar_166,2035,0.79
 Chowchilla_Le_Grand_offpeak,Southern_PGAE_Solar_140,2035,0.79
 Chowchilla_Le_Grand_offpeak,Southern_PGAE_Solar_151,2035,0.79
@@ -403,8 +395,6 @@ Chowchilla_Le_Grand_offpeak,Southern_PGAE_Flow_Battery_169,2035,-1.0
 Chowchilla_Le_Grand_offpeak,Southern_PGAE_Flow_Battery_170,2035,-1.0
 Chowchilla_Le_Grand_offpeak,Southern_PGAE_Flow_Battery_174,2035,-1.0
 Chowchilla_Le_Grand_offpeak,Southern_PGAE_Flow_Battery_176,2035,-1.0
-Chowchilla_Le_Grand_offpeak,Chowchilla_Le_Grand_group,2035,-0.4508670520231214
-Chowchilla_Le_Grand_SSN,Chowchilla_Le_Grand_group,2035,-1.0
 Coalinga_1_Coalinga_2_HSN,Manning_115_group,2035,-0.2778481012658227
 Coalinga_1_Coalinga_2_offpeak,Southern_PGAE_Solar_109,2035,0.79
 Coalinga_1_Coalinga_2_offpeak,Southern_PGAE_Solar_39,2035,0.79
@@ -434,11 +424,9 @@ Colorado_River_Red_Bluff_offpeak,Southern_NV_Eldorado_Solar_19,2035,0.77
 Colorado_River_Red_Bluff_offpeak,Southern_NV_Eldorado_Solar_40,2035,0.77
 Colorado_River_Red_Bluff_offpeak,Idaho_Wind_19,2035,0.67
 Colorado_River_Red_Bluff_offpeak,New_Mexico_Wind_55,2035,0.67
-Colorado_River_Red_Bluff_offpeak,Utah_Wind_19,2035,0.67
 Colorado_River_Red_Bluff_offpeak,Wyoming_Wind_19,2035,0.67
 Colorado_River_Red_Bluff_offpeak,Baja_California_Wind_133,2035,0.44
 Colorado_River_Red_Bluff_offpeak,Northern_Nevada_Geothermal_19,2035,1.0
-Colorado_River_Red_Bluff_offpeak,Utah_Geothermal_19,2035,1.0
 Colorado_River_Red_Bluff_offpeak,Arizona_Li_Battery_4hr_55,2035,-1.0
 Colorado_River_Red_Bluff_offpeak,Arizona_Li_Battery_4hr_62,2035,-1.0
 Colorado_River_Red_Bluff_offpeak,Arizona_Li_Battery_4hr_77,2035,-1.0
@@ -619,10 +607,6 @@ Del_Amo_Barre_offpeak,Greater_LA_Li_Battery_8hr_30,2035,-1.0
 Del_Amo_Barre_offpeak,Greater_LA_Flow_Battery_30,2035,-1.0
 Del_Amo_Barre_offpeak,Del_Amo_Barre_group,2035,-1.0
 Del_Amo_Barre_SSN,Del_Amo_Barre_group,2035,-1.0
-Del_Norte_Offshore_Line_HSN,Del_Norte_Offshore_Line_group,2035,-1.0
-Del_Norte_Offshore_Line_offpeak,Del_Norte_Offshore_Wind_Asset,2035,1.0
-Del_Norte_Offshore_Line_offpeak,Del_Norte_Offshore_Line_group,2035,-1.0
-Del_Norte_Offshore_Line_SSN,Del_Norte_Offshore_Line_group,2035,-1.0
 Devers_Red_Bluff_HSN,Devers_Red_Bluff_group,2035,-1.0
 Devers_Red_Bluff_offpeak,Arizona_Solar_55,2035,0.77
 Devers_Red_Bluff_offpeak,Arizona_Solar_62,2035,0.77
@@ -635,12 +619,10 @@ Devers_Red_Bluff_offpeak,Southern_NV_Eldorado_Solar_19,2035,0.77
 Devers_Red_Bluff_offpeak,Southern_NV_Eldorado_Solar_40,2035,0.77
 Devers_Red_Bluff_offpeak,Idaho_Wind_19,2035,0.67
 Devers_Red_Bluff_offpeak,New_Mexico_Wind_55,2035,0.67
-Devers_Red_Bluff_offpeak,Utah_Wind_19,2035,0.67
 Devers_Red_Bluff_offpeak,Wyoming_Wind_19,2035,0.67
 Devers_Red_Bluff_offpeak,Baja_California_Wind_133,2035,0.44
 Devers_Red_Bluff_offpeak,Greater_Imperial_Geothermal_63,2035,1.0
 Devers_Red_Bluff_offpeak,Northern_Nevada_Geothermal_19,2035,1.0
-Devers_Red_Bluff_offpeak,Utah_Geothermal_19,2035,1.0
 Devers_Red_Bluff_offpeak,Arizona_Li_Battery_4hr_55,2035,-1.0
 Devers_Red_Bluff_offpeak,Arizona_Li_Battery_4hr_62,2035,-1.0
 Devers_Red_Bluff_offpeak,Arizona_Li_Battery_4hr_77,2035,-1.0
@@ -777,7 +759,6 @@ Eastshore_San_Mateo_offpeak,Northern_California_Li_Battery_8hr_29,2035,-1.0
 Eastshore_San_Mateo_offpeak,Northern_California_Flow_Battery_29,2035,-1.0
 Eastshore_San_Mateo_offpeak,Collinsville_500_group,2035,-0.5603271983640081
 Eastshore_San_Mateo_SSN,Collinsville_500_group,2035,-0.5603271983640081
-Eight_Mile_Tesla_HSN,Nikola_group,2035,-0.1298804780876494
 Eight_Mile_Tesla_offpeak,Northern_California_Solar_114,2035,0.68
 Eight_Mile_Tesla_offpeak,Northern_California_Solar_122,2035,0.68
 Eight_Mile_Tesla_offpeak,Northern_California_Solar_138,2035,0.68
@@ -832,8 +813,6 @@ Eight_Mile_Tesla_offpeak,Northern_California_Flow_Battery_172,2035,-1.0
 Eight_Mile_Tesla_offpeak,Northern_California_Flow_Battery_179,2035,-1.0
 Eight_Mile_Tesla_offpeak,Northern_California_Flow_Battery_92,2035,-1.0
 Eight_Mile_Tesla_offpeak,Southern_PGAE_Flow_Battery_163,2035,-1.0
-Eight_Mile_Tesla_offpeak,Nikola_group,2035,-0.1298804780876494
-Eight_Mile_Tesla_SSN,Nikola_group,2035,-0.1298804780876494
 Encina_San_Luis_Rey_HSN,Encina_San_Luis_Rey_group,2035,-1.0
 Encina_San_Luis_Rey_offpeak,Arizona_Solar_90,2035,0.77
 Encina_San_Luis_Rey_offpeak,Greater_Imperial_Solar_107,2035,0.77
@@ -1312,7 +1291,6 @@ Jackson_Waukena_Corcoran_offpeak,Southern_PGAE_Flow_Battery_148,2035,-1.0
 Jackson_Waukena_Corcoran_offpeak,Southern_PGAE_Flow_Battery_181,2035,-1.0
 Jackson_Waukena_Corcoran_offpeak,Jackson_Waukena_Corcoran_group,2035,-1.0
 Jackson_Waukena_Corcoran_SSN,Jackson_Waukena_Corcoran_group,2035,0.0
-Kasson_Jct_Heinz_HSN,Nikola_group,2035,-1.0
 Kasson_Jct_Heinz_offpeak,Northern_California_Solar_135,2035,0.68
 Kasson_Jct_Heinz_offpeak,Northern_California_Solar_138,2035,0.68
 Kasson_Jct_Heinz_offpeak,Northern_California_Solar_84,2035,0.68
@@ -1333,8 +1311,6 @@ Kasson_Jct_Heinz_offpeak,Northern_California_Flow_Battery_138,2035,-1.0
 Kasson_Jct_Heinz_offpeak,Northern_California_Flow_Battery_84,2035,-1.0
 Kasson_Jct_Heinz_offpeak,Southern_PGAE_Flow_Battery_111,2035,-1.0
 Kasson_Jct_Heinz_offpeak,Southern_PGAE_Flow_Battery_145,2035,-1.0
-Kasson_Jct_Heinz_offpeak,Nikola_group,2035,-1.0
-Kasson_Jct_Heinz_SSN,Nikola_group,2035,-1.0
 Kern_TB_4_HSN,Kern_TB_4_group,2035,-1.0
 Kern_TB_4_offpeak,Southern_PGAE_Solar_102,2035,0.79
 Kern_TB_4_offpeak,Southern_PGAE_Solar_118,2035,0.79
@@ -1589,12 +1565,10 @@ Lugo_Victorville_offpeak,Southern_NV_Eldorado_Wind_16,2035,0.44
 Lugo_Victorville_offpeak,Southern_NV_Eldorado_Wind_2,2035,0.44
 Lugo_Victorville_offpeak,Idaho_Wind_19,2035,0.67
 Lugo_Victorville_offpeak,New_Mexico_Wind_55,2035,0.67
-Lugo_Victorville_offpeak,Utah_Wind_19,2035,0.67
 Lugo_Victorville_offpeak,Wyoming_Wind_19,2035,0.67
 Lugo_Victorville_offpeak,Baja_California_Wind_133,2035,0.44
 Lugo_Victorville_offpeak,Central_Nevada_Geothermal_42,2035,1.0
 Lugo_Victorville_offpeak,Northern_Nevada_Geothermal_19,2035,1.0
-Lugo_Victorville_offpeak,Utah_Geothermal_19,2035,1.0
 Lugo_Victorville_offpeak,Arizona_Li_Battery_4hr_55,2035,-1.0
 Lugo_Victorville_offpeak,Arizona_Li_Battery_4hr_90,2035,-1.0
 Lugo_Victorville_offpeak,Greater_Imperial_Li_Battery_4hr_107,2035,-1.0
@@ -1639,7 +1613,6 @@ Lugo_Victorville_offpeak,Tehachapi_Flow_Battery_28,2035,-1.0
 Lugo_Victorville_offpeak,Tehachapi_Flow_Battery_78,2035,-1.0
 Lugo_Victorville_offpeak,Lugo_Victorville_group,2035,-1.0
 Lugo_Victorville_SSN,Lugo_Victorville_group,2035,-1.0
-Merced_TB_2_HSN,Merced_TB_2_group,2035,-1.0
 Merced_TB_2_offpeak,Southern_PGAE_Solar_139,2035,0.79
 Merced_TB_2_offpeak,Southern_PGAE_Solar_147,2035,0.79
 Merced_TB_2_offpeak,Southern_PGAE_Solar_165,2035,0.79
@@ -1660,9 +1633,6 @@ Merced_TB_2_offpeak,Southern_PGAE_Flow_Battery_147,2035,-1.0
 Merced_TB_2_offpeak,Southern_PGAE_Flow_Battery_165,2035,-1.0
 Merced_TB_2_offpeak,Southern_PGAE_Flow_Battery_170,2035,-1.0
 Merced_TB_2_offpeak,Southern_PGAE_Flow_Battery_176,2035,-1.0
-Merced_TB_2_offpeak,Merced_TB_2_group,2035,-0.8128491620111732
-Merced_TB_2_SSN,Merced_TB_2_group,2035,-1.0
-Midway_Q2005_HSN,Midway_Q2005_group,2035,-1.0
 Midway_Q2005_offpeak,Northern_California_Solar_85,2035,0.79
 Midway_Q2005_offpeak,Southern_PGAE_Solar_102,2035,0.79
 Midway_Q2005_offpeak,Southern_PGAE_Solar_109,2035,0.79
@@ -1816,8 +1786,6 @@ Midway_Q2005_offpeak,Southern_PGAE_Flow_Battery_79,2035,-1.0
 Midway_Q2005_offpeak,Southern_PGAE_Flow_Battery_93,2035,-1.0
 Midway_Q2005_offpeak,Southern_PGAE_Flow_Battery_98,2035,-1.0
 Midway_Q2005_offpeak,Southern_PGAE_Adiabatic_CAES_12,2035,-1.0
-Midway_Q2005_offpeak,Midway_Q2005_group,2035,-0.0569534071398969
-Midway_Q2005_SSN,Midway_Q2005_group,2035,-1.0
 Midway_Q2011_HSN,Midway_Q2011_group,2035,-1.0
 Midway_Q2011_offpeak,Southern_PGAE_Solar_23,2035,0.79
 Midway_Q2011_offpeak,Southern_PGAE_Solar_61,2035,0.79
@@ -1904,7 +1872,6 @@ Moorpark_Pardee_offpeak,Greater_LA_Li_Battery_8hr_58,2035,-1.0
 Moorpark_Pardee_offpeak,Greater_LA_Flow_Battery_58,2035,-1.0
 Moorpark_Pardee_offpeak,Moorpark_Pardee_group,2035,-1.0
 Moorpark_Pardee_SSN,Moorpark_Pardee_group,2035,-1.0
-Morganhill_Metcalf_HSN,Morganhill_Metcalf_group,2035,-1.0
 Morganhill_Metcalf_offpeak,Northern_California_Solar_113,2035,0.68
 Morganhill_Metcalf_offpeak,Northern_California_Solar_116,2035,0.68
 Morganhill_Metcalf_offpeak,Northern_California_Solar_96,2035,0.68
@@ -1921,8 +1888,6 @@ Morganhill_Metcalf_offpeak,Northern_California_Flow_Battery_113,2035,-1.0
 Morganhill_Metcalf_offpeak,Northern_California_Flow_Battery_116,2035,-1.0
 Morganhill_Metcalf_offpeak,Northern_California_Flow_Battery_96,2035,-1.0
 Morganhill_Metcalf_offpeak,Southern_PGAE_Flow_Battery_99,2035,-1.0
-Morganhill_Metcalf_offpeak,Morganhill_Metcalf_group,2035,-1.0
-Morganhill_Metcalf_SSN,Morganhill_Metcalf_group,2035,-1.0
 Morro_Bay_Offshore_500_HSN,Morro_Bay_Offshore_500_group,2035,-1.0
 Morro_Bay_Offshore_500_offpeak,Morro_Bay_Offshore_Wind_Asset,2035,1.0
 Morro_Bay_Offshore_500_offpeak,Morro_Bay_Offshore_500_group,2035,-1.0
@@ -2062,7 +2027,6 @@ Newark_Los_Esteros_offpeak,Southern_PGAE_Flow_Battery_124,2035,-1.0
 Newark_Los_Esteros_offpeak,Southern_PGAE_Flow_Battery_99,2035,-1.0
 Newark_Los_Esteros_offpeak,Newark_Los_Esteros_group,2035,-0.2011494252873563
 Newark_Los_Esteros_SSN,Newark_Los_Esteros_group,2035,-0.2011494252873563
-Newark_Newark_Dist_HSN,Nikola_group,2035,-0.6621513944223107
 Newark_Newark_Dist_offpeak,Northern_California_Solar_112,2035,0.68
 Newark_Newark_Dist_offpeak,Northern_California_Solar_126,2035,0.68
 Newark_Newark_Dist_offpeak,Northern_California_Solar_150,2035,0.68
@@ -2084,8 +2048,6 @@ Newark_Newark_Dist_offpeak,Northern_California_Flow_Battery_126,2035,-1.0
 Newark_Newark_Dist_offpeak,Northern_California_Flow_Battery_150,2035,-1.0
 Newark_Newark_Dist_offpeak,Northern_California_Flow_Battery_155,2035,-1.0
 Newark_Newark_Dist_offpeak,Southern_PGAE_Flow_Battery_95,2035,-1.0
-Newark_Newark_Dist_offpeak,Nikola_group,2035,-0.6621513944223107
-Newark_Newark_Dist_SSN,Nikola_group,2035,-0.6621513944223107
 North_Magunden_HSN,North_Magunden_group,2035,-1.0
 North_Magunden_offpeak,Tehachapi_Solar_101,2035,0.77
 North_Magunden_offpeak,Tehachapi_Li_Battery_4hr_101,2035,-1.0
@@ -2565,7 +2527,6 @@ San_Luis_Rey_San_Onofre_offpeak,Greater_Imperial_Flow_Battery_108,2035,-1.0
 San_Luis_Rey_San_Onofre_offpeak,Greater_Imperial_Flow_Battery_133,2035,-1.0
 San_Luis_Rey_San_Onofre_offpeak,San_Luis_Rey_San_Onofre_group,2035,-1.2384279475982534
 San_Luis_Rey_San_Onofre_SSN,San_Luis_Rey_San_Onofre_group,2035,-1.0
-Santa_Rosa_Corona_HSN,Santa_Rosa_Corona_group,2035,-1.0
 Santa_Rosa_Corona_offpeak,Northern_California_Solar_127,2035,0.68
 Santa_Rosa_Corona_offpeak,Northern_California_Solar_150,2035,0.68
 Santa_Rosa_Corona_offpeak,Northern_California_Solar_155,2035,0.68
@@ -2582,9 +2543,6 @@ Santa_Rosa_Corona_offpeak,Northern_California_Flow_Battery_127,2035,-1.0
 Santa_Rosa_Corona_offpeak,Northern_California_Flow_Battery_150,2035,-1.0
 Santa_Rosa_Corona_offpeak,Northern_California_Flow_Battery_155,2035,-1.0
 Santa_Rosa_Corona_offpeak,Northern_California_Flow_Battery_158,2035,-1.0
-Santa_Rosa_Corona_offpeak,Santa_Rosa_Corona_group,2035,-1.0
-Santa_Rosa_Corona_SSN,Santa_Rosa_Corona_group,2035,-1.0
-SCE_Metro_Default_HSN,SCE_Metro_Default_group,2035,0.0
 SCE_Metro_Default_offpeak,Greater_LA_Solar_30,2035,0.77
 SCE_Metro_Default_offpeak,Greater_LA_Solar_4,2035,0.77
 SCE_Metro_Default_offpeak,Greater_LA_Li_Battery_4hr_30,2035,-1.0
@@ -2593,8 +2551,6 @@ SCE_Metro_Default_offpeak,Greater_LA_Li_Battery_8hr_30,2035,-1.0
 SCE_Metro_Default_offpeak,Greater_LA_Li_Battery_8hr_4,2035,-1.0
 SCE_Metro_Default_offpeak,Greater_LA_Flow_Battery_30,2035,-1.0
 SCE_Metro_Default_offpeak,Greater_LA_Flow_Battery_4,2035,-1.0
-SCE_Metro_Default_offpeak,SCE_Metro_Default_group,2035,0.0
-SCE_Metro_Default_SSN,SCE_Metro_Default_group,2035,0.0
 Schindler_TB_1_HSN,Manning_115_group,2035,-1.0
 Schindler_TB_1_offpeak,Southern_PGAE_Solar_162,2035,0.79
 Schindler_TB_1_offpeak,Southern_PGAE_Solar_168,2035,0.79
@@ -2801,7 +2757,6 @@ Talega_230_offpeak,Riverside_Flow_Battery_129,2035,-1.0
 Talega_230_offpeak,San_Diego_Pumped_Storage_119,2035,-1.0
 Talega_230_offpeak,Talega_230_group,2035,-1.0
 Talega_230_SSN,Talega_230_group,2035,-1.0
-Tesla_Bellota_HSN,Nikola_group,2035,-0.2390438247011952
 Tesla_Bellota_offpeak,Northern_California_Solar_112,2035,0.68
 Tesla_Bellota_offpeak,Northern_California_Solar_113,2035,0.68
 Tesla_Bellota_offpeak,Northern_California_Solar_114,2035,0.68
@@ -2938,9 +2893,6 @@ Tesla_Bellota_offpeak,Southern_PGAE_Flow_Battery_161,2035,-1.0
 Tesla_Bellota_offpeak,Southern_PGAE_Flow_Battery_163,2035,-1.0
 Tesla_Bellota_offpeak,Southern_PGAE_Flow_Battery_95,2035,-1.0
 Tesla_Bellota_offpeak,Southern_PGAE_Flow_Battery_99,2035,-1.0
-Tesla_Bellota_offpeak,Nikola_group,2035,-0.2390438247011952
-Tesla_Bellota_SSN,Nikola_group,2035,-0.2390438247011952
-Tesla_Salado_HSN,Tesla_Salado_group,2035,-0.945945945945946
 Tesla_Salado_offpeak,Northern_California_Solar_135,2035,0.68
 Tesla_Salado_offpeak,Southern_PGAE_Solar_145,2035,0.68
 Tesla_Salado_offpeak,Northern_California_Li_Battery_4hr_135,2035,-1.0
@@ -2949,8 +2901,6 @@ Tesla_Salado_offpeak,Northern_California_Li_Battery_8hr_135,2035,-1.0
 Tesla_Salado_offpeak,Southern_PGAE_Li_Battery_8hr_145,2035,-1.0
 Tesla_Salado_offpeak,Northern_California_Flow_Battery_135,2035,-1.0
 Tesla_Salado_offpeak,Southern_PGAE_Flow_Battery_145,2035,-1.0
-Tesla_Salado_offpeak,Tesla_Salado_group,2035,-0.945945945945946
-Tesla_Salado_SSN,Tesla_Salado_group,2035,-0.945945945945946
 Tesla_Tracy_Pump_1_HSN,Tesla_Tracy_Pump_1_group,2035,-1.0
 Tesla_Tracy_Pump_1_offpeak,Northern_California_Solar_112,2035,0.68
 Tesla_Tracy_Pump_1_offpeak,Northern_California_Solar_126,2035,0.68
@@ -3104,7 +3054,6 @@ Trabuco_Capistrano_offpeak,Riverside_Li_Battery_8hr_129,2035,-1.0
 Trabuco_Capistrano_offpeak,Riverside_Flow_Battery_129,2035,-1.0
 Trabuco_Capistrano_offpeak,Trabuco_Capistrano_group,2035,-1.0
 Trabuco_Capistrano_SSN,Trabuco_Capistrano_group,2035,-1.0
-Tranquility_Helm_HSN,Tranquility_Helm_group,2035,-1.0
 Tranquility_Helm_offpeak,Northern_California_Solar_166,2035,0.79
 Tranquility_Helm_offpeak,Southern_PGAE_Solar_117,2035,0.79
 Tranquility_Helm_offpeak,Southern_PGAE_Solar_139,2035,0.79
@@ -3175,9 +3124,6 @@ Tranquility_Helm_offpeak,Southern_PGAE_Flow_Battery_170,2035,-1.0
 Tranquility_Helm_offpeak,Southern_PGAE_Flow_Battery_174,2035,-1.0
 Tranquility_Helm_offpeak,Southern_PGAE_Flow_Battery_176,2035,-1.0
 Tranquility_Helm_offpeak,Southern_PGAE_Flow_Battery_93,2035,-1.0
-Tranquility_Helm_offpeak,Tranquility_Helm_group,2035,-0.2669305189094107
-Tranquility_Helm_SSN,Tranquility_Helm_group,2035,-1.0
-Vaca_Dixon_Tesla_HSN,Vaca_Dixon_Tesla_group,2035,-1.0
 Vaca_Dixon_Tesla_offpeak,Northern_California_Solar_112,2035,0.68
 Vaca_Dixon_Tesla_offpeak,Northern_California_Solar_122,2035,0.68
 Vaca_Dixon_Tesla_offpeak,Northern_California_Solar_126,2035,0.68
@@ -3302,8 +3248,6 @@ Vaca_Dixon_Tesla_offpeak,Southern_PGAE_Flow_Battery_17,2035,-1.0
 Vaca_Dixon_Tesla_offpeak,Southern_PGAE_Flow_Battery_95,2035,-1.0
 Vaca_Dixon_Tesla_offpeak,Northern_California_Pumped_Storage_5,2035,-1.0
 Vaca_Dixon_Tesla_offpeak,Northern_California_Biomass_5,2035,1.0
-Vaca_Dixon_Tesla_offpeak,Vaca_Dixon_Tesla_group,2035,-1.0
-Vaca_Dixon_Tesla_SSN,Vaca_Dixon_Tesla_group,2035,-1.0
 VEA_138_HSN,VEA_138_group,2035,-1.0
 VEA_138_offpeak,Southern_NV_Eldorado_Solar_16,2035,0.77
 VEA_138_offpeak,Southern_NV_Eldorado_Solar_42,2035,0.77
