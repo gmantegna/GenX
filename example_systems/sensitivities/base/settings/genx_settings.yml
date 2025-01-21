@@ -15,4 +15,4 @@ ComputeConflicts: 1
 OperationalReserves: 1
 PrintModel: 1
 Hourly_Pmin: 1
-Fixed_Dispatch: 1
+Fixed_Dispatch: 0
