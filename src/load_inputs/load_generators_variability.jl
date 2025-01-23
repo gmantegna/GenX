@@ -90,3 +90,19 @@ function load_generators_fixed_dispatch!(setup::Dict, path::AbstractString, inpu
     println(filename * " Successfully Read!")
 end
 
+@doc raw"""
+	load_hourly_energy_budget!(setup::Dict, path::AbstractString, inputs::Dict)
+
+Read input parameters related to hourly energy budget
+"""
+function load_hourly_energy_budget!(setup::Dict, path::AbstractString, inputs::Dict)
+    # Hourly capacity factors
+    TDR_directory = joinpath(path, setup["TimeDomainReductionFolder"])
+    # if TDR is used, my_dir = TDR_directory, else my_dir = "system"
+    my_dir = get_systemfiles_path(setup, TDR_directory, path)
+
+    filename = "Hourly_energy_budget.csv"
+
+    inputs["df_hourly_energy_budget"] = load_dataframe(joinpath(my_dir, filename))
+    println(filename * " Successfully Read!")
+end

@@ -1,0 +1,8 @@
+,Network_zones,CapRes_1
+BANC,z1,0
+CAISO,z2,0.357
+CAISO_NW_Hydro,z3,0.357
+IID,z4,0
+LDWP,z5,0
+NW,z6,0
+SW,z7,0

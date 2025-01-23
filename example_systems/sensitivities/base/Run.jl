@@ -1,3 +1,3 @@
-using GenX, Gurobi
+using GenX, HiGHS
 
-run_genx_case!(dirname(@__FILE__), Gurobi.Optimizer)
+run_genx_case!(dirname(@__FILE__), HiGHS.Optimizer)

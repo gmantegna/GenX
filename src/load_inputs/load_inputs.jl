@@ -44,6 +44,12 @@ function load_inputs(setup::Dict, path::AbstractString)
         load_generators_fixed_dispatch!(setup,path,inputs)
     end
 
+    # Read hourly energy budget if the file exists
+    hourly_energy_budget_path = joinpath(system_path,"Hourly_energy_budget.csv")
+    if isfile(hourly_energy_budget_path)
+        load_hourly_energy_budget!(setup,path,inputs)
+    end
+
     # Read custom constraints, if the folder exists
     custom_constraint_path = joinpath(system_path,"custom_constraints")
     if isdir(custom_constraint_path)

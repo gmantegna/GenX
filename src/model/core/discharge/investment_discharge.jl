@@ -129,6 +129,22 @@ function investment_discharge!(EP::Model, inputs::Dict, setup::Dict)
             EP[:vP][g,t] == df_fixed_dispatch[t,resource_names[g]]
         )
     end
+
+    if haskey(inputs,"df_hourly_energy_budget")
+        df_hourly_energy_budget = inputs["df_hourly_energy_budget"]
+        resource_names = inputs["RESOURCE_NAMES"]
+        hourly_budget_rids = [x for x in 1:length(resource_names) if resource_names[x] in names(df_hourly_energy_budget)]
+        hours_per_subperiod = inputs["hours_per_subperiod"]
+        START_SUBPERIODS = inputs["START_SUBPERIODS"]
+        @constraint(
+            EP,
+            cHourlyBudget[t in START_SUBPERIODS, g in hourly_budget_rids],
+            (
+                sum(EP[:vP][g,tau] for tau in t:(t+hours_per_subperiod-1))
+                == EP[:eTotalCap][g] * sum(df_hourly_energy_budget[tau,resource_names[g]] for tau in t:(t+hours_per_subperiod-1))
+            )
+        )
+    end
     
 
     ### Need editting ##
