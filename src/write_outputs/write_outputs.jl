@@ -349,6 +349,15 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
             end
         end
 
+        if setup["CapResELCC"] > 0
+            elapsed_time_PRM = @elapsed write_reserve_margin_ELCC(path, setup, EP)
+            println("Time elapsed for writing PRM is")
+            println(elapsed_time_PRM)
+            elapsed_time_NQC = @elapsed dfNQC = write_NQC(path, inputs, setup, EP)
+            println("Time elapsed for writing NQC is")
+            println(elapsed_time_NQC)
+        end
+
         dfResRevenue = DataFrame()
         if setup["CapacityReserveMargin"] == 1 && has_duals(EP)
             if output_settings_d["WriteReserveMargin"]
@@ -396,14 +405,14 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
                 println(elapsed_time_rsv_slack)
             end
 
-            # if output_settings_d["WriteCapacityValue"]
-            #     elapsed_time_cap_value = @elapsed write_capacity_value(path,
-            #         inputs,
-            #         setup,
-            #         EP)
-            #     println("Time elapsed for writing capacity value is")
-            #     println(elapsed_time_cap_value)
-            # end
+            if output_settings_d["WriteCapacityValue"]
+                elapsed_time_cap_value = @elapsed write_capacity_value(path,
+                    inputs,
+                    setup,
+                    EP)
+                println("Time elapsed for writing capacity value is")
+                println(elapsed_time_cap_value)
+            end
         end
 
         dfOpRegRevenue = DataFrame()
