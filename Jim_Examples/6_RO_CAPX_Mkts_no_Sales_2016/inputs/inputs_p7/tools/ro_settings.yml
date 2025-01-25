@@ -1,0 +1,11 @@
+BudgetOfUncertainty: -1 # this is for treating all the stochastic variables together as a group
+BudgetOfUncertainty_MarketBuyPrices: 0.05 # this is just for the market buy prices; if defined this overrides the general BoU above
+BudgetOfUncertainty_MarketSellPrices: 0.05 #ranges from zero to one
+BudgetOfUncertainty_FuelPrices: -1 # what does -1 signify here
+BudgetOfUncertainty_InvestmentCost: 0.10 # what do
+BudgetOfUncertainty_FixedOMCost: -1
+MarketBuyPrices: 1 # Binary value if = 1, include market prices in robust formulation, else don't
+MarketSellPrices: 1 # Binary value if = 1, include market prices in robust formulation, else don't
+FuelsCost: 0 # Binary value if = 1, include fuel cost in robust formulation, else don't
+InvestmentCost: 0 # Binary value if = 1, include investment cost in robust formulation, else don't
+FixedOMCost: 0
