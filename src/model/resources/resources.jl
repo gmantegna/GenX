@@ -665,6 +665,9 @@ const VarPower = Union{Electrolyzer, Hydro, Thermal}
 min_power(r::VarPower) = get(r, :min_power, default_zero)
 ramp_up_fraction(r::VarPower) = get(r, :ramp_up_percentage, default_percent)
 ramp_down_fraction(r::VarPower) = get(r, :ramp_dn_percentage, default_percent)
+ramp_fraction_2hr(r::VarPower) = get(r, :ramp_percentage_2_hour, default_percent)
+ramp_fraction_3hr(r::VarPower) = get(r, :ramp_percentage_3_hour, default_percent)
+ramp_fraction_4hr(r::VarPower) = get(r, :ramp_percentage_4_hour, default_percent)
 
 # Retirement - Multistage
 lifetime(r::Storage) = get(r, :lifetime, 15)
