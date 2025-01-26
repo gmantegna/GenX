@@ -1,2 +1,0 @@
-Resource,Zone,New_Build,Can_Retire,Existing_Cap_MW,Max_Cap_MW,Inv_Cost_per_MWyr,Fixed_OM_Cost_per_MWyr,Min_Cap_MW,Var_OM_Cost_per_MWh,Heat_Rate_MMBTU_per_MWh,Fuel,Min_Power,region,cluster,Max_Flexible_Demand_Delay,Max_Flexible_Demand_Advance,Flexible_Demand_Energy_Eff,Var_OM_Cost_per_MWhIn
-CAISO_Shed_DR_Existing,2,0,0,2377.779,2377.779,0,0,0,0.0,0,None,0.0,CAISO,1,12.0,12.0,1.0,0.0

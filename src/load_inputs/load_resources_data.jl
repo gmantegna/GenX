@@ -1373,6 +1373,10 @@ function add_resources_to_input_data!(inputs::Dict,
     inputs["R_ZONES"] = zones
     inputs["RESOURCE_ZONES"] = inputs["RESOURCE_NAMES"] .* "_z" .* string.(zones)
 
+    generators = setdiff(collect(1:G),inputs["GENERIC_ASSETS"])
+    inputs["GENERATORS"] = generators
+    inputs["GENERATOR_ZONES"] = inputs["RESOURCE_NAMES"][generators] .* "_z" .* string.(zone_id(gen[generators]))
+
     # Fuel
     inputs["HAS_FUEL"] = ids_with_fuel(gen)
     if !isempty(inputs["MULTI_FUELS"])

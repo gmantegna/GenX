@@ -46,7 +46,7 @@ Get demand, solar, wind, and other curves from the input data.
 """
 function parse_data(myinputs)
     # Assumes no missing data
-    RESOURCE_ZONES = myinputs["RESOURCE_ZONES"]
+    GENERATOR_ZONES = myinputs["GENERATOR_ZONES"]
     ZONES = myinputs["R_ZONES"]
 
     # DEMAND - Demand_data.csv
@@ -63,20 +63,20 @@ function parse_data(myinputs)
     solar_col_names = []
     wind_col_names = []
     var_col_names = []
-    for r in 1:length(RESOURCE_ZONES)
-        if occursin("PV", RESOURCE_ZONES[r]) || occursin("pv", RESOURCE_ZONES[r]) ||
-           occursin("Pv", RESOURCE_ZONES[r]) || occursin("Solar", RESOURCE_ZONES[r]) ||
-           occursin("SOLAR", RESOURCE_ZONES[r]) || occursin("solar", RESOURCE_ZONES[r])
-            push!(solar_col_names, RESOURCE_ZONES[r])
+    for r in 1:length(GENERATOR_ZONES)
+        if occursin("PV", GENERATOR_ZONES[r]) || occursin("pv", GENERATOR_ZONES[r]) ||
+           occursin("Pv", GENERATOR_ZONES[r]) || occursin("Solar", GENERATOR_ZONES[r]) ||
+           occursin("SOLAR", GENERATOR_ZONES[r]) || occursin("solar", GENERATOR_ZONES[r])
+            push!(solar_col_names, GENERATOR_ZONES[r])
             push!(solar_profiles, myinputs["pP_Max"][r, :])
-        elseif occursin("Wind", RESOURCE_ZONES[r]) || occursin("WIND", RESOURCE_ZONES[r]) ||
-               occursin("wind", RESOURCE_ZONES[r])
-            push!(wind_col_names, RESOURCE_ZONES[r])
+        elseif occursin("Wind", GENERATOR_ZONES[r]) || occursin("WIND", GENERATOR_ZONES[r]) ||
+               occursin("wind", GENERATOR_ZONES[r])
+            push!(wind_col_names, GENERATOR_ZONES[r])
             push!(wind_profiles, myinputs["pP_Max"][r, :])
         end
-        push!(var_col_names, RESOURCE_ZONES[r])
+        push!(var_col_names, GENERATOR_ZONES[r])
         push!(var_profiles, myinputs["pP_Max"][r, :])
-        col_to_zone_map[RESOURCE_ZONES[r]] = ZONES[r]
+        col_to_zone_map[GENERATOR_ZONES[r]] = ZONES[r]
     end
 
     # FUEL - Fuels_data.csv
@@ -92,12 +92,18 @@ function parse_data(myinputs)
     end
     all_col_names = [demand_col_names; var_col_names; fuel_col_names]
     all_profiles = [demand_profiles..., var_profiles..., fuel_profiles...]
+
+    # generators_pmin and hourly energy budget
+    matrix_pmin = myinputs["pP_Min"]
+    df_hourly_energy_budget = myinputs["df_hourly_energy_budget"]
+    select!(df_hourly_energy_budget, Not([:Time_Index]));
+
     return demand_col_names,
     var_col_names, solar_col_names, wind_col_names, fuel_col_names,
     all_col_names,
     demand_profiles, var_profiles, solar_profiles, wind_profiles, fuel_profiles,
     all_profiles,
-    col_to_zone_map, AllFuelsConst
+    col_to_zone_map, AllFuelsConst, matrix_pmin, df_hourly_energy_budget
 end
 
 @doc raw"""
@@ -680,6 +686,8 @@ function cluster_inputs(inpath,
     Demand_Outfile = joinpath(TimeDomainReductionFolder, "Demand_data.csv")
     GVar_Outfile = joinpath(TimeDomainReductionFolder, "Generators_variability.csv")
     Fuel_Outfile = joinpath(TimeDomainReductionFolder, "Fuels_data.csv")
+    PMin_Outfile = joinpath(TimeDomainReductionFolder, "Generators_Pmin.csv")
+    HEB_Outfile = joinpath(TimeDomainReductionFolder, "Hourly_energy_budget.csv")
     PMap_Outfile = joinpath(TimeDomainReductionFolder, "Period_map.csv")
     YAML_Outfile = joinpath(TimeDomainReductionFolder, "time_domain_reduction_settings.yml")
 
@@ -752,12 +760,13 @@ function cluster_inputs(inpath,
         myinputs = load_inputs(mysetup_local, inpath)
         RESOURCE_ZONES = myinputs["RESOURCE_ZONES"]
         RESOURCES = myinputs["RESOURCE_NAMES"]
+        GENERATORS = myinputs["RESOURCE_NAMES"][myinputs["GENERATORS"]]
         ZONES = myinputs["R_ZONES"]
         # Parse input data into useful structures divided by type (demand, wind, solar, fuel, groupings thereof, etc.)
         # TO DO LATER: Replace these with collections of col_names, profiles, zones
         demand_col_names, var_col_names, solar_col_names, wind_col_names, fuel_col_names, all_col_names,
         demand_profiles, var_profiles, solar_profiles, wind_profiles, fuel_profiles, all_profiles,
-        col_to_zone_map, AllFuelsConst = parse_data(myinputs)
+        col_to_zone_map, AllFuelsConst, matrix_pmin, df_hourly_energy_budget = parse_data(myinputs)
     end
     if v
         println()
@@ -1547,16 +1556,36 @@ function cluster_inputs(inpath,
         ### TDR_Results/Generators_variability.csv
 
         # Reset column ordering, add time index, and solve duplicate column name trouble with CSV.write's header kwarg
-        GVColMap = Dict(RESOURCE_ZONES[i] => RESOURCES[i]
-        for i in 1:length(myinputs["RESOURCE_NAMES"]))
+        GVColMap = Dict(myinputs["GENERATOR_ZONES"][i] => GENERATORS[i]
+        for i in 1:length(GENERATORS))
         GVColMap["Time_Index"] = "Time_Index"
-        GVOutputData = GVOutputData[!, Symbol.(RESOURCE_ZONES)]
+        GVOutputData = GVOutputData[!, Symbol.(myinputs["GENERATOR_ZONES"])]
         insertcols!(GVOutputData, 1, :Time_Index => 1:size(GVOutputData, 1))
         NewGVColNames = [GVColMap[string(c)] for c in names(GVOutputData)]
         if v
             println("Writing resource file...")
         end
         CSV.write(joinpath(inpath, GVar_Outfile), GVOutputData, header = NewGVColNames)
+
+        ### TDR_Results/Generators_Pmin.csv and TDR_Results/Hourly_energy_budget.csv
+
+        rep_period_vector = sort(unique(PeriodMap[!,:Rep_Period]))
+        time_indices_rep_period_starts = (rep_period_vector .- 1) .* TimestepsPerRepPeriod .+ 1
+        time_indices_rep_period_ends = time_indices_rep_period_starts .+ (TimestepsPerRepPeriod-1)
+        rep_period_indices_all=[]
+        for i in 1:length(time_indices_rep_period_starts)
+            append!(rep_period_indices_all,collect(time_indices_rep_period_starts[i]:time_indices_rep_period_ends[i]))
+        end
+
+        generators_pmin_rep_periods = transpose(matrix_pmin[:,rep_period_indices_all])
+        df_generators_pmin = DataFrame(generators_pmin_rep_periods,:auto)
+        rename!(df_generators_pmin,Symbol.(GENERATORS))
+        insertcols!(df_generators_pmin, 1, :Time_Index => 1:size(df_generators_pmin, 1))
+        CSV.write(joinpath(inpath, PMin_Outfile), df_generators_pmin)
+
+        df_hourly_energy_budget_rep_periods = df_hourly_energy_budget[rep_period_indices_all,:]
+        insertcols!(df_hourly_energy_budget_rep_periods, 1, :Time_Index => 1:size(df_hourly_energy_budget_rep_periods, 1))
+        CSV.write(joinpath(inpath, HEB_Outfile), df_hourly_energy_budget_rep_periods)
 
         # Break up VRE-storage components if needed
         if !isempty(myinputs["VRE_STOR"])
