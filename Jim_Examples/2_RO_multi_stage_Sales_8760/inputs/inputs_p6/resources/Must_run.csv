@@ -1,0 +1,6 @@
+Resource,Zone,Model,New_Build,Can_Retire,Heat_Rate_MMBTU_per_MWh,Fuel,region,cluster,Existing_Cap_MW,Max_Cap_MW,Min_Cap_MW,Inv_Cost_per_MWyr,Fixed_OM_Cost_per_MWyr,Var_OM_Cost_per_MWh
+InState_Biomass,1,2,1,0,0.0,Biomass,CCA,1,0.0,1000.0,-1,602040,161345,2.5
+Northern_California_Geothermal,1,2,1,0,0.0,Geothermal,CCA,1,0.0,1000.0,-1,370831,133619,1.25
+Southern_Nevada_Geothermal,1,2,1,0,0.0,Geothermal,CCA,1,0.0,1000.0,-1,348525,129624,1.25
+FervoFECNevada1,1,2,0,0,0.0,Geothermal,CCA,1,40.0,40.0,-1,0,499450,0.0
+Greater_Imperial_Geothermal,1,2,1,0,0.0,Geothermal,CCA,1,0.0,1000.0,-1,358244,133619,1.25

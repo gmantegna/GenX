@@ -1,0 +1,11 @@
+BudgetOfUncertainty: -1 # what does this parameter do?
+BudgetOfUncertainty_MarketBuyPrices: 0.05
+BudgetOfUncertainty_MarketSellPrices: 0.05
+BudgetOfUncertainty_FuelPrices: -1 # what does -1 signify here
+BudgetOfUncertainty_InvestmentCost: 0.10 # what do
+BudgetOfUncertainty_FixedOMCost: -1
+MarketBuyPrices: 1 # Binary value if = 1, include market prices in robust formulation, else don't
+MarketSellPrices: 1 # Binary value if = 1, include market prices in robust formulation, else don't
+FuelsCost: 0 # Binary value if = 1, include fuel cost in robust formulation, else don't
+InvestmentCost: 1 # Binary value if = 1, include investment cost in robust formulation, else don't
+FixedOMCost: 0
