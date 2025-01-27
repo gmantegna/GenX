@@ -16,7 +16,7 @@ OperationalReserves: 1
 PrintModel: 1
 Hourly_Pmin: 1
 Fixed_Dispatch: 0
-ModelingToGenerateAlternatives: 1
+ModelingToGenerateAlternatives: 0
 ModelingToGenerateAlternativeIterations: 2
 ModelingtoGenerateAlternativeSlack: 0.05
 MGAAnnualGeneration: 0
