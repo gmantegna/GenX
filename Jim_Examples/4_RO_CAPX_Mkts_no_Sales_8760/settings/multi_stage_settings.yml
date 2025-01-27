@@ -1,6 +1,0 @@
-NumStages: 3 # Number of model investment planning stages
-StageLengths: [1,1,2,2,2,3,5] # Length of each model stage (years)
-WACC: 0.05 # Weighted average cost of capital
-ConvergenceTolerance: 0.01 # Relative optimality gap used for convergence; only applicable if Myopic = 0
-Myopic: 0 # If using multi-stage GenX, 1 = myopic, 0 = dual dynamic programming
-WriteIntermittentOutputs: 0 # only applicable if Myopic = 1; 0 = no, 1 = yes

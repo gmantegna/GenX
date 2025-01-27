@@ -1,4 +1,0 @@
-MinBuildCapReqConstraint,ConstraintDescription,Min_MW,PriceCap
-1,min_build_cap_BESS,0,1000000
-2,min_build_cap_solar,0,1000000
-3,min_build_cap_wind,0,1000000
