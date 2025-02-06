@@ -1,0 +1,4 @@
+Constraint,Price,Slack,Penalty
+MinBuildCapReq_1,0.0,0.0,0.0
+MinBuildCapReq_2,1.0e6,0.0,0.0
+MinBuildCapReq_3,1.0e6,0.0,0.0

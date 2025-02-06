@@ -6,8 +6,8 @@ function get_settings_path(case::AbstractString, filename::AbstractString)
     return joinpath(get_settings_path(case), filename)
 end
 
-function get_default_output_folder(case::AbstractString)
-    return joinpath(case, "results")
+function get_default_output_folder(case::AbstractString, mysetup::Dict)
+    return joinpath(case, mysetup["OutputFolder"])
 end
 
 @doc raw"""
@@ -85,7 +85,7 @@ function run_genx_case_simple!(case::AbstractString, mysetup::Dict, optimizer::A
     # Run MGA if the MGA flag is set to 1 else only save the least cost solution
     if has_values(EP)
         println("Writing Output")
-        outputs_path = get_default_output_folder(case)
+        outputs_path = get_default_output_folder(case, mysetup)
         elapsed_time = @elapsed outputs_path = write_outputs(EP,
             outputs_path,
             mysetup,

@@ -1,0 +1,71 @@
+Resource,SOD Active,NQC_per_Pmax,NQC_MW,NQC_MWh,SOD_Custom_Profile,SOD_eta,SOD_Storage_Cycles,Initial_SOC
+BTM_Solar,0,0,0,0,0,0,0,-1
+CAM_CAM_RA_i,0,0,0,0,0,0,0,-1
+CAM_CAM_RA_ii,0,0,0,0,0,0,0,-1
+CAM_CAM_RA_iii,0,0,0,0,0,0,0,-1
+CAM_DR_RA,0,0,0,0,0,0,0,-1
+CAM_CPE_RA_i,0,0,0,0,0,0,0,-1
+CAM_CPE_RA_ii,0,0,0,0,0,0,0,-1
+Aramis,1,1,10,0,0,0,0,-1
+CALP01RA2027,1,1,100,0,0,0,0,-1
+CHEV01RA2024,1,1,50,0,0,0,0,-1
+CHEV01RA2025,1,1,75,0,0,0,0,-1
+DaggettSolarPower3,1,1,50,50,1,0.85,1,0.5
+EBMUD01RA2024,1,1,2.4,0,0,0,0,-1
+EdwardsSolarII,1,1,100,0,0,0,0,-1
+FervoFECNevada1,1,1,0,0,0,0,0,-1
+GEN01RA2026,1,1,54,0,0,0,0,-1
+HDP01RA2027,1,1,100,0,0,0,0,-1
+HDP01RA2028,1,1,100,0,0,0,0,-1
+HDP01RA2030,1,1,100,0,0,0,0,-1
+HenriettaStorage,1,1,10,40,1,0.85,1,0.5
+MRL01RA2030,1,1,100,0,0,0,0,-1
+NEXT01RA2026,1,1,32,0,0,0,0,-1
+Oberon,1,1,125,500,1,0,0,-1
+OhmConnect,1,1,10,0,0,0,0,-1
+RosamondCentral,1,1,112,0,0,0,0,-1
+Sanborn,1,1,47,188,1,0.85,1,0.5
+Scarlet,1,1,100,120,1,0.85,1,0.5
+SDGE01RA2024,1,1,0,0,0,0,0,-1
+SENA01RA2027,1,1,25,0,0,0,0,-1
+SummitWind,1,1,56.2,0,0,0,0,-1
+SUN01RA2031,1,1,0.5,0,0,0,0,-1
+Tecolote,1,1,100,0,0,0,0,-1
+TPS01RA2024,1,1,100,0,0,0,0,-1
+TulareSolarCenter,1,1,55.8,0,0,0,0,-1
+Tumbleweed,1,1,50,200,1,0.85,1,0.5
+Generic_6hr_battery,1,1,0,0,1,0.85,1,0.5
+Generic_8hr_battery,1,1,0,0,1,0.85,1,0.5
+Generic_RA_Only,1,1,0,0,0,0,0,-1
+Arizona_Li_Battery,1,1,0,0,1,0.85,1,0.5
+Arizona_Solar,1,0,0,0,0,0,0,-1
+CAISO_Advanced_CCGT_candidate,1,0.975,0,0,0,0,0,-1
+CAISO_Aero_CT_candidate,1,0.975,0,0,0,0,0,-1
+CAISO_New_Flow_Battery,1,1,0,0,1,0.85,1,0.5
+CAISO_Reciprocating_Engine_candidate,1,0.975,0,0,0,0,0,-1
+CAISO_Shed_DR_Tranche1,1,0.9,0,0,1,0,0,-1
+Greater_Imperial_Geothermal,1,1,0,0,0,0,0,-1
+Humboldt_Bay_Offshore_Wind,1,1,0,0,0,0,0,-1
+InState_Biomass,1,1,0,0,0,0,0,-1
+Morro_Bay_Offshore_Wind,1,1,0,0,0,0,0,-1
+New_Mexico_Wind,1,1,0,0,0,0,0,-1
+Northern_California_Geothermal,1,1,0,0,0,0,0,-1
+Northern_California_Li_Battery,1,1,0,0,1,0.85,1,0.5
+Northern_California_Solar,1,1,0,0,0,0,0,-1
+Northern_California_Wind,1,1,0,0,0,0,0,-1
+NW_Ext_Tx_Wind,1,1,0,0,0,0,0,-1
+Riverside_Li_Battery,1,1,0,0,1,0.85,1,0.5
+Riverside_Palm_Springs_Wind,1,1,0,0,0,0,0,-1
+Riverside_Solar,1,1,0,0,0,0,0,-1
+Riverside_West_Pumped_Storage,1,1,0,0,1,0.85,1,0.5
+Southern_Nevada_Geothermal,1,1,0,0,0,0,0,-1
+Tehachapi_Pumped_Storage,1,1,0,0,1,0.85,1,0.5
+Wyoming_Wind,1,1,0,0,0,0,0,-1
+Hybrid_Solar_Test,1,0,0,0,1,0.85,1,0.5
+Hybrid_Wind_Test,1,1,0,0,1,0.85,1,0.5
+EBCE_Dynasty_00926,1,1,25,0,1,0,0,-1
+DR Allocation,1,1,42.735,0,1,0,0,-1
+CAM Peaker Allocation,1,1,0,0,1,0,0,-1
+CAM Storage Allocation Single Cycle,1,1,51.804,207.214,1,0.8,1,0.5
+CAM Storage Allocation Multi Cycle,1,1,0,0,1,0.9,2.8,0.5
+Other CAM Allocation,1,1,562.343,0,1,0,0,-1
