@@ -1,0 +1,697 @@
+LSE,Year,Month,Name,Option,Value,Units
+EBCE,2025,1,DR Allocation,HE 1,0,MW
+EBCE,2025,1,DR Allocation,HE 2,0,MW
+EBCE,2025,1,DR Allocation,HE 3,0,MW
+EBCE,2025,1,DR Allocation,HE 4,0,MW
+EBCE,2025,1,DR Allocation,HE 5,0,MW
+EBCE,2025,1,DR Allocation,HE 6,0,MW
+EBCE,2025,1,DR Allocation,HE 7,0,MW
+EBCE,2025,1,DR Allocation,HE 8,0,MW
+EBCE,2025,1,DR Allocation,HE 9,0,MW
+EBCE,2025,1,DR Allocation,HE 10,0,MW
+EBCE,2025,1,DR Allocation,HE 11,0,MW
+EBCE,2025,1,DR Allocation,HE 12,0,MW
+EBCE,2025,1,DR Allocation,HE 13,0,MW
+EBCE,2025,1,DR Allocation,HE 14,0,MW
+EBCE,2025,1,DR Allocation,HE 15,0,MW
+EBCE,2025,1,DR Allocation,HE 16,0,MW
+EBCE,2025,1,DR Allocation,HE 17,12.652,MW
+EBCE,2025,1,DR Allocation,HE 18,12.56,MW
+EBCE,2025,1,DR Allocation,HE 19,12.508,MW
+EBCE,2025,1,DR Allocation,HE 20,12.456,MW
+EBCE,2025,1,DR Allocation,HE 21,12.525,MW
+EBCE,2025,1,DR Allocation,HE 22,0,MW
+EBCE,2025,1,DR Allocation,HE 23,0,MW
+EBCE,2025,1,DR Allocation,HE 24,0,MW
+EBCE,2025,2,DR Allocation,HE 1,0,MW
+EBCE,2025,2,DR Allocation,HE 2,0,MW
+EBCE,2025,2,DR Allocation,HE 3,0,MW
+EBCE,2025,2,DR Allocation,HE 4,0,MW
+EBCE,2025,2,DR Allocation,HE 5,0,MW
+EBCE,2025,2,DR Allocation,HE 6,0,MW
+EBCE,2025,2,DR Allocation,HE 7,0,MW
+EBCE,2025,2,DR Allocation,HE 8,0,MW
+EBCE,2025,2,DR Allocation,HE 9,0,MW
+EBCE,2025,2,DR Allocation,HE 10,0,MW
+EBCE,2025,2,DR Allocation,HE 11,0,MW
+EBCE,2025,2,DR Allocation,HE 12,0,MW
+EBCE,2025,2,DR Allocation,HE 13,0,MW
+EBCE,2025,2,DR Allocation,HE 14,0,MW
+EBCE,2025,2,DR Allocation,HE 15,0,MW
+EBCE,2025,2,DR Allocation,HE 16,0,MW
+EBCE,2025,2,DR Allocation,HE 17,14.9,MW
+EBCE,2025,2,DR Allocation,HE 18,14.852,MW
+EBCE,2025,2,DR Allocation,HE 19,14.808,MW
+EBCE,2025,2,DR Allocation,HE 20,14.767,MW
+EBCE,2025,2,DR Allocation,HE 21,14.81,MW
+EBCE,2025,2,DR Allocation,HE 22,0,MW
+EBCE,2025,2,DR Allocation,HE 23,0,MW
+EBCE,2025,2,DR Allocation,HE 24,0,MW
+EBCE,2025,3,DR Allocation,HE 1,0,MW
+EBCE,2025,3,DR Allocation,HE 2,0,MW
+EBCE,2025,3,DR Allocation,HE 3,0,MW
+EBCE,2025,3,DR Allocation,HE 4,0,MW
+EBCE,2025,3,DR Allocation,HE 5,0,MW
+EBCE,2025,3,DR Allocation,HE 6,0,MW
+EBCE,2025,3,DR Allocation,HE 7,0,MW
+EBCE,2025,3,DR Allocation,HE 8,0,MW
+EBCE,2025,3,DR Allocation,HE 9,0,MW
+EBCE,2025,3,DR Allocation,HE 10,0,MW
+EBCE,2025,3,DR Allocation,HE 11,0,MW
+EBCE,2025,3,DR Allocation,HE 12,0,MW
+EBCE,2025,3,DR Allocation,HE 13,0,MW
+EBCE,2025,3,DR Allocation,HE 14,0,MW
+EBCE,2025,3,DR Allocation,HE 15,0,MW
+EBCE,2025,3,DR Allocation,HE 16,0,MW
+EBCE,2025,3,DR Allocation,HE 17,0,MW
+EBCE,2025,3,DR Allocation,HE 18,13.841,MW
+EBCE,2025,3,DR Allocation,HE 19,13.925,MW
+EBCE,2025,3,DR Allocation,HE 20,13.916,MW
+EBCE,2025,3,DR Allocation,HE 21,14.037,MW
+EBCE,2025,3,DR Allocation,HE 22,14.458,MW
+EBCE,2025,3,DR Allocation,HE 23,0,MW
+EBCE,2025,3,DR Allocation,HE 24,0,MW
+EBCE,2025,4,DR Allocation,HE 1,0,MW
+EBCE,2025,4,DR Allocation,HE 2,0,MW
+EBCE,2025,4,DR Allocation,HE 3,0,MW
+EBCE,2025,4,DR Allocation,HE 4,0,MW
+EBCE,2025,4,DR Allocation,HE 5,0,MW
+EBCE,2025,4,DR Allocation,HE 6,0,MW
+EBCE,2025,4,DR Allocation,HE 7,0,MW
+EBCE,2025,4,DR Allocation,HE 8,0,MW
+EBCE,2025,4,DR Allocation,HE 9,0,MW
+EBCE,2025,4,DR Allocation,HE 10,0,MW
+EBCE,2025,4,DR Allocation,HE 11,0,MW
+EBCE,2025,4,DR Allocation,HE 12,0,MW
+EBCE,2025,4,DR Allocation,HE 13,0,MW
+EBCE,2025,4,DR Allocation,HE 14,0,MW
+EBCE,2025,4,DR Allocation,HE 15,0,MW
+EBCE,2025,4,DR Allocation,HE 16,0,MW
+EBCE,2025,4,DR Allocation,HE 17,0,MW
+EBCE,2025,4,DR Allocation,HE 18,15.078,MW
+EBCE,2025,4,DR Allocation,HE 19,14.512,MW
+EBCE,2025,4,DR Allocation,HE 20,14.217,MW
+EBCE,2025,4,DR Allocation,HE 21,14.036,MW
+EBCE,2025,4,DR Allocation,HE 22,12.982,MW
+EBCE,2025,4,DR Allocation,HE 23,0,MW
+EBCE,2025,4,DR Allocation,HE 24,0,MW
+EBCE,2025,5,DR Allocation,HE 1,0,MW
+EBCE,2025,5,DR Allocation,HE 2,0,MW
+EBCE,2025,5,DR Allocation,HE 3,0,MW
+EBCE,2025,5,DR Allocation,HE 4,0,MW
+EBCE,2025,5,DR Allocation,HE 5,0,MW
+EBCE,2025,5,DR Allocation,HE 6,0,MW
+EBCE,2025,5,DR Allocation,HE 7,0,MW
+EBCE,2025,5,DR Allocation,HE 8,0,MW
+EBCE,2025,5,DR Allocation,HE 9,0,MW
+EBCE,2025,5,DR Allocation,HE 10,0,MW
+EBCE,2025,5,DR Allocation,HE 11,0,MW
+EBCE,2025,5,DR Allocation,HE 12,0,MW
+EBCE,2025,5,DR Allocation,HE 13,0,MW
+EBCE,2025,5,DR Allocation,HE 14,0,MW
+EBCE,2025,5,DR Allocation,HE 15,0,MW
+EBCE,2025,5,DR Allocation,HE 16,0,MW
+EBCE,2025,5,DR Allocation,HE 17,0,MW
+EBCE,2025,5,DR Allocation,HE 18,26.521,MW
+EBCE,2025,5,DR Allocation,HE 19,23.414,MW
+EBCE,2025,5,DR Allocation,HE 20,20.939,MW
+EBCE,2025,5,DR Allocation,HE 21,19.162,MW
+EBCE,2025,5,DR Allocation,HE 22,13.007,MW
+EBCE,2025,5,DR Allocation,HE 23,0,MW
+EBCE,2025,5,DR Allocation,HE 24,0,MW
+EBCE,2025,6,DR Allocation,HE 1,0,MW
+EBCE,2025,6,DR Allocation,HE 2,0,MW
+EBCE,2025,6,DR Allocation,HE 3,0,MW
+EBCE,2025,6,DR Allocation,HE 4,0,MW
+EBCE,2025,6,DR Allocation,HE 5,0,MW
+EBCE,2025,6,DR Allocation,HE 6,0,MW
+EBCE,2025,6,DR Allocation,HE 7,0,MW
+EBCE,2025,6,DR Allocation,HE 8,0,MW
+EBCE,2025,6,DR Allocation,HE 9,0,MW
+EBCE,2025,6,DR Allocation,HE 10,0,MW
+EBCE,2025,6,DR Allocation,HE 11,0,MW
+EBCE,2025,6,DR Allocation,HE 12,0,MW
+EBCE,2025,6,DR Allocation,HE 13,0,MW
+EBCE,2025,6,DR Allocation,HE 14,0,MW
+EBCE,2025,6,DR Allocation,HE 15,0,MW
+EBCE,2025,6,DR Allocation,HE 16,0,MW
+EBCE,2025,6,DR Allocation,HE 17,38.15,MW
+EBCE,2025,6,DR Allocation,HE 18,31.958,MW
+EBCE,2025,6,DR Allocation,HE 19,27.546,MW
+EBCE,2025,6,DR Allocation,HE 20,25.441,MW
+EBCE,2025,6,DR Allocation,HE 21,13.271,MW
+EBCE,2025,6,DR Allocation,HE 22,0,MW
+EBCE,2025,6,DR Allocation,HE 23,0,MW
+EBCE,2025,6,DR Allocation,HE 24,0,MW
+EBCE,2025,7,DR Allocation,HE 1,0,MW
+EBCE,2025,7,DR Allocation,HE 2,0,MW
+EBCE,2025,7,DR Allocation,HE 3,0,MW
+EBCE,2025,7,DR Allocation,HE 4,0,MW
+EBCE,2025,7,DR Allocation,HE 5,0,MW
+EBCE,2025,7,DR Allocation,HE 6,0,MW
+EBCE,2025,7,DR Allocation,HE 7,0,MW
+EBCE,2025,7,DR Allocation,HE 8,0,MW
+EBCE,2025,7,DR Allocation,HE 9,0,MW
+EBCE,2025,7,DR Allocation,HE 10,0,MW
+EBCE,2025,7,DR Allocation,HE 11,0,MW
+EBCE,2025,7,DR Allocation,HE 12,0,MW
+EBCE,2025,7,DR Allocation,HE 13,0,MW
+EBCE,2025,7,DR Allocation,HE 14,0,MW
+EBCE,2025,7,DR Allocation,HE 15,0,MW
+EBCE,2025,7,DR Allocation,HE 16,0,MW
+EBCE,2025,7,DR Allocation,HE 17,39.906,MW
+EBCE,2025,7,DR Allocation,HE 18,33.26,MW
+EBCE,2025,7,DR Allocation,HE 19,28.47,MW
+EBCE,2025,7,DR Allocation,HE 20,26.184,MW
+EBCE,2025,7,DR Allocation,HE 21,11.881,MW
+EBCE,2025,7,DR Allocation,HE 22,0,MW
+EBCE,2025,7,DR Allocation,HE 23,0,MW
+EBCE,2025,7,DR Allocation,HE 24,0,MW
+EBCE,2025,8,DR Allocation,HE 1,0,MW
+EBCE,2025,8,DR Allocation,HE 2,0,MW
+EBCE,2025,8,DR Allocation,HE 3,0,MW
+EBCE,2025,8,DR Allocation,HE 4,0,MW
+EBCE,2025,8,DR Allocation,HE 5,0,MW
+EBCE,2025,8,DR Allocation,HE 6,0,MW
+EBCE,2025,8,DR Allocation,HE 7,0,MW
+EBCE,2025,8,DR Allocation,HE 8,0,MW
+EBCE,2025,8,DR Allocation,HE 9,0,MW
+EBCE,2025,8,DR Allocation,HE 10,0,MW
+EBCE,2025,8,DR Allocation,HE 11,0,MW
+EBCE,2025,8,DR Allocation,HE 12,0,MW
+EBCE,2025,8,DR Allocation,HE 13,0,MW
+EBCE,2025,8,DR Allocation,HE 14,0,MW
+EBCE,2025,8,DR Allocation,HE 15,0,MW
+EBCE,2025,8,DR Allocation,HE 16,0,MW
+EBCE,2025,8,DR Allocation,HE 17,42.735,MW
+EBCE,2025,8,DR Allocation,HE 18,35.584,MW
+EBCE,2025,8,DR Allocation,HE 19,30.515,MW
+EBCE,2025,8,DR Allocation,HE 20,28.122,MW
+EBCE,2025,8,DR Allocation,HE 21,12.489,MW
+EBCE,2025,8,DR Allocation,HE 22,0,MW
+EBCE,2025,8,DR Allocation,HE 23,0,MW
+EBCE,2025,8,DR Allocation,HE 24,0,MW
+EBCE,2025,9,DR Allocation,HE 1,0,MW
+EBCE,2025,9,DR Allocation,HE 2,0,MW
+EBCE,2025,9,DR Allocation,HE 3,0,MW
+EBCE,2025,9,DR Allocation,HE 4,0,MW
+EBCE,2025,9,DR Allocation,HE 5,0,MW
+EBCE,2025,9,DR Allocation,HE 6,0,MW
+EBCE,2025,9,DR Allocation,HE 7,0,MW
+EBCE,2025,9,DR Allocation,HE 8,0,MW
+EBCE,2025,9,DR Allocation,HE 9,0,MW
+EBCE,2025,9,DR Allocation,HE 10,0,MW
+EBCE,2025,9,DR Allocation,HE 11,0,MW
+EBCE,2025,9,DR Allocation,HE 12,0,MW
+EBCE,2025,9,DR Allocation,HE 13,0,MW
+EBCE,2025,9,DR Allocation,HE 14,0,MW
+EBCE,2025,9,DR Allocation,HE 15,0,MW
+EBCE,2025,9,DR Allocation,HE 16,0,MW
+EBCE,2025,9,DR Allocation,HE 17,37.206,MW
+EBCE,2025,9,DR Allocation,HE 18,30.995,MW
+EBCE,2025,9,DR Allocation,HE 19,26.765,MW
+EBCE,2025,9,DR Allocation,HE 20,24.766,MW
+EBCE,2025,9,DR Allocation,HE 21,11.35,MW
+EBCE,2025,9,DR Allocation,HE 22,0,MW
+EBCE,2025,9,DR Allocation,HE 23,0,MW
+EBCE,2025,9,DR Allocation,HE 24,0,MW
+EBCE,2025,10,DR Allocation,HE 1,0,MW
+EBCE,2025,10,DR Allocation,HE 2,0,MW
+EBCE,2025,10,DR Allocation,HE 3,0,MW
+EBCE,2025,10,DR Allocation,HE 4,0,MW
+EBCE,2025,10,DR Allocation,HE 5,0,MW
+EBCE,2025,10,DR Allocation,HE 6,0,MW
+EBCE,2025,10,DR Allocation,HE 7,0,MW
+EBCE,2025,10,DR Allocation,HE 8,0,MW
+EBCE,2025,10,DR Allocation,HE 9,0,MW
+EBCE,2025,10,DR Allocation,HE 10,0,MW
+EBCE,2025,10,DR Allocation,HE 11,0,MW
+EBCE,2025,10,DR Allocation,HE 12,0,MW
+EBCE,2025,10,DR Allocation,HE 13,0,MW
+EBCE,2025,10,DR Allocation,HE 14,0,MW
+EBCE,2025,10,DR Allocation,HE 15,0,MW
+EBCE,2025,10,DR Allocation,HE 16,0,MW
+EBCE,2025,10,DR Allocation,HE 17,26.546,MW
+EBCE,2025,10,DR Allocation,HE 18,24.565,MW
+EBCE,2025,10,DR Allocation,HE 19,23.396,MW
+EBCE,2025,10,DR Allocation,HE 20,22.971,MW
+EBCE,2025,10,DR Allocation,HE 21,15.864,MW
+EBCE,2025,10,DR Allocation,HE 22,0,MW
+EBCE,2025,10,DR Allocation,HE 23,0,MW
+EBCE,2025,10,DR Allocation,HE 24,0,MW
+EBCE,2025,11,DR Allocation,HE 1,0,MW
+EBCE,2025,11,DR Allocation,HE 2,0,MW
+EBCE,2025,11,DR Allocation,HE 3,0,MW
+EBCE,2025,11,DR Allocation,HE 4,0,MW
+EBCE,2025,11,DR Allocation,HE 5,0,MW
+EBCE,2025,11,DR Allocation,HE 6,0,MW
+EBCE,2025,11,DR Allocation,HE 7,0,MW
+EBCE,2025,11,DR Allocation,HE 8,0,MW
+EBCE,2025,11,DR Allocation,HE 9,0,MW
+EBCE,2025,11,DR Allocation,HE 10,0,MW
+EBCE,2025,11,DR Allocation,HE 11,0,MW
+EBCE,2025,11,DR Allocation,HE 12,0,MW
+EBCE,2025,11,DR Allocation,HE 13,0,MW
+EBCE,2025,11,DR Allocation,HE 14,0,MW
+EBCE,2025,11,DR Allocation,HE 15,0,MW
+EBCE,2025,11,DR Allocation,HE 16,0,MW
+EBCE,2025,11,DR Allocation,HE 17,15.451,MW
+EBCE,2025,11,DR Allocation,HE 18,15.242,MW
+EBCE,2025,11,DR Allocation,HE 19,15.174,MW
+EBCE,2025,11,DR Allocation,HE 20,15.17,MW
+EBCE,2025,11,DR Allocation,HE 21,15.216,MW
+EBCE,2025,11,DR Allocation,HE 22,0,MW
+EBCE,2025,11,DR Allocation,HE 23,0,MW
+EBCE,2025,11,DR Allocation,HE 24,0,MW
+EBCE,2025,12,DR Allocation,HE 1,0,MW
+EBCE,2025,12,DR Allocation,HE 2,0,MW
+EBCE,2025,12,DR Allocation,HE 3,0,MW
+EBCE,2025,12,DR Allocation,HE 4,0,MW
+EBCE,2025,12,DR Allocation,HE 5,0,MW
+EBCE,2025,12,DR Allocation,HE 6,0,MW
+EBCE,2025,12,DR Allocation,HE 7,0,MW
+EBCE,2025,12,DR Allocation,HE 8,0,MW
+EBCE,2025,12,DR Allocation,HE 9,0,MW
+EBCE,2025,12,DR Allocation,HE 10,0,MW
+EBCE,2025,12,DR Allocation,HE 11,0,MW
+EBCE,2025,12,DR Allocation,HE 12,0,MW
+EBCE,2025,12,DR Allocation,HE 13,0,MW
+EBCE,2025,12,DR Allocation,HE 14,0,MW
+EBCE,2025,12,DR Allocation,HE 15,0,MW
+EBCE,2025,12,DR Allocation,HE 16,0,MW
+EBCE,2025,12,DR Allocation,HE 17,15.168,MW
+EBCE,2025,12,DR Allocation,HE 18,14.941,MW
+EBCE,2025,12,DR Allocation,HE 19,14.935,MW
+EBCE,2025,12,DR Allocation,HE 20,14.874,MW
+EBCE,2025,12,DR Allocation,HE 21,14.939,MW
+EBCE,2025,12,DR Allocation,HE 22,0,MW
+EBCE,2025,12,DR Allocation,HE 23,0,MW
+EBCE,2025,12,DR Allocation,HE 24,0,MW
+EBCE,2025,1,CAM Peaker Allocation,Net Qualifying Capacity,0,MW
+EBCE,2025,2,CAM Peaker Allocation,Net Qualifying Capacity,0,MW
+EBCE,2025,3,CAM Peaker Allocation,Net Qualifying Capacity,0,MW
+EBCE,2025,4,CAM Peaker Allocation,Net Qualifying Capacity,0,MW
+EBCE,2025,5,CAM Peaker Allocation,Net Qualifying Capacity,0,MW
+EBCE,2025,6,CAM Peaker Allocation,Net Qualifying Capacity,0,MW
+EBCE,2025,7,CAM Peaker Allocation,Net Qualifying Capacity,0,MW
+EBCE,2025,8,CAM Peaker Allocation,Net Qualifying Capacity,0,MW
+EBCE,2025,9,CAM Peaker Allocation,Net Qualifying Capacity,0,MW
+EBCE,2025,10,CAM Peaker Allocation,Net Qualifying Capacity,0,MW
+EBCE,2025,11,CAM Peaker Allocation,Net Qualifying Capacity,0,MW
+EBCE,2025,12,CAM Peaker Allocation,Net Qualifying Capacity,0,MW
+EBCE,2025,1,CAM Peaker Allocation,Maximum Daily Run Hours,9,hrs
+EBCE,2025,2,CAM Peaker Allocation,Maximum Daily Run Hours,9,hrs
+EBCE,2025,3,CAM Peaker Allocation,Maximum Daily Run Hours,9,hrs
+EBCE,2025,4,CAM Peaker Allocation,Maximum Daily Run Hours,9,hrs
+EBCE,2025,5,CAM Peaker Allocation,Maximum Daily Run Hours,9,hrs
+EBCE,2025,6,CAM Peaker Allocation,Maximum Daily Run Hours,9,hrs
+EBCE,2025,7,CAM Peaker Allocation,Maximum Daily Run Hours,9,hrs
+EBCE,2025,8,CAM Peaker Allocation,Maximum Daily Run Hours,9,hrs
+EBCE,2025,9,CAM Peaker Allocation,Maximum Daily Run Hours,9,hrs
+EBCE,2025,10,CAM Peaker Allocation,Maximum Daily Run Hours,9,hrs
+EBCE,2025,11,CAM Peaker Allocation,Maximum Daily Run Hours,9,hrs
+EBCE,2025,12,CAM Peaker Allocation,Maximum Daily Run Hours,9,hrs
+EBCE,2025,1,CAM Storage Allocation Single Cycle,Net Qualifying Capacity,48.025,MW
+EBCE,2025,2,CAM Storage Allocation Single Cycle,Net Qualifying Capacity,50.912,MW
+EBCE,2025,3,CAM Storage Allocation Single Cycle,Net Qualifying Capacity,49.515,MW
+EBCE,2025,4,CAM Storage Allocation Single Cycle,Net Qualifying Capacity,41.563,MW
+EBCE,2025,5,CAM Storage Allocation Single Cycle,Net Qualifying Capacity,43.515,MW
+EBCE,2025,6,CAM Storage Allocation Single Cycle,Net Qualifying Capacity,48.075,MW
+EBCE,2025,7,CAM Storage Allocation Single Cycle,Net Qualifying Capacity,47.847,MW
+EBCE,2025,8,CAM Storage Allocation Single Cycle,Net Qualifying Capacity,51.804,MW
+EBCE,2025,9,CAM Storage Allocation Single Cycle,Net Qualifying Capacity,48.288,MW
+EBCE,2025,10,CAM Storage Allocation Single Cycle,Net Qualifying Capacity,51.994,MW
+EBCE,2025,11,CAM Storage Allocation Single Cycle,Net Qualifying Capacity,51.334,MW
+EBCE,2025,12,CAM Storage Allocation Single Cycle,Net Qualifying Capacity,54.07,MW
+EBCE,2025,1,CAM Storage Allocation Multi Cycle,Net Qualifying Capacity,0,MW
+EBCE,2025,2,CAM Storage Allocation Multi Cycle,Net Qualifying Capacity,0,MW
+EBCE,2025,3,CAM Storage Allocation Multi Cycle,Net Qualifying Capacity,0,MW
+EBCE,2025,4,CAM Storage Allocation Multi Cycle,Net Qualifying Capacity,0,MW
+EBCE,2025,5,CAM Storage Allocation Multi Cycle,Net Qualifying Capacity,0,MW
+EBCE,2025,6,CAM Storage Allocation Multi Cycle,Net Qualifying Capacity,0,MW
+EBCE,2025,7,CAM Storage Allocation Multi Cycle,Net Qualifying Capacity,0,MW
+EBCE,2025,8,CAM Storage Allocation Multi Cycle,Net Qualifying Capacity,0,MW
+EBCE,2025,9,CAM Storage Allocation Multi Cycle,Net Qualifying Capacity,0,MW
+EBCE,2025,10,CAM Storage Allocation Multi Cycle,Net Qualifying Capacity,0,MW
+EBCE,2025,11,CAM Storage Allocation Multi Cycle,Net Qualifying Capacity,0,MW
+EBCE,2025,12,CAM Storage Allocation Multi Cycle,Net Qualifying Capacity,0,MW
+EBCE,2025,1,CAM Storage Allocation Single Cycle,Maximum Continuous Energy,192.101,MWh
+EBCE,2025,2,CAM Storage Allocation Single Cycle,Maximum Continuous Energy,203.648,MWh
+EBCE,2025,3,CAM Storage Allocation Single Cycle,Maximum Continuous Energy,198.062,MWh
+EBCE,2025,4,CAM Storage Allocation Single Cycle,Maximum Continuous Energy,166.254,MWh
+EBCE,2025,5,CAM Storage Allocation Single Cycle,Maximum Continuous Energy,174.058,MWh
+EBCE,2025,6,CAM Storage Allocation Single Cycle,Maximum Continuous Energy,192.299,MWh
+EBCE,2025,7,CAM Storage Allocation Single Cycle,Maximum Continuous Energy,191.387,MWh
+EBCE,2025,8,CAM Storage Allocation Single Cycle,Maximum Continuous Energy,207.214,MWh
+EBCE,2025,9,CAM Storage Allocation Single Cycle,Maximum Continuous Energy,193.153,MWh
+EBCE,2025,10,CAM Storage Allocation Single Cycle,Maximum Continuous Energy,207.976,MWh
+EBCE,2025,11,CAM Storage Allocation Single Cycle,Maximum Continuous Energy,205.337,MWh
+EBCE,2025,12,CAM Storage Allocation Single Cycle,Maximum Continuous Energy,216.278,MWh
+EBCE,2025,1,CAM Storage Allocation Multi Cycle,Maximum Continuous Energy,0,MWh
+EBCE,2025,2,CAM Storage Allocation Multi Cycle,Maximum Continuous Energy,0,MWh
+EBCE,2025,3,CAM Storage Allocation Multi Cycle,Maximum Continuous Energy,0,MWh
+EBCE,2025,4,CAM Storage Allocation Multi Cycle,Maximum Continuous Energy,0,MWh
+EBCE,2025,5,CAM Storage Allocation Multi Cycle,Maximum Continuous Energy,0,MWh
+EBCE,2025,6,CAM Storage Allocation Multi Cycle,Maximum Continuous Energy,0,MWh
+EBCE,2025,7,CAM Storage Allocation Multi Cycle,Maximum Continuous Energy,0,MWh
+EBCE,2025,8,CAM Storage Allocation Multi Cycle,Maximum Continuous Energy,0,MWh
+EBCE,2025,9,CAM Storage Allocation Multi Cycle,Maximum Continuous Energy,0,MWh
+EBCE,2025,10,CAM Storage Allocation Multi Cycle,Maximum Continuous Energy,0,MWh
+EBCE,2025,11,CAM Storage Allocation Multi Cycle,Maximum Continuous Energy,0,MWh
+EBCE,2025,12,CAM Storage Allocation Multi Cycle,Maximum Continuous Energy,0,MWh
+EBCE,2025,1,CAM Storage Allocation Single Cycle,Daily Storage Cycle Physical Capability,1,
+EBCE,2025,2,CAM Storage Allocation Single Cycle,Daily Storage Cycle Physical Capability,1,
+EBCE,2025,3,CAM Storage Allocation Single Cycle,Daily Storage Cycle Physical Capability,1,
+EBCE,2025,4,CAM Storage Allocation Single Cycle,Daily Storage Cycle Physical Capability,1,
+EBCE,2025,5,CAM Storage Allocation Single Cycle,Daily Storage Cycle Physical Capability,1,
+EBCE,2025,6,CAM Storage Allocation Single Cycle,Daily Storage Cycle Physical Capability,1,
+EBCE,2025,7,CAM Storage Allocation Single Cycle,Daily Storage Cycle Physical Capability,1,
+EBCE,2025,8,CAM Storage Allocation Single Cycle,Daily Storage Cycle Physical Capability,1,
+EBCE,2025,9,CAM Storage Allocation Single Cycle,Daily Storage Cycle Physical Capability,1,
+EBCE,2025,10,CAM Storage Allocation Single Cycle,Daily Storage Cycle Physical Capability,1,
+EBCE,2025,11,CAM Storage Allocation Single Cycle,Daily Storage Cycle Physical Capability,1,
+EBCE,2025,12,CAM Storage Allocation Single Cycle,Daily Storage Cycle Physical Capability,1,
+EBCE,2025,1,CAM Storage Allocation Multi Cycle,Daily Storage Cycle Physical Capability,2.8,
+EBCE,2025,2,CAM Storage Allocation Multi Cycle,Daily Storage Cycle Physical Capability,2.8,
+EBCE,2025,3,CAM Storage Allocation Multi Cycle,Daily Storage Cycle Physical Capability,2.8,
+EBCE,2025,4,CAM Storage Allocation Multi Cycle,Daily Storage Cycle Physical Capability,2.8,
+EBCE,2025,5,CAM Storage Allocation Multi Cycle,Daily Storage Cycle Physical Capability,2.8,
+EBCE,2025,6,CAM Storage Allocation Multi Cycle,Daily Storage Cycle Physical Capability,2.8,
+EBCE,2025,7,CAM Storage Allocation Multi Cycle,Daily Storage Cycle Physical Capability,2.8,
+EBCE,2025,8,CAM Storage Allocation Multi Cycle,Daily Storage Cycle Physical Capability,2.8,
+EBCE,2025,9,CAM Storage Allocation Multi Cycle,Daily Storage Cycle Physical Capability,2.8,
+EBCE,2025,10,CAM Storage Allocation Multi Cycle,Daily Storage Cycle Physical Capability,2.8,
+EBCE,2025,11,CAM Storage Allocation Multi Cycle,Daily Storage Cycle Physical Capability,2.8,
+EBCE,2025,12,CAM Storage Allocation Multi Cycle,Daily Storage Cycle Physical Capability,2.8,
+EBCE,2025,1,CAM Storage Allocation Single Cycle,Storage Efficiency,0.8,
+EBCE,2025,2,CAM Storage Allocation Single Cycle,Storage Efficiency,0.8,
+EBCE,2025,3,CAM Storage Allocation Single Cycle,Storage Efficiency,0.8,
+EBCE,2025,4,CAM Storage Allocation Single Cycle,Storage Efficiency,0.8,
+EBCE,2025,5,CAM Storage Allocation Single Cycle,Storage Efficiency,0.8,
+EBCE,2025,6,CAM Storage Allocation Single Cycle,Storage Efficiency,0.8,
+EBCE,2025,7,CAM Storage Allocation Single Cycle,Storage Efficiency,0.8,
+EBCE,2025,8,CAM Storage Allocation Single Cycle,Storage Efficiency,0.8,
+EBCE,2025,9,CAM Storage Allocation Single Cycle,Storage Efficiency,0.8,
+EBCE,2025,10,CAM Storage Allocation Single Cycle,Storage Efficiency,0.8,
+EBCE,2025,11,CAM Storage Allocation Single Cycle,Storage Efficiency,0.8,
+EBCE,2025,12,CAM Storage Allocation Single Cycle,Storage Efficiency,0.8,
+EBCE,2025,1,CAM Storage Allocation Multi Cycle,Storage Efficiency,0.9,
+EBCE,2025,2,CAM Storage Allocation Multi Cycle,Storage Efficiency,0.9,
+EBCE,2025,3,CAM Storage Allocation Multi Cycle,Storage Efficiency,0.9,
+EBCE,2025,4,CAM Storage Allocation Multi Cycle,Storage Efficiency,0.9,
+EBCE,2025,5,CAM Storage Allocation Multi Cycle,Storage Efficiency,0.9,
+EBCE,2025,6,CAM Storage Allocation Multi Cycle,Storage Efficiency,0.9,
+EBCE,2025,7,CAM Storage Allocation Multi Cycle,Storage Efficiency,0.9,
+EBCE,2025,8,CAM Storage Allocation Multi Cycle,Storage Efficiency,0.9,
+EBCE,2025,9,CAM Storage Allocation Multi Cycle,Storage Efficiency,0.9,
+EBCE,2025,10,CAM Storage Allocation Multi Cycle,Storage Efficiency,0.9,
+EBCE,2025,11,CAM Storage Allocation Multi Cycle,Storage Efficiency,0.9,
+EBCE,2025,12,CAM Storage Allocation Multi Cycle,Storage Efficiency,0.9,
+EBCE,2025,1,Other CAM Allocation,HE 1,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 2,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 3,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 4,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 5,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 6,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 7,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 8,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 9,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 10,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 11,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 12,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 13,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 14,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 15,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 16,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 17,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 18,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 19,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 20,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 21,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 22,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 23,530.597,MW
+EBCE,2025,1,Other CAM Allocation,HE 24,530.597,MW
+EBCE,2025,2,Other CAM Allocation,HE 1,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 2,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 3,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 4,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 5,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 6,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 7,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 8,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 9,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 10,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 11,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 12,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 13,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 14,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 15,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 16,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 17,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 18,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 19,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 20,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 21,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 22,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 23,561.746,MW
+EBCE,2025,2,Other CAM Allocation,HE 24,561.746,MW
+EBCE,2025,3,Other CAM Allocation,HE 1,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 2,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 3,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 4,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 5,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 6,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 7,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 8,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 9,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 10,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 11,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 12,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 13,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 14,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 15,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 16,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 17,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 18,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 19,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 20,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 21,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 22,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 23,545.6,MW
+EBCE,2025,3,Other CAM Allocation,HE 24,545.6,MW
+EBCE,2025,4,Other CAM Allocation,HE 1,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 2,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 3,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 4,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 5,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 6,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 7,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 8,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 9,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 10,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 11,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 12,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 13,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 14,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 15,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 16,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 17,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 18,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 19,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 20,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 21,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 22,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 23,455.785,MW
+EBCE,2025,4,Other CAM Allocation,HE 24,455.785,MW
+EBCE,2025,5,Other CAM Allocation,HE 1,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 2,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 3,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 4,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 5,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 6,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 7,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 8,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 9,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 10,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 11,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 12,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 13,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 14,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 15,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 16,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 17,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 18,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 19,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 20,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 21,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 22,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 23,479.199,MW
+EBCE,2025,5,Other CAM Allocation,HE 24,479.199,MW
+EBCE,2025,6,Other CAM Allocation,HE 1,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 2,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 3,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 4,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 5,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 6,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 7,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 8,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 9,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 10,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 11,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 12,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 13,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 14,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 15,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 16,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 17,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 18,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 19,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 20,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 21,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 22,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 23,526.509,MW
+EBCE,2025,6,Other CAM Allocation,HE 24,526.509,MW
+EBCE,2025,7,Other CAM Allocation,HE 1,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 2,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 3,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 4,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 5,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 6,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 7,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 8,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 9,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 10,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 11,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 12,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 13,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 14,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 15,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 16,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 17,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 18,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 19,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 20,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 21,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 22,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 23,518.666,MW
+EBCE,2025,7,Other CAM Allocation,HE 24,518.666,MW
+EBCE,2025,8,Other CAM Allocation,HE 1,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 2,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 3,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 4,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 5,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 6,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 7,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 8,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 9,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 10,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 11,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 12,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 13,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 14,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 15,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 16,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 17,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 18,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 19,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 20,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 21,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 22,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 23,562.343,MW
+EBCE,2025,8,Other CAM Allocation,HE 24,562.343,MW
+EBCE,2025,9,Other CAM Allocation,HE 1,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 2,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 3,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 4,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 5,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 6,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 7,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 8,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 9,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 10,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 11,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 12,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 13,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 14,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 15,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 16,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 17,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 18,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 19,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 20,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 21,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 22,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 23,569.688,MW
+EBCE,2025,9,Other CAM Allocation,HE 24,569.688,MW
+EBCE,2025,10,Other CAM Allocation,HE 1,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 2,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 3,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 4,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 5,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 6,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 7,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 8,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 9,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 10,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 11,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 12,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 13,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 14,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 15,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 16,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 17,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 18,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 19,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 20,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 21,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 22,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 23,620.647,MW
+EBCE,2025,10,Other CAM Allocation,HE 24,620.647,MW
+EBCE,2025,11,Other CAM Allocation,HE 1,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 2,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 3,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 4,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 5,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 6,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 7,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 8,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 9,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 10,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 11,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 12,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 13,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 14,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 15,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 16,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 17,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 18,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 19,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 20,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 21,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 22,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 23,614.811,MW
+EBCE,2025,11,Other CAM Allocation,HE 24,614.811,MW
+EBCE,2025,12,Other CAM Allocation,HE 1,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 2,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 3,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 4,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 5,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 6,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 7,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 8,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 9,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 10,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 11,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 12,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 13,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 14,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 15,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 16,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 17,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 18,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 19,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 20,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 21,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 22,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 23,656.978,MW
+EBCE,2025,12,Other CAM Allocation,HE 24,656.978,MW

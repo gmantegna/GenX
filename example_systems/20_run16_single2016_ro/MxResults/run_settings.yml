@@ -1,0 +1,98 @@
+HydrogenHourlyMatching: 0
+NetworkExpansion: 0
+TimeDomainReductionFolder: "TDR_results"
+WriteOutputs: "full"
+SystemFolder: "system"
+EnableJuMPStringNames: 1
+Trans_Loss_Segments: 1
+ModelingtoGenerateAlternativeSlack: 0
+PlanningReserveMargin: 1
+PoliciesFolder: "policies"
+MinBuildCapReq: 1
+MultiStage: 0
+ComputeConflicts: 1
+OverwriteResults: 1
+ObjScale: 1
+ModelingToGenerateAlternatives: 0
+DCOPF: 0
+OutputFullTimeSeries: 1
+MaxCapReq: 0
+MinCapReq: 0
+CO2Cap: 1
+WriteShadowPrices: 0
+OutputFolder: "MxResults"
+OutputFullTimeSeriesFolder: "Full_TimeSeries"
+HydrogenMinimumProduction: 0
+OperationalReserves: 0
+MaxBuildCapReq: 1
+ParameterScale: 0
+Markets: 1
+EnergyShareRequirement: 1
+PrintModel: 1
+TimeDomainReduction: 0
+DC_OPF: 0
+CapacityReserveMargin: 0
+MethodofMorris: 0
+StorageVirtualDischarge: 0
+MGAAnnualGeneration: 0
+StorageLosses: 0
+IncludeLossesInESR: 0
+ResourcePoliciesFolder: "policy_assignments"
+WriteOutputsSettingsDict:
+  WritePrice: true
+  WriteReserveMarginWithWeights: true
+  WriteStorage: true
+  WriteStatus: true
+  WriteRsv: true
+  WriteNetRevenue: true
+  WriteNWExpansion: true
+  WriteSubsidyRevenue: true
+  WriteTimeWeights: true
+  WriteVREStor: true
+  WriteCO2: true
+  WriteESRPrices: true
+  WriteReg: true
+  WriteCurtailment: true
+  WriteCapacityFactor: true
+  WriteCommit: true
+  WriteStart: true
+  WriteReserveMargin: true
+  WriteChargingCost: true
+  WriteCapacityValue: true
+  WriteEnergyRevenue: true
+  WriteAngles: true
+  WriteFuelConsumption: true
+  WriteStorageDual: true
+  WriteTransmissionLosses: true
+  WriteTransmissionFlows: true
+  WriteNSE: true
+  WriteCO2Cap: true
+  WriteOpWrapLDSStorInit: true
+  WriteEmissions: true
+  WriteESRRevenue: true
+  WriteCapacity: true
+  WriteVirtualDischarge: true
+  WriteReserveMarginRevenue: true
+  WriteOpWrapLDSdStor: true
+  WriteMaintenance: true
+  WriteMinBuildCapReq: true
+  WritePower: true
+  WriteReliability: true
+  WriteCharge: true
+  WriteShutdown: true
+  WriteHydrogenPrices: true
+  WriteReserveMarginSlack: true
+  WriteMaxBuildCapReq: true
+  WriteCosts: true
+  WriteCO2CapDetailed: true
+  WriteHourlyMatchingPrices: true
+  WriteMaxCapReq: true
+  WriteMinCapReq: true
+  WritePowerBalance: true
+RO: 1
+VirtualChargeDischargeCost: 0
+UCommit: 2
+HourlyMatching: 0
+PortfolioManagment: 0
+ResourcesFolder: "resources"
+ToolsFolder: "tools"

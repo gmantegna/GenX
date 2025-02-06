@@ -1,0 +1,4 @@
+Constraint,Price,Slack,Penalty
+MaxBuildCapReq_1,-0.0,0.0,0.0
+MaxBuildCapReq_2,80787.78753664742,0.0,0.0
+MaxBuildCapReq_3,69711.41687272658,0.0,0.0
