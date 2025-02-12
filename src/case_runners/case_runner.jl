@@ -168,7 +168,7 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
     println("Solving Model")
 
     # Prepare folder for results    
-    outpath = get_default_output_folder(case)
+    outpath = get_default_output_folder(case, mysetup)
 
     if mysetup["OverwriteResults"] == 1
         # Overwrite existing results if dir exists
