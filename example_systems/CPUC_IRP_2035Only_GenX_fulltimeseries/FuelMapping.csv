@@ -1,0 +1,12 @@
+Key,Value
+Biomass,WOOD_WASTE
+CA_NW_Coal,COAL
+CA_Natural_Gas,NATURAL_GAS
+CA_Natural_Gas_CCS_100,NATURAL_GAS
+CA_Natural_Gas_CCS_90,NATURAL_GAS
+CA_Natural_Gas_CCS_95,NATURAL_GAS
+NW_Natural_Gas,NATURAL_GAS
+SW_Coal_Fuel,COAL
+SW_Natural_Gas,NATURAL_GAS
+Uranium,NUCLEAR
+None,OTHER

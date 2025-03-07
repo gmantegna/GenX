@@ -92,6 +92,7 @@ function solve_model(EP::Model, setup::Dict)
                 end
             end
             display(list_of_conflicting_constraints)
+            CSV.write("conflict_constraints.csv", list_of_conflicting_constraints)
             solver_time = time() - solver_start_time
             return EP, solver_time, list_of_conflicting_constraints
         else

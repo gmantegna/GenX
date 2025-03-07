@@ -67,11 +67,11 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
         println(elapsed_time_costs)
     end
 
-    if haskey(inputs,"CustomConstraintList")
-        elapsed_time_custom_constraints = @elapsed dfCustom = write_custom(path, inputs, setup, EP)
-        println("Time elapsed for writing custom constraints is")
-        println(elapsed_time_custom_constraints)
-    end
+    # if haskey(inputs,"CustomConstraintList")
+    #     elapsed_time_custom_constraints = @elapsed dfCustom = write_custom(path, inputs, setup, EP)
+    #     println("Time elapsed for writing custom constraints is")
+    #     println(elapsed_time_custom_constraints)
+    # end
 
     if output_settings_d["WriteCapacity"] || output_settings_d["WriteNetRevenue"]
         elapsed_time_capacity = @elapsed dfCap = write_capacity(path, inputs, setup, EP)
