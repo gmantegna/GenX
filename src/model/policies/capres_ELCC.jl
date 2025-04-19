@@ -18,7 +18,7 @@ end
 	capres_ELCC!(EP::Model, inputs::Dict, setup::Dict)
 Model capacity reserve margin with ELCC-type constraints
 """
-function capres_ELCC!(EP::Model, inputs::Dict, setup::Dict)
+function capres_ELCC!(EP::AbstractModel, inputs::Dict, setup::Dict)
     # capacity reserve margin constraint
     println("ELCC Module")
     G = inputs["G"]
