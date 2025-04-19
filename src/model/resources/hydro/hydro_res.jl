@@ -1,5 +1,5 @@
 @doc raw"""
-	hydro_res!(EP::Model, inputs::Dict, setup::Dict)
+	hydro_res!(EP::AbstractModel, inputs::Dict, setup::Dict)
 This module defines the operational constraints for reservoir hydropower plants.
 Hydroelectric generators with water storage reservoirs ($y \in \mathcal{W}$) are effectively modeled as energy storage devices that cannot charge from the grid and instead receive exogenous inflows to their storage reservoirs, reflecting stream flow inputs. For resources with unknown reservoir capacity ($y \in \mathcal{W}^{nocap}$), their operation is parametrized by their generation efficiency, $\eta_{y,z}^{down}$, and energy inflows to the reservoir at every time-step, represented as a fraction of the total power capacity,($\rho^{max}_{y,z,t}$).  In case reservoir capacity is known ($y \in \mathcal{W}^{cap}$), an additional parameter, $\mu^{stor}_{y,z}$, referring to the ratio of energy capacity to discharge power capacity, is used to define the available reservoir storage capacity.
 
@@ -60,7 +60,7 @@ In case the reservoir capacity is known ($y \in W^{cap}$), then an additional co
 \end{aligned}
 ```
 """
-function hydro_res!(EP::Model, inputs::Dict, setup::Dict)
+function hydro_res!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("Hydro Reservoir Core Resources Module")
 
     gen = inputs["RESOURCES"]
@@ -199,7 +199,7 @@ function hydro_res!(EP::Model, inputs::Dict, setup::Dict)
 end
 
 @doc raw"""
-	hydro_res_operational_reserves!(EP::Model, inputs::Dict)
+	hydro_res_operational_reserves!(EP::AbstractModel, inputs::Dict)
 This module defines the modified constraints and additional constraints needed when modeling operating reserves
 
 **Modifications when operating reserves are modeled**
@@ -227,7 +227,7 @@ r_{y,z, t} \leq \upsilon^{rsv}_{y,z}\times \Delta^{total}_{y,z}
 \end{aligned}
 ```
 """
-function hydro_res_operational_reserves!(EP::Model, inputs::Dict)
+function hydro_res_operational_reserves!(EP::AbstractModel, inputs::Dict)
     println("Hydro Reservoir Operational Reserves Module")
 
     gen = inputs["RESOURCES"]

@@ -60,14 +60,14 @@ The power balance constraint of the model ensures that electricity demand is met
 ```
 
 # Arguments
+- `EP`: The GenX model
 - `setup::Dict`: Dictionary containing the settings for the model.
 - `inputs::Dict`: Dictionary containing the inputs for the model.
-- `OPTIMIZER::MOI.OptimizerWithAttributes`: The optimizer to use for solving the model.
 
 # Returns
-- `Model`: The model object containing the entire optimization problem model to be solved by solve_model.jl
+- nothing: The GenX model is modified in place adding all variables and constraints
 """
-function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithAttributes)
+function generate_model!(EP::AbstractModel,setup::Dict, inputs::Dict)
     T = inputs["T"]     # Number of time steps (hours)
     Z = inputs["Z"]     # Number of zones
 
@@ -75,15 +75,17 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
     presolver_start_time = time()
 
     # Generate Energy Portfolio (EP) Model
-    EP = Model(OPTIMIZER)
-    # set_string_names_on_creation(EP, Bool(setup["EnableJuMPStringNames"]))
 
+    if isa(EP, JuMP.Model)
+        set_string_names_on_creation(EP, Bool(setup["EnableJuMPStringNames"]))
+    end
+    
     # Initialize Power Balance Expression
     # Expression for "baseline" power balance constraint
     create_empty_expression!(EP, :ePowerBalance, (T, Z))
 
     # Initialize Objective Function Expression
-    EP[:eObj] = AffExpr(0.0)
+    create_empty_expression!(EP, :eObj)
 
     create_empty_expression!(EP, :eGenerationByZone, (Z, T))
 
@@ -275,5 +277,5 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
         println("Model Printed")
     end
 
-    return EP
+    return nothing
 end

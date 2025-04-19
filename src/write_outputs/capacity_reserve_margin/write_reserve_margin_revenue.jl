@@ -1,5 +1,5 @@
 @doc raw"""
-	write_reserve_margin_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_reserve_margin_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for reporting the capacity revenue earned by each generator listed in the input file.
     GenX will print this file only when capacity reserve margin is modeled and the shadow price can be obtained form the solver.
@@ -11,7 +11,7 @@ Function for reporting the capacity revenue earned by each generator listed in t
 function write_reserve_margin_revenue(path::AbstractString,
         inputs::Dict,
         setup::Dict,
-        EP::Model)
+        EP::AbstractModel)
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
 
     gen = inputs["RESOURCES"]

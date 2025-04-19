@@ -4,11 +4,11 @@
 ##########################################################################################################################################
 
 @doc raw"""
-	operational_reserves!(EP::Model, inputs::Dict, setup::Dict)
+	operational_reserves!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
 This function sets up reserve decisions and constraints, using the operational_reserves_core()` and operational_reserves_contingency()` functions.
 """
-function operational_reserves!(EP::Model, inputs::Dict, setup::Dict)
+function operational_reserves!(EP::AbstractModel, inputs::Dict, setup::Dict)
     UCommit = setup["UCommit"]
 
     if inputs["pStatic_Contingency"] > 0 ||
@@ -20,7 +20,7 @@ function operational_reserves!(EP::Model, inputs::Dict, setup::Dict)
 end
 
 @doc raw"""
-	operational_reserves_contingency!(EP::Model, inputs::Dict, setup::Dict)
+	operational_reserves_contingency!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
 This function establishes several different versions of contingency reserve requirement expression, $CONTINGENCY$ used in the operational_reserves_core() function below.
 
@@ -66,7 +66,7 @@ Option 3 (dynamic commitment-based contingency) is expressed by the following se
 
 where $M_y$ is a `big M' constant equal to the largest possible capacity that can be installed for generation cluster $y$, and $Contingency\_Aux_{y,z,t} \in [0,1]$ is a binary auxiliary variable that is forced by the second and third equations above to be 1 if the commitment state for that generation cluster $\nu_{y,z,t} > 0$ for any generator $y \in \mathcal{UC}$ and zone $z$ and time period $t$, and can be 0 otherwise. Note that this dynamic commitment-based contingency can only be specified if discrete unit commitment decisions are used (e.g. it will not work if relaxed unit commitment is used).
 """
-function operational_reserves_contingency!(EP::Model, inputs::Dict, setup::Dict)
+function operational_reserves_contingency!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("Operational Reserves Contingency Module")
 
     gen = inputs["RESOURCES"]
@@ -141,7 +141,7 @@ function operational_reserves_contingency!(EP::Model, inputs::Dict, setup::Dict)
 end
 
 @doc raw"""
-	operational_reserves_core!(EP::Model, inputs::Dict, setup::Dict)
+	operational_reserves_core!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
 This function creates decision variables related to frequency regulation and reserves provision and constraints setting overall system requirements for regulation and operating reserves.
 
@@ -206,7 +206,7 @@ $\Delta^{\text{total,pv}}_{y,z}$ is the total installed capacity of co-located s
 $\Delta^{\text{total,wind}}_{y,z}$ is the total installed capacity of co-located wind resources $y \in \mathcal{VS}^{wind}$ and zone $z$;
 and $\epsilon^{demand}_{rsv}$ and $\epsilon^{vre}_{rsv}$ are parameters specifying the required contingency reserves as a fraction of forecasted demand and variable renewable generation. $Contingency$ is an expression defined in the operational\_reserves\_contingency!() function meant to represent the largest `N-1` contingency (unplanned generator outage) that the system operator must carry operating reserves to cover and depends on how the user wishes to specify contingency requirements.
 """
-function operational_reserves_core!(EP::Model, inputs::Dict, setup::Dict)
+function operational_reserves_core!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
     # DEV NOTE: After simplifying reserve changes are integrated/confirmed, should we revise such that reserves can be modeled without UC constraints on?
     # Is there a use case for economic dispatch constraints with reserves?

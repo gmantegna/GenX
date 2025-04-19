@@ -1,4 +1,4 @@
-function write_hydrogen_prices(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_hydrogen_prices(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor^2 : 1  # If ParameterScale==1, costs are in millions of $
 
     NumberOfH2DemandReqs = inputs["NumberOfH2DemandReqs"]

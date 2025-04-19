@@ -1,4 +1,4 @@
-function write_charging_cost(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_charging_cost(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     gen = inputs["RESOURCES"]  # Resources (objects)
     resources = inputs["RESOURCE_NAMES"] # Resource names
 

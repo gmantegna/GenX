@@ -1,9 +1,9 @@
 @doc raw"""
-	write_energy_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_energy_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for writing energy revenue from the different generation technologies.
 """
-function write_energy_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_energy_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     gen = inputs["RESOURCES"]
     regions = region.(gen)
     clusters = cluster.(gen)

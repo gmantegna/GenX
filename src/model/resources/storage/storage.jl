@@ -1,5 +1,5 @@
 @doc raw"""
-	storage!(EP::Model, inputs::Dict, setup::Dict)
+	storage!(EP::AbstractModel, inputs::Dict, setup::Dict)
 A wide range of energy storage devices (all $o \in \mathcal{O}$) can be modeled in GenX, using one of two generic storage formulations: (1) storage technologies with symmetric charge and discharge capacity (all $o \in \mathcal{O}^{sym}$), such as Lithium-ion batteries and most other electrochemical storage devices that use the same components for both charge and discharge; and (2) storage technologies that employ distinct and potentially asymmetric charge and discharge capacities (all $o \in \mathcal{O}^{asym}$), such as most thermal storage technologies or hydrogen electrolysis/storage/fuel cell or combustion turbine systems.
 
 If a capacity reserve margin is modeled, variables for virtual charge, $\Pi^{CRM}_{o,z,t}$, and virtual discharge, $\Theta^{CRM}_{o,z,t}$, are created to represent 
@@ -128,7 +128,7 @@ Finally, the constraints on maximum discharge rate are replaced by the following
 ```
 The above reserve related constraints are established by ```storage_all_operational_reserves!()``` in ```storage_all.jl```
 """
-function storage!(EP::Model, inputs::Dict, setup::Dict)
+function storage!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("Storage Resources Module")
     gen = inputs["RESOURCES"]
     T = inputs["T"]

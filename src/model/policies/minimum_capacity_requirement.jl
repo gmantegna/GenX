@@ -1,5 +1,5 @@
 @doc raw"""
-	minimum_capacity_requirement!(EP::Model, inputs::Dict, setup::Dict)
+	minimum_capacity_requirement!(EP::AbstractModel, inputs::Dict, setup::Dict)
 The minimum capacity requirement constraint allows for modeling minimum deployment of a certain technology or set of eligible technologies across the eligible model zones and can be used to mimic policies supporting specific technology build out (i.e. capacity deployment targets/mandates for storage, offshore wind, solar etc.). The default unit of the constraint is in MW. For each requirement $p \in \mathcal{P}^{MinCapReq}$, we model the policy with the following constraint.
 ```math
 \begin{aligned}
@@ -14,7 +14,7 @@ Also note that co-located VRE and storage resources, there are three different c
 	capacity of storage (power to energy ratio times the energy capacity) can all have minimum capacity 
 	requirements.
 """
-function minimum_capacity_requirement!(EP::Model, inputs::Dict, setup::Dict)
+function minimum_capacity_requirement!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("Minimum Capacity Requirement Module")
     NumberOfMinCapReqs = inputs["NumberOfMinCapReqs"]
 

@@ -1,5 +1,5 @@
 @doc raw"""
-	must_run!(EP::Model, inputs::Dict, setup::Dict)
+	must_run!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
 This function defines the constraints for operation of `must-run' or non-dispatchable resources, such as rooftop solar systems that do not receive dispatch signals, run-of-river hydroelectric facilities without the ability to spill water, or cogeneration systems that must produce a fixed quantity of heat in each time step. This resource type can also be used to model baseloaded or self-committed thermal generators that do not respond to economic dispatch.
 
@@ -12,7 +12,7 @@ For must-run resources ($y\in \mathcal{MR}$) output in each time period $t$ must
 \end{aligned}
 ```
 """
-function must_run!(EP::Model, inputs::Dict, setup::Dict)
+function must_run!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("Must-Run Resources Module")
 
     gen = inputs["RESOURCES"]

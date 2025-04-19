@@ -16,7 +16,7 @@ function _write_ucommit_var(path, inputs, setup, EP, var, filename)
     write_temporal_data(df_annual, data, path, setup, filename)
 end
 
-function _eval_ucommit_var(inputs::Dict, EP::Model, var::Symbol)
+function _eval_ucommit_var(inputs::Dict, EP::AbstractModel, var::Symbol)
     COMMIT = inputs["COMMIT"]
     data = value.(EP[var][COMMIT, :].data)
     return COMMIT, data

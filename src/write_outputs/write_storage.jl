@@ -1,9 +1,9 @@
 @doc raw"""
-	write_storage(path::AbstractString, inputs::Dict,setup::Dict, EP::Model)
+	write_storage(path::AbstractString, inputs::Dict,setup::Dict, EP::AbstractModel)
 
 Function for writing the capacities of different storage technologies, including hydro reservoir, flexible storage tech etc.
 """
-function write_storage(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_storage(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     gen = inputs["RESOURCES"]   # Resources (objects)
     resources = inputs["RESOURCE_NAMES"]   # Resource names
     zones = zone_id.(gen)

@@ -14,7 +14,7 @@ end
 
 # lower level function
 function _fusion_maintenance_parasitic_power_adjustment!(
-        EP::Model, resource_component, reactor::FusionReactorData)
+        EP::AbstractModel, resource_component, reactor::FusionReactorData)
     passive = reactor.parasitic_passive_fraction
     reduction_factor = reactor.maintenance_remaining_parasitic_power_fraction
     η = reactor.eff_down

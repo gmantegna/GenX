@@ -1,5 +1,5 @@
 @doc raw""" 
-    co2!(EP::Model, inputs::Dict)
+    co2!(EP::AbstractModel, inputs::Dict)
 
 This function creates expressions to account for CO2 emissions as well as captured and sequestrated 
 CO2 from thermal generators. It also has the capability to model the negative CO2 emissions 
@@ -50,7 +50,7 @@ eEmissionsCaptureByPlant_{g,t} = CO2\_Capture\_Fraction_y * vFuel_{y,t}  * CO2_{
 ```
 
 """
-function co2!(EP::Model, inputs::Dict)
+function co2!(EP::AbstractModel, inputs::Dict)
     println("CO2 Module")
 
     gen = inputs["RESOURCES"]

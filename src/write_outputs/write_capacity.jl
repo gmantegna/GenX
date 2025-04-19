@@ -1,9 +1,9 @@
 @doc raw"""
-	write_capacity(path::AbstractString, inputs::Dict, setup::Dict, EP::Model))
+	write_capacity(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel))
 
 Function for writing the diferent capacities for the different generation technologies (starting capacities or, existing capacities, retired capacities, and new-built capacities).
 """
-function write_capacity(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_capacity(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     gen = inputs["RESOURCES"]
 
     MultiStage = setup["MultiStage"]

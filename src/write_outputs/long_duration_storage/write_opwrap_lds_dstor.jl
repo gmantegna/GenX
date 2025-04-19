@@ -1,4 +1,4 @@
-function write_opwrap_lds_dstor(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_opwrap_lds_dstor(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     ## Extract data frames from input dictionary
     gen = inputs["RESOURCES"]
     zones = zone_id.(gen)

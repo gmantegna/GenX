@@ -1,9 +1,9 @@
 @doc raw"""
-	write_status(path::AbstractString, inputs::Dict, EP::Model)
+	write_status(path::AbstractString, inputs::Dict, EP::AbstractModel)
 
 Function for writing the final solve status of the optimization problem solved.
 """
-function write_status(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_status(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
     # https://jump.dev/MathOptInterface.jl/v0.9.10/apireference/#MathOptInterface.TerminationStatusCode
     status = termination_status(EP)

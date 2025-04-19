@@ -1,9 +1,9 @@
 @doc raw"""
-	write_subsidy_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_subsidy_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for reporting subsidy revenue earned if a generator specified `Min_Cap` is provided in the input file, or if a generator is subject to a Minimum Capacity Requirement constraint. The unit is \$.
 """
-function write_subsidy_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_subsidy_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     gen = inputs["RESOURCES"]
     regions = region.(gen)
     clusters = cluster.(gen)

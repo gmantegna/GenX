@@ -1,5 +1,5 @@
 @doc raw"""
-    non_served_energy!(EP::Model, inputs::Dict, setup::Dict)
+    non_served_energy!(EP::AbstractModel, inputs::Dict, setup::Dict)
 This function defines the non-served energy/curtailed demand decision variable
 $\Lambda_{s,t,z} \forall s \in \mathcal{S}, \forall t \in \mathcal{T}, z \in \mathcal{Z}$,
 representing the total amount of demand curtailed in demand segment $s$ at
@@ -51,7 +51,7 @@ Additionally, total demand curtailed in each time step cannot exceed total deman
 \end{aligned}
 ```
 """
-function non_served_energy!(EP::Model, inputs::Dict, setup::Dict)
+function non_served_energy!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("Non-served Energy Module")
 
     T = inputs["T"]     # Number of time steps

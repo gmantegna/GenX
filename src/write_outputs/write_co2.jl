@@ -1,19 +1,19 @@
 @doc raw"""
-	write_co2(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_co2(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for reporting time-dependent CO2 emissions by zone.
 
 """
-function write_co2(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
-    write_co2_emissions_plant(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
-    write_co2_capture_plant(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
-    write_co2_emissions_line(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_co2(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
+    write_co2_emissions_plant(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
+    write_co2_capture_plant(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
+    write_co2_emissions_line(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 end
 
 function write_co2_emissions_line(path::AbstractString,
     inputs::Dict,
     setup::Dict,
-    EP::Model)
+    EP::AbstractModel)
 
     L = inputs["L"]
     weight = inputs["omega"]
@@ -42,7 +42,7 @@ end
 function write_co2_emissions_plant(path::AbstractString,
         inputs::Dict,
         setup::Dict,
-        EP::Model)
+        EP::AbstractModel)
 
     gen = inputs["RESOURCES"]  # Resources (objects)
     resources = inputs["RESOURCE_NAMES"] # Resource names
@@ -67,13 +67,12 @@ function write_co2_emissions_plant(path::AbstractString,
     return nothing
 end
 
-function write_co2_capture_plant(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
-    gen = inputs["RESOURCES"]
+function write_co2_capture_plant(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
+    gen = inputs["RESOURCES"]   # Resources (objects)
+    CCS = inputs["CCS"]
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
     assets = inputs["GENERIC_ASSETS"]
     generators = setdiff(collect(1:G),assets)
-    gen = inputs["RESOURCES"]   # Resources (objects)
-    CCS = inputs["CCS"]
 
     resources = inputs["RESOURCE_NAMES"][CCS]   # Resource names
     zones = zone_id.(gen[CCS])

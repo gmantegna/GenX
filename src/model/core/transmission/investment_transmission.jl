@@ -1,6 +1,6 @@
 @doc raw"""
-    investment_transmission!(EP::Model, inputs::Dict, setup::Dict)
-This function model transmission expansion and adds transmission reinforcement or construction costs to the objective function. Transmission reinforcement costs are equal to the sum across all lines of the product between the transmission reinforcement/construction cost, $\pi^{TCAP}_{l}$, times the additional transmission capacity variable, $\bigtriangleup\varphi^{cap}_{l}$.
+    function investment_transmission!(EP::AbstractModel, inputs::Dict, setup::Dict)
+This function model transmission expansion and adds transmission reinforcement or construction costs to the objective function. Transmission reinforcement costs are equal to the sum across all lines of the product between the transmission reinforcement/construction cost, $pi^{TCAP}_{l}$, times the additional transmission capacity variable, $\bigtriangleup\varphi^{cap}_{l}$.
 ```math
 \begin{aligned}
     & \sum_{l \in \mathcal{L}}\left(\pi^{TCAP}_{l} \times \bigtriangleup\varphi^{cap}_{l}\right)
@@ -25,7 +25,7 @@ The additional transmission capacity, $\bigtriangleup\varphi^{cap}_{l} $, is con
 \end{aligned}
 ```
 """
-function investment_transmission!(EP::Model, inputs::Dict, setup::Dict)
+function investment_transmission!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("Investment Transmission Module")
 
     L = inputs["L"]     # Number of transmission lines

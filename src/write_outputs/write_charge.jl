@@ -1,9 +1,9 @@
 @doc raw"""
-	write_charge(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_charge(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for writing the charging energy values of the different storage technologies.
 """
-function write_charge(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_charge(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     gen = inputs["RESOURCES"]   # Resources (objects) 
     resources = inputs["RESOURCE_NAMES"]    # Resource names
     zones = zone_id.(gen)

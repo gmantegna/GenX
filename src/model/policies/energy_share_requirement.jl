@@ -1,5 +1,5 @@
 @doc raw"""
-	energy_share_requirement!(EP::Model, inputs::Dict, setup::Dict)
+	energy_share_requirement!(EP::AbstractModel, inputs::Dict, setup::Dict)
 This function establishes constraints that can be flexibily applied to define alternative forms of policies that require generation of a minimum quantity of megawatt-hours from a set of qualifying resources, such as renewable portfolio standard (RPS) or clean electricity standard (CES) policies prevalent in different jurisdictions.
 These policies usually require that the annual MWh generation from a subset of qualifying generators has to be higher than a pre-specified percentage of demand from qualifying zones.
 The implementation allows for user to define one or multiple RPS/CES style minimum energy share constraints,
@@ -23,7 +23,7 @@ If ```StorageLosses=0```, this term is removed from the constraint.
 In practice, most existing renewable portfolio standard policies do not account for storage losses when determining energy share requirements.
 However, with 100% RPS or CES policies enacted in several jurisdictions, policy makers may wish to include storage losses in the minimum energy share, as otherwise there will be a difference between total generation and total demand that will permit continued use of non-qualifying resources (e.g. emitting generators).
 """
-function energy_share_requirement!(EP::Model, inputs::Dict, setup::Dict)
+function energy_share_requirement!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("Energy Share Requirement Policies Module")
 
     # if input files are present, add energy share requirement slack variables

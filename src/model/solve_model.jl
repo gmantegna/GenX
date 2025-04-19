@@ -1,16 +1,16 @@
 @doc raw"""
-	fix_integers(jump_model::Model)
+	fix_integers(jump_model::AbstractModel)
 
 This function fixes the iteger variables ones the model has been solved in order to calculate approximations of dual variables.
 
 # Arguments
-- `jump_model::Model`: a model object containing that has been previously solved.
+- `jump_model::AbstractModel`: a model object containing that has been previously solved.
 
 # Returns
 nothing (modifies an existing-solved model in the memory). `solve()` must be run again to solve and getdual veriables
 
 """
-function fix_integers(jump_model::Model)
+function fix_integers(jump_model::AbstractModel)
     ################################################################################
     ## function fix_integers()
     ##
@@ -36,18 +36,18 @@ function fix_integers(jump_model::Model)
 end
 
 @doc raw"""
-	solve_model(EP::Model, setup::Dict)
+	solve_model(EP::AbstractModel, setup::Dict)
 Description: Solves and extracts solution variables for later processing
 
 # Arguments
-- `EP::Model`: a JuMP model representing the energy optimization problem
+- `EP::AbstractModel`: a JuMP model representing the energy optimization problem
 - `setup::Dict`: a Dict containing GenX setup flags
 
 # Returns
-- `EP::Model`: the solved JuMP model
+- `EP::AbstractModel`: the solved JuMP model
 - `solver_time::Float64`: time taken to solve the model
 """
-function solve_model(EP::Model, setup::Dict)
+function solve_model(EP::AbstractModel, setup::Dict)
     ## Start solve timer
     solver_start_time = time()
     solver_time = time()

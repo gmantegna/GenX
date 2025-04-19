@@ -1,5 +1,5 @@
 @doc raw"""
-	investment_discharge!(EP::Model, inputs::Dict, setup::Dict)
+	investment_discharge!(EP::AbstractModel, inputs::Dict, setup::Dict)
 This function defines the expressions and constraints keeping track of total available power generation/discharge capacity across all resources as well as constraints on capacity retirements.
 The total capacity of each resource is defined as the sum of the existing capacity plus the newly invested capacity minus any retired capacity. Note for storage and co-located resources, additional energy and charge power capacity decisions and constraints are defined in the storage and co-located VRE and storage module respectively.
 ```math
@@ -32,7 +32,7 @@ In addition, this function adds investment and fixed O&M related costs related t
 \end{aligned}
 ```
 """
-function investment_discharge!(EP::Model, inputs::Dict, setup::Dict)
+function investment_discharge!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("Investment Discharge Module")
     MultiStage = setup["MultiStage"]
 

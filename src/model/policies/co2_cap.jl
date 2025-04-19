@@ -1,5 +1,5 @@
 @doc raw"""
-	co2_cap!(EP::Model, inputs::Dict, setup::Dict)
+	co2_cap!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
 This policy constraints mimics the CO$_2$ emissions cap and permit trading systems,
 allowing for emissions trading across each zone for which the cap applies.
@@ -65,7 +65,7 @@ Similarly, a generation based emission constraint is defined by setting the emis
 
 Note that the generator-side rate-based constraint can be used to represent a fee-rebate (``feebate'') system: the dirty generators that emit above the bar ($\epsilon_{z,p,gen}^{maxCO_2}$) have to buy emission allowances from the emission regulator in the region $z$ where they are located; in the same vein, the clean generators get rebates from the emission regulator at an emission allowance price being the dual variable of the emissions rate constraint.
 """
-function co2_cap!(EP::Model, inputs::Dict, setup::Dict)
+function co2_cap!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("CO2 Policies Module")
 
     SEG = inputs["SEG"]  # Number of lines

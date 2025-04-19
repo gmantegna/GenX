@@ -1,9 +1,9 @@
 @doc raw"""
-	write_storagedual(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_storagedual(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for reporting dual of storage level (state of charge) balance of each resource in each time step.
 """
-function write_storagedual(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_storagedual(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     gen = inputs["RESOURCES"]
     zones = zone_id.(gen)
 

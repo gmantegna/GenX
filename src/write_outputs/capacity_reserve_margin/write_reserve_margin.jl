@@ -1,4 +1,4 @@
-function write_reserve_margin(path::AbstractString, setup::Dict, EP::Model)
+function write_reserve_margin(path::AbstractString, setup::Dict, EP::AbstractModel)
     temp_ResMar = dual.(EP[:cCapacityResMargin])
     if setup["ParameterScale"] == 1
         temp_ResMar = temp_ResMar * ModelScalingFactor # Convert from MillionUS$/GWh to US$/MWh

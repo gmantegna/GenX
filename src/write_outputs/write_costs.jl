@@ -1,9 +1,9 @@
 @doc raw"""
-	write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for writing the costs pertaining to the objective function (fixed, variable O&M etc.).
 """
-function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     ## Cost results
     gen = inputs["RESOURCES"]
     SEG = inputs["SEG"]  # Number of lines

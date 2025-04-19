@@ -1,9 +1,9 @@
 @doc raw"""
-	storage_all!(EP::Model, inputs::Dict, setup::Dict)
+	storage_all!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
 Sets up variables and constraints common to all storage resources. See ```storage()``` in ```storage.jl``` for description of constraints.
 """
-function storage_all!(EP::Model, inputs::Dict, setup::Dict)
+function storage_all!(EP::AbstractModel, inputs::Dict, setup::Dict)
     # Setup variables, constraints, and expressions common to all storage resources
     println("Storage Core Resources Module")
 
@@ -209,7 +209,7 @@ function storage_all!(EP::Model, inputs::Dict, setup::Dict)
     end
 end
 
-function storage_all_operational_reserves!(EP::Model, inputs::Dict, setup::Dict)
+function storage_all_operational_reserves!(EP::AbstractModel, inputs::Dict, setup::Dict)
     gen = inputs["RESOURCES"]
     T = inputs["T"]
     p = inputs["hours_per_subperiod"]

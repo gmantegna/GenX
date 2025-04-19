@@ -1,5 +1,5 @@
 @doc raw"""
-	cap_reserve_margin!(EP::Model, inputs::Dict, setup::Dict)
+	cap_reserve_margin!(EP::AbstractModel, inputs::Dict, setup::Dict)
 Instead of modeling capacity reserve margin requirement (a.k.a. capacity market or resource adequacy requirement) using an annual constraint,
 we model each requirement with hourly constraint by simulating the activation of the capacity obligation.
 We define capacity reserve margin constraint for subsets of zones,
@@ -56,7 +56,7 @@ is specified by the GenX settings parameter ```CapacityReserveMargin```
 The expressions establishing the capacity reserve margin contributions of each technology
 class are included in their respective technology modules.
 """
-function cap_reserve_margin!(EP::Model, inputs::Dict, setup::Dict)
+function cap_reserve_margin!(EP::AbstractModel, inputs::Dict, setup::Dict)
     # capacity reserve margin constraint
     T = inputs["T"]
     NCRM = inputs["NCapacityReserveMargin"]

@@ -1,5 +1,5 @@
 @doc raw"""
-	hydrogen_demand!(EP::Model, inputs::Dict, setup::Dict)
+	hydrogen_demand!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
 This policy constraints add hydrogen prodcution demand requirement for electrolyzers.
 
@@ -20,7 +20,7 @@ The sum of annual hydrogen production by each electrolyzer $y \in \mathcal{EL}$ 
 where $\eta^{electrolyzer}_y$ is the efficiency of the electrolyzer $y$ in megawatt-hours (MWh) of electricity per metric tonne of hydrogen produced and $\mathcal{Min\_kt}_z$ is the minimum annual quantity of hydrogen that must be produced in region $z$ in kilotonnes.
 
 """
-function hydrogen_demand!(EP::Model, inputs::Dict, setup::Dict)
+function hydrogen_demand!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("Hydrogen Demand Module")
     kt_to_t = 10^3
     NumberOfH2DemandReqs = inputs["NumberOfH2DemandReqs"]

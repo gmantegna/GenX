@@ -1,10 +1,10 @@
 @doc raw"""
-	write_co2_cap(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_co2_cap(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for reporting carbon price associated with carbon cap constraints.
 
 """
-function write_co2_cap(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_co2_cap(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     dfCO2Price = DataFrame(
         CO2_Cap = [Symbol("CO2_Cap_$cap") for cap in 1:inputs["NCO2Cap"]],
         CO2_Price = (-1) * (dual.(EP[:cCO2Emissions_systemwide])))

@@ -1,5 +1,5 @@
 @doc raw"""
-    flexible_demand!(EP::Model, inputs::Dict, setup::Dict)
+    flexible_demand!(EP::AbstractModel, inputs::Dict, setup::Dict)
 This function defines the operating constraints for flexible demand resources. As implemented, flexible demand resources (``y \in \mathcal{DF}``) are characterized by: a) maximum deferrable demand as a fraction of available capacity in a particular time step $t$, $\rho^{max}_{y,z,t}$, b) the maximum time this demand can be advanced and delayed, defined by parameters, $\tau^{advance}_{y,z}$ and $\tau^{delay}_{y,z}$, respectively and c) the energy losses associated with shifting demand, $\eta_{y,z}^{dflex}$.
 
 **Tracking total deferred demand**
@@ -41,7 +41,7 @@ A similar constraints maximum time steps of demand advancement. This is done by 
 ```
 If $t$ is first time step of the year (or the first time step of the representative period), then the above two constraints are implemented to look back over the last n time steps, starting with the last time step of the year (or the last time step of the representative period). This time-wrapping implementation is similar to the time-wrapping implementations used for defining the storage balance constraints for hydropower reservoir resources and energy storage resources.
 """
-function flexible_demand!(EP::Model, inputs::Dict, setup::Dict)
+function flexible_demand!(EP::AbstractModel, inputs::Dict, setup::Dict)
     ## Flexible demand resources available during all hours and can be either delayed or advanced (virtual storage-shiftable demand) - DR ==1
 
     println("Flexible Demand Resources Module")

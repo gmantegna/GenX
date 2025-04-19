@@ -6,11 +6,11 @@
 ## returns: path directory
 ################################################################################
 @doc raw"""
-	write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dict)
+	write_outputs(EP::AbstractModel, path::AbstractString, setup::Dict, inputs::Dict)
 
 Function for the entry-point for writing the different output files. From here, onward several other functions are called, each for writing specific output files, like costs, capacities, etc.
 """
-function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dict)
+function write_outputs(EP::AbstractModel, path::AbstractString, setup::Dict, inputs::Dict)
     if setup["OverwriteResults"] == 1
         # Overwrite existing results if dir exists
         # This is the default behaviour when there is no flag, to avoid breaking existing code
@@ -498,6 +498,25 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
 
     return path
 end # END output()
+
+function write_outputs(optigraph::Plasmo.OptiGraph, path::AbstractString, setup::Dict, inputs::Dict)
+    # Write status for the multistage graph
+    setup["WriteOutputsSettingsDict"]["WriteStatus"] && write_status(path, inputs, setup, optigraph)
+
+    # loop over each optinode in multistage_graph and write outputs
+    for (i, optinode) in enumerate(all_nodes(optigraph))
+        setup["MultiStageSettingsDict"]["CurStage"] = i
+        outpath_cur = joinpath(path, "results_p$i")
+        setup["WriteOutputsSettingsDict"]["WriteStatus"] = false # disable writing status for each node
+        write_outputs(optinode, outpath_cur, setup, inputs[i])
+    end
+
+    # Write multistage summary outputs
+    write_multi_stage_outputs(path, setup, inputs)
+
+    return nothing
+end
+
 
 """
 	write_annual(fullpath::AbstractString, dfOut::DataFrame)

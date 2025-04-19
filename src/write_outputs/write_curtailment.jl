@@ -1,10 +1,10 @@
 @doc raw"""
-	write_curtailment(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_curtailment(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for writing the curtailment values of the different variable renewable resources (both standalone and 
 	co-located).
 """
-function write_curtailment(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_curtailment(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     gen = inputs["RESOURCES"]  # Resources (objects)
     resources = inputs["RESOURCE_NAMES"] # Resource names
     zones = zone_id.(gen)

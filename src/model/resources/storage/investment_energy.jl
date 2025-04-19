@@ -1,5 +1,5 @@
 @doc raw"""
-	investment_energy!(EP::Model, inputs::Dict)
+	investment_energy!(EP::AbstractModel, inputs::Dict)
 
 This function defines the expressions and constraints keeping track of total available storage charge capacity across all resources as well as constraints on capacity retirements. The function also adds investment and fixed O\&M related costs related to charge capacity to the objective function.
 
@@ -41,7 +41,7 @@ In addition, this function adds investment and fixed O\&M related costs related 
 \end{aligned}
 ```
 """
-function investment_energy!(EP::Model, inputs::Dict, setup::Dict)
+function investment_energy!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("Storage Investment Module")
 
     gen = inputs["RESOURCES"]

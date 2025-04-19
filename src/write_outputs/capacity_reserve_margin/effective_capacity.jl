@@ -1,5 +1,5 @@
 @doc raw"""
-    thermal_plant_effective_capacity(EP::Model,
+    thermal_plant_effective_capacity(EP::AbstractModel,
                                      inputs::Dict,
                                      resources::Vector{Int},
                                      capres_zone::Int,
@@ -20,13 +20,13 @@ function thermal_plant_effective_capacity(EP,
     return reduce(hcat, eff_cap)
 end
 
-function thermal_plant_effective_capacity(EP::Model, inputs::Dict, y, capres_zone::Int)
+function thermal_plant_effective_capacity(EP::AbstractModel, inputs::Dict, y, capres_zone::Int)
     T = inputs["T"]
     timesteps = collect(1:T)
     return thermal_plant_effective_capacity(EP, inputs, y, capres_zone, timesteps)
 end
 
-function thermal_plant_effective_capacity(EP::Model,
+function thermal_plant_effective_capacity(EP::AbstractModel,
         inputs::Dict,
         r_id::Int,
         capres_zone::Int,

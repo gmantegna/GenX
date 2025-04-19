@@ -1,5 +1,5 @@
 @doc raw"""
-	transmission!(EP::Model, inputs::Dict, setup::Dict)
+	transmission!(EP::AbstractModel, inputs::Dict, setup::Dict)
 This function establishes decisions, expressions, and constraints related to transmission power flows between model zones and associated transmission losses (if modeled).
 
 Power flow and transmission loss terms are also added to the power balance constraint for each zone:
@@ -83,7 +83,7 @@ As with losses option 2, this segment-wise approximation of a quadratic loss fun
 \end{aligned}
 ```
 """
-function transmission!(EP::Model, inputs::Dict, setup::Dict)
+function transmission!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("Transmission Module")
     T = inputs["T"]     # Number of time steps (hours)
     Z = inputs["Z"]     # Number of zones
