@@ -237,6 +237,25 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
         solver_start_time = time()
         optimize!(multistage_graph)
         inputs_dict["solve_time"] = time() - solver_start_time
+
+        if !has_duals(multistage_graph)
+            # compute_conflict!(graph_backend(multistage_graph))
+            MOI.compute_conflict!(backend(graph_backend(multistage_graph)))
+            list_of_conflicting_constraints = ConstraintRef[]
+            if get_attribute(multistage_graph, MOI.ConflictStatus()) == MOI.CONFLICT_FOUND
+                for (F, S) in list_of_constraint_types(multistage_graph)
+                    for con in all_constraints(multistage_graph, F, S)
+                        if get_attribute(con, MOI.ConstraintConflictStatus()) == MOI.IN_CONFLICT
+                            push!(list_of_conflicting_constraints, con)
+                        end
+                    end
+                end
+                display(list_of_conflicting_constraints)
+                CSV.write("conflict_constraints.csv", list_of_conflicting_constraints)
+            else
+                @info "Conflicts computation failed."
+            end
+        end
         
         # Write outputs for the multistage graph
         write_outputs(multistage_graph, outpath, mysetup, inputs_dict)
