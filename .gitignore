@@ -14,8 +14,8 @@ YourModel.lp
 time_domain_reduction/PreCluster_Plots.jl
 time_domain_reduction/TSC_Plots.jl
 time_domain_reduction/TSC.jl
-
-example_systems/CPUC_IRP_2035Only_GenX_fulltimeseries*
+conflict_constraints.csv
+example_systems/CPUC_IRP*
 
 gurobi.log
 cplex.log
