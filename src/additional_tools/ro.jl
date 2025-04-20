@@ -12,7 +12,7 @@ q^{mS}_{m,t},q^{mS}_{m,t}, P \ge 0
 ```
 
 """
-function ro!(EP::Model, inputs::Dict, setup::Dict)
+function ro!(EP::AbstractModel, inputs::Dict, setup::Dict)
    
     # define dual variables
     if inputs["ro_settings"]["BudgetOfUncertainty"] > 0
@@ -82,7 +82,7 @@ function ro_fuels_cost!(EP::Model, inputs::Dict, setup::Dict)
 end
 
 
-function ro_investment_cost!(EP::Model, inputs::Dict, setup::Dict)
+function ro_investment_cost!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("ro investment cost")
     G = inputs["G"]
     gen = inputs["RESOURCES"]

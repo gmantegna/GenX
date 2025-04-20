@@ -5,7 +5,7 @@ Function for reporting non-served energy for every model zone, time step and cos
 """
 
 
-function write_ro_investment_cost(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_ro_investment_cost(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     G = inputs["G"]
     gen = inputs["RESOURCES"]
     by_rid(rid, sym) = by_rid_res(rid, sym, gen)
@@ -21,7 +21,7 @@ function write_ro_investment_cost(path::AbstractString, inputs::Dict, setup::Dic
     CSV.write(joinpath(path, "ro_investment_cost.csv"), df_cost)
 end
 
-function write_ro_fixed_om_cost(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_ro_fixed_om_cost(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     G = inputs["G"]
     gen = inputs["RESOURCES"]
     by_rid(rid, sym) = by_rid_res(rid, sym, gen)
@@ -37,7 +37,7 @@ function write_ro_fixed_om_cost(path::AbstractString, inputs::Dict, setup::Dict,
     CSV.write(joinpath(path, "ro_fixed_om_cost.csv"), df_cost)
 end
 
-function write_ro(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_ro(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     df_duals = DataFrame()
     T = inputs["T"]
 
