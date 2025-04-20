@@ -259,6 +259,11 @@ function generate_model!(EP::AbstractModel,setup::Dict, inputs::Dict)
         mga!(EP, inputs, setup)
     end
 
+    # Apply robust optimization on the scaled objective function?
+	if setup["RO"] == 1
+        ro!(EP, inputs, setup)
+    end
+
     ## Define the objective function
     @objective(EP, Min, setup["ObjScale"]*EP[:eObj])
 

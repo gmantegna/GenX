@@ -17,6 +17,8 @@ function load_inputs(setup::Dict, path::AbstractString)
     system_path = joinpath(path, setup["SystemFolder"])
     resources_path = joinpath(path, setup["ResourcesFolder"])
     policies_path = joinpath(path, setup["PoliciesFolder"])
+    tools_path = joinpath(path, setup["ToolsFolder"])
+
     ## Declare Dict (dictionary) object used to store parameters
     inputs = Dict()
     # Read input data about power network topology, operating and expansion attributes
@@ -106,6 +108,11 @@ function load_inputs(setup::Dict, path::AbstractString)
     if is_period_map_necessary(inputs) && is_period_map_exist(setup, path)
         load_period_map!(setup, path, inputs)
     end
+
+
+    if setup["RO"] == 1
+        load_ro_data!(setup, tools_path, inputs)
+    end 
 
     # Virtual charge discharge cost
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
