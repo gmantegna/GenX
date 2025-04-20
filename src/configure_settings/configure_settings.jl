@@ -36,7 +36,10 @@ function default_settings()
         "ResourcePoliciesFolder" => "policy_assignments",
         "SystemFolder" => "system",
         "PoliciesFolder" => "policies",
-        "ObjScale" => 1)
+        "ObjScale" => 1,
+        "ToolsFolder" => "tools",
+        "RO" => 0                           # enable robust optimization for certain costs
+    )
 end
 
 @doc raw"""

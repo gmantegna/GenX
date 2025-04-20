@@ -93,6 +93,10 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
         push!(total_cost, -1 * value(EP[:eTotalHydrogenValue]))
     end
 
+    if setup["RO"] == 1   
+        (inputs["ro_settings"]["FuelsCost"] == 1) && push!(cost_list, "cROFuel")
+    end
+    
     dfCost[!, Symbol("Total")] = total_cost
 
     if setup["ParameterScale"] == 1
