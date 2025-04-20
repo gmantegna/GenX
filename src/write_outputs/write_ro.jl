@@ -51,7 +51,11 @@ function write_ro(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
     if inputs["ro_settings"]["InvestmentCost"] == 1
         write_ro_investment_cost(path, inputs, setup, EP)
         sic_col = dual.(EP[:cDualSic])
-        df_duals[!, :S_IC] = [sic_col; fill(missing, nrow(df_duals) - length(sic_col))]
+        if inputs["ro_settings"]["FuelsCost"] == 0
+            df_duals[!, :S_IC] = sic_col
+        else
+            df_duals[!, :S_IC] = [sic_col; fill(missing, nrow(df_duals) - length(sic_col))]
+        end
     end
     if inputs["ro_settings"]["FixedOMCost"] == 1
         write_ro_fixed_om_cost(path, inputs, setup, EP)
