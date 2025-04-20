@@ -104,7 +104,7 @@ function ro_investment_cost!(EP::AbstractModel, inputs::Dict, setup::Dict)
     end)
 
     if inputs["ro_settings"]["BudgetOfUncertainty"] > 0
-        # define dual variables for fuel cost
+        # define dual variables for investment cost
         @variable(EP, qic[y in 1:G] >= 0)
 
         # Constraints on the dual variables for the RO formulation
