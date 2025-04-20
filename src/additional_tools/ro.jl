@@ -100,7 +100,7 @@ function ro_investment_cost!(EP::AbstractModel, inputs::Dict, setup::Dict)
             EP[:vCAP][y] 
         end
     else
-        EP[:vZERO]
+        0.0
     end)
 
     if inputs["ro_settings"]["BudgetOfUncertainty"] > 0
