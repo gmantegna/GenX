@@ -112,7 +112,7 @@ function ro_investment_cost!(EP::AbstractModel, inputs::Dict, setup::Dict)
         Delta_InvestmentCost[by_rid(y, :resource)] * EP[:eCapacity][y])
 
         add_to_expression!(EP[:eRODualObj], sum(qic[y] for y in 1:G))
-    elseif inputs["ro_settings"]["BudgetOfUncertainty_MarketSellPrices"] > 0
+    elseif inputs["ro_settings"]["BudgetOfUncertainty_InvestmentCost"] > 0
         Gamma_ic = inputs["ro_settings"]["BudgetOfUncertainty_InvestmentCost"] * inputs["count_uncertain_invest_param"]
         @variable(EP, p_ic >= 0)
         @expression(EP, eRODualObj_ic, Gamma_ic * p_ic) 
