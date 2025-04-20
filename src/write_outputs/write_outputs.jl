@@ -254,7 +254,7 @@ function write_outputs(EP::AbstractModel, path::AbstractString, setup::Dict, inp
         println(elapsed_time_fuel_consumption)
     end
 
-    if output_settings_d["WriteCO2"]
+    if setup["CO2Cap"]>0 && output_settings_d["WriteCO2"]
         elapsed_time_emissions = @elapsed write_co2(path, inputs, setup, EP)
         println("Time elapsed for writing co2 is")
         println(elapsed_time_emissions)
