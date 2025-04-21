@@ -38,7 +38,8 @@ function default_settings()
         "PoliciesFolder" => "policies",
         "ObjScale" => 1,
         "ToolsFolder" => "tools",
-        "RO" => 0                           # enable robust optimization for certain costs
+        "RO" => 0,
+        "ARO" => 0
     )
 end
 

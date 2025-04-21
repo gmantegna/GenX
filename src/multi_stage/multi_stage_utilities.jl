@@ -2,66 +2,74 @@ function define_multi_stage_linking_constraints!(graph::Plasmo.OptiGraph,setup::
     
     start_cap_d, cap_track_d = configure_ddp_dicts(setup, inputs[1])
 
-
-    for t in 2:setup["MultiStageSettingsDict"]["NumStages"]
-
-        ALL_CAP = union(inputs[t]["RET_CAP"], inputs[t]["NEW_CAP"]) # Set of all resources subject to inter-stage capacity tracking
-
-        EP_cur = graph.optinodes[t];
-        EP_prev = graph.optinodes[t-1];
-
-        for (e,c) in start_cap_d
-            for y in keys(EP_cur[c])
-                if c == :cExistingTransCap
-                    cobj = constraint_object(EP_cur[c][y])
-                    @linkconstraint(graph, cobj.func == EP_prev[e][y])
-                    delete(EP_cur ,EP_cur[c][y])
-                else
-                    if y[1] in ALL_CAP # extract resource integer index value from key
-                        cobj = constraint_object(EP_cur[c][y])
-                        @linkconstraint(graph, cobj.func == EP_prev[e][y])
-                        delete(EP_cur,EP_cur[c][y[1]])
-                    end
-                end
-            end   
+    if setup["ARO"] == 0
+        println("Linking stages in series.")
+        for t in 2:setup["MultiStageSettingsDict"]["NumStages"]
+            link_stages!(graph,setup,inputs,start_cap_d,cap_track_d,t-1,t)
         end
-
-        for (v, c) in cap_track_d
-
-            # Tracking variables and constraints for retired capacity are named identicaly to those for newly
-            # built capacity, except have the prefex "vRET" and "cRet", accordingly
-            rv = Symbol("vRET", string(v)[2:end]) # Retired capacity tracking variable name (rv)
-            rc = Symbol("cRet", string(c)[2:end]) # Retired capacity tracking constraint name (rc)
-    
-            for y in keys(EP_cur[c])
-                y = y[1] # Extract integer index value from keys tuple - corresponding to generator index
-    
-                # For all previous stages, set the right hand side value of the tracking constraint in the current
-                # stage to the value of the tracking constraint observed in the previous stage
-                for p in 1:(t - 1)
-                    # Tracking newly buily capacity over all previous stages
-                    cobj = constraint_object(EP_cur[c][y,p])
-                    @linkconstraint(graph, cobj.func == EP_prev[v][y,p])
-                    # Tracking retired capacity over all previous stages
-                    rcobj = constraint_object(EP_cur[rc][y,p])
-                    @linkconstraint(graph, rcobj.func == EP_prev[rv][y,p])
-                end
-            end
-            for k in keys(EP_cur[c])
-                delete(EP_cur,EP_cur[c][k])
-                delete(EP_cur,EP_cur[rc][k])
-            end
-
+    elseif setup["ARO"] == 1
+        println("Linking stages according to edge input.")
+        aro_edges = setup["MultiStageSettingsDict"]["aro_edges"]
+        for edge in eachrow(aro_edges)
+            link_stages!(graph,setup,inputs,start_cap_d,cap_track_d,edge.Stage_from,edge.Stage_to)
         end
-    
-        
-        
+    else
+        throw("Invalid ARO setting. Expected 0 or 1.")
     end
 
     return nothing
+end
 
+function link_stages!(graph,setup,inputs,start_cap_d,cap_track_d,stage_from,stage_to)
 
+    ALL_CAP = union(inputs[stage_to]["RET_CAP"], inputs[stage_to]["NEW_CAP"]) # Set of all resources subject to inter-stage capacity tracking
 
+    EP_cur = graph.optinodes[stage_to];
+    EP_prev = graph.optinodes[stage_from];
+
+    for (e,c) in start_cap_d
+        for y in keys(EP_cur[c])
+            if c == :cExistingTransCap
+                cobj = constraint_object(EP_cur[c][y])
+                @linkconstraint(graph, cobj.func == EP_prev[e][y])
+                delete(EP_cur ,EP_cur[c][y])
+            else
+                if y[1] in ALL_CAP # extract resource integer index value from key
+                    cobj = constraint_object(EP_cur[c][y])
+                    @linkconstraint(graph, cobj.func == EP_prev[e][y])
+                    delete(EP_cur,EP_cur[c][y[1]])
+                end
+            end
+        end   
+    end
+
+    for (v, c) in cap_track_d
+
+        # Tracking variables and constraints for retired capacity are named identicaly to those for newly
+        # built capacity, except have the prefex "vRET" and "cRet", accordingly
+        rv = Symbol("vRET", string(v)[2:end]) # Retired capacity tracking variable name (rv)
+        rc = Symbol("cRet", string(c)[2:end]) # Retired capacity tracking constraint name (rc)
+
+        for y in keys(EP_cur[c])
+            y = y[1] # Extract integer index value from keys tuple - corresponding to generator index
+
+            # For all previous stages, set the right hand side value of the tracking constraint in the current
+            # stage to the value of the tracking constraint observed in the previous stage
+            for p in 1:stage_from
+                # Tracking newly buily capacity over all previous stages
+                cobj = constraint_object(EP_cur[c][y,p])
+                @linkconstraint(graph, cobj.func == EP_prev[v][y,p])
+                # Tracking retired capacity over all previous stages
+                rcobj = constraint_object(EP_cur[rc][y,p])
+                @linkconstraint(graph, rcobj.func == EP_prev[rv][y,p])
+            end
+        end
+        for k in keys(EP_cur[c])
+            delete(EP_cur,EP_cur[c][k])
+            delete(EP_cur,EP_cur[rc][k])
+        end
+
+    end
 end
 
 @doc raw"""

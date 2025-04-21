@@ -112,6 +112,11 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
     multistage_settings = get_settings_path(case, "multi_stage_settings.yml") # Multi stage settings YAML file path
     # merge default settings with those specified in the YAML file
     mysetup["MultiStageSettingsDict"] = configure_settings_multistage(multistage_settings)
+    if mysetup["ARO"] == 1
+        aro_edges_path = get_settings_path(case, "Graph_edges.csv")
+        aro_edges = load_dataframe(aro_edges_path)
+        mysetup["MultiStageSettingsDict"]["aro_edges"] = aro_edges
+    end
 
     ### Cluster time series inputs if necessary and if specified by the user
     if mysetup["TimeDomainReduction"] == 1
@@ -187,11 +192,24 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
 
     if mysetup["MultiStageSettingsDict"]["DDP"] == 0
         define_multi_stage_linking_constraints!(multistage_graph,mysetup,inputs_dict)
-
-        @objective(multistage_graph, 
-        Min, 
-        sum(model_dict[t][:eDiscountedObj] for t in 1:mysetup["MultiStageSettingsDict"]["NumStages"])
-        )
+        
+        if mysetup["ARO"]==0
+            @objective(multistage_graph, 
+            Min, 
+            sum(model_dict[t][:eDiscountedObj] for t in 1:mysetup["MultiStageSettingsDict"]["NumStages"])
+            )
+        elseif mysetup["ARO"]==1
+            EP2=model_dict[2]
+            EP3=model_dict[3]
+            @variable(EP2,t>=0)
+            @variable(EP3,t>=0)
+            @linkconstraint(multistage_graph, EP2[:t] == EP3[:t])
+            @constraint(EP2,cMax2,EP2[:eDiscountedObj]<=EP2[:t])
+            @constraint(EP3,cMax3,EP3[:eDiscountedObj]<=EP3[:t])
+            @objective(multistage_graph, 
+            Min, 
+            model_dict[1][:eDiscountedObj] + EP2[:t])
+        end
     end
 
     ### Solve model
