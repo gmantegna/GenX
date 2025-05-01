@@ -1,0 +1,12 @@
+ConvergenceTolerance: 0.01
+DDP: 0
+Myopic: 0
+NumStages: 5
+StageLengths:
+- 2
+- 5
+- 5
+- 5
+- 5
+WACC: 0.045
+WriteIntermittentOutputs: 1
