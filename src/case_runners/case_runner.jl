@@ -152,9 +152,8 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
 
     if mysetup["MultiStageSettingsDict"]["DDP"] == 0
 
-        multistage_graph =  Plasmo.OptiGraph();
-
-        set_optimizer(multistage_graph, OPTIMIZER);
+        opt_instance = MOI.instantiate(OPTIMIZER)
+        multistage_graph = Plasmo.direct_moi_graph(opt_instance);
 
         @optinode(multistage_graph , model_dict[1:mysetup["MultiStageSettingsDict"]["NumStages"]])
 
