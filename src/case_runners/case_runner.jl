@@ -170,9 +170,7 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
         inpath_sub = joinpath(case, "inputs", string("inputs_p", t))
 
         inputs_dict[t] = load_inputs(mysetup, inpath_sub)
-        inputs_dict[t] = configure_multi_stage_inputs(inputs_dict[t],
-            mysetup["MultiStageSettingsDict"],
-            mysetup["NetworkExpansion"])
+        inputs_dict[t] = configure_multi_stage_inputs(inputs_dict[t],mysetup)
 
         compute_cumulative_min_retirements!(inputs_dict, t)
         

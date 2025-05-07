@@ -101,11 +101,14 @@ This function scales the model objective function so that costs are consistent w
 function discount_objective_function!(EP::AbstractModel, settings::Dict, inputs::Dict)
     settings_d = settings["MultiStageSettingsDict"]
     cur_stage = settings_d["CurStage"] # Current DDP Investment Planning Stage
-    cum_years = 0
-    for stage_count in 1:(cur_stage - 1)
-        cum_years += settings_d["StageLengths"][stage_count]
+    if settings["ARO"] == 1
+        cum_years = settings_d["StageCumYears"][cur_stage]
+    else
+        cum_years = 0
+        for stage_count in 1:(cur_stage - 1)
+            cum_years += settings_d["StageLengths"][stage_count]
+        end
     end
-    stage_len = settings_d["StageLengths"][cur_stage]
     wacc = settings_d["WACC"] # Interest Rate  and also the discount rate unless specified other wise
     myopic = settings_d["Myopic"] == 1 # 1 if myopic (only one forward pass), 0 if full DDP
     OPEXMULT = inputs["OPEXMULT"] # OPEX multiplier to count multiple years between two model stages, set in configure_multi_stage_inputs.jl

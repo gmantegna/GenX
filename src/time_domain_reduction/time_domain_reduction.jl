@@ -720,9 +720,7 @@ function cluster_inputs(inpath,
 
             inputs_dict[t] = load_inputs(mysetup_MS, inpath_sub)
 
-            inputs_dict[t] = configure_multi_stage_inputs(inputs_dict[t],
-                mysetup["MultiStageSettingsDict"],
-                mysetup["NetworkExpansion"])
+            inputs_dict[t] = configure_multi_stage_inputs(inputs_dict[t],mysetup)
         end
         if MultiStageConcatenate == 1
             if v
