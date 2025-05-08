@@ -219,7 +219,7 @@ function generate_model!(EP::AbstractModel,setup::Dict, inputs::Dict)
 
     # Endogenous Retirements
     if setup["MultiStage"] > 0
-        endogenous_retirement!(EP, inputs, setup)
+        # endogenous_retirement!(EP, inputs, setup)
     end
 
     # Energy Share Requirement

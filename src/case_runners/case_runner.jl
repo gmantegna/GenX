@@ -116,6 +116,8 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
         aro_edges_path = get_settings_path(case, "Graph_edges.csv")
         aro_edges = load_dataframe(aro_edges_path)
         mysetup["MultiStageSettingsDict"]["aro_edges"] = aro_edges
+
+        mysetup["MultiStageSettingsDict"]["aro_objective"] = load_dataframe(get_settings_path(case,"Objective.csv"))
     end
 
     ### Cluster time series inputs if necessary and if specified by the user
@@ -196,16 +198,23 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
             sum(model_dict[t][:eDiscountedObj] for t in 1:mysetup["MultiStageSettingsDict"]["NumStages"])
             )
         elseif mysetup["ARO"]==1
-            EP2=model_dict[2]
-            EP3=model_dict[3]
-            @variable(EP2,t>=0)
-            @variable(EP3,t>=0)
-            @linkconstraint(multistage_graph, EP2[:t] == EP3[:t])
-            @constraint(EP2,cMax2,EP2[:eDiscountedObj]<=EP2[:t])
-            @constraint(EP3,cMax3,EP3[:eDiscountedObj]<=EP3[:t])
+            aro_objective = mysetup["MultiStageSettingsDict"]["aro_objective"]
+            aro_objective_sum = collect(skipmissing(aro_objective.Sum))
+            aro_objective_max = collect(skipmissing(aro_objective.Max))
+            i=1
+            for stage in aro_objective_max
+                EP_stage=model_dict[stage]
+                @variable(EP_stage,t>=0)
+                if i>1
+                    EP_prev_stage=model_dict[aro_objective_max[i-1]]
+                    @linkconstraint(multistage_graph,EP_stage[:t] == EP_prev_stage[:t])
+                end
+                @constraint(EP_stage,EP_stage[:eDiscountedObj]<=EP_stage[:t])
+                i+=1
+            end
             @objective(multistage_graph, 
             Min, 
-            model_dict[1][:eDiscountedObj] + EP2[:t])
+            sum(model_dict[t][:eDiscountedObj] for t in aro_objective_sum) + model_dict[aro_objective_max[1]][:t])
         end
     end
 

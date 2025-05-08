@@ -43,33 +43,33 @@ function link_stages!(graph,setup,inputs,start_cap_d,cap_track_d,stage_from,stag
         end   
     end
 
-    for (v, c) in cap_track_d
+    # for (v, c) in cap_track_d
 
-        # Tracking variables and constraints for retired capacity are named identicaly to those for newly
-        # built capacity, except have the prefex "vRET" and "cRet", accordingly
-        rv = Symbol("vRET", string(v)[2:end]) # Retired capacity tracking variable name (rv)
-        rc = Symbol("cRet", string(c)[2:end]) # Retired capacity tracking constraint name (rc)
+    #     # Tracking variables and constraints for retired capacity are named identicaly to those for newly
+    #     # built capacity, except have the prefex "vRET" and "cRet", accordingly
+    #     rv = Symbol("vRET", string(v)[2:end]) # Retired capacity tracking variable name (rv)
+    #     rc = Symbol("cRet", string(c)[2:end]) # Retired capacity tracking constraint name (rc)
 
-        for y in keys(EP_cur[c])
-            y = y[1] # Extract integer index value from keys tuple - corresponding to generator index
+    #     for y in keys(EP_cur[c])
+    #         y = y[1] # Extract integer index value from keys tuple - corresponding to generator index
 
-            # For all previous stages, set the right hand side value of the tracking constraint in the current
-            # stage to the value of the tracking constraint observed in the previous stage
-            for p in 1:stage_from
-                # Tracking newly buily capacity over all previous stages
-                cobj = constraint_object(EP_cur[c][y,p])
-                @linkconstraint(graph, cobj.func == EP_prev[v][y,p])
-                # Tracking retired capacity over all previous stages
-                rcobj = constraint_object(EP_cur[rc][y,p])
-                @linkconstraint(graph, rcobj.func == EP_prev[rv][y,p])
-            end
-        end
-        for k in keys(EP_cur[c])
-            delete(EP_cur,EP_cur[c][k])
-            delete(EP_cur,EP_cur[rc][k])
-        end
+    #         # For all previous stages, set the right hand side value of the tracking constraint in the current
+    #         # stage to the value of the tracking constraint observed in the previous stage
+    #         for p in 1:stage_from
+    #             # Tracking newly buily capacity over all previous stages
+    #             cobj = constraint_object(EP_cur[c][y,p])
+    #             @linkconstraint(graph, cobj.func == EP_prev[v][y,p])
+    #             # Tracking retired capacity over all previous stages
+    #             rcobj = constraint_object(EP_cur[rc][y,p])
+    #             @linkconstraint(graph, rcobj.func == EP_prev[rv][y,p])
+    #         end
+    #     end
+    #     for k in keys(EP_cur[c])
+    #         delete(EP_cur,EP_cur[c][k])
+    #         delete(EP_cur,EP_cur[rc][k])
+    #     end
 
-    end
+    # end
 end
 
 @doc raw"""
