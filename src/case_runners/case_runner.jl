@@ -216,6 +216,12 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
             Min, 
             sum(model_dict[t][:eDiscountedObj] for t in aro_objective_sum) + model_dict[aro_objective_max[1]][:t])
         end
+
+        # # print model
+        # filepath = joinpath(pwd(), "YourModel.lp")
+        # JuMP.write_to_file(multistage_graph, filepath)
+        # println("Model Printed")
+    
     end
 
     ### Solve model
