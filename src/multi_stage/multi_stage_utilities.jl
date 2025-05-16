@@ -22,7 +22,7 @@ end
 
 function link_stages!(graph,setup,inputs,start_cap_d,cap_track_d,stage_from,stage_to)
 
-    ALL_CAP = union(inputs[stage_to]["RET_CAP"], inputs[stage_to]["NEW_CAP"]) # Set of all resources subject to inter-stage capacity tracking
+    ALL_CAP = 1:inputs[stage_to]["G"] # Set of all resources subject to inter-stage capacity tracking (note changed to all generators to accommodate different new build sets in different stages)
 
     EP_cur = graph.optinodes[stage_to];
     EP_prev = graph.optinodes[stage_from];
