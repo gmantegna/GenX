@@ -206,6 +206,11 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
             aro_objective = mysetup["MultiStageSettingsDict"]["aro_objective"]
             aro_objective_sum = collect(skipmissing(aro_objective.Sum))
             aro_objective_max = collect(skipmissing(aro_objective.Max))
+            if :Lambda in names(aro_objective)
+                lambda = collect(skipmissing(aro_objective.Lambda))
+                aro_objective_upside = collect(skipmissing(aro_objective.Upside))
+                weights = collect(skipmissing(aro_objective.Upside_weights))
+            end
             i=1
             for stage in aro_objective_max
                 EP_stage=model_dict[stage]
@@ -217,11 +222,33 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
                 @constraint(EP_stage,EP_stage[:eDiscountedObj]<=EP_stage[:t])
                 i+=1
             end
-            @objective(multistage_graph, 
-            Min, 
-            sum(model_dict[t][:eDiscountedObj] for t in aro_objective_sum) + model_dict[aro_objective_max[1]][:t])
+            if :Lambda in names(aro_objective)
+                @objective(
+                    multistage_graph,
+                    Min,
+                    (
+                        sum(model_dict[t][:eDiscountedObj] for t in aro_objective_sum)
+                        + lambda * model_dict[aro_objective_max[1]][:t]
+                        + (1 - lambda) * sum(
+                            model_dict[t][:eDiscountedObj]
+                            * weights[aro_objective_upside.==t][1]
+                            for t in aro_objective_upside
+                        )
+                    )
+                )
+            else
+                @objective(
+                    multistage_graph,
+                    Min,
+                    (
+                        sum(model_dict[t][:eDiscountedObj] for t in aro_objective_sum)
+                        + model_dict[aro_objective_max[1]][:t]
+                    )
+                )
+            end
+
         end
-        
+
         if mysetup["PrintModel"] == 1
             println("Writing to file")
             filename = (@__DIR__)*"/YourModel.lp"
