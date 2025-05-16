@@ -22,22 +22,22 @@ end
 
 function link_stages!(graph,setup,inputs,start_cap_d,cap_track_d,stage_from,stage_to)
 
-    ALL_CAP = inputs[stage_to]["STAGE_LINK_CAP"] # Set of all resources subject to inter-stage capacity tracking
     EP_cur = graph.optinodes[stage_to];
     EP_prev = graph.optinodes[stage_from];
 
     for (e,c) in start_cap_d
-        for y in keys(EP_cur[c])
-            if c == :cExistingTransCap
-                cobj = constraint_object(EP_cur[c][y])
-                @linkconstraint(graph, cobj.func == EP_prev[e][y])
-                delete(EP_cur ,EP_cur[c][y])
-            else
-                if y[1] in ALL_CAP # extract resource integer index value from key
-                    cobj = constraint_object(EP_cur[c][y])
-                    @linkconstraint(graph, cobj.func == EP_prev[e][y])
-                    delete(EP_cur,EP_cur[c][y[1]])
+        for y in 1:inputs[stage_to]["G"]
+            if c==Symbol("cExistingCap")
+                if y in inputs[stage_to]["STAGE_LINK_CAP"]
+                    @linkconstraint(graph, EP_cur[:vEXISTINGCAP][y] == EP_prev[e][y])
                 end
+            elseif c==Symbol("cExistingCapEnergy")
+                if (y in inputs[stage_to]["STAGE_LINK_CAP"]) && (y in inputs[stage_to]["STOR_ALL"])
+                    @linkconstraint(graph, EP_cur[:vEXISTINGCAPENERGY][y] == EP_prev[e][y])
+                end
+            else
+                println(c)
+                throw("stage linking only supported for existing cap and existing energy cap.")
             end
         end   
     end

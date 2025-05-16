@@ -46,6 +46,7 @@ function investment_discharge!(EP::AbstractModel, inputs::Dict, setup::Dict)
     RET_CAP = inputs["RET_CAP"] # Set of all resources eligible for capacity retirements
     COMMIT = inputs["COMMIT"] # Set of all resources eligible for unit commitment
     RETROFIT_CAP = inputs["RETROFIT_CAP"]  # Set of all resources being retrofitted
+    STAGE_LINK_CAP = inputs["STAGE_LINK_CAP"]
 
     ### Variables ###
 
@@ -178,7 +179,7 @@ function investment_discharge!(EP::AbstractModel, inputs::Dict, setup::Dict)
     if MultiStage == 1
         # Existing capacity variable is equal to existing capacity specified in the input file
         @constraint(EP,
-            cExistingCap[y in 1:G],
+            cExistingCap[y in setdiff(1:G,STAGE_LINK_CAP)],
             EP[:vEXISTINGCAP][y]==existing_cap_mw(gen[y]))
     end
 

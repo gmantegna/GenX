@@ -276,11 +276,11 @@ function generate_model!(EP::AbstractModel,setup::Dict, inputs::Dict)
 
     ## Record pre-solver time
     presolver_time = time() - presolver_start_time
-    if setup["PrintModel"] == 1
-        filepath = joinpath(pwd(), "YourModel.lp")
-        JuMP.write_to_file(EP, filepath)
-        println("Model Printed")
-    end
+    # if setup["PrintModel"] == 1
+    #     filepath = joinpath(pwd(), "YourModel.lp")
+    #     JuMP.write_to_file(EP, filepath)
+    #     println("Model Printed")
+    # end
 
     return nothing
 end
