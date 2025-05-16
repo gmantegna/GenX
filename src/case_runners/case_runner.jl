@@ -222,10 +222,16 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
             sum(model_dict[t][:eDiscountedObj] for t in aro_objective_sum) + model_dict[aro_objective_max[1]][:t])
         end
 
-        # # print model
-        # filepath = joinpath(pwd(), "YourModel.lp")
-        # JuMP.write_to_file(multistage_graph, filepath)
-        # println("Model Printed")
+        # print model
+        println("Writing to file")
+        filename = (@__DIR__)*"/YourModel.lp"
+        m = MOI.FileFormats.Model(filename=filename)
+        f = () -> MOI.FileFormats.Model(filename=filename)
+        inner = MOI.instantiate(f)
+        moi_g_model = multistage_graph.backend.moi_backend.model_cache.model
+        inner_map = MOI.copy_to(inner, moi_g_model)
+        ub = JuMP.unsafe_backend(inner)
+        MOI.write_to_file(ub, filename)
     
     end
 
