@@ -1167,6 +1167,8 @@ function add_resources_to_input_data!(inputs::Dict,
         ids_with_nonneg(gen, existing_cap_mw))
     inputs["RETROFIT_OPTIONS"] = ids_retrofit_options(gen)
 
+    inputs["STAGE_LINK_CAP"] = has_stage_linking(gen)
+
     # Retrofit
     # append region name to the retrofit_id if it is not None
     update_retrofit_id.(gen)

@@ -543,6 +543,11 @@ function new_build(r::AbstractResource)
     return Bool(get(r, :new_build, false))
 end
 
+function link_stages(r::AbstractResource)
+    validate_boolean_attribute(r, :link_stages)
+    return Bool(get(r, :link_stages, false))
+end
+
 function can_retire(r::AbstractResource)
     validate_boolean_attribute(r, :can_retire)
     return Bool(get(r, :can_retire, false))
@@ -728,6 +733,11 @@ end
 function is_buildable(rs::Vector{T}) where {T <: AbstractResource}
     findall(r -> new_build(r) == true, rs)
 end
+
+function has_stage_linking(rs::Vector{T}) where {T <: AbstractResource}
+    findall(r -> link_stages(r) == true, rs)
+end
+
 function is_retirable(rs::Vector{T}) where {T <: AbstractResource}
     findall(r -> can_retire(r) == true, rs)
 end
