@@ -11,7 +11,7 @@ function define_multi_stage_linking_constraints!(graph::Plasmo.OptiGraph,setup::
         println("Linking stages according to edge input.")
         aro_edges = setup["MultiStageSettingsDict"]["aro_edges"]
         for edge in eachrow(aro_edges)
-            link_stages!(graph,setup,inputs,start_cap_d,cap_track_d,edge.Stage_from,edge.Stage_to)
+            link_stages!(graph,setup,inputs,start_cap_d,cap_track_d,Int(edge.Stage_from),Int(edge.Stage_to))
         end
     else
         throw("Invalid ARO setting. Expected 0 or 1.")
