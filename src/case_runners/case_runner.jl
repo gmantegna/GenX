@@ -204,12 +204,12 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
             )
         elseif mysetup["ARO"]==1
             aro_objective = mysetup["MultiStageSettingsDict"]["aro_objective"]
-            aro_objective_sum = collect(skipmissing(aro_objective.Sum))
-            aro_objective_max = collect(skipmissing(aro_objective.Max))
+            aro_objective_sum = Int.(collect(skipmissing(aro_objective.Sum)))
+            aro_objective_max = Int.(collect(skipmissing(aro_objective.Max)))
             if :Lambda in names(aro_objective)
-                lambda = collect(skipmissing(aro_objective.Lambda))
-                aro_objective_upside = collect(skipmissing(aro_objective.Upside))
-                weights = collect(skipmissing(aro_objective.Upside_weights))
+                lambda = Int.(collect(skipmissing(aro_objective.Lambda)))[1]
+                aro_objective_upside = Int.(collect(skipmissing(aro_objective.Upside)))
+                weights = Int.(collect(skipmissing(aro_objective.Upside_weights)))
             end
             i=1
             for stage in aro_objective_max
