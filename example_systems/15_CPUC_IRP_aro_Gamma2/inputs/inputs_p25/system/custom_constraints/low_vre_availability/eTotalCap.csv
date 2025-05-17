@@ -1,0 +1,14 @@
+﻿Sum Range ID,Index 1,MODEL_YEARS,Multiplier
+WY_Wind_MaxBuild,Wyoming_Wind,2045,1
+InState_Wind_Max_Build,Central_Valley_North_Los_Banos_Wind,2045,1
+InState_Wind_Max_Build,Greater_Imperial_Wind,2045,1
+InState_Wind_Max_Build,Northern_California_Wind,2045,1
+InState_Wind_Max_Build,Solano_Wind,2045,1
+InState_Wind_Max_Build,Tehachapi_Wind,2045,1
+OOS_Wind_Max_Build,Utah_Wind,2045,1
+OOS_Wind_Max_Build,Idaho_Wind,2045,1
+OOS_Wind_Max_Build,New_Mexico_Wind,2045,1
+OOS_Wind_Max_Build,Southern_NV_Eldorado_Wind,2045,1
+OOS_Wind_Max_Build,Baja_California_Wind,2045,1
+OOS_Solar_Max_Build,Arizona_Solar,2045,1
+OOS_Solar_Max_Build,Southern_NV_Eldorado_Solar,2045,1
