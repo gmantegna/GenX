@@ -206,10 +206,10 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
             aro_objective = mysetup["MultiStageSettingsDict"]["aro_objective"]
             aro_objective_sum = Int.(collect(skipmissing(aro_objective.Sum)))
             aro_objective_max = Int.(collect(skipmissing(aro_objective.Max)))
-            if :Lambda in names(aro_objective)
-                lambda = Int.(collect(skipmissing(aro_objective.Lambda)))[1]
+            if :Lambda in Symbol.(names(aro_objective))
+                lambda = collect(skipmissing(aro_objective.Lambda))[1]
                 aro_objective_upside = Int.(collect(skipmissing(aro_objective.Upside)))
-                weights = Int.(collect(skipmissing(aro_objective.Upside_weights)))
+                weights = collect(skipmissing(aro_objective.Upside_weights))
             end
             i=1
             for stage in aro_objective_max
@@ -222,7 +222,7 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
                 @constraint(EP_stage,EP_stage[:eDiscountedObj]<=EP_stage[:t])
                 i+=1
             end
-            if :Lambda in names(aro_objective)
+            if :Lambda in Symbol.(names(aro_objective))
                 @objective(
                     multistage_graph,
                     Min,
