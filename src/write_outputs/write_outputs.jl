@@ -493,11 +493,11 @@ function write_outputs(EP::AbstractModel, path::AbstractString, setup::Dict, inp
             println(elapsed_time_net_rev)
         end
     end
-    if setup["RO"] == 1
-        elapsed_time_ro= @elapsed write_ro(path, inputs, setup, EP)
-        println("Time elapsed for writing duals of RO is")
-        println(elapsed_time_ro)
-    end
+    # if setup["RO"] == 1
+    #     elapsed_time_ro= @elapsed write_ro(path, inputs, setup, EP)
+    #     println("Time elapsed for writing duals of RO is")
+    #     println(elapsed_time_ro)
+    # end
     ## Print confirmation
     println("Wrote outputs to $path")
 

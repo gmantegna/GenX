@@ -15,8 +15,12 @@ q^{mS}_{m,t},q^{mS}_{m,t}, P \ge 0
 function ro!(EP::AbstractModel, inputs::Dict, setup::Dict)
    
     # define dual variables
-    if inputs["ro_settings"]["BudgetOfUncertainty"] > 0
+    if (inputs["ro_settings"]["BudgetOfUncertainty"] > 0) && (inputs["ro_settings"]["FullyCorrelatedCostsBudget"] < 1)
         Gamma = inputs["ro_settings"]["BudgetOfUncertainty"] * inputs["count_uncertain_param"]
+        @variable(EP, p >= 0)
+        @expression(EP, eRODualObj, Gamma * p)
+    elseif (inputs["ro_settings"]["BudgetOfUncertainty"] > 0) && (inputs["ro_settings"]["FullyCorrelatedCostsBudget"] > 0)
+        Gamma = inputs["ro_settings"]["Gamma"]
         @variable(EP, p >= 0)
         @expression(EP, eRODualObj, Gamma * p)
     end
@@ -37,8 +41,7 @@ function ro!(EP::AbstractModel, inputs::Dict, setup::Dict)
 end
 
 
-
-function ro_fuels_cost!(EP::Model, inputs::Dict, setup::Dict)
+function ro_fuels_cost!(EP::AbstractModel, inputs::Dict, setup::Dict)
     T = inputs["T"]     # Number of time steps
     G = inputs["G"]
     gen = inputs["RESOURCES"]
@@ -57,7 +60,7 @@ function ro_fuels_cost!(EP::Model, inputs::Dict, setup::Dict)
     end
 
     # define dual variables
-    if inputs["ro_settings"]["BudgetOfUncertainty"] > 0
+    if (inputs["ro_settings"]["BudgetOfUncertainty"] > 0) && (inputs["ro_settings"]["FullyCorrelatedCostsBudget"] < 1)
         # define dual variables for fuel cost
         @variable(EP, qfc[f in Fuels, t = 1:T] >= 0  )
 
@@ -78,6 +81,14 @@ function ro_fuels_cost!(EP::Model, inputs::Dict, setup::Dict)
         @constraint(EP, cDualSfc[f in Fuels, t = 1:T], qfc[f, t] + p_fc >= Delta_FuelCost[f,t] * sum(EP[:vFuel][y,t] + EP[:vStartFuel][y, t] for y in resources_by_fuel[f]))
 
         add_to_expression!(EP[:eRODualObj_fc], sum(qfc[f, t] for t in 1:T, f in Fuels))
+    elseif (inputs["ro_settings"]["BudgetOfUncertainty"] > 0) && (inputs["ro_settings"]["FullyCorrelatedCostsBudget"] > 0)
+        # define dual variable for fuel cost
+        @variable(EP, qfc >= 0)
+
+        # Constraints on the dual variables for the RO formulation
+        @constraint(EP, cDualSfc, qfc + EP[:p] >= sum(Delta_FuelCost[f,t] * sum(EP[:vFuel][y,t] + EP[:vStartFuel][y, t] for y in resources_by_fuel[f]) for t in 1:T, f in Fuels if haskey(resources_by_fuel, f)))
+
+        add_to_expression!(EP[:eRODualObj], qfc)
     end
 end
 
@@ -103,7 +114,7 @@ function ro_investment_cost!(EP::AbstractModel, inputs::Dict, setup::Dict)
         0.0
     end)
 
-    if inputs["ro_settings"]["BudgetOfUncertainty"] > 0
+    if (inputs["ro_settings"]["BudgetOfUncertainty"] > 0) && (inputs["ro_settings"]["FullyCorrelatedCostsBudget"] < 1)
         # define dual variables for investment cost
         @variable(EP, qic[y in 1:G] >= 0)
 
@@ -125,11 +136,19 @@ function ro_investment_cost!(EP::AbstractModel, inputs::Dict, setup::Dict)
         Delta_InvestmentCost[by_rid(y, :resource)] * EP[:eCapacity][y])
 
         add_to_expression!(EP[:eRODualObj_ic], sum(qic[y] for y in 1:G))
+    elseif (inputs["ro_settings"]["BudgetOfUncertainty"] > 0) && (inputs["ro_settings"]["FullyCorrelatedCostsBudget"] > 0)
+        # define dual variable for investment cost
+        @variable(EP, qic >= 0)
+
+        # Constraints on the dual variables for the RO formulation
+        @constraint(EP, cDualSic, qic + EP[:p] >= sum(Delta_InvestmentCost[by_rid(y, :resource)] * EP[:eCapacity][y] for y in 1:G))
+
+        add_to_expression!(EP[:eRODualObj], qic)
     end
     return nothing
 end
 
-function ro_fixed_om_cost!(EP::Model, inputs::Dict, setup::Dict)
+function ro_fixed_om_cost!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("ro fixed om cost")
 
     G = inputs["G"]
@@ -139,7 +158,7 @@ function ro_fixed_om_cost!(EP::Model, inputs::Dict, setup::Dict)
     by_rid(rid, sym) = by_rid_res(rid, sym, gen)
     
     # define dual variables for fuel cost
-    if inputs["ro_settings"]["BudgetOfUncertainty"] > 0
+    if (inputs["ro_settings"]["BudgetOfUncertainty"] > 0) && (inputs["ro_settings"]["FullyCorrelatedCostsBudget"] < 1)
         @variable(EP, qfxc[y in 1:G] >= 0)
 
         # Constraints on the dual variables for the RO formulation
@@ -159,6 +178,14 @@ function ro_fixed_om_cost!(EP::Model, inputs::Dict, setup::Dict)
         Delta_FixedOMCost[by_rid(y, :resource)] * EP[:eTotalCap][y])
 
         add_to_expression!(EP[:eRODualObj_fxc], sum(qfxc[y] for y in 1:G))
+    elseif (inputs["ro_settings"]["BudgetOfUncertainty"] > 0) && (inputs["ro_settings"]["FullyCorrelatedCostsBudget"] > 0)
+        # define dual variable for FOM cost
+        @variable(EP, qfxc >= 0)
+
+        # Constraints on the dual variables for the RO formulation
+        @constraint(EP, cDualSfxc, qfxc + EP[:p] >= sum(Delta_FixedOMCost[by_rid(y, :resource)] * EP[:eTotalCap][y] for y in 1:G))
+
+        add_to_expression!(EP[:eRODualObj], qfxc)
     end
     return nothing
 end

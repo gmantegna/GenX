@@ -14,9 +14,10 @@ function load_ro_settings(setup::Dict, path::AbstractString, inputs::Dict)
     println("Configuring RO Settings")
     filename = "ro_settings.yml"
     ro_settings = YAML.load(open(joinpath(path, filename)))
-    new_ro_settings = default_ro_settings()
-    merge!(new_ro_settings, ro_settings)
-    inputs["ro_settings"] = new_ro_settings
+    # new_ro_settings = default_ro_settings()
+    # merge!(new_ro_settings, ro_settings)
+    # inputs["ro_settings"] = new_ro_settings
+    inputs["ro_settings"] = ro_settings
     inputs["count_uncertain_param"] = 0
 end
 
@@ -57,14 +58,15 @@ end
 function load_investment_cost_bound_data!(setup::Dict, path::AbstractString, inputs::Dict)
     filename = "Investment_cost_bounds.csv"
     df_costs_bounds = load_dataframe(joinpath(path, filename))
+    df_costs_bounds.Resource = String63.(df_costs_bounds.Resource)
     
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
     df_costs_bounds[!,:Inv_Cost_per_MWyr_bounds] ./= scale_factor
     
-    # delta investment costs for each fuel type
-    existing_resources = df_costs_bounds.Resource
+    # delta investment costs
+    resources_already_in_df = df_costs_bounds.Resource
     for f in inputs["RESOURCE_NAMES"]
-        if f ∉ existing_resources
+        if f ∉ resources_already_in_df
             push!(df_costs_bounds, (f, 0))
         end
     end 
@@ -80,18 +82,19 @@ end
 function load_fixed_om_cost_bound_data!(setup::Dict, path::AbstractString, inputs::Dict)
     filename = "Fixed_OM_cost_bounds.csv"
     df_costs_bounds = load_dataframe(joinpath(path, filename))
+    df_costs_bounds.Resource = String63.(df_costs_bounds.Resource)
     
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
-    df_costs_bounds[!,:Fixed_OM_Cost_per_Mwyr_bound] ./= scale_factor
+    df_costs_bounds[!,:Fixed_OM_Cost_per_MWyr_bound] ./= scale_factor
     
-    # delta investment costs for each fuel type
-    existing_resources = df_costs_bounds.Resource
+    # delta investment costs
+    resources_already_in_df = df_costs_bounds.Resource
     for f in inputs["RESOURCE_NAMES"]
-        if f ∉ existing_resources
+        if f ∉ resources_already_in_df
             push!(df_costs_bounds, (f, 0))
         end
     end  
-    inputs["delta_fixed_om_costs"] = Dict(df_costs_bounds[!,:Resource] .=> df_costs_bounds[!,:Fixed_OM_Cost_per_Mwyr_bound])
+    inputs["delta_fixed_om_costs"] = Dict(df_costs_bounds[!,:Resource] .=> df_costs_bounds[!,:Fixed_OM_Cost_per_MWyr_bound])
     
     inputs["count_uncertain_fixedom_param"] = inputs["G"]
     inputs["count_uncertain_param"] += inputs["count_uncertain_fixedom_param"]  
