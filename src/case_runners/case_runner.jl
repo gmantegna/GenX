@@ -205,24 +205,30 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
         elseif mysetup["ARO"]==1
             aro_objective = mysetup["MultiStageSettingsDict"]["aro_objective"]
             aro_objective_sum = Int.(collect(skipmissing(aro_objective.Sum)))
-            aro_objective_max = Int.(collect(skipmissing(aro_objective.Max)))
-            if :Lambda in Symbol.(names(aro_objective))
+            if :Max in Symbol.(names(aro_objective)) # if ARO max over scenarios is included
+                aro_objective_max = Int.(collect(skipmissing(aro_objective.Max)))
+            end
+            if :Lambda in Symbol.(names(aro_objective)) # if both ARO max and upside scenarios are included
                 lambda = collect(skipmissing(aro_objective.Lambda))[1]
+            end
+            if :Upside in Symbol.(names(aro_objective)) # if ARO upside scenarios are included (this part is just traditional stochastic scenarios)
                 aro_objective_upside = Int.(collect(skipmissing(aro_objective.Upside)))
                 weights = collect(skipmissing(aro_objective.Upside_weights))
             end
-            i=1
-            for stage in aro_objective_max
-                EP_stage=model_dict[stage]
-                @variable(EP_stage,t>=0)
-                if i>1
-                    EP_prev_stage=model_dict[aro_objective_max[i-1]]
-                    @linkconstraint(multistage_graph,EP_stage[:t] == EP_prev_stage[:t])
+            if :Max in Symbol.(names(aro_objective)) # set t as the max objective of the max scenarios
+                i=1
+                for stage in aro_objective_max
+                    EP_stage=model_dict[stage]
+                    @variable(EP_stage,t>=0)
+                    if i>1
+                        EP_prev_stage=model_dict[aro_objective_max[i-1]]
+                        @linkconstraint(multistage_graph,EP_stage[:t] == EP_prev_stage[:t])
+                    end
+                    @constraint(EP_stage,EP_stage[:eDiscountedObj]<=EP_stage[:t])
+                    i+=1
                 end
-                @constraint(EP_stage,EP_stage[:eDiscountedObj]<=EP_stage[:t])
-                i+=1
             end
-            if :Lambda in Symbol.(names(aro_objective))
+            if :Lambda in Symbol.(names(aro_objective)) # both downside and upside
                 @objective(
                     multistage_graph,
                     Min,
@@ -236,7 +242,20 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
                         )
                     )
                 )
-            else
+            elseif :Upside in Symbol.(names(aro_objective)) #upside only
+                @objective(
+                    multistage_graph,
+                    Min,
+                    (
+                        sum(model_dict[t][:eDiscountedObj] for t in aro_objective_sum)
+                        + sum(
+                            model_dict[t][:eDiscountedObj]
+                            * weights[aro_objective_upside.==t][1]
+                            for t in aro_objective_upside
+                        )
+                    )
+                )
+            else #downside only
                 @objective(
                     multistage_graph,
                     Min,
