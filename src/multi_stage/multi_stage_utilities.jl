@@ -26,20 +26,28 @@ function link_stages!(graph,setup,inputs,start_cap_d,cap_track_d,stage_from,stag
     EP_prev = graph.optinodes[stage_from];
 
     for (e,c) in start_cap_d
-        for y in 1:inputs[stage_to]["G"]
-            if c==Symbol("cExistingCap")
+        if c==Symbol("cExistingCap")
+            for y in 1:inputs[stage_to]["G"]
                 if y in inputs[stage_to]["STAGE_LINK_CAP"]
                     @linkconstraint(graph, EP_cur[:vEXISTINGCAP][y] == EP_prev[e][y])
                 end
-            elseif c==Symbol("cExistingCapEnergy")
+            end
+        elseif c==Symbol("cExistingCap")
+            for y in 1:inputs[stage_to]["G"]
                 if (y in inputs[stage_to]["STAGE_LINK_CAP"]) && (y in inputs[stage_to]["STOR_ALL"])
                     @linkconstraint(graph, EP_cur[:vEXISTINGCAPENERGY][y] == EP_prev[e][y])
                 end
-            else
-                println(c)
-                throw("stage linking only supported for existing cap and existing energy cap.")
             end
-        end   
+        elseif c==Symbol("cExistingTransCap")
+            for l in 1:inputs[stage_to]["L"]
+                if l in inputs[stage_to]["STAGE_LINK_LINES"]
+                    @linkconstraint(graph, EP_cur[:vTRANSMAX][l] == EP_prev[e][l])
+                end
+            end
+        else
+            println(c)
+            throw("stage linking only supported for existing cap and existing energy cap.")
+        end
     end
 
     # for (v, c) in cap_track_d

@@ -79,6 +79,9 @@ function load_network_data!(setup::Dict, path::AbstractString, inputs_nw::Dict)
         # Max Flow Possible on Each Line
         inputs_nw["pLine_Max_Flow_Possible_MW"] = to_floats(:Line_Max_Flow_Possible_MW) /
                                                   scale_factor # Convert to GW
+
+        # Stage linking
+        inputs_nw["STAGE_LINK_LINES"] = findall(inputs_nw["LINK_STAGES"] .!= 0)
     end
 
     # Transmission line (between zone) loss coefficient (resistance/voltage^2)
