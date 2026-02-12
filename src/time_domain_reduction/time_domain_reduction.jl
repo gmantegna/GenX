@@ -94,16 +94,18 @@ function parse_data(myinputs)
     all_profiles = [demand_profiles..., var_profiles..., fuel_profiles...]
 
     # generators_pmin and hourly energy budget
-    matrix_pmin = myinputs["pP_Min"]
-    df_hourly_energy_budget = myinputs["df_hourly_energy_budget"]
-    select!(df_hourly_energy_budget, Not([:Time_Index]));
+    # matrix_pmin = myinputs["pP_Min"]
+    # df_hourly_energy_budget = myinputs["df_hourly_energy_budget"]
+    # select!(df_hourly_energy_budget, Not([:Time_Index]));
 
     return demand_col_names,
     var_col_names, solar_col_names, wind_col_names, fuel_col_names,
     all_col_names,
     demand_profiles, var_profiles, solar_profiles, wind_profiles, fuel_profiles,
     all_profiles,
-    col_to_zone_map, AllFuelsConst, matrix_pmin, df_hourly_energy_budget
+    col_to_zone_map, AllFuelsConst
+
+    # return matrix_pmin,  df_hourly_energy_budget
 end
 
 @doc raw"""
