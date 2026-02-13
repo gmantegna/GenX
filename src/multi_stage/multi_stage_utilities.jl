@@ -32,7 +32,7 @@ function link_stages!(graph,setup,inputs,start_cap_d,cap_track_d,stage_from,stag
                     @linkconstraint(graph, EP_cur[:vEXISTINGCAP][y] == EP_prev[e][y])
                 end
             end
-        elseif c==Symbol("cExistingCap")
+        elseif c==Symbol("cExistingCapEnergy")
             for y in 1:inputs[stage_to]["G"]
                 if (y in inputs[stage_to]["STAGE_LINK_CAP"]) && (y in inputs[stage_to]["STOR_ALL"])
                     @linkconstraint(graph, EP_cur[:vEXISTINGCAPENERGY][y] == EP_prev[e][y])
