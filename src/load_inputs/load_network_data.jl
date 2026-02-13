@@ -81,6 +81,7 @@ function load_network_data!(setup::Dict, path::AbstractString, inputs_nw::Dict)
                                                   scale_factor # Convert to GW
 
         # Stage linking
+        inputs_nw["LINK_STAGES"] = to_floats(:LINK_STAGES)
         inputs_nw["STAGE_LINK_LINES"] = findall(inputs_nw["LINK_STAGES"] .!= 0)
     end
 
