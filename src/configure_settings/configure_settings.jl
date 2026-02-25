@@ -6,6 +6,7 @@ function default_settings()
         "OperationalReserves" => 0,
         "EnergyShareRequirement" => 0,
         "CapacityReserveMargin" => 0,
+        "TxContributestoCRM" => 1,
         "CO2Cap" => 0,
         "StorageLosses" => 1,
         "VirtualChargeDischargeCost" => 1,  # $/MWh
