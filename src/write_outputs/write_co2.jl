@@ -7,7 +7,7 @@ Function for reporting time-dependent CO2 emissions by zone.
 function write_co2(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     write_co2_emissions_plant(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     write_co2_capture_plant(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
-    write_co2_emissions_line(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
+    #write_co2_emissions_line(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 end
 
 function write_co2_emissions_line(path::AbstractString,

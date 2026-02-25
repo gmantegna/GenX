@@ -100,30 +100,12 @@ function co2_cap!(EP::AbstractModel, inputs::Dict, setup::Dict)
                     z in findall(x -> x == 1, inputs["dfCO2CapZones"][:, cap]),
                     t in 1:T
             )
-            + sum(
-                inputs["omega"][t] * (
-                    EP[:vTAUX_POS][l, t] * inputs["dfTransEFForward"][l,cap]
-                    + EP[:vTAUX_NEG][l, t] * inputs["dfTransEFReverse"][l,cap]
-                )
-                for
-                    l in findall(x->x!=0,inputs["dfTransEFForward"][:,cap]),
-                    t in 1:T
-            )
             - vCO2Cap_slack[cap]
             <= sum(
                 inputs["dfMaxCO2"][z, cap]
                 for z in findall(x -> x == 1, inputs["dfCO2CapZones"][:, cap])
             )
         )
-
-        @expression(EP,
-            eForwardEmissionsByLine[l = 1:L, t = 1:T],
-            sum(EP[:vTAUX_POS][l, t] * inputs["dfTransEFForward"][l,cap] for cap in 1:inputs["NCO2Cap"])
-            )
-        @expression(EP,
-            eReverseEmissionsByLine[l = 1:L, t = 1:T],
-            sum(EP[:vTAUX_NEG][l, t] * inputs["dfTransEFReverse"][l,cap] for cap in 1:inputs["NCO2Cap"])
-            )
 
         ## (fulfilled) demand + Rate-based: Emissions constraint in terms of rate (tons/MWh)
     elseif setup["CO2Cap"] == 2 ##This part moved to non_served_energy.jl
