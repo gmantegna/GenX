@@ -81,7 +81,7 @@ function write_capacity_value(path::AbstractString, inputs::Dict, setup::Dict, E
                                            max_power(riskyhour, MUST_RUN_EX)
 
         capvalue[riskyhour, HYDRO_RES_EX] = crm_derate(i, HYDRO_RES_EX) .*
-                                            power(HYDRO_RES_EX) ./ total_cap(HYDRO_RES_EX)
+                                            max_power(riskyhour, HYDRO_RES_EX)
 
         if !isempty(STOR_ALL_EX)
             charge = value.(EP[:vCHARGE][STOR_ALL_EX, riskyhour].data)'
@@ -89,9 +89,7 @@ function write_capacity_value(path::AbstractString, inputs::Dict, setup::Dict, E
             capres_charge = value.(EP[:vCAPRES_charge][STOR_ALL_EX, riskyhour].data)'
 
             capvalue[riskyhour, STOR_ALL_EX] = crm_derate(i, STOR_ALL_EX) .*
-                                               (power(STOR_ALL_EX) - charge +
-                                                capres_discharge - capres_charge) ./
-                                               total_cap(STOR_ALL_EX)
+                                                max_power(riskyhour, STOR_ALL_EX)
         end
 
         if !isempty(FLEX_EX)

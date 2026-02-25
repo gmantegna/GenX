@@ -16,6 +16,7 @@ time_domain_reduction/TSC_Plots.jl
 time_domain_reduction/TSC.jl
 example_systems/CPUC_IRP*
 example_systems/reference_optimistic*
+example_systems/az_test*
 gurobi.log
 cplex.log
 Highs.log

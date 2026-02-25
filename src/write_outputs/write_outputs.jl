@@ -272,227 +272,227 @@ function write_outputs(EP::AbstractModel, path::AbstractString, setup::Dict, inp
     end
 
     # Temporary! Suppress these outputs until we know that they are compatable with multi-stage modeling
-    if setup["MultiStage"] == 0
-        dfEnergyRevenue = DataFrame()
-        dfChargingcost = DataFrame()
-        dfSubRevenue = DataFrame()
-        dfRegSubRevenue = DataFrame()
-        if has_duals(EP) == 1
-            if output_settings_d["WritePrice"]
-                elapsed_time_price = @elapsed write_price(path, inputs, setup, EP)
-                println("Time elapsed for writing price is")
-                println(elapsed_time_price)
-            end
-
-            if output_settings_d["WriteEnergyRevenue"] ||
-               output_settings_d["WriteNetRevenue"]
-                elapsed_time_energy_rev = @elapsed dfEnergyRevenue = write_energy_revenue(
-                    path,
-                    inputs,
-                    setup,
-                    EP)
-                println("Time elapsed for writing energy revenue is")
-                println(elapsed_time_energy_rev)
-            end
-
-            if output_settings_d["WriteChargingCost"] ||
-               output_settings_d["WriteNetRevenue"]
-                elapsed_time_charging_cost = @elapsed dfChargingcost = write_charging_cost(
-                    path,
-                    inputs,
-                    setup,
-                    EP)
-                println("Time elapsed for writing charging cost is")
-                println(elapsed_time_charging_cost)
-            end
-
-            if output_settings_d["WriteSubsidyRevenue"] ||
-               output_settings_d["WriteNetRevenue"]
-                elapsed_time_subsidy = @elapsed dfSubRevenue, dfRegSubRevenue = write_subsidy_revenue(
-                    path,
-                    inputs,
-                    setup,
-                    EP)
-                println("Time elapsed for writing subsidy is")
-                println(elapsed_time_subsidy)
-            end
+    # if setup["MultiStage"] == 0
+    dfEnergyRevenue = DataFrame()
+    dfChargingcost = DataFrame()
+    dfSubRevenue = DataFrame()
+    dfRegSubRevenue = DataFrame()
+    if has_duals(EP) == 1
+        if output_settings_d["WritePrice"]
+            elapsed_time_price = @elapsed write_price(path, inputs, setup, EP)
+            println("Time elapsed for writing price is")
+            println(elapsed_time_price)
         end
 
-        if output_settings_d["WriteTimeWeights"]
-            elapsed_time_time_weights = @elapsed write_time_weights(path, inputs)
-            println("Time elapsed for writing time weights is")
-            println(elapsed_time_time_weights)
-        end
-
-        dfESRRev = DataFrame()
-        if setup["EnergyShareRequirement"] == 1 && has_duals(EP)
-            dfESR = DataFrame()
-            if output_settings_d["WriteESRPrices"] ||
-               output_settings_d["WriteESRRevenue"] || output_settings_d["WriteNetRevenue"]
-                elapsed_time_esr_prices = @elapsed dfESR = write_esr_prices(path,
-                    inputs,
-                    setup,
-                    EP)
-                println("Time elapsed for writing esr prices is")
-                println(elapsed_time_esr_prices)
-            end
-
-            if output_settings_d["WriteESRRevenue"] || output_settings_d["WriteNetRevenue"]
-                elapsed_time_esr_revenue = @elapsed dfESRRev = write_esr_revenue(path,
-                    inputs,
-                    setup,
-                    dfPower,
-                    dfESR,
-                    EP)
-                println("Time elapsed for writing esr revenue is")
-                println(elapsed_time_esr_revenue)
-            end
-        end
-
-        if setup["CapResELCC"] > 0
-            elapsed_time_PRM = @elapsed write_reserve_margin_ELCC(path, setup, EP)
-            println("Time elapsed for writing PRM is")
-            println(elapsed_time_PRM)
-            elapsed_time_NQC = @elapsed dfNQC = write_NQC(path, inputs, setup, EP)
-            println("Time elapsed for writing NQC is")
-            println(elapsed_time_NQC)
-        end
-
-        dfResRevenue = DataFrame()
-        if setup["CapacityReserveMargin"] == 1 && has_duals(EP)
-            if output_settings_d["WriteReserveMargin"]
-                elapsed_time_reserve_margin = @elapsed write_reserve_margin(path, setup, EP)
-                println("Time elapsed for writing reserve margin is")
-                println(elapsed_time_reserve_margin)
-            end
-
-            if output_settings_d["WriteReserveMarginWithWeights"]
-                elapsed_time_rsv_margin_w = @elapsed write_reserve_margin_w(path,
-                    inputs,
-                    setup,
-                    EP)
-                println("Time elapsed for writing reserve margin with weights is")
-                println(elapsed_time_rsv_margin_w)
-            end
-
-            if output_settings_d["WriteVirtualDischarge"]
-                elapsed_time_virtual_discharge = @elapsed write_virtual_discharge(path,
-                    inputs,
-                    setup,
-                    EP)
-                println("Time elapsed for writing virtual discharge is")
-                println(elapsed_time_virtual_discharge)
-            end
-
-            if output_settings_d["WriteReserveMarginRevenue"] ||
-               output_settings_d["WriteNetRevenue"]
-                elapsed_time_res_rev = @elapsed dfResRevenue = write_reserve_margin_revenue(
-                    path,
-                    inputs,
-                    setup,
-                    EP)
-                println("Time elapsed for writing reserve revenue is")
-                println(elapsed_time_res_rev)
-            end
-
-            if haskey(inputs, "dfCapRes_slack") &&
-               output_settings_d["WriteReserveMarginSlack"]
-                elapsed_time_rsv_slack = @elapsed write_reserve_margin_slack(path,
-                    inputs,
-                    setup,
-                    EP)
-                println("Time elapsed for writing reserve margin slack is")
-                println(elapsed_time_rsv_slack)
-            end
-
-            if output_settings_d["WriteCapacityValue"]
-                elapsed_time_cap_value = @elapsed write_capacity_value(path,
-                    inputs,
-                    setup,
-                    EP)
-                println("Time elapsed for writing capacity value is")
-                println(elapsed_time_cap_value)
-            end
-        end
-
-        dfOpRegRevenue = DataFrame()
-        dfOpRsvRevenue = DataFrame()
-        if setup["OperationalReserves"] == 1 && has_duals(EP)
-            elapsed_time_op_res_rev = @elapsed dfOpRegRevenue, dfOpRsvRevenue = write_operating_reserve_regulation_revenue(
+        if output_settings_d["WriteEnergyRevenue"] ||
+            output_settings_d["WriteNetRevenue"]
+            elapsed_time_energy_rev = @elapsed dfEnergyRevenue = write_energy_revenue(
                 path,
                 inputs,
                 setup,
                 EP)
-            println("Time elapsed for writing oerating reserve and regulation revenue is")
-            println(elapsed_time_op_res_rev)
+            println("Time elapsed for writing energy revenue is")
+            println(elapsed_time_energy_rev)
         end
 
-        if setup["CO2Cap"] > 0 && has_duals(EP) == 1 && output_settings_d["WriteCO2Cap"]
-            elapsed_time_co2_cap = @elapsed write_co2_cap(path, inputs, setup, EP)
-            println("Time elapsed for writing co2 cap is")
-            println(elapsed_time_co2_cap)
-        end
-        if setup["MinCapReq"] == 1 && has_duals(EP) == 1 &&
-           output_settings_d["WriteMinCapReq"]
-            elapsed_time_min_cap_req = @elapsed write_minimum_capacity_requirement(path,
+        if output_settings_d["WriteChargingCost"] ||
+            output_settings_d["WriteNetRevenue"]
+            elapsed_time_charging_cost = @elapsed dfChargingcost = write_charging_cost(
+                path,
                 inputs,
                 setup,
                 EP)
-            println("Time elapsed for writing minimum capacity requirement is")
-            println(elapsed_time_min_cap_req)
+            println("Time elapsed for writing charging cost is")
+            println(elapsed_time_charging_cost)
         end
 
-        if setup["MaxCapReq"] == 1 && has_duals(EP) == 1 &&
-           output_settings_d["WriteMaxCapReq"]
-            elapsed_time_max_cap_req = @elapsed write_maximum_capacity_requirement(path,
+        if output_settings_d["WriteSubsidyRevenue"] ||
+            output_settings_d["WriteNetRevenue"]
+            elapsed_time_subsidy = @elapsed dfSubRevenue, dfRegSubRevenue = write_subsidy_revenue(
+                path,
                 inputs,
                 setup,
                 EP)
-            println("Time elapsed for writing maximum capacity requirement is")
-            println(elapsed_time_max_cap_req)
-        end
-
-        if setup["HydrogenMinimumProduction"] == 1 && has_duals(EP)
-            if output_settings_d["WriteHydrogenPrices"]
-                elapsed_time_hydrogen_prices = @elapsed write_hydrogen_prices(path,
-                    inputs,
-                    setup,
-                    EP)
-                println("Time elapsed for writing hydrogen prices is")
-                println(elapsed_time_hydrogen_prices)
-            end
-            if setup["HourlyMatching"] == 1 &&
-               output_settings_d["WriteHourlyMatchingPrices"]
-                elapsed_time_hourly_matching_prices = @elapsed write_hourly_matching_prices(
-                    path,
-                    inputs,
-                    setup,
-                    EP)
-                println("Time elapsed for writing hourly matching prices is")
-                println(elapsed_time_hourly_matching_prices)
-            end
-        end
-
-        if output_settings_d["WriteNetRevenue"]
-            elapsed_time_net_rev = @elapsed write_net_revenue(path,
-                inputs,
-                setup,
-                EP,
-                dfCap,
-                dfESRRev,
-                dfResRevenue,
-                dfChargingcost,
-                dfPower,
-                dfEnergyRevenue,
-                dfSubRevenue,
-                dfRegSubRevenue,
-                dfVreStor,
-                dfOpRegRevenue,
-                dfOpRsvRevenue)
-            println("Time elapsed for writing net revenue is")
-            println(elapsed_time_net_rev)
+            println("Time elapsed for writing subsidy is")
+            println(elapsed_time_subsidy)
         end
     end
+
+    if output_settings_d["WriteTimeWeights"]
+        elapsed_time_time_weights = @elapsed write_time_weights(path, inputs)
+        println("Time elapsed for writing time weights is")
+        println(elapsed_time_time_weights)
+    end
+
+    dfESRRev = DataFrame()
+    if setup["EnergyShareRequirement"] == 1 && has_duals(EP)
+        dfESR = DataFrame()
+        if output_settings_d["WriteESRPrices"] ||
+            output_settings_d["WriteESRRevenue"] || output_settings_d["WriteNetRevenue"]
+            elapsed_time_esr_prices = @elapsed dfESR = write_esr_prices(path,
+                inputs,
+                setup,
+                EP)
+            println("Time elapsed for writing esr prices is")
+            println(elapsed_time_esr_prices)
+        end
+
+        if output_settings_d["WriteESRRevenue"] || output_settings_d["WriteNetRevenue"]
+            elapsed_time_esr_revenue = @elapsed dfESRRev = write_esr_revenue(path,
+                inputs,
+                setup,
+                dfPower,
+                dfESR,
+                EP)
+            println("Time elapsed for writing esr revenue is")
+            println(elapsed_time_esr_revenue)
+        end
+    end
+
+    if setup["CapResELCC"] > 0
+        elapsed_time_PRM = @elapsed write_reserve_margin_ELCC(path, setup, EP)
+        println("Time elapsed for writing PRM is")
+        println(elapsed_time_PRM)
+        elapsed_time_NQC = @elapsed dfNQC = write_NQC(path, inputs, setup, EP)
+        println("Time elapsed for writing NQC is")
+        println(elapsed_time_NQC)
+    end
+
+    dfResRevenue = DataFrame()
+    if setup["CapacityReserveMargin"] == 1 && has_duals(EP)
+        if output_settings_d["WriteReserveMargin"]
+            elapsed_time_reserve_margin = @elapsed write_reserve_margin(path, setup, EP)
+            println("Time elapsed for writing reserve margin is")
+            println(elapsed_time_reserve_margin)
+        end
+
+        if output_settings_d["WriteReserveMarginWithWeights"]
+            elapsed_time_rsv_margin_w = @elapsed write_reserve_margin_w(path,
+                inputs,
+                setup,
+                EP)
+            println("Time elapsed for writing reserve margin with weights is")
+            println(elapsed_time_rsv_margin_w)
+        end
+
+        if output_settings_d["WriteVirtualDischarge"]
+            elapsed_time_virtual_discharge = @elapsed write_virtual_discharge(path,
+                inputs,
+                setup,
+                EP)
+            println("Time elapsed for writing virtual discharge is")
+            println(elapsed_time_virtual_discharge)
+        end
+
+        if output_settings_d["WriteReserveMarginRevenue"] ||
+            output_settings_d["WriteNetRevenue"]
+            elapsed_time_res_rev = @elapsed dfResRevenue = write_reserve_margin_revenue(
+                path,
+                inputs,
+                setup,
+                EP)
+            println("Time elapsed for writing reserve revenue is")
+            println(elapsed_time_res_rev)
+        end
+
+        if haskey(inputs, "dfCapRes_slack") &&
+            output_settings_d["WriteReserveMarginSlack"]
+            elapsed_time_rsv_slack = @elapsed write_reserve_margin_slack(path,
+                inputs,
+                setup,
+                EP)
+            println("Time elapsed for writing reserve margin slack is")
+            println(elapsed_time_rsv_slack)
+        end
+
+        if output_settings_d["WriteCapacityValue"]
+            elapsed_time_cap_value = @elapsed write_capacity_value(path,
+                inputs,
+                setup,
+                EP)
+            println("Time elapsed for writing capacity value is")
+            println(elapsed_time_cap_value)
+        end
+    end
+
+    dfOpRegRevenue = DataFrame()
+    dfOpRsvRevenue = DataFrame()
+    if setup["OperationalReserves"] == 1 && has_duals(EP)
+        elapsed_time_op_res_rev = @elapsed dfOpRegRevenue, dfOpRsvRevenue = write_operating_reserve_regulation_revenue(
+            path,
+            inputs,
+            setup,
+            EP)
+        println("Time elapsed for writing oerating reserve and regulation revenue is")
+        println(elapsed_time_op_res_rev)
+    end
+
+    if setup["CO2Cap"] > 0 && has_duals(EP) == 1 && output_settings_d["WriteCO2Cap"]
+        elapsed_time_co2_cap = @elapsed write_co2_cap(path, inputs, setup, EP)
+        println("Time elapsed for writing co2 cap is")
+        println(elapsed_time_co2_cap)
+    end
+    if setup["MinCapReq"] == 1 && has_duals(EP) == 1 &&
+        output_settings_d["WriteMinCapReq"]
+        elapsed_time_min_cap_req = @elapsed write_minimum_capacity_requirement(path,
+            inputs,
+            setup,
+            EP)
+        println("Time elapsed for writing minimum capacity requirement is")
+        println(elapsed_time_min_cap_req)
+    end
+
+    if setup["MaxCapReq"] == 1 && has_duals(EP) == 1 &&
+        output_settings_d["WriteMaxCapReq"]
+        elapsed_time_max_cap_req = @elapsed write_maximum_capacity_requirement(path,
+            inputs,
+            setup,
+            EP)
+        println("Time elapsed for writing maximum capacity requirement is")
+        println(elapsed_time_max_cap_req)
+    end
+
+    if setup["HydrogenMinimumProduction"] == 1 && has_duals(EP)
+        if output_settings_d["WriteHydrogenPrices"]
+            elapsed_time_hydrogen_prices = @elapsed write_hydrogen_prices(path,
+                inputs,
+                setup,
+                EP)
+            println("Time elapsed for writing hydrogen prices is")
+            println(elapsed_time_hydrogen_prices)
+        end
+        if setup["HourlyMatching"] == 1 &&
+            output_settings_d["WriteHourlyMatchingPrices"]
+            elapsed_time_hourly_matching_prices = @elapsed write_hourly_matching_prices(
+                path,
+                inputs,
+                setup,
+                EP)
+            println("Time elapsed for writing hourly matching prices is")
+            println(elapsed_time_hourly_matching_prices)
+        end
+    end
+
+    if output_settings_d["WriteNetRevenue"]
+        elapsed_time_net_rev = @elapsed write_net_revenue(path,
+            inputs,
+            setup,
+            EP,
+            dfCap,
+            dfESRRev,
+            dfResRevenue,
+            dfChargingcost,
+            dfPower,
+            dfEnergyRevenue,
+            dfSubRevenue,
+            dfRegSubRevenue,
+            dfVreStor,
+            dfOpRegRevenue,
+            dfOpRsvRevenue)
+        println("Time elapsed for writing net revenue is")
+        println(elapsed_time_net_rev)
+    end
+    # end
     # if setup["RO"] == 1
     #     elapsed_time_ro= @elapsed write_ro(path, inputs, setup, EP)
     #     println("Time elapsed for writing duals of RO is")
