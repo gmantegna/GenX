@@ -622,3 +622,7 @@ Warning: Markowitz tolerance tightened to 0.5
   188311 PPushes remaining with PInf 2.2406520e+00              3788s
   149177 PPushes remaining with PInf 1.9202762e+00              4142s
   131161 PPushes remaining with PInf 1.7661314e+00              4264s
+   69736 PPushes remaining with PInf 1.8686073e+00              4706s
+   62969 PPushes remaining with PInf 1.8602947e+00              4783s
+   32961 PPushes remaining with PInf 4.9716510e-01              5023s
+   18980 PPushes remaining with PInf 4.7216294e-01              5183s
