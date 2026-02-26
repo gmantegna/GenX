@@ -30,8 +30,6 @@ test/Logs
 ~$*
 
 # Never include output folders
-**/results*/
-**/TDR_results/
 
 # Test files
 test/TDR/TDR_results_test

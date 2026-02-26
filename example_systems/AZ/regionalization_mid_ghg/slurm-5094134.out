@@ -1,0 +1,557 @@
+I must not fear. Fear is the mind-killer.
+
+Loading GenX
+  Loading requirement: gurobi/12.0.0 julia/1.11.3
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS: invalid
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (linux64 - "Red Hat Enterprise Linux 9.6 (Plow)")
+
+CPU model: AMD EPYC 9654 96-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 192 physical cores, 192 logical processors, using up to 32 threads
+
+Non-default parameters:
+MIPGap  0.001
+OptimalityTol  0.0001
+Method  2
+Crossover  1
+
+Optimize a model with 13211974 rows, 11875553 columns and 60371035 nonzeros
+Model fingerprint: 0xf5810dc6
+Coefficient statistics:
+  Matrix range     [2e-08, 7e+04]
+  Objective range  [6e-03, 5e+09]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [3e+00, 8e+08]
+Warning: Model contains large matrix coefficient range
+Warning: Model contains large objective coefficients
+         Consider reformulating model or setting NumericFocus parameter
+         to avoid numerical issues.
+Presolve removed 3141868 rows and 5478336 columns (presolve time = 5s)...
+Presolve removed 3960139 rows and 6050000 columns (presolve time = 10s)...
+Presolve removed 5018128 rows and 6303525 columns (presolve time = 16s)...
+Presolve removed 5018128 rows and 6303525 columns (presolve time = 20s)...
+Presolve removed 5018128 rows and 6303525 columns (presolve time = 26s)...
+Presolve removed 5019658 rows and 6303525 columns (presolve time = 30s)...
+Presolve removed 5019658 rows and 6303525 columns (presolve time = 35s)...
+Presolve removed 5019658 rows and 6303525 columns
+Presolve time: 36.04s
+Presolved: 8192316 rows, 5572028 columns, 52418575 nonzeros
+
+Elapsed ordering time = 5s
+Ordering time: 8.62s
+
+Barrier statistics:
+ Dense cols : 3546
+ AA' NZ     : 1.061e+08
+ Factor NZ  : 2.400e+08 (roughly 8.0 GB of memory)
+ Factor Ops : 2.207e+10 (roughly 1 second per iteration)
+ Threads    : 32
+
+                  Objective                Residual
+Iter       Primal          Dual         Primal    Dual     Compl     Time
+   0   6.45010265e+15 -2.11368208e+16  7.97e+08 4.78e+06  6.99e+12    60s
+   1   5.09574333e+15 -3.35082082e+16  6.56e+08 3.74e+07  5.59e+12    62s
+   2   4.06206347e+15 -5.88546177e+16  5.43e+08 3.12e+07  4.67e+12    65s
+   3   3.45127485e+15 -1.01781635e+17  4.82e+08 2.37e+07  3.91e+12    70s
+   4   2.81302743e+15 -1.57709611e+17  4.09e+08 1.48e+07  3.03e+12    73s
+   5   2.43582123e+15 -2.17603639e+17  3.54e+08 5.70e+06  2.36e+12    77s
+   6   1.40319081e+15 -2.25086727e+17  1.75e+08 1.24e+06  1.17e+12    83s
+   7   7.09756671e+14 -1.97015114e+17  3.89e+07 5.20e+05  2.84e+11    90s
+   8   6.31857513e+14 -1.61770016e+17  1.47e+07 2.81e+05  1.17e+11    96s
+   9   6.52736988e+14 -1.38482450e+17  8.38e+06 1.93e+05  7.50e+10   100s
+  10   6.44922250e+14 -1.01304741e+17  4.82e+06 1.05e+05  4.29e+10   103s
+  11   6.25774733e+14 -7.85674420e+16  2.20e+06 6.82e+04  2.40e+10   105s
+  12   5.79462529e+14 -3.30054088e+16  5.56e+05 1.53e+04  6.44e+09   108s
+  13   4.71202661e+14 -1.15856330e+16  1.32e+05 3.44e+03  1.66e+09   111s
+  14   3.50736123e+14 -5.47299442e+15  4.63e+04 1.35e+03  6.75e+08   114s
+  15   2.35751312e+14 -3.61253842e+15  1.07e+04 8.44e+02  3.95e+08   117s
+  16   1.93806322e+14 -2.38123409e+15  5.17e+03 5.30e+02  2.53e+08   119s
+  17   1.49693919e+14 -1.28923858e+15  1.96e+03 2.76e+02  1.35e+08   121s
+  18   1.06443865e+14 -9.55890168e+14  6.66e+02 2.03e+02  9.61e+07   125s
+  19   7.74812236e+13 -7.01872652e+14  2.35e+02 1.48e+02  6.82e+07   127s
+  20   4.93093768e+13 -3.12498347e+14  6.47e+01 6.34e+01  3.02e+07   130s
+  21   3.04465032e+13 -1.52033633e+14  2.24e+01 2.89e+01  1.46e+07   133s
+  22   1.95478427e+13 -7.65100889e+13  9.70e+00 1.30e+01  7.52e+06   135s
+  23   1.41866988e+13 -3.77832046e+13  5.92e+00 5.41e+00  4.01e+06   138s
+  24   1.02449290e+13 -2.10034988e+13  3.90e+00 2.16e+00  2.38e+06   140s
+  25   8.08456302e+12 -1.86643375e+13  2.94e+00 1.86e+00  2.03e+06   144s
+  26   7.50791493e+12 -1.25190721e+13  2.70e+00 1.06e+00  1.52e+06   146s
+  27   6.07698442e+12 -9.20656777e+12  2.17e+00 5.79e-01  1.15e+06   149s
+  28   5.15337007e+12 -6.44680801e+12  1.84e+00 2.39e-01  8.73e+05   152s
+  29   3.97843239e+12 -3.52539813e+12  1.43e+00 4.22e-07  5.63e+05   158s
+  30   3.15989344e+12 -2.14310107e+12  1.14e+00 4.46e-07  3.97e+05   163s
+  31   2.35256049e+12 -1.74890032e+12  8.33e-01 3.83e-07  3.07e+05   169s
+  32   1.98402280e+12 -1.23170121e+12  6.80e-01 4.96e-07  2.40e+05   175s
+  33   1.64340666e+12 -7.59209897e+11  5.40e-01 4.12e-07  1.79e+05   181s
+  34   1.42574666e+12 -3.76609712e+11  4.42e-01 3.71e-07  1.35e+05   186s
+  35   1.19912140e+12 -1.97886420e+11  3.38e-01 3.77e-07  1.04e+05   191s
+  36   1.05012614e+12 -7.83210114e+10  2.67e-01 4.30e-07  8.42e+04   196s
+  37   9.63655858e+11  3.11512856e+10  2.26e-01 3.98e-07  6.96e+04   203s
+  38   8.54989630e+11  1.17052791e+11  1.73e-01 4.25e-07  5.51e+04   209s
+  39   8.17272125e+11  1.92951412e+11  1.55e-01 3.85e-07  4.66e+04   213s
+  40   7.86051495e+11  2.41615068e+11  1.39e-01 4.07e-07  4.06e+04   219s
+  41   7.51395675e+11  2.65924687e+11  1.23e-01 4.28e-07  3.62e+04   224s
+  42   7.20914320e+11  2.90794074e+11  1.09e-01 4.58e-07  3.21e+04   231s
+  43   7.11284366e+11  2.97016340e+11  1.04e-01 4.99e-07  3.09e+04   236s
+  44   6.89142446e+11  3.21056071e+11  9.34e-02 4.52e-07  2.75e+04   242s
+  45   6.78920232e+11  3.36074654e+11  8.84e-02 4.97e-07  2.56e+04   245s
+  46   6.67665536e+11  3.54859633e+11  8.34e-02 4.62e-07  2.33e+04   251s
+  47   6.49293605e+11  3.60403960e+11  7.48e-02 5.11e-07  2.16e+04   256s
+  48   6.42587836e+11  3.71889556e+11  7.15e-02 4.37e-07  2.02e+04   262s
+  49   6.28400750e+11  3.86730260e+11  6.50e-02 5.13e-07  1.80e+04   266s
+  50   6.24566845e+11  3.95696209e+11  6.31e-02 5.42e-07  1.71e+04   270s
+  51   6.17419068e+11  3.99045826e+11  5.98e-02 4.44e-07  1.63e+04   274s
+  52   6.06751107e+11  4.10388180e+11  5.50e-02 4.35e-07  1.47e+04   279s
+  53   6.01223693e+11  4.17771705e+11  5.25e-02 4.78e-07  1.37e+04   285s
+  54   5.95829585e+11  4.21855464e+11  4.99e-02 4.93e-07  1.30e+04   288s
+  55   5.94961861e+11  4.23838545e+11  4.95e-02 5.11e-07  1.28e+04   293s
+  56   5.93256998e+11  4.28013476e+11  4.87e-02 5.38e-07  1.23e+04   297s
+  57   5.78477447e+11  4.34219804e+11  4.16e-02 5.11e-07  1.08e+04   303s
+  58   5.74154016e+11  4.42660529e+11  3.94e-02 5.02e-07  9.81e+03   308s
+  59   5.71714352e+11  4.44870462e+11  3.82e-02 5.15e-07  9.46e+03   313s
+  60   5.60405108e+11  4.50182307e+11  3.28e-02 5.39e-07  8.22e+03   318s
+  61   5.54401778e+11  4.52444033e+11  2.99e-02 6.17e-07  7.61e+03   322s
+  62   5.51096272e+11  4.57341531e+11  2.84e-02 4.77e-07  6.99e+03   329s
+  63   5.49837708e+11  4.58181788e+11  2.77e-02 5.80e-07  6.84e+03   332s
+  64   5.42781470e+11  4.61092258e+11  2.42e-02 5.66e-07  6.09e+03   337s
+  65   5.39074739e+11  4.65043160e+11  2.24e-02 4.88e-07  5.52e+03   342s
+  66   5.34177154e+11  4.66885729e+11  2.00e-02 4.73e-07  5.02e+03   348s
+  67   5.28941834e+11  4.68816377e+11  1.74e-02 5.53e-07  4.49e+03   354s
+  68   5.26126251e+11  4.72498682e+11  1.60e-02 4.82e-07  4.00e+03   359s
+  69   5.21872277e+11  4.74619643e+11  1.39e-02 5.07e-07  3.53e+03   364s
+  70   5.20358659e+11  4.76048525e+11  1.32e-02 4.60e-07  3.31e+03   367s
+  71   5.18451815e+11  4.76717402e+11  1.23e-02 5.36e-07  3.11e+03   374s
+  72   5.15909491e+11  4.78626523e+11  1.11e-02 5.02e-07  2.78e+03   378s
+  73   5.14115423e+11  4.79376072e+11  1.02e-02 4.91e-07  2.59e+03   383s
+  74   5.11912423e+11  4.80145979e+11  9.13e-03 5.03e-07  2.37e+03   390s
+  75   5.10675196e+11  4.80664771e+11  8.52e-03 5.86e-07  2.24e+03   395s
+  76   5.09819732e+11  4.81615574e+11  8.12e-03 5.74e-07  2.10e+03   399s
+  77   5.08757162e+11  4.83202223e+11  7.62e-03 5.14e-07  1.91e+03   407s
+  78   5.07891734e+11  4.84044552e+11  7.23e-03 5.51e-07  1.78e+03   411s
+  79   5.06692644e+11  4.84968574e+11  6.66e-03 5.41e-07  1.62e+03   416s
+  80   5.06064153e+11  4.85573254e+11  6.36e-03 5.77e-07  1.53e+03   422s
+  81   5.05537056e+11  4.86278562e+11  6.10e-03 4.78e-07  1.44e+03   427s
+  82   5.04077369e+11  4.86749283e+11  5.40e-03 4.71e-07  1.29e+03   433s
+  83   5.03436932e+11  4.87319749e+11  5.09e-03 4.84e-07  1.20e+03   438s
+  84   5.02976647e+11  4.87896621e+11  4.87e-03 4.82e-07  1.13e+03   444s
+  85   5.02168045e+11  4.88151458e+11  4.56e-03 5.61e-07  1.05e+03   449s
+  86   5.01693643e+11  4.88365890e+11  1.11e-02 4.90e-07  9.94e+02   454s
+  87   5.01324081e+11  4.88746088e+11  1.71e-02 5.19e-07  9.38e+02   459s
+  88   5.00801500e+11  4.89030174e+11  2.86e-02 5.56e-07  8.78e+02   464s
+  89   4.99967081e+11  4.89412088e+11  2.88e-02 5.66e-07  7.87e+02   472s
+  90   4.99226281e+11  4.89577108e+11  2.70e-02 5.61e-07  7.20e+02   479s
+  91   4.98962548e+11  4.89960862e+11  2.56e-02 5.33e-07  6.72e+02   485s
+  92   4.98505949e+11  4.90119802e+11  2.42e-02 5.52e-07  6.26e+02   489s
+  93   4.97877037e+11  4.90274756e+11  2.27e-02 5.35e-07  5.67e+02   497s
+  94   4.97250458e+11  4.90505640e+11  2.10e-02 5.26e-07  5.03e+02   504s
+  95   4.96978003e+11  4.90725837e+11  1.99e-02 4.69e-07  4.66e+02   509s
+  96   4.96782798e+11  4.90842990e+11  1.94e-02 5.53e-07  4.43e+02   516s
+  97   4.96360470e+11  4.90988932e+11  1.72e-02 5.18e-07  4.01e+02   525s
+  98   4.96147823e+11  4.91224606e+11  1.48e-02 4.96e-07  3.67e+02   532s
+  99   4.95885074e+11  4.91306841e+11  1.96e-02 4.95e-07  3.42e+02   539s
+ 100   4.95537446e+11  4.91508014e+11  2.26e-02 4.34e-07  3.01e+02   544s
+ 101   4.95358061e+11  4.91560984e+11  2.03e-02 5.01e-07  2.83e+02   550s
+ 102   4.95156149e+11  4.91706870e+11  2.22e-02 4.13e-07  2.57e+02   556s
+ 103   4.94925790e+11  4.91802443e+11  2.45e-02 4.42e-07  2.33e+02   563s
+ 104   4.94758803e+11  4.91872037e+11  2.21e-02 4.70e-07  2.15e+02   568s
+ 105   4.94664150e+11  4.91895470e+11  2.27e-02 5.00e-07  2.07e+02   573s
+ 106   4.94429911e+11  4.91922655e+11  2.43e-02 5.33e-07  1.87e+02   579s
+ 107   4.94374623e+11  4.91945064e+11  2.45e-02 5.02e-07  1.81e+02   583s
+ 108   4.94207743e+11  4.91968118e+11  2.29e-02 5.16e-07  1.67e+02   588s
+ 109   4.94052289e+11  4.91995588e+11  2.12e-02 5.09e-07  1.53e+02   594s
+ 110   4.93964394e+11  4.92060525e+11  1.93e-02 5.41e-07  1.42e+02   600s
+ 111   4.93787152e+11  4.92091390e+11  1.79e-02 4.98e-07  1.27e+02   605s
+ 112   4.93621323e+11  4.92113324e+11  1.71e-02 5.25e-07  1.13e+02   612s
+ 113   4.93590330e+11  4.92136771e+11  1.67e-02 5.40e-07  1.08e+02   618s
+ 114   4.93522715e+11  4.92163187e+11  1.55e-02 6.13e-07  1.01e+02   624s
+ 115   4.93482462e+11  4.92189150e+11  1.52e-02 4.69e-07  9.65e+01   630s
+ 116   4.93416100e+11  4.92212917e+11  1.41e-02 5.39e-07  8.98e+01   639s
+ 117   4.93292332e+11  4.92236037e+11  1.19e-02 4.87e-07  7.88e+01   649s
+ 118   4.93254754e+11  4.92258298e+11  1.11e-02 5.35e-07  7.44e+01   656s
+ 119   4.93217031e+11  4.92284554e+11  1.06e-02 4.78e-07  6.96e+01   665s
+ 120   4.93170881e+11  4.92292025e+11  1.00e-02 4.80e-07  6.56e+01   674s
+ 121   4.93109985e+11  4.92304253e+11  9.24e-03 5.03e-07  6.01e+01   679s
+ 122   4.93037017e+11  4.92317206e+11  7.71e-03 5.06e-07  5.37e+01   687s
+ 123   4.93006844e+11  4.92326139e+11  7.12e-03 4.72e-07  5.08e+01   695s
+ 124   4.92960571e+11  4.92343218e+11  6.04e-03 4.96e-07  4.61e+01   704s
+ 125   4.92887016e+11  4.92353591e+11  5.49e-03 5.38e-07  3.98e+01   712s
+ 126   4.92834277e+11  4.92358491e+11  4.94e-03 5.02e-07  3.55e+01   721s
+ 127   4.92801433e+11  4.92368584e+11  5.16e-03 5.55e-07  3.23e+01   732s
+ 128   4.92792314e+11  4.92372918e+11  5.05e-03 5.05e-07  3.13e+01   743s
+ 129   4.92757770e+11  4.92384778e+11  4.67e-03 4.84e-07  2.78e+01   754s
+ 130   4.92736546e+11  4.92394837e+11  4.48e-03 5.59e-07  2.55e+01   763s
+ 131   4.92726734e+11  4.92396061e+11  4.34e-03 4.83e-07  2.47e+01   775s
+ 132   4.92710734e+11  4.92403021e+11  4.12e-03 4.57e-07  2.30e+01   782s
+ 133   4.92689788e+11  4.92407575e+11  3.73e-03 5.45e-07  2.11e+01   791s
+ 134   4.92667975e+11  4.92409930e+11  3.42e-03 4.97e-07  1.93e+01   802s
+ 135   4.92647025e+11  4.92415561e+11  3.07e-03 5.28e-07  1.73e+01   817s
+ 136   4.92635357e+11  4.92421319e+11  2.88e-03 4.92e-07  1.60e+01   836s
+ 137   4.92605757e+11  4.92423731e+11  2.39e-03 4.61e-07  1.36e+01   857s
+ 138   4.92602170e+11  4.92425592e+11  2.33e-03 4.91e-07  1.32e+01   876s
+ 139   4.92591812e+11  4.92428775e+11  2.16e-03 4.93e-07  1.22e+01   887s
+ 140   4.92584486e+11  4.92430164e+11  2.04e-03 5.22e-07  1.15e+01   898s
+ 141   4.92581046e+11  4.92432815e+11  1.98e-03 5.50e-07  1.11e+01   917s
+ 142   4.92572670e+11  4.92435383e+11  1.85e-03 5.27e-07  1.02e+01   930s
+ 143   4.92570193e+11  4.92437409e+11  1.80e-03 5.41e-07  9.91e+00   939s
+ 144   4.92564977e+11  4.92437977e+11  1.72e-03 6.13e-07  9.48e+00   950s
+ 145   4.92553706e+11  4.92439679e+11  1.51e-03 5.03e-07  8.51e+00   963s
+ 146   4.92543716e+11  4.92443543e+11  1.35e-03 5.18e-07  7.48e+00   976s
+ 147   4.92532536e+11  4.92444846e+11  1.18e-03 5.91e-07  6.54e+00   987s
+ 148   4.92522880e+11  4.92446341e+11  1.03e-03 4.52e-07  5.71e+00  1000s
+ 149   4.92514911e+11  4.92447439e+11  8.94e-04 4.51e-07  5.04e+00  1015s
+ 150   4.92510643e+11  4.92448016e+11  8.22e-04 5.24e-07  4.67e+00  1038s
+ 151   4.92505870e+11  4.92450092e+11  7.41e-04 4.80e-07  4.16e+00  1052s
+ 152   4.92501464e+11  4.92450287e+11  6.69e-04 4.89e-07  3.82e+00  1067s
+ 153   4.92497103e+11  4.92450939e+11  5.98e-04 5.23e-07  3.45e+00  1082s
+ 154   4.92492369e+11  4.92452378e+11  5.23e-04 9.24e-07  2.98e+00  1094s
+ 155   4.92488956e+11  4.92452939e+11  4.64e-04 5.07e-07  2.69e+00  1112s
+ 156   4.92487404e+11  4.92453181e+11  4.42e-04 4.97e-07  2.55e+00  1125s
+ 157   4.92483770e+11  4.92453844e+11  3.83e-04 5.29e-07  2.23e+00  1141s
+ 158   4.92480668e+11  4.92454642e+11  3.30e-04 1.01e-06  1.94e+00  1157s
+ 159   4.92479575e+11  4.92455087e+11  3.12e-04 1.46e-06  1.83e+00  1179s
+ 160   4.92478253e+11  4.92456222e+11  2.89e-04 4.63e-07  1.64e+00  1197s
+ 161   4.92476645e+11  4.92456769e+11  2.62e-04 5.16e-07  1.48e+00  1213s
+ 162   4.92475078e+11  4.92457053e+11  2.36e-04 4.77e-07  1.35e+00  1234s
+ 163   4.92473331e+11  4.92457468e+11  4.79e-04 2.21e-06  1.18e+00  1250s
+ 164   4.92472047e+11  4.92457735e+11  2.80e-04 1.16e-06  1.07e+00  1271s
+ 165   4.92468643e+11  4.92458150e+11  2.94e-04 6.85e-07  7.83e-01  1290s
+ 166   4.92467129e+11  4.92458500e+11  2.67e-04 6.85e-07  6.44e-01  1307s
+ 167   4.92465967e+11  4.92459069e+11  2.19e-04 1.43e-06  5.15e-01  1326s
+ 168   4.92465376e+11  4.92459240e+11  1.97e-04 7.75e-07  4.58e-01  1348s
+ 169   4.92464037e+11  4.92459454e+11  1.47e-04 1.10e-06  3.42e-01  1364s
+ 170   4.92463173e+11  4.92459944e+11  1.01e-04 1.25e-06  2.41e-01  1385s
+ 171   4.92462577e+11  4.92460181e+11  7.23e-05 1.31e-06  1.79e-01  1399s
+ 172   4.92462288e+11  4.92460253e+11  5.97e-05 8.85e-07  1.52e-01  1421s
+ 173   4.92461979e+11  4.92460427e+11  4.85e-05 1.82e-06  1.16e-01  1439s
+ 174   4.92461864e+11  4.92460444e+11  4.42e-05 2.50e-06  1.06e-01  1456s
+ 175   4.92461277e+11  4.92460521e+11  1.84e-05 2.53e-06  5.64e-02  1476s
+ 176   4.92461115e+11  4.92460559e+11  1.31e-05 1.34e-06  4.15e-02  1495s
+ 177   4.92460981e+11  4.92460611e+11  8.78e-06 1.31e-06  2.76e-02  1509s
+ 178   4.92460831e+11  4.92460662e+11  7.51e-06 1.82e-06  1.26e-02  1522s
+ 179   4.92460746e+11  4.92460681e+11  4.53e-06 1.13e-06  4.79e-03  1531s
+ 180   4.92460718e+11  4.92460687e+11  2.54e-05 2.48e-05  2.35e-03  1536s
+ 181   4.92460707e+11  4.92460690e+11  1.41e-05 2.58e-05  1.26e-03  1542s
+ 182   4.92460701e+11  4.92460692e+11  4.60e-05 1.59e-05  6.81e-04  1546s
+ 183   4.92460697e+11  4.92460692e+11  1.40e-04 2.97e-05  3.79e-04  1551s
+ 184   4.92460696e+11  4.92460693e+11  9.30e-05 2.28e-05  2.54e-04  1556s
+
+Barrier solved model in 184 iterations and 1556.12 seconds (1912.65 work units)
+Optimal objective 4.92460696e+11
+
+Crossover log...
+
+ 5658900 variables added to crossover basis                     1562s
+
+ 2138050 DPushes remaining with DInf 3.2594957e-03              1564s
+ 1168471 DPushes remaining with DInf 1.0943193e-04              1623s
+  815239 DPushes remaining with DInf 1.0943193e-04              1682s
+  628260 DPushes remaining with DInf 1.0943193e-04              1741s
+  505662 DPushes remaining with DInf 1.0943193e-04              1772s
+  422793 DPushes remaining with DInf 1.0943193e-04              1801s
+  371141 DPushes remaining with DInf 1.0943193e-04              1824s
+  338198 DPushes remaining with DInf 1.0943193e-04              1842s
+  317950 DPushes remaining with DInf 1.0943193e-04              1852s
+  303368 DPushes remaining with DInf 1.0943193e-04              1862s
+  292196 DPushes remaining with DInf 1.0943193e-04              1870s
+  283086 DPushes remaining with DInf 1.0943193e-04              1877s
+  276491 DPushes remaining with DInf 1.0943193e-04              1883s
+  271761 DPushes remaining with DInf 1.0943193e-04              1889s
+  266058 DPushes remaining with DInf 1.0943193e-04              1894s
+  261650 DPushes remaining with DInf 1.0943193e-04              1900s
+  257479 DPushes remaining with DInf 1.0943193e-04              1906s
+  251746 DPushes remaining with DInf 1.0943193e-04              1912s
+  247126 DPushes remaining with DInf 1.0943193e-04              1918s
+  243394 DPushes remaining with DInf 1.0943193e-04              1923s
+  241878 DPushes remaining with DInf 1.0943193e-04              1930s
+  240272 DPushes remaining with DInf 1.0943193e-04              1935s
+  238292 DPushes remaining with DInf 1.0943193e-04              1941s
+  234240 DPushes remaining with DInf 0.0000000e+00              1949s
+  232256 DPushes remaining with DInf 0.0000000e+00              1953s
+  230111 DPushes remaining with DInf 0.0000000e+00              1957s
+  227918 DPushes remaining with DInf 0.0000000e+00              1961s
+  224169 DPushes remaining with DInf 0.0000000e+00              1967s
+  222186 DPushes remaining with DInf 0.0000000e+00              1972s
+  220307 DPushes remaining with DInf 0.0000000e+00              1978s
+  218636 DPushes remaining with DInf 0.0000000e+00              1982s

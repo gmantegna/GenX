@@ -1,0 +1,2561 @@
+I must not fear. Fear is the mind-killer.
+
+Loading GenX
+  Loading requirement: gurobi/12.0.0 julia/1.11.3
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS: invalid
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter LicenseID to value 197246
+Set parameter GURO_PAR_SPECIAL
+Set parameter TokenServer to value "license.rc.princeton.edu"
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Set parameter FeasibilityTol to value 1e-06
+Set parameter PreDual to value -1
+Set parameter Method to value 2
+Set parameter Crossover to value 1
+Set parameter TimeLimit to value 1e+100
+Set parameter OutputFlag to value 1
+Set parameter NumericFocus to value 0
+Set parameter MIPGap to value 0.001
+Set parameter OptimalityTol to value 0.0001
+Set parameter AggFill to value -1
+Set parameter BarConvTol to value 1e-08
+Set parameter Presolve to value -1
+Gurobi Optimizer version 12.0.3 build v12.0.3rc0 (linux64 - "Red Hat Enterprise Linux 9.6 (Plow)")
+
+CPU model: AMD EPYC 9654 96-Core Processor, instruction set [SSE2|AVX|AVX2|AVX512]
+Thread count: 192 physical cores, 192 logical processors, using up to 32 threads
+
+Non-default parameters:
+MIPGap  0.001
+OptimalityTol  0.0001
+Method  2
+Crossover  1
+
+Optimize a model with 13211448 rows, 11875282 columns and 59296854 nonzeros
+Model fingerprint: 0x157a04fc
+Coefficient statistics:
+  Matrix range     [2e-08, 1e+04]
+  Objective range  [6e-03, 5e+09]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [3e+00, 8e+08]
+Warning: Model contains large objective coefficients
+         Consider reformulating model or setting NumericFocus parameter
+         to avoid numerical issues.
+Presolve removed 3564958 rows and 5574495 columns (presolve time = 5s)...
+Presolve removed 4416445 rows and 6160000 columns (presolve time = 11s)...
+Presolve removed 5222002 rows and 6160709 columns (presolve time = 18s)...
+Presolve removed 5222002 rows and 6160709 columns (presolve time = 20s)...
+Presolve removed 5222002 rows and 6160709 columns (presolve time = 25s)...
+Presolve removed 5223532 rows and 6160709 columns (presolve time = 31s)...
+Presolve removed 5223532 rows and 6160709 columns
+Presolve time: 33.17s
+Presolved: 7987916 rows, 5714573 columns, 51437543 nonzeros
+
+Elapsed ordering time = 5s
+Ordering time: 8.12s
+
+Barrier statistics:
+ Dense cols : 3291
+ AA' NZ     : 1.035e+08
+ Factor NZ  : 2.307e+08 (roughly 7.0 GB of memory)
+ Factor Ops : 1.767e+10 (roughly 1 second per iteration)
+ Threads    : 32
+
+                  Objective                Residual
+Iter       Primal          Dual         Primal    Dual     Compl     Time
+   0   5.38310256e+15 -2.64771662e+16  6.60e+08 4.78e+06  5.58e+12    55s
+   1   4.22449905e+15 -3.78399283e+16  5.45e+08 3.75e+07  4.52e+12    58s
+   2   3.31482492e+15 -8.65366935e+16  4.49e+08 2.81e+07  3.64e+12    62s
+   3   2.60902266e+15 -1.19813859e+17  3.75e+08 1.93e+07  2.88e+12    66s
+   4   2.26721723e+15 -1.35394702e+17  3.28e+08 1.62e+07  2.48e+12    68s
+   5   1.95906794e+15 -1.76233107e+17  2.85e+08 7.35e+06  1.93e+12    72s
+   6   9.79111391e+14 -1.88800297e+17  1.10e+08 1.43e+06  7.25e+11    77s
+   7   6.58243927e+14 -1.64637329e+17  4.69e+07 5.31e+05  3.12e+11    84s
+   8   5.63945915e+14 -1.44105342e+17  1.90e+07 3.49e+05  1.41e+11    89s
+   9   5.91976992e+14 -1.21817402e+17  1.07e+07 2.15e+05  8.60e+10    93s
+  10   5.87565501e+14 -8.62400395e+16  6.35e+06 9.12e+04  4.59e+10    96s
+  11   5.58923794e+14 -4.70322355e+16  2.33e+06 2.53e+04  1.62e+10    98s
+  12   4.79730269e+14 -2.32294484e+16  4.21e+05 7.50e+03  4.13e+09   101s
+  13   3.67675105e+14 -8.59912053e+15  8.80e+04 1.82e+03  1.09e+09   104s
+  14   2.57151977e+14 -4.17690740e+15  2.05e+04 8.00e+02  4.50e+08   107s
+  15   2.06068300e+14 -3.29987555e+15  9.84e+03 6.21e+02  3.38e+08   110s
+  16   1.49161704e+14 -1.91704640e+15  2.63e+03 3.47e+02  1.88e+08   113s
+  17   1.15604836e+14 -1.21144762e+15  1.00e+03 2.14e+02  1.17e+08   115s
+  18   7.83935224e+13 -7.46096239e+14  3.00e+02 1.30e+02  6.95e+07   118s
+  19   6.24728910e+13 -3.43644324e+14  1.70e+02 5.78e+01  3.32e+07   121s
+  20   3.66688936e+13 -1.93787622e+14  5.33e+01 3.10e+01  1.82e+07   123s
+  21   2.42103164e+13 -1.19507329e+14  2.54e+01 1.82e+01  1.11e+07   125s
+  22   1.45364539e+13 -6.95602074e+13  1.04e+01 9.74e+00  6.37e+06   129s
+  23   1.12628396e+13 -4.37263634e+13  7.17e+00 5.49e+00  4.14e+06   131s
+  24   7.91624760e+12 -2.59805481e+13  4.47e+00 2.58e+00  2.53e+06   134s
+  25   5.75660417e+12 -1.74471476e+13  2.98e+00 1.40e+00  1.72e+06   136s
+  26   4.73278829e+12 -1.46756687e+13  2.35e+00 1.11e+00  1.44e+06   140s
+  27   3.67013681e+12 -1.03238181e+13  1.71e+00 6.54e-01  1.03e+06   142s
+  28   3.11562797e+12 -7.66850797e+12  1.39e+00 3.33e-01  7.95e+05   146s
+  29   2.39540293e+12 -5.16575277e+12  9.77e-01 3.44e-02  5.56e+05   150s
+  30   1.93274285e+12 -3.69363212e+12  7.23e-01 3.34e-07  4.13e+05   156s
+  31   1.79450775e+12 -2.55244001e+12  6.47e-01 4.13e-07  3.19e+05   161s
+  32   1.38221981e+12 -1.76746092e+12  4.15e-01 3.56e-07  2.31e+05   165s
+  33   1.16515138e+12 -9.95572016e+11  2.96e-01 3.92e-07  1.58e+05   171s
+  34   9.93785173e+11 -5.47349343e+11  2.05e-01 3.49e-07  1.13e+05   177s
+  35   9.08083295e+11 -2.48926301e+11  1.62e-01 3.77e-07  8.48e+04   182s
+  36   8.46173460e+11 -1.11555298e+11  1.33e-01 3.87e-07  7.02e+04   186s
+  37   7.98330909e+11  4.21453429e+10  1.09e-01 4.10e-07  5.54e+04   192s
+  38   7.47973633e+11  1.93696334e+11  8.57e-02 3.59e-07  4.06e+04   196s
+  39   7.11742401e+11  2.71443759e+11  6.93e-02 4.00e-07  3.23e+04   201s
+  40   6.91638409e+11  3.19611785e+11  6.03e-02 3.85e-07  2.73e+04   206s
+  41   6.66667913e+11  3.39683201e+11  5.02e-02 4.00e-07  2.40e+04   213s
+  42   6.62496587e+11  3.67744547e+11  4.84e-02 4.24e-07  2.16e+04   218s
+  43   6.42543223e+11  4.07649161e+11  3.95e-02 5.42e-07  1.72e+04   225s
+  44   6.21602248e+11  4.31792887e+11  3.03e-02 3.92e-07  1.39e+04   231s
+  45   6.06477553e+11  4.46736487e+11  2.37e-02 4.03e-07  1.17e+04   236s
+  46   5.99769031e+11  4.68655230e+11  2.10e-02 4.19e-07  9.61e+03   242s
+  47   5.89293685e+11  4.87030012e+11  1.67e-02 3.89e-07  7.49e+03   246s
+  48   5.82853468e+11  4.98272314e+11  1.40e-02 3.75e-07  6.20e+03   253s
+  49   5.72729233e+11  5.06880586e+11  9.91e-03 4.09e-07  4.82e+03   257s
+  50   5.67026907e+11  5.17022603e+11  7.62e-03 3.40e-07  3.66e+03   262s
+  51   5.63821586e+11  5.22478723e+11  6.39e-03 4.15e-07  3.03e+03   267s
+  52   5.62999864e+11  5.25198671e+11  6.08e-03 4.36e-07  2.77e+03   271s
+  53   5.60492648e+11  5.28051096e+11  5.16e-03 4.05e-07  2.38e+03   275s
+  54   5.57441437e+11  5.32474675e+11  4.06e-03 3.85e-07  1.83e+03   280s
+  55   5.55210944e+11  5.34070247e+11  3.29e-03 3.87e-07  1.55e+03   284s
+  56   5.52726681e+11  5.36918604e+11  2.45e-03 3.74e-07  1.16e+03   289s
+  57   5.51352922e+11  5.39082187e+11  2.00e-03 3.45e-07  8.99e+02   295s
+  58   5.49679888e+11  5.40092842e+11  1.46e-03 4.39e-07  7.02e+02   301s
+  59   5.48703823e+11  5.41139170e+11  1.16e-03 3.49e-07  5.54e+02   306s
+  60   5.48283406e+11  5.41876164e+11  1.03e-03 4.28e-07  4.69e+02   312s
+  61   5.47368561e+11  5.42573413e+11  8.20e-04 3.59e-07  3.51e+02   318s
+  62   5.46850923e+11  5.43050239e+11  7.71e-04 3.50e-07  2.78e+02   323s
+  63   5.46448949e+11  5.43389533e+11  7.23e-04 3.35e-07  2.24e+02   329s
+  64   5.46109807e+11  5.43554780e+11  8.08e-04 4.51e-07  1.87e+02   336s
+  65   5.45826444e+11  5.43720607e+11  9.02e-04 3.54e-07  1.54e+02   343s
+  66   5.45575656e+11  5.43982447e+11  1.03e-03 4.17e-07  1.17e+02   348s
+  67   5.45326222e+11  5.44110914e+11  1.69e-03 4.25e-07  8.90e+01   352s
+  68   5.45167789e+11  5.44290350e+11  3.13e-03 3.41e-07  6.43e+01   357s
+  69   5.45071123e+11  5.44345329e+11  3.35e-03 4.11e-07  5.32e+01   363s
+  70   5.44961805e+11  5.44401335e+11  3.74e-03 3.79e-07  4.11e+01   368s
+  71   5.44914035e+11  5.44423488e+11  3.48e-03 4.29e-07  3.59e+01   373s
+  72   5.44862266e+11  5.44451434e+11  3.17e-03 4.20e-07  3.01e+01   378s
+  73   5.44789469e+11  5.44493764e+11  2.40e-03 4.23e-07  2.17e+01   382s
+  74   5.44743849e+11  5.44514749e+11  2.54e-03 3.82e-07  1.68e+01   388s
+  75   5.44704433e+11  5.44541595e+11  2.70e-03 5.66e-07  1.19e+01   394s
+  76   5.44680677e+11  5.44569380e+11  2.83e-03 3.85e-05  8.16e+00   398s
+  77   5.44669464e+11  5.44579769e+11  2.32e-03 3.19e-05  6.58e+00   408s
+  78   5.44654422e+11  5.44587616e+11  1.71e-03 2.26e-05  4.90e+00   414s
+  79   5.44648231e+11  5.44595886e+11  1.43e-03 1.87e-05  3.84e+00   421s
+  80   5.44636872e+11  5.44601928e+11  9.93e-04 1.28e-05  2.56e+00   426s
+  81   5.44630956e+11  5.44605056e+11  6.70e-04 1.00e-05  1.90e+00   434s
+  82   5.44626495e+11  5.44609253e+11  4.85e-04 5.10e-06  1.26e+00   441s
+  83   5.44623538e+11  5.44611480e+11  3.23e-04 2.74e-06  8.84e-01   455s
+  84   5.44621619e+11  5.44613077e+11  2.45e-04 4.53e-06  6.26e-01   466s
+  85   5.44620113e+11  5.44614545e+11  1.63e-04 3.76e-06  4.08e-01   481s
+  86   5.44618726e+11  5.44615503e+11  1.43e-04 1.37e-06  2.36e-01   495s
+  87   5.44617805e+11  5.44615852e+11  7.21e-05 2.12e-06  1.43e-01   506s
+  88   5.44617455e+11  5.44616305e+11  4.09e-05 1.07e-06  8.44e-02   513s
+  89   5.44617292e+11  5.44616530e+11  2.66e-05 1.46e-06  5.59e-02   518s
+  90   5.44617161e+11  5.44616688e+11  1.57e-05 8.91e-06  3.46e-02   525s
+  91   5.44617105e+11  5.44616720e+11  1.08e-05 1.07e-06  2.82e-02   534s
+  92   5.44617043e+11  5.44616825e+11  6.76e-06 1.47e-05  1.60e-02   542s
+  93   5.44617006e+11  5.44616872e+11  2.93e-05 7.45e-07  9.89e-03   548s
+  94   5.44616979e+11  5.44616893e+11  6.52e-05 2.01e-05  6.34e-03   553s
+  95   5.44616962e+11  5.44616910e+11  1.20e-04 2.51e-05  4.01e-03   558s
+  96   5.44616951e+11  5.44616928e+11  1.66e-04 2.32e-05  1.86e-03   562s
+  97   5.44616946e+11  5.44616931e+11  1.70e-04 1.06e-05  1.33e-03   566s
+  98   5.44616942e+11  5.44616937e+11  1.89e-04 1.50e-05  5.55e-04   571s
+  99   5.44616939e+11  5.44616939e+11  6.86e-04 1.78e-05  2.39e-04   575s
+ 100   5.44616938e+11  5.44616939e+11  1.01e-03 1.17e-05  1.71e-04   578s
+
+Barrier solved model in 100 iterations and 578.49 seconds (718.71 work units)
+Optimal objective 5.44616938e+11
+
+Crossover log...
+
+ 2002759 DPushes remaining with DInf 1.5227999e-01               583s
+  958847 DPushes remaining with DInf 1.7460074e-03               596s
+  621443 DPushes remaining with DInf 1.7460074e-03               604s
+  441356 DPushes remaining with DInf 1.7460074e-03               610s
+  320202 DPushes remaining with DInf 1.7460074e-03               615s
+  185018 DPushes remaining with DInf 1.9021682e-03               623s
+  152673 DPushes remaining with DInf 1.9977136e-03               626s
+  112377 DPushes remaining with DInf 1.9977136e-03               632s
+   99973 DPushes remaining with DInf 1.9977136e-03               635s
+   87069 DPushes remaining with DInf 2.1423691e-03               641s
+   77670 DPushes remaining with DInf 2.1423691e-03               646s
+   73316 DPushes remaining with DInf 1.8870191e-03               652s
+   69233 DPushes remaining with DInf 1.8870191e-03               656s
+   64553 DPushes remaining with DInf 1.8870191e-03               664s
+   61885 DPushes remaining with DInf 1.9137984e-03               668s
+   58484 DPushes remaining with DInf 1.9149074e-03               674s
+   55904 DPushes remaining with DInf 1.9149074e-03               678s
+   53815 DPushes remaining with DInf 1.9149074e-03               684s
+   51789 DPushes remaining with DInf 1.9149074e-03               688s
+   48466 DPushes remaining with DInf 2.5281517e-04               710s
+   46715 DPushes remaining with DInf 2.5281517e-04               731s
+   44969 DPushes remaining with DInf 2.5281517e-04               752s
+   43270 DPushes remaining with DInf 2.5281517e-04               770s
+   41576 DPushes remaining with DInf 0.0000000e+00               781s
+   39720 DPushes remaining with DInf 0.0000000e+00               795s
+   35977 DPushes remaining with DInf 0.0000000e+00               801s
+   31830 DPushes remaining with DInf 0.0000000e+00               807s
+   28644 DPushes remaining with DInf 0.0000000e+00               811s
+   26908 DPushes remaining with DInf 0.0000000e+00               816s
+   25043 DPushes remaining with DInf 0.0000000e+00               820s
+   21467 DPushes remaining with DInf 0.0000000e+00               828s
+   20143 DPushes remaining with DInf 0.0000000e+00               833s
+   18823 DPushes remaining with DInf 0.0000000e+00               838s
+   17525 DPushes remaining with DInf 0.0000000e+00               845s
+   16172 DPushes remaining with DInf 0.0000000e+00               855s
+   14847 DPushes remaining with DInf 0.0000000e+00               859s
+   13466 DPushes remaining with DInf 0.0000000e+00               863s
+   12007 DPushes remaining with DInf 0.0000000e+00               867s
+   10664 DPushes remaining with DInf 0.0000000e+00               873s
+    9228 DPushes remaining with DInf 0.0000000e+00               880s
+    7690 DPushes remaining with DInf 0.0000000e+00               886s
+    6236 DPushes remaining with DInf 0.0000000e+00               892s
+    4822 DPushes remaining with DInf 0.0000000e+00               899s
+    3326 DPushes remaining with DInf 0.0000000e+00               907s
+    1761 DPushes remaining with DInf 0.0000000e+00               912s
+     327 DPushes remaining with DInf 0.0000000e+00               920s
+       0 DPushes remaining with DInf 0.0000000e+00               923s
+Warning: Markowitz tolerance tightened to 0.5
+
+ 2256939 PPushes remaining with PInf 1.8843844e+01               924s
+ 1462765 PPushes remaining with PInf 1.1299460e+01              1049s
+ 1256138 PPushes remaining with PInf 9.6191831e+00              1058s
+ 1148726 PPushes remaining with PInf 8.2126821e+00              1063s
+ 1052534 PPushes remaining with PInf 7.2988231e+00              1068s
+  968135 PPushes remaining with PInf 6.5749227e+00              1074s
+  892025 PPushes remaining with PInf 6.0368889e+00              1079s
+  822033 PPushes remaining with PInf 5.1546976e+00              1084s
+  768448 PPushes remaining with PInf 4.8714123e+00              1089s
+  720801 PPushes remaining with PInf 4.6427054e+00              1093s
+  672164 PPushes remaining with PInf 4.3356607e+00              1097s
+  627546 PPushes remaining with PInf 4.0349654e+00              1100s
+  552214 PPushes remaining with PInf 3.6622943e+00              1107s
+  515823 PPushes remaining with PInf 3.4805241e+00              1110s
+  452087 PPushes remaining with PInf 3.1669839e+00              1120s
+  425259 PPushes remaining with PInf 3.0687428e+00              1123s
+  400156 PPushes remaining with PInf 2.4407486e+00              1127s
+  348673 PPushes remaining with PInf 2.2834481e+00              1133s
+  327574 PPushes remaining with PInf 2.0712128e+00              1138s
+  302789 PPushes remaining with PInf 1.9827740e+00              1143s
+  284973 PPushes remaining with PInf 1.9154524e+00              1146s
+  252457 PPushes remaining with PInf 1.7808953e+00              1151s
+  222637 PPushes remaining with PInf 1.6054168e+00              1157s
+  192413 PPushes remaining with PInf 1.4994358e+00              1162s
+  184226 PPushes remaining with PInf 1.4552050e+00              1165s
+  159369 PPushes remaining with PInf 1.3186480e+00              1170s
+  139460 PPushes remaining with PInf 1.2624547e+00              1176s
+  120311 PPushes remaining with PInf 1.1673110e+00              1181s
+  107179 PPushes remaining with PInf 1.1119876e+00              1186s
+   95261 PPushes remaining with PInf 9.9523585e-01              1191s
+   85010 PPushes remaining with PInf 9.6591644e-01              1195s
+   74087 PPushes remaining with PInf 9.3050873e-01              1202s
+   66161 PPushes remaining with PInf 7.6365793e-01              1210s
+   54814 PPushes remaining with PInf 6.7762404e-01              1225s
+   47534 PPushes remaining with PInf 6.2511019e-01              1256s
+   11399 PPushes remaining with PInf 5.2004491e-01              1508s
+       0 PPushes remaining with PInf 1.6281467e-01              1594s
+
+  Push phase complete: Pinf 1.6281467e-01, Dinf 8.4942823e+05   1595s
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+ 3513398    5.4461694e+11   0.000000e+00   8.494282e+05   1598s
+ 3516225    5.4461694e+11   0.000000e+00   2.466858e+05   1601s
+ 3521879    5.4461694e+11   0.000000e+00   1.014091e+05   1608s
+ 3524706    5.4461694e+11   0.000000e+00   7.059686e+04   1612s
+ 3527533    5.4461694e+11   0.000000e+00   4.815461e+04   1615s
+ 3533187    5.4461694e+11   0.000000e+00   2.555875e+04   1624s
+ 3536014    5.4461694e+11   0.000000e+00   1.829506e+04   1629s
+ 3538841    5.4461694e+11   0.000000e+00   1.138535e+04   1634s
+ 3541311    5.4461694e+11   0.000000e+00   7.602200e+03   1639s
+ 3542659    5.4461694e+11   0.000000e+00   6.202105e+03   1644s
+ 3545082    5.4461694e+11   0.000000e+00   3.971322e+03   1649s
+ 3546762    5.4461694e+11   0.000000e+00   2.704867e+03   1654s
+ 3549589    5.4461694e+11   0.000000e+00   1.327669e+03   1659s
+ 3552416    5.4461694e+11   0.000000e+00   7.703417e+02   1663s
+ 3555243    5.4461694e+11   0.000000e+00   1.619019e+02   1668s
+ 3557216    5.4461694e+11   0.000000e+00   0.000000e+00   1673s
+ 3557216    5.4461694e+11   0.000000e+00   0.000000e+00   1680s
+
+Solved in 3557216 iterations and 1679.98 seconds (1411.07 work units)
+Optimal objective  5.446169404e+11
+Warning: unscaled dual violation = 0.00109496 and residual = 4.96244e-06
+
+User-callback calls 4339916, time in user-callback 1.26 sec
+  ____           __  __   _ _
+ / ___| ___ _ __ \ \/ /  (_) |
+| |  _ / _ \ '_ \ \  /   | | |
+| |_| |  __/ | | |/  \ _ | | |
+ \____|\___|_| |_/_/\_(_)/ |_|
+                       |__/
+ Version: 0.4.1-dev.19
+
+Configuring Settings
+Configuring Multistage Settings
+Configuring Solver
+Reading Input CSV Files
+Network.csv Successfully Read!
+Demand (load) data Successfully Read!
+Fuels_data.csv Successfully Read!
+
+Summary of resources loaded into the model:
+-------------------------------------------------------
+	Resource type 		Number of resources
+=======================================================
+	Thermal        		64
+	VRE            		125
+	Hydro          		6
+	Storage        		26
+	Must_run       		26
+=======================================================
+Total number of resources: 247
+-------------------------------------------------------
+Generators_variability.csv Successfully Read!
+Validating time basis
+Capacity_reserve_margin.csv Successfully Read!
+Energy_share_requirement.csv Successfully Read!
+CO2_cap.csv Successfully Read!
+CSV Files Successfully Read In From /home/gm1710/GenX/example_systems/AZ/base_reference/inputs/inputs_p1
+Discharge Module
+Non-served Energy Module
+Investment Discharge Module
+Unit Commitment Module
+Fuel Module
+Investment Transmission Module
+Transmission Module
+CO2 Module
+Dispatchable Resources Module
+Must-Run Resources Module
+Storage Resources Module
+Storage Investment Module
+Storage Core Resources Module
+Storage Resources with Symmetric Charge/Discharge Capacity Module
+Hydro Reservoir Core Resources Module
+Thermal (Unit Commitment) Resources Module
+CO2 Policies Module
+Energy Share Requirement Policies Module
+Capacity Reserve Margin Policies Module
+Reading Input CSV Files
+Network.csv Successfully Read!
+Demand (load) data Successfully Read!
+Fuels_data.csv Successfully Read!
+
+Summary of resources loaded into the model:
+-------------------------------------------------------
+	Resource type 		Number of resources
+=======================================================
+	Thermal        		64
+	VRE            		125
+	Hydro          		6
+	Storage        		26
+	Must_run       		26
+=======================================================
+Total number of resources: 247
+-------------------------------------------------------
+Generators_variability.csv Successfully Read!
+Validating time basis
+Capacity_reserve_margin.csv Successfully Read!
+Energy_share_requirement.csv Successfully Read!
+CO2_cap.csv Successfully Read!
+CSV Files Successfully Read In From /home/gm1710/GenX/example_systems/AZ/base_reference/inputs/inputs_p2
+Discharge Module
+Non-served Energy Module
+Investment Discharge Module
+Unit Commitment Module
+Fuel Module
+Investment Transmission Module
+Transmission Module
+CO2 Module
+Dispatchable Resources Module
+Must-Run Resources Module
+Storage Resources Module
+Storage Investment Module
+Storage Core Resources Module
+Storage Resources with Symmetric Charge/Discharge Capacity Module
+Hydro Reservoir Core Resources Module
+Thermal (Unit Commitment) Resources Module
+CO2 Policies Module
+Energy Share Requirement Policies Module
+Capacity Reserve Margin Policies Module
+Reading Input CSV Files
+Network.csv Successfully Read!
+Demand (load) data Successfully Read!
+Fuels_data.csv Successfully Read!
+
+Summary of resources loaded into the model:
+-------------------------------------------------------
+	Resource type 		Number of resources
+=======================================================
+	Thermal        		64
+	VRE            		125
+	Hydro          		6
+	Storage        		26
+	Must_run       		26
+=======================================================
+Total number of resources: 247
+-------------------------------------------------------
+Generators_variability.csv Successfully Read!
+Validating time basis
+Capacity_reserve_margin.csv Successfully Read!
+Energy_share_requirement.csv Successfully Read!
+CO2_cap.csv Successfully Read!
+CSV Files Successfully Read In From /home/gm1710/GenX/example_systems/AZ/base_reference/inputs/inputs_p3
+Discharge Module
+Non-served Energy Module
+Investment Discharge Module
+Unit Commitment Module
+Fuel Module
+Investment Transmission Module
+Transmission Module
+CO2 Module
+Dispatchable Resources Module
+Must-Run Resources Module
+Storage Resources Module
+Storage Investment Module
+Storage Core Resources Module
+Storage Resources with Symmetric Charge/Discharge Capacity Module
+Hydro Reservoir Core Resources Module
+Thermal (Unit Commitment) Resources Module
+CO2 Policies Module
+Energy Share Requirement Policies Module
+Capacity Reserve Margin Policies Module
+Reading Input CSV Files
+Network.csv Successfully Read!
+Demand (load) data Successfully Read!
+Fuels_data.csv Successfully Read!
+
+Summary of resources loaded into the model:
+-------------------------------------------------------
+	Resource type 		Number of resources
+=======================================================
+	Thermal        		64
+	VRE            		125
+	Hydro          		6
+	Storage        		26
+	Must_run       		26
+=======================================================
+Total number of resources: 247
+-------------------------------------------------------
+Generators_variability.csv Successfully Read!
+Validating time basis
+Capacity_reserve_margin.csv Successfully Read!
+Energy_share_requirement.csv Successfully Read!
+CO2_cap.csv Successfully Read!
+CSV Files Successfully Read In From /home/gm1710/GenX/example_systems/AZ/base_reference/inputs/inputs_p4
+Discharge Module
+Non-served Energy Module
+Investment Discharge Module
+Unit Commitment Module
+Fuel Module
+Investment Transmission Module
+Transmission Module
+CO2 Module
+Dispatchable Resources Module
+Must-Run Resources Module
+Storage Resources Module
+Storage Investment Module
+Storage Core Resources Module
+Storage Resources with Symmetric Charge/Discharge Capacity Module
+Hydro Reservoir Core Resources Module
+Thermal (Unit Commitment) Resources Module
+CO2 Policies Module
+Energy Share Requirement Policies Module
+Capacity Reserve Margin Policies Module
+Reading Input CSV Files
+Network.csv Successfully Read!
+Demand (load) data Successfully Read!
+Fuels_data.csv Successfully Read!
+
+Summary of resources loaded into the model:
+-------------------------------------------------------
+	Resource type 		Number of resources
+=======================================================
+	Thermal        		64
+	VRE            		125
+	Hydro          		6
+	Storage        		26
+	Must_run       		26
+=======================================================
+Total number of resources: 247
+-------------------------------------------------------
+Generators_variability.csv Successfully Read!
+Validating time basis
+Capacity_reserve_margin.csv Successfully Read!
+Energy_share_requirement.csv Successfully Read!
+CO2_cap.csv Successfully Read!
+CSV Files Successfully Read In From /home/gm1710/GenX/example_systems/AZ/base_reference/inputs/inputs_p5
+Discharge Module
+Non-served Energy Module
+Investment Discharge Module
+Unit Commitment Module
+Fuel Module
+Investment Transmission Module
+Transmission Module
+CO2 Module
+Dispatchable Resources Module
+Must-Run Resources Module
+Storage Resources Module
+Storage Investment Module
+Storage Core Resources Module
+Storage Resources with Symmetric Charge/Discharge Capacity Module
+Hydro Reservoir Core Resources Module
+Thermal (Unit Commitment) Resources Module
+CO2 Policies Module
+Energy Share Requirement Policies Module
+Capacity Reserve Margin Policies Module
+Reading Input CSV Files
+Network.csv Successfully Read!
+Demand (load) data Successfully Read!
+Fuels_data.csv Successfully Read!
+
+Summary of resources loaded into the model:
+-------------------------------------------------------
+	Resource type 		Number of resources
+=======================================================
+	Thermal        		64
+	VRE            		125
+	Hydro          		6
+	Storage        		26
+	Must_run       		26
+=======================================================
+Total number of resources: 247
+-------------------------------------------------------
+Generators_variability.csv Successfully Read!
+Validating time basis
+Capacity_reserve_margin.csv Successfully Read!
+Energy_share_requirement.csv Successfully Read!
+CO2_cap.csv Successfully Read!
+CSV Files Successfully Read In From /home/gm1710/GenX/example_systems/AZ/base_reference/inputs/inputs_p6
+Discharge Module
+Non-served Energy Module
+Investment Discharge Module
+Unit Commitment Module
+Fuel Module
+Investment Transmission Module
+Transmission Module
+CO2 Module
+Dispatchable Resources Module
+Must-Run Resources Module
+Storage Resources Module
+Storage Investment Module
+Storage Core Resources Module
+Storage Resources with Symmetric Charge/Discharge Capacity Module
+Hydro Reservoir Core Resources Module
+Thermal (Unit Commitment) Resources Module
+CO2 Policies Module
+Energy Share Requirement Policies Module
+Capacity Reserve Margin Policies Module
+Reading Input CSV Files
+Network.csv Successfully Read!
+Demand (load) data Successfully Read!
+Fuels_data.csv Successfully Read!
+
+Summary of resources loaded into the model:
+-------------------------------------------------------
+	Resource type 		Number of resources
+=======================================================
+	Thermal        		64
+	VRE            		125
+	Hydro          		6
+	Storage        		26
+	Must_run       		26
+=======================================================
+Total number of resources: 247
+-------------------------------------------------------
+Generators_variability.csv Successfully Read!
+Validating time basis
+Capacity_reserve_margin.csv Successfully Read!
+Energy_share_requirement.csv Successfully Read!
+CO2_cap.csv Successfully Read!
+CSV Files Successfully Read In From /home/gm1710/GenX/example_systems/AZ/base_reference/inputs/inputs_p7
+Discharge Module
+Non-served Energy Module
+Investment Discharge Module
+Unit Commitment Module
+Fuel Module
+Investment Transmission Module
+Transmission Module
+CO2 Module
+Dispatchable Resources Module
+Must-Run Resources Module
+Storage Resources Module
+Storage Investment Module
+Storage Core Resources Module
+Storage Resources with Symmetric Charge/Discharge Capacity Module
+Hydro Reservoir Core Resources Module
+Thermal (Unit Commitment) Resources Module
+CO2 Policies Module
+Energy Share Requirement Policies Module
+Capacity Reserve Margin Policies Module
+Reading Input CSV Files
+Network.csv Successfully Read!
+Demand (load) data Successfully Read!
+Fuels_data.csv Successfully Read!
+
+Summary of resources loaded into the model:
+-------------------------------------------------------
+	Resource type 		Number of resources
+=======================================================
+	Thermal        		64
+	VRE            		125
+	Hydro          		6
+	Storage        		26
+	Must_run       		26
+=======================================================
+Total number of resources: 247
+-------------------------------------------------------
+Generators_variability.csv Successfully Read!
+Validating time basis
+Capacity_reserve_margin.csv Successfully Read!
+Energy_share_requirement.csv Successfully Read!
+CO2_cap.csv Successfully Read!
+CSV Files Successfully Read In From /home/gm1710/GenX/example_systems/AZ/base_reference/inputs/inputs_p8
+Discharge Module
+Non-served Energy Module
+Investment Discharge Module
+Unit Commitment Module
+Fuel Module
+Investment Transmission Module
+Transmission Module
+CO2 Module
+Dispatchable Resources Module
+Must-Run Resources Module
+Storage Resources Module
+Storage Investment Module
+Storage Core Resources Module
+Storage Resources with Symmetric Charge/Discharge Capacity Module
+Hydro Reservoir Core Resources Module
+Thermal (Unit Commitment) Resources Module
+CO2 Policies Module
+Energy Share Requirement Policies Module
+Capacity Reserve Margin Policies Module
+Reading Input CSV Files
+Network.csv Successfully Read!
+Demand (load) data Successfully Read!
+Fuels_data.csv Successfully Read!
+
+Summary of resources loaded into the model:
+-------------------------------------------------------
+	Resource type 		Number of resources
+=======================================================
+	Thermal        		64
+	VRE            		125
+	Hydro          		6
+	Storage        		26
+	Must_run       		26
+=======================================================
+Total number of resources: 247
+-------------------------------------------------------
+Generators_variability.csv Successfully Read!
+Validating time basis
+Capacity_reserve_margin.csv Successfully Read!
+Energy_share_requirement.csv Successfully Read!
+CO2_cap.csv Successfully Read!
+CSV Files Successfully Read In From /home/gm1710/GenX/example_systems/AZ/base_reference/inputs/inputs_p9
+Discharge Module
+Non-served Energy Module
+Investment Discharge Module
+Unit Commitment Module
+Fuel Module
+Investment Transmission Module
+Transmission Module
+CO2 Module
+Dispatchable Resources Module
+Must-Run Resources Module
+Storage Resources Module
+Storage Investment Module
+Storage Core Resources Module
+Storage Resources with Symmetric Charge/Discharge Capacity Module
+Hydro Reservoir Core Resources Module
+Thermal (Unit Commitment) Resources Module
+CO2 Policies Module
+Energy Share Requirement Policies Module
+Capacity Reserve Margin Policies Module
+Reading Input CSV Files
+Network.csv Successfully Read!
+Demand (load) data Successfully Read!
+Fuels_data.csv Successfully Read!
+
+Summary of resources loaded into the model:
+-------------------------------------------------------
+	Resource type 		Number of resources
+=======================================================
+	Thermal        		64
+	VRE            		125
+	Hydro          		6
+	Storage        		26
+	Must_run       		26
+=======================================================
+Total number of resources: 247
+-------------------------------------------------------
+Generators_variability.csv Successfully Read!
+Validating time basis
+Capacity_reserve_margin.csv Successfully Read!
+Energy_share_requirement.csv Successfully Read!
+CO2_cap.csv Successfully Read!
+CSV Files Successfully Read In From /home/gm1710/GenX/example_systems/AZ/base_reference/inputs/inputs_p10
+Discharge Module
+Non-served Energy Module
+Investment Discharge Module
+Unit Commitment Module
+Fuel Module
+Investment Transmission Module
+Transmission Module
+CO2 Module
+Dispatchable Resources Module
+Must-Run Resources Module
+Storage Resources Module
+Storage Investment Module
+Storage Core Resources Module
+Storage Resources with Symmetric Charge/Discharge Capacity Module
+Hydro Reservoir Core Resources Module
+Thermal (Unit Commitment) Resources Module
+CO2 Policies Module
+Energy Share Requirement Policies Module
+Capacity Reserve Margin Policies Module
+Reading Input CSV Files
+Network.csv Successfully Read!
+Demand (load) data Successfully Read!
+Fuels_data.csv Successfully Read!
+
+Summary of resources loaded into the model:
+-------------------------------------------------------
+	Resource type 		Number of resources
+=======================================================
+	Thermal        		64
+	VRE            		125
+	Hydro          		6
+	Storage        		26
+	Must_run       		26
+=======================================================
+Total number of resources: 247
+-------------------------------------------------------
+Generators_variability.csv Successfully Read!
+Validating time basis
+Capacity_reserve_margin.csv Successfully Read!
+Energy_share_requirement.csv Successfully Read!
+CO2_cap.csv Successfully Read!
+CSV Files Successfully Read In From /home/gm1710/GenX/example_systems/AZ/base_reference/inputs/inputs_p11
+Discharge Module
+Non-served Energy Module
+Investment Discharge Module
+Unit Commitment Module
+Fuel Module
+Investment Transmission Module
+Transmission Module
+CO2 Module
+Dispatchable Resources Module
+Must-Run Resources Module
+Storage Resources Module
+Storage Investment Module
+Storage Core Resources Module
+Storage Resources with Symmetric Charge/Discharge Capacity Module
+Hydro Reservoir Core Resources Module
+Thermal (Unit Commitment) Resources Module
+CO2 Policies Module
+Energy Share Requirement Policies Module
+Capacity Reserve Margin Policies Module
+Reading Input CSV Files
+Network.csv Successfully Read!
+Demand (load) data Successfully Read!
+Fuels_data.csv Successfully Read!
+
+Summary of resources loaded into the model:
+-------------------------------------------------------
+	Resource type 		Number of resources
+=======================================================
+	Thermal        		64
+	VRE            		125
+	Hydro          		6
+	Storage        		26
+	Must_run       		26
+=======================================================
+Total number of resources: 247
+-------------------------------------------------------
+Generators_variability.csv Successfully Read!
+Validating time basis
+Capacity_reserve_margin.csv Successfully Read!
+Energy_share_requirement.csv Successfully Read!
+CO2_cap.csv Successfully Read!
+CSV Files Successfully Read In From /home/gm1710/GenX/example_systems/AZ/base_reference/inputs/inputs_p12
+Discharge Module
+Non-served Energy Module
+Investment Discharge Module
+Unit Commitment Module
+Fuel Module
+Investment Transmission Module
+Transmission Module
+CO2 Module
+Dispatchable Resources Module
+Must-Run Resources Module
+Storage Resources Module
+Storage Investment Module
+Storage Core Resources Module
+Storage Resources with Symmetric Charge/Discharge Capacity Module
+Hydro Reservoir Core Resources Module
+Thermal (Unit Commitment) Resources Module
+CO2 Policies Module
+Energy Share Requirement Policies Module
+Capacity Reserve Margin Policies Module
+Reading Input CSV Files
+Network.csv Successfully Read!
+Demand (load) data Successfully Read!
+Fuels_data.csv Successfully Read!
+
+Summary of resources loaded into the model:
+-------------------------------------------------------
+	Resource type 		Number of resources
+=======================================================
+	Thermal        		64
+	VRE            		125
+	Hydro          		6
+	Storage        		26
+	Must_run       		26
+=======================================================
+Total number of resources: 247
+-------------------------------------------------------
+Generators_variability.csv Successfully Read!
+Validating time basis
+Capacity_reserve_margin.csv Successfully Read!
+Energy_share_requirement.csv Successfully Read!
+CO2_cap.csv Successfully Read!
+CSV Files Successfully Read In From /home/gm1710/GenX/example_systems/AZ/base_reference/inputs/inputs_p13
+Discharge Module
+Non-served Energy Module
+Investment Discharge Module
+Unit Commitment Module
+Fuel Module
+Investment Transmission Module
+Transmission Module
+CO2 Module
+Dispatchable Resources Module
+Must-Run Resources Module
+Storage Resources Module
+Storage Investment Module
+Storage Core Resources Module
+Storage Resources with Symmetric Charge/Discharge Capacity Module
+Hydro Reservoir Core Resources Module
+Thermal (Unit Commitment) Resources Module
+CO2 Policies Module
+Energy Share Requirement Policies Module
+Capacity Reserve Margin Policies Module
+Reading Input CSV Files
+Network.csv Successfully Read!
+Demand (load) data Successfully Read!
+Fuels_data.csv Successfully Read!
+
+Summary of resources loaded into the model:
+-------------------------------------------------------
+	Resource type 		Number of resources
+=======================================================
+	Thermal        		64
+	VRE            		125
+	Hydro          		6
+	Storage        		26
+	Must_run       		26
+=======================================================
+Total number of resources: 247
+-------------------------------------------------------
+Generators_variability.csv Successfully Read!
+Validating time basis
+Capacity_reserve_margin.csv Successfully Read!
+Energy_share_requirement.csv Successfully Read!
+CO2_cap.csv Successfully Read!
+CSV Files Successfully Read In From /home/gm1710/GenX/example_systems/AZ/base_reference/inputs/inputs_p14
+Discharge Module
+Non-served Energy Module
+Investment Discharge Module
+Unit Commitment Module
+Fuel Module
+Investment Transmission Module
+Transmission Module
+CO2 Module
+Dispatchable Resources Module
+Must-Run Resources Module
+Storage Resources Module
+Storage Investment Module
+Storage Core Resources Module
+Storage Resources with Symmetric Charge/Discharge Capacity Module
+Hydro Reservoir Core Resources Module
+Thermal (Unit Commitment) Resources Module
+CO2 Policies Module
+Energy Share Requirement Policies Module
+Capacity Reserve Margin Policies Module
+Reading Input CSV Files
+Network.csv Successfully Read!
+Demand (load) data Successfully Read!
+Fuels_data.csv Successfully Read!
+
+Summary of resources loaded into the model:
+-------------------------------------------------------
+	Resource type 		Number of resources
+=======================================================
+	Thermal        		64
+	VRE            		125
+	Hydro          		6
+	Storage        		26
+	Must_run       		26
+=======================================================
+Total number of resources: 247
+-------------------------------------------------------
+Generators_variability.csv Successfully Read!
+Validating time basis
+Capacity_reserve_margin.csv Successfully Read!
+Energy_share_requirement.csv Successfully Read!
+CO2_cap.csv Successfully Read!
+CSV Files Successfully Read In From /home/gm1710/GenX/example_systems/AZ/base_reference/inputs/inputs_p15
+Discharge Module
+Non-served Energy Module
+Investment Discharge Module
+Unit Commitment Module
+Fuel Module
+Investment Transmission Module
+Transmission Module
+CO2 Module
+Dispatchable Resources Module
+Must-Run Resources Module
+Storage Resources Module
+Storage Investment Module
+Storage Core Resources Module
+Storage Resources with Symmetric Charge/Discharge Capacity Module
+Hydro Reservoir Core Resources Module
+Thermal (Unit Commitment) Resources Module
+CO2 Policies Module
+Energy Share Requirement Policies Module
+Capacity Reserve Margin Policies Module
+Reading Input CSV Files
+Network.csv Successfully Read!
+Demand (load) data Successfully Read!
+Fuels_data.csv Successfully Read!
+
+Summary of resources loaded into the model:
+-------------------------------------------------------
+	Resource type 		Number of resources
+=======================================================
+	Thermal        		64
+	VRE            		125
+	Hydro          		6
+	Storage        		26
+	Must_run       		26
+=======================================================
+Total number of resources: 247
+-------------------------------------------------------
+Generators_variability.csv Successfully Read!
+Validating time basis
+Capacity_reserve_margin.csv Successfully Read!
+Energy_share_requirement.csv Successfully Read!
+CO2_cap.csv Successfully Read!
+CSV Files Successfully Read In From /home/gm1710/GenX/example_systems/AZ/base_reference/inputs/inputs_p16
+Discharge Module
+Non-served Energy Module
+Investment Discharge Module
+Unit Commitment Module
+Fuel Module
+Investment Transmission Module
+Transmission Module
+CO2 Module
+Dispatchable Resources Module
+Must-Run Resources Module
+Storage Resources Module
+Storage Investment Module
+Storage Core Resources Module
+Storage Resources with Symmetric Charge/Discharge Capacity Module
+Hydro Reservoir Core Resources Module
+Thermal (Unit Commitment) Resources Module
+CO2 Policies Module
+Energy Share Requirement Policies Module
+Capacity Reserve Margin Policies Module
+Reading Input CSV Files
+Network.csv Successfully Read!
+Demand (load) data Successfully Read!
+Fuels_data.csv Successfully Read!
+
+Summary of resources loaded into the model:
+-------------------------------------------------------
+	Resource type 		Number of resources
+=======================================================
+	Thermal        		64
+	VRE            		125
+	Hydro          		6
+	Storage        		26
+	Must_run       		26
+=======================================================
+Total number of resources: 247
+-------------------------------------------------------
+Generators_variability.csv Successfully Read!
+Validating time basis
+Capacity_reserve_margin.csv Successfully Read!
+Energy_share_requirement.csv Successfully Read!
+CO2_cap.csv Successfully Read!
+CSV Files Successfully Read In From /home/gm1710/GenX/example_systems/AZ/base_reference/inputs/inputs_p17
+Discharge Module
+Non-served Energy Module
+Investment Discharge Module
+Unit Commitment Module
+Fuel Module
+Investment Transmission Module
+Transmission Module
+CO2 Module
+Dispatchable Resources Module
+Must-Run Resources Module
+Storage Resources Module
+Storage Investment Module
+Storage Core Resources Module
+Storage Resources with Symmetric Charge/Discharge Capacity Module
+Hydro Reservoir Core Resources Module
+Thermal (Unit Commitment) Resources Module
+CO2 Policies Module
+Energy Share Requirement Policies Module
+Capacity Reserve Margin Policies Module
+Linking stages according to edge input.
+Solving Model
+Time elapsed for writing costs is
+1.588282307
+Time elapsed for writing capacity is
+0.941841433
+Time elapsed for writing power is
+1.910284106
+Time elapsed for writing charge is
+0.300771321
+Time elapsed for writing storage is
+0.287711362
+Time elapsed for writing curtailment is
+0.567448395
+Time elapsed for writing nse is
+0.901646932
+Time elapsed for writing power balance is
+0.801522255
+Time elapsed for writing transmission flows is
+0.195481793
+Time elapsed for writing transmission losses is
+0.170598047
+Time elapsed for writing emissions is
+0.609181659
+Time elapsed for writing reliability is
+3.505073349
+Time elapsed for writing storage duals is
+1.022549706
+Time elapsed for writing commitment is
+0.213853664
+Time elapsed for writing startup is
+0.039782
+Time elapsed for writing shutdown is
+0.040272991
+Time elapsed for writing fuel consumption is
+1.367298407
+Time elapsed for writing co2 is
+0.197340517
+Time elapsed for writing price is
+0.109346528
+Time elapsed for writing energy revenue is
+0.567239824
+Time elapsed for writing charging cost is
+0.276244576
+Time elapsed for writing subsidy is
+0.283728993
+Time elapsed for writing time weights is
+0.085197773
+Time elapsed for writing esr prices is
+0.180424948
+Time elapsed for writing esr revenue is
+0.439703086
+Time elapsed for writing reserve margin is
+1.457992822
+Time elapsed for writing reserve margin with weights is
+0.259339558
+Time elapsed for writing virtual discharge is
+0.175855468
+Time elapsed for writing reserve revenue is
+1.369835063
+Time elapsed for writing capacity value is
+2.427285287
+Time elapsed for writing co2 cap is
+0.100623328
+Time elapsed for writing net revenue is
+1.40401711
+Wrote outputs to /home/gm1710/GenX/example_systems/AZ/base_reference/results/results_p1
+Time elapsed for writing costs is
+0.633610045
+Time elapsed for writing capacity is
+0.002625666
+Time elapsed for writing power is
+0.153371677
+Time elapsed for writing charge is
+0.020957848
+Time elapsed for writing storage is
+0.025652468
+Time elapsed for writing curtailment is
+0.178669204
+Time elapsed for writing nse is
+0.072318794
+Time elapsed for writing power balance is
+0.218697766
+Time elapsed for writing transmission flows is
+0.012845519
+Time elapsed for writing transmission losses is
+0.017252049
+Time elapsed for writing emissions is
+0.081155664
+Time elapsed for writing reliability is
+0.009550981
+Time elapsed for writing storage duals is
+0.0794532
+Time elapsed for writing commitment is
+0.049916273
+Time elapsed for writing startup is
+0.047006067
+Time elapsed for writing shutdown is
+0.047544997
+Time elapsed for writing fuel consumption is
+0.548278552
+Time elapsed for writing co2 is
+0.155274472
+Time elapsed for writing price is
+0.00868412
+Time elapsed for writing energy revenue is
+0.122590917
+Time elapsed for writing charging cost is
+0.021228788
+Time elapsed for writing subsidy is
+0.001881095
+Time elapsed for writing time weights is
+0.000454011
+Time elapsed for writing esr prices is
+0.00030421
+Time elapsed for writing esr revenue is
+0.001172953
+Time elapsed for writing reserve margin is
+0.006003764
+Time elapsed for writing reserve margin with weights is
+0.003747688
+Time elapsed for writing virtual discharge is
+0.042731147
+Time elapsed for writing reserve revenue is
+0.287849342
+Time elapsed for writing capacity value is
+0.1147662
+Time elapsed for writing co2 cap is
+0.000604081
+Time elapsed for writing net revenue is
+0.199488822
+Wrote outputs to /home/gm1710/GenX/example_systems/AZ/base_reference/results/results_p2
+Time elapsed for writing costs is
+0.749611978
+Time elapsed for writing capacity is
+0.002654476
+Time elapsed for writing power is
+0.166680307
+Time elapsed for writing charge is
+0.023306963
+Time elapsed for writing storage is
+0.028012743
+Time elapsed for writing curtailment is
+0.203755892
+Time elapsed for writing nse is
+0.084992622
+Time elapsed for writing power balance is
+0.218609085
+Time elapsed for writing transmission flows is
+0.011071085
+Time elapsed for writing transmission losses is
+0.015808155
+Time elapsed for writing emissions is
+0.059938506
+Time elapsed for writing reliability is
+0.009200711
+Time elapsed for writing storage duals is
+0.063939845
+Time elapsed for writing commitment is
+0.046533055
+Time elapsed for writing startup is
+0.045323403
+Time elapsed for writing shutdown is
+0.046090184
+Time elapsed for writing fuel consumption is
+0.474542695
+Time elapsed for writing co2 is
+1.49244021
+Time elapsed for writing price is
+0.018023211
+Time elapsed for writing energy revenue is
+0.112323584
+Time elapsed for writing charging cost is
+0.019014643
+Time elapsed for writing subsidy is
+0.002282435
+Time elapsed for writing time weights is
+0.000776952
+Time elapsed for writing esr prices is
+0.00033438
+Time elapsed for writing esr revenue is
+0.001254123
+Time elapsed for writing reserve margin is
+0.006101884
+Time elapsed for writing reserve margin with weights is
+0.004033259
+Time elapsed for writing virtual discharge is
+0.047956619
+Time elapsed for writing reserve revenue is
+0.262800395
+Time elapsed for writing capacity value is
+0.081952026
+Time elapsed for writing co2 cap is
+0.000526541
+Time elapsed for writing net revenue is
+0.138629444
+Wrote outputs to /home/gm1710/GenX/example_systems/AZ/base_reference/results/results_p3
+Time elapsed for writing costs is
+0.669906237
+Time elapsed for writing capacity is
+0.002590016
+Time elapsed for writing power is
+0.175285497
+Time elapsed for writing charge is
+0.020435497
+Time elapsed for writing storage is
+0.024564995
+Time elapsed for writing curtailment is
+0.183857397
+Time elapsed for writing nse is
+0.087668518
+Time elapsed for writing power balance is
+0.235783564
+Time elapsed for writing transmission flows is
+0.011706277
+Time elapsed for writing transmission losses is
+0.017318269
+Time elapsed for writing emissions is
+0.073268116
+Time elapsed for writing reliability is
+0.008397919
+Time elapsed for writing storage duals is
+0.065105807
+Time elapsed for writing commitment is
+0.063764725
+Time elapsed for writing startup is
+0.056086377
+Time elapsed for writing shutdown is
+0.050123203
+Time elapsed for writing fuel consumption is
+0.492702286
+Time elapsed for writing co2 is
+0.144292907
+Time elapsed for writing price is
+0.00888245
+Time elapsed for writing energy revenue is
+0.122692008
+Time elapsed for writing charging cost is
+0.016768458
+Time elapsed for writing subsidy is
+0.001769514
+Time elapsed for writing time weights is
+0.000402951
+Time elapsed for writing esr prices is
+0.000253421
+Time elapsed for writing esr revenue is
+0.000869082
+Time elapsed for writing reserve margin is
+0.005849183
+Time elapsed for writing reserve margin with weights is
+0.002856587
+Time elapsed for writing virtual discharge is
+0.032162682
+Time elapsed for writing reserve revenue is
+0.214914957
+Time elapsed for writing capacity value is
+0.155881063
+Time elapsed for writing co2 cap is
+0.000513061
+Time elapsed for writing net revenue is
+0.15858053
+Wrote outputs to /home/gm1710/GenX/example_systems/AZ/base_reference/results/results_p4
+Time elapsed for writing costs is
+0.633302084
+Time elapsed for writing capacity is
+0.002582726
+Time elapsed for writing power is
+0.164597443
+Time elapsed for writing charge is
+0.021399738
+Time elapsed for writing storage is
+0.026708131
+Time elapsed for writing curtailment is
+0.186363552
+Time elapsed for writing nse is
+0.077964286
+Time elapsed for writing power balance is
+0.218890836
+Time elapsed for writing transmission flows is
+0.010706714
+Time elapsed for writing transmission losses is
+0.015411285
+Time elapsed for writing emissions is
+0.059386825
+Time elapsed for writing reliability is
+0.008454079
+Time elapsed for writing storage duals is
+0.063625484
+Time elapsed for writing commitment is
+0.046079734
+Time elapsed for writing startup is
+0.045415383
+Time elapsed for writing shutdown is
+0.045706374
+Time elapsed for writing fuel consumption is
+0.448012545
+Time elapsed for writing co2 is
+0.129717263
+Time elapsed for writing price is
+0.008171419
+Time elapsed for writing energy revenue is
+0.113311907
+Time elapsed for writing charging cost is
+0.016837008
+Time elapsed for writing subsidy is
+0.001993504
+Time elapsed for writing time weights is
+0.000488491
+Time elapsed for writing esr prices is
+0.000472791
+Time elapsed for writing esr revenue is
+0.000982733
+Precompiling GenX...
+    GenX Being precompiled by another machine (hostname: della-h14n8, pid: 1882770, pidfile: /home/gm1710/.julia/compiled/v1.11/GenX/UBPTL_8YCxk.ji.pidfile)
+  20619.4 ms  ✓ GenX
+  1 dependency successfully precompiled in 35 seconds. 151 already precompiled.
+┌ Warning: WriteIntermittentOutputs is not supported for non-myopic multistage models. Setting WriteIntermittentOutputs to 0 in the multistage settings.
+└ @ GenX ~/GenX/src/configure_settings/configure_settings.jl:220
+[ Info: Hydro.csv Successfully Read.
+[ Info: Thermal.csv Successfully Read.
+[ Info: Vre.csv Successfully Read.
+[ Info: Storage.csv Successfully Read.
+[ Info: Must_run.csv Successfully Read.
+[ Info: Resource_energy_share_requirement.csv Successfully Read.
+[ Info: Resource_capacity_reserve_margin.csv Successfully Read.
+[ Info: Resource_minimum_capacity_requirement.csv Successfully Read.
+[ Info: Multistage data successfully read.
+[ Info: Using the CO2 module to determine the CO2 emissions of CCS-equipped plants
+[ Info: Hydro.csv Successfully Read.
+[ Info: Thermal.csv Successfully Read.
+[ Info: Vre.csv Successfully Read.
+[ Info: Storage.csv Successfully Read.
+[ Info: Must_run.csv Successfully Read.
+[ Info: Resource_energy_share_requirement.csv Successfully Read.
+[ Info: Resource_capacity_reserve_margin.csv Successfully Read.
+[ Info: Resource_minimum_capacity_requirement.csv Successfully Read.
+[ Info: Multistage data successfully read.
+[ Info: Using the CO2 module to determine the CO2 emissions of CCS-equipped plants
+[ Info: Hydro.csv Successfully Read.
+[ Info: Thermal.csv Successfully Read.
+[ Info: Vre.csv Successfully Read.
+[ Info: Storage.csv Successfully Read.
+[ Info: Must_run.csv Successfully Read.
+[ Info: Resource_energy_share_requirement.csv Successfully Read.
+[ Info: Resource_capacity_reserve_margin.csv Successfully Read.
+[ Info: Resource_minimum_capacity_requirement.csv Successfully Read.
+[ Info: Multistage data successfully read.
+[ Info: Using the CO2 module to determine the CO2 emissions of CCS-equipped plants
+[ Info: Hydro.csv Successfully Read.
+[ Info: Thermal.csv Successfully Read.
+[ Info: Vre.csv Successfully Read.
+[ Info: Storage.csv Successfully Read.
+[ Info: Must_run.csv Successfully Read.
+[ Info: Resource_energy_share_requirement.csv Successfully Read.
+[ Info: Resource_capacity_reserve_margin.csv Successfully Read.
+[ Info: Resource_minimum_capacity_requirement.csv Successfully Read.
+[ Info: Multistage data successfully read.
+[ Info: Using the CO2 module to determine the CO2 emissions of CCS-equipped plants
+[ Info: Hydro.csv Successfully Read.
+[ Info: Thermal.csv Successfully Read.
+[ Info: Vre.csv Successfully Read.
+[ Info: Storage.csv Successfully Read.
+[ Info: Must_run.csv Successfully Read.
+[ Info: Resource_energy_share_requirement.csv Successfully Read.
+[ Info: Resource_capacity_reserve_margin.csv Successfully Read.
+[ Info: Resource_minimum_capacity_requirement.csv Successfully Read.
+[ Info: Multistage data successfully read.
+[ Info: Using the CO2 module to determine the CO2 emissions of CCS-equipped plants
+[ Info: Hydro.csv Successfully Read.
+[ Info: Thermal.csv Successfully Read.
+[ Info: Vre.csv Successfully Read.
+[ Info: Storage.csv Successfully Read.
+[ Info: Must_run.csv Successfully Read.
+[ Info: Resource_energy_share_requirement.csv Successfully Read.
+[ Info: Resource_capacity_reserve_margin.csv Successfully Read.
+[ Info: Resource_minimum_capacity_requirement.csv Successfully Read.
+[ Info: Multistage data successfully read.
+[ Info: Using the CO2 module to determine the CO2 emissions of CCS-equipped plants
+[ Info: Hydro.csv Successfully Read.
+[ Info: Thermal.csv Successfully Read.
+[ Info: Vre.csv Successfully Read.
+[ Info: Storage.csv Successfully Read.
+[ Info: Must_run.csv Successfully Read.
+[ Info: Resource_energy_share_requirement.csv Successfully Read.
+[ Info: Resource_capacity_reserve_margin.csv Successfully Read.
+[ Info: Resource_minimum_capacity_requirement.csv Successfully Read.
+[ Info: Multistage data successfully read.
+[ Info: Using the CO2 module to determine the CO2 emissions of CCS-equipped plants
+[ Info: Hydro.csv Successfully Read.
+[ Info: Thermal.csv Successfully Read.
+[ Info: Vre.csv Successfully Read.
+[ Info: Storage.csv Successfully Read.
+[ Info: Must_run.csv Successfully Read.
+[ Info: Resource_energy_share_requirement.csv Successfully Read.
+[ Info: Resource_capacity_reserve_margin.csv Successfully Read.
+[ Info: Resource_minimum_capacity_requirement.csv Successfully Read.
+[ Info: Multistage data successfully read.
+[ Info: Using the CO2 module to determine the CO2 emissions of CCS-equipped plants
+[ Info: Hydro.csv Successfully Read.
+[ Info: Thermal.csv Successfully Read.
+[ Info: Vre.csv Successfully Read.
+[ Info: Storage.csv Successfully Read.
+[ Info: Must_run.csv Successfully Read.
+[ Info: Resource_energy_share_requirement.csv Successfully Read.
+[ Info: Resource_capacity_reserve_margin.csv Successfully Read.
+[ Info: Resource_minimum_capacity_requirement.csv Successfully Read.
+[ Info: Multistage data successfully read.
+[ Info: Using the CO2 module to determine the CO2 emissions of CCS-equipped plants
+[ Info: Hydro.csv Successfully Read.
+[ Info: Thermal.csv Successfully Read.
+[ Info: Vre.csv Successfully Read.
+[ Info: Storage.csv Successfully Read.
+[ Info: Must_run.csv Successfully Read.
+[ Info: Resource_energy_share_requirement.csv Successfully Read.
+[ Info: Resource_capacity_reserve_margin.csv Successfully Read.
+[ Info: Resource_minimum_capacity_requirement.csv Successfully Read.
+[ Info: Multistage data successfully read.
+[ Info: Using the CO2 module to determine the CO2 emissions of CCS-equipped plants
+[ Info: Hydro.csv Successfully Read.
+[ Info: Thermal.csv Successfully Read.
+[ Info: Vre.csv Successfully Read.
+[ Info: Storage.csv Successfully Read.
+[ Info: Must_run.csv Successfully Read.
+[ Info: Resource_energy_share_requirement.csv Successfully Read.
+[ Info: Resource_capacity_reserve_margin.csv Successfully Read.
+[ Info: Resource_minimum_capacity_requirement.csv Successfully Read.
+[ Info: Multistage data successfully read.
+[ Info: Using the CO2 module to determine the CO2 emissions of CCS-equipped plants
+[ Info: Hydro.csv Successfully Read.
+[ Info: Thermal.csv Successfully Read.
+[ Info: Vre.csv Successfully Read.
+[ Info: Storage.csv Successfully Read.
+[ Info: Must_run.csv Successfully Read.
+[ Info: Resource_energy_share_requirement.csv Successfully Read.
+[ Info: Resource_capacity_reserve_margin.csv Successfully Read.
+[ Info: Resource_minimum_capacity_requirement.csv Successfully Read.
+[ Info: Multistage data successfully read.
+[ Info: Using the CO2 module to determine the CO2 emissions of CCS-equipped plants
+[ Info: Hydro.csv Successfully Read.
+[ Info: Thermal.csv Successfully Read.
+[ Info: Vre.csv Successfully Read.
+[ Info: Storage.csv Successfully Read.
+[ Info: Must_run.csv Successfully Read.
+[ Info: Resource_energy_share_requirement.csv Successfully Read.
+[ Info: Resource_capacity_reserve_margin.csv Successfully Read.
+[ Info: Resource_minimum_capacity_requirement.csv Successfully Read.
+[ Info: Multistage data successfully read.
+[ Info: Using the CO2 module to determine the CO2 emissions of CCS-equipped plants
+[ Info: Hydro.csv Successfully Read.
+[ Info: Thermal.csv Successfully Read.
+[ Info: Vre.csv Successfully Read.
+[ Info: Storage.csv Successfully Read.
+[ Info: Must_run.csv Successfully Read.
+[ Info: Resource_energy_share_requirement.csv Successfully Read.
+[ Info: Resource_capacity_reserve_margin.csv Successfully Read.
+[ Info: Resource_minimum_capacity_requirement.csv Successfully Read.
+[ Info: Multistage data successfully read.
+[ Info: Using the CO2 module to determine the CO2 emissions of CCS-equipped plants
+[ Info: Hydro.csv Successfully Read.
+[ Info: Thermal.csv Successfully Read.
+[ Info: Vre.csv Successfully Read.
+[ Info: Storage.csv Successfully Read.
+[ Info: Must_run.csv Successfully Read.
+[ Info: Resource_energy_share_requirement.csv Successfully Read.
+[ Info: Resource_capacity_reserve_margin.csv Successfully Read.
+[ Info: Resource_minimum_capacity_requirement.csv Successfully Read.
+[ Info: Multistage data successfully read.
+[ Info: Using the CO2 module to determine the CO2 emissions of CCS-equipped plants
+[ Info: Hydro.csv Successfully Read.
+[ Info: Thermal.csv Successfully Read.
+[ Info: Vre.csv Successfully Read.
+[ Info: Storage.csv Successfully Read.
+[ Info: Must_run.csv Successfully Read.
+[ Info: Resource_energy_share_requirement.csv Successfully Read.
+[ Info: Resource_capacity_reserve_margin.csv Successfully Read.
+[ Info: Resource_minimum_capacity_requirement.csv Successfully Read.
+[ Info: Multistage data successfully read.
+[ Info: Using the CO2 module to determine the CO2 emissions of CCS-equipped plants
+[ Info: Hydro.csv Successfully Read.
+[ Info: Thermal.csv Successfully Read.
+[ Info: Vre.csv Successfully Read.
+[ Info: Storage.csv Successfully Read.
+[ Info: Must_run.csv Successfully Read.
+[ Info: Resource_energy_share_requirement.csv Successfully Read.
+[ Info: Resource_capacity_reserve_margin.csv Successfully Read.
+[ Info: Resource_minimum_capacity_requirement.csv Successfully Read.
+[ Info: Multistage data successfully read.
+[ Info: Using the CO2 module to determine the CO2 emissions of CCS-equipped plants
+┌ Warning: The cost calculation of the multi-stage GenX is approximate currently, and we will be refining it more in one of the future releases.
+└ @ GenX ~/GenX/src/multi_stage/write_multi_stage_costs.jl:58
+Time elapsed for writing reserve margin is
+0.005493002
+Time elapsed for writing reserve margin with weights is
+0.002772336
+Time elapsed for writing virtual discharge is
+0.032031632
+Time elapsed for writing reserve revenue is
+0.1986537
+Time elapsed for writing capacity value is
+0.11034423
+Time elapsed for writing co2 cap is
+0.000676232
+Time elapsed for writing net revenue is
+0.149296038
+Wrote outputs to /home/gm1710/GenX/example_systems/AZ/base_reference/results/results_p5
+Time elapsed for writing costs is
+0.660217636
+Time elapsed for writing capacity is
+0.002659426
+Time elapsed for writing power is
+0.160534143
+Time elapsed for writing charge is
+0.02191659
+Time elapsed for writing storage is
+0.02638191
+Time elapsed for writing curtailment is
+0.182935924
+Time elapsed for writing nse is
+0.091309057
+Time elapsed for writing power balance is
+0.276351466
+Time elapsed for writing transmission flows is
+0.015095354
+Time elapsed for writing transmission losses is
+0.020730537
+Time elapsed for writing emissions is
+0.082144546
+Time elapsed for writing reliability is
+0.011773417
+Time elapsed for writing storage duals is
+0.083338838
+Time elapsed for writing commitment is
+0.068357535
+Time elapsed for writing startup is
+1.066270265
+Time elapsed for writing shutdown is
+0.052438819
+Time elapsed for writing fuel consumption is
+0.489598219
+Time elapsed for writing co2 is
+0.122776158
+Time elapsed for writing price is
+0.007482007
+Time elapsed for writing energy revenue is
+0.111208142
+Time elapsed for writing charging cost is
+0.016853858
+Time elapsed for writing subsidy is
+0.001532964
+Time elapsed for writing time weights is
+0.00038905
+Time elapsed for writing esr prices is
+0.000674142
+Time elapsed for writing esr revenue is
+0.001430583
+Time elapsed for writing reserve margin is
+0.004924181
+Time elapsed for writing reserve margin with weights is
+0.002536866
+Time elapsed for writing virtual discharge is
+0.031465581
+Time elapsed for writing reserve revenue is
+0.200145384
+Time elapsed for writing capacity value is
+0.102875463
+Time elapsed for writing co2 cap is
+0.000561131
+Time elapsed for writing net revenue is
+0.150721351
+Wrote outputs to /home/gm1710/GenX/example_systems/AZ/base_reference/results/results_p6
+Time elapsed for writing costs is
+0.674379907
+Time elapsed for writing capacity is
+0.003354258
+Time elapsed for writing power is
+0.195748343
+Time elapsed for writing charge is
+0.026885371
+Time elapsed for writing storage is
+0.033047135
+Time elapsed for writing curtailment is
+0.213960904
+Time elapsed for writing nse is
+0.087879009
+Time elapsed for writing power balance is
+0.214059535
+Time elapsed for writing transmission flows is
+0.011145505
+Time elapsed for writing transmission losses is
+0.016315167
+Time elapsed for writing emissions is
+0.058959944
+Time elapsed for writing reliability is
+0.010017283
+Time elapsed for writing storage duals is
+0.063052792
+Time elapsed for writing commitment is
+0.045736444
+Time elapsed for writing startup is
+0.042836597
+Time elapsed for writing shutdown is
+0.043689789
+Time elapsed for writing fuel consumption is
+0.447019813
+Time elapsed for writing co2 is
+0.138251283
+Time elapsed for writing price is
+0.007732537
+Time elapsed for writing energy revenue is
+0.110848231
+Time elapsed for writing charging cost is
+0.016436947
+Time elapsed for writing subsidy is
+0.001562774
+Time elapsed for writing time weights is
+0.000418971
+Time elapsed for writing esr prices is
+0.000258591
+Time elapsed for writing esr revenue is
+0.000879162
+Time elapsed for writing reserve margin is
+0.00474344
+Time elapsed for writing reserve margin with weights is
+0.002603806
+Time elapsed for writing virtual discharge is
+0.03060251
+Time elapsed for writing reserve revenue is
+0.199641012
+Time elapsed for writing capacity value is
+0.09270058
+Time elapsed for writing co2 cap is
+0.000546101
+Time elapsed for writing net revenue is
+0.142886264
+Wrote outputs to /home/gm1710/GenX/example_systems/AZ/base_reference/results/results_p7
+Time elapsed for writing costs is
+0.644076519
+Time elapsed for writing capacity is
+0.002721276
+Time elapsed for writing power is
+0.169843625
+Time elapsed for writing charge is
+0.023466003
+Time elapsed for writing storage is
+0.029933287
+Time elapsed for writing curtailment is
+0.230373102
+Time elapsed for writing nse is
+0.087072857
+Time elapsed for writing power balance is
+0.271631976
+Time elapsed for writing transmission flows is
+0.013878281
+Time elapsed for writing transmission losses is
+0.018418112
+Time elapsed for writing emissions is
+0.073212996
+Time elapsed for writing reliability is
+0.010131793
+Time elapsed for writing storage duals is
+0.077952446
+Time elapsed for writing commitment is
+0.055266615
+Time elapsed for writing startup is
+0.058612953
+Time elapsed for writing shutdown is
+0.060256807
+Time elapsed for writing fuel consumption is
+0.629692503
+Time elapsed for writing co2 is
+0.181727131
+Time elapsed for writing price is
+0.009847452
+Time elapsed for writing energy revenue is
+0.161964877
+Time elapsed for writing charging cost is
+0.020197035
+Time elapsed for writing subsidy is
+0.001883224
+Time elapsed for writing time weights is
+0.000466642
+Time elapsed for writing esr prices is
+0.00026139
+Time elapsed for writing esr revenue is
+0.001037572
+Time elapsed for writing reserve margin is
+0.005314873
+Time elapsed for writing reserve margin with weights is
+0.003214977
+Time elapsed for writing virtual discharge is
+0.040379101
+Time elapsed for writing reserve revenue is
+0.228758897
+Time elapsed for writing capacity value is
+0.1017716
+Time elapsed for writing co2 cap is
+0.000736822
+Time elapsed for writing net revenue is
+0.152658075
+Wrote outputs to /home/gm1710/GenX/example_systems/AZ/base_reference/results/results_p8
+Time elapsed for writing costs is
+0.670234445
+Time elapsed for writing capacity is
+0.003025087
+Time elapsed for writing power is
+0.163422359
+Time elapsed for writing charge is
+0.021666099
+Time elapsed for writing storage is
+0.026968931
+Time elapsed for writing curtailment is
+1.224955119
+Time elapsed for writing nse is
+0.083364868
+Time elapsed for writing power balance is
+0.272526656
+Time elapsed for writing transmission flows is
+0.011271136
+Time elapsed for writing transmission losses is
+0.017110838
+Time elapsed for writing emissions is
+0.058248732
+Time elapsed for writing reliability is
+0.008507519
+Time elapsed for writing storage duals is
+0.062422881
+Time elapsed for writing commitment is
+0.043609199
+Time elapsed for writing startup is
+0.041183493
+Time elapsed for writing shutdown is
+0.041410314
+Time elapsed for writing fuel consumption is
+0.432782058
+Time elapsed for writing co2 is
+0.120850203
+Time elapsed for writing price is
+0.007861408
+Time elapsed for writing energy revenue is
+0.113005065
+Time elapsed for writing charging cost is
+0.017835031
+Time elapsed for writing subsidy is
+0.001656423
+Time elapsed for writing time weights is
+0.000616612
+Time elapsed for writing esr prices is
+0.000317101
+Time elapsed for writing esr revenue is
+0.000889522
+Time elapsed for writing reserve margin is
+0.004877931
+Time elapsed for writing reserve margin with weights is
+0.002694216
+Time elapsed for writing virtual discharge is
+0.03122075
+Time elapsed for writing reserve revenue is
+0.206670297
+Time elapsed for writing capacity value is
+0.099698956
+Time elapsed for writing co2 cap is
+0.000555981
+Time elapsed for writing net revenue is
+0.162203697
+Wrote outputs to /home/gm1710/GenX/example_systems/AZ/base_reference/results/results_p9
+Time elapsed for writing costs is
+0.691195352
+Time elapsed for writing capacity is
+0.002845436
+Time elapsed for writing power is
+0.177637902
+Time elapsed for writing charge is
+0.022827901
+Time elapsed for writing storage is
+0.026688221
+Time elapsed for writing curtailment is
+0.191614203
+Time elapsed for writing nse is
+0.075790021
+Time elapsed for writing power balance is
+0.219084905
+Time elapsed for writing transmission flows is
+0.012583559
+Time elapsed for writing transmission losses is
+0.01794075
+Time elapsed for writing emissions is
+0.063418804
+Time elapsed for writing reliability is
+0.010054903
+Time elapsed for writing storage duals is
+0.078015376
+Time elapsed for writing commitment is
+0.050394484
+Time elapsed for writing startup is
+0.049653952
+Time elapsed for writing shutdown is
+0.050838065
+Time elapsed for writing fuel consumption is
+0.460626841
+Time elapsed for writing co2 is
+0.147056602
+Time elapsed for writing price is
+0.007955588
+Time elapsed for writing energy revenue is
+0.116163113
+Time elapsed for writing charging cost is
+0.01780635
+Time elapsed for writing subsidy is
+0.001691544
+Time elapsed for writing time weights is
+0.000428201
+Time elapsed for writing esr prices is
+0.000276391
+Time elapsed for writing esr revenue is
+0.001122172
+Time elapsed for writing reserve margin is
+0.005424393
+Time elapsed for writing reserve margin with weights is
+0.002591625
+Time elapsed for writing virtual discharge is
+0.032192273
+Time elapsed for writing reserve revenue is
+0.212658581
+Time elapsed for writing capacity value is
+0.093244731
+Time elapsed for writing co2 cap is
+0.000587481
+Time elapsed for writing net revenue is
+0.148997227
+Wrote outputs to /home/gm1710/GenX/example_systems/AZ/base_reference/results/results_p10
+Time elapsed for writing costs is
+0.641877301
+Time elapsed for writing capacity is
+0.002655046
+Time elapsed for writing power is
+0.166247126
+Time elapsed for writing charge is
+0.023099472
+Time elapsed for writing storage is
+0.027198021
+Time elapsed for writing curtailment is
+0.187887075
+Time elapsed for writing nse is
+0.076385413
+Time elapsed for writing power balance is
+0.217407271
+Time elapsed for writing transmission flows is
+0.010843145
+Time elapsed for writing transmission losses is
+0.015938646
+Time elapsed for writing emissions is
+0.060618247
+Time elapsed for writing reliability is
+0.008346028
+Time elapsed for writing storage duals is
+0.066417461
+Time elapsed for writing commitment is
+0.047639957
+Time elapsed for writing startup is
+0.046223915
+Time elapsed for writing shutdown is
+0.046217954
+Time elapsed for writing fuel consumption is
+0.493178175
+Time elapsed for writing co2 is
+0.147255213
+Time elapsed for writing price is
+0.008342889
+Time elapsed for writing energy revenue is
+0.121277364
+Time elapsed for writing charging cost is
+0.018562882
+Time elapsed for writing subsidy is
+0.001859824
+Time elapsed for writing time weights is
+0.000484031
+Time elapsed for writing esr prices is
+0.000307031
+Time elapsed for writing esr revenue is
+0.000959792
+Time elapsed for writing reserve margin is
+0.006065504
+Time elapsed for writing reserve margin with weights is
+0.002866256
+Time elapsed for writing virtual discharge is
+0.034623939
+Time elapsed for writing reserve revenue is
+0.217551711
+Time elapsed for writing capacity value is
+0.115286291
+Time elapsed for writing co2 cap is
+0.000521881
+Time elapsed for writing net revenue is
+0.175178696
+Wrote outputs to /home/gm1710/GenX/example_systems/AZ/base_reference/results/results_p11
+Time elapsed for writing costs is
+1.880779871
+Time elapsed for writing capacity is
+0.002647996
+Time elapsed for writing power is
+0.164746553
+Time elapsed for writing charge is
+0.021481708
+Time elapsed for writing storage is
+0.025975259
+Time elapsed for writing curtailment is
+0.261731492
+Time elapsed for writing nse is
+0.072623364
+Time elapsed for writing power balance is
+0.220151487
+Time elapsed for writing transmission flows is
+0.009917653
+Time elapsed for writing transmission losses is
+0.014934344
+Time elapsed for writing emissions is
+0.060767207
+Time elapsed for writing reliability is
+0.008300919
+Time elapsed for writing storage duals is
+0.058125081
+Time elapsed for writing commitment is
+0.046899146
+Time elapsed for writing startup is
+0.045818604
+Time elapsed for writing shutdown is
+0.044826401
+Time elapsed for writing fuel consumption is
+0.489839577
+Time elapsed for writing co2 is
+0.151430972
+Time elapsed for writing price is
+0.009587931
+Time elapsed for writing energy revenue is
+0.140212607
+Time elapsed for writing charging cost is
+0.021052718
+Time elapsed for writing subsidy is
+0.002254795
+Time elapsed for writing time weights is
+0.000589431
+Time elapsed for writing esr prices is
+0.000321371
+Time elapsed for writing esr revenue is
+0.001178413
+Time elapsed for writing reserve margin is
+0.006714355
+Time elapsed for writing reserve margin with weights is
+0.003479818
+Time elapsed for writing virtual discharge is
+0.039062748
+Time elapsed for writing reserve revenue is
+0.260488659
+Time elapsed for writing capacity value is
+0.140809058
+Time elapsed for writing co2 cap is
+0.000546421
+Time elapsed for writing net revenue is
+0.164309902
+Wrote outputs to /home/gm1710/GenX/example_systems/AZ/base_reference/results/results_p12
+Time elapsed for writing costs is
+0.692854686
+Time elapsed for writing capacity is
+0.002890256
+Time elapsed for writing power is
+0.167627459
+Time elapsed for writing charge is
+0.0220275
+Time elapsed for writing storage is
+0.02654513
+Time elapsed for writing curtailment is
+0.180416888
+Time elapsed for writing nse is
+0.078459267
+Time elapsed for writing power balance is
+0.217609772
+Time elapsed for writing transmission flows is
+0.010423044
+Time elapsed for writing transmission losses is
+0.015705215
+Time elapsed for writing emissions is
+0.062532862
+Time elapsed for writing reliability is
+0.00911365
+Time elapsed for writing storage duals is
+0.060297546
+Time elapsed for writing commitment is
+0.046458406
+Time elapsed for writing startup is
+0.045432952
+Time elapsed for writing shutdown is
+0.045392553
+Time elapsed for writing fuel consumption is
+0.481940339
+Time elapsed for writing co2 is
+0.13287268
+Time elapsed for writing price is
+0.00846849
+Time elapsed for writing energy revenue is
+0.125583104
+Time elapsed for writing charging cost is
+0.019031143
+Time elapsed for writing subsidy is
+0.001675533
+Time elapsed for writing time weights is
+0.000444181
+Time elapsed for writing esr prices is
+0.000273621
+Time elapsed for writing esr revenue is
+0.000833962
+Time elapsed for writing reserve margin is
+0.005743313
+Time elapsed for writing reserve margin with weights is
+0.002854996
+Time elapsed for writing virtual discharge is
+0.03514504
+Time elapsed for writing reserve revenue is
+0.271012842
+Time elapsed for writing capacity value is
+0.100882218
+Time elapsed for writing co2 cap is
+0.000543282
+Time elapsed for writing net revenue is
+0.179111094
+Wrote outputs to /home/gm1710/GenX/example_systems/AZ/base_reference/results/results_p13
+Time elapsed for writing costs is
+0.824606034
+Time elapsed for writing capacity is
+0.002965676
+Time elapsed for writing power is
+0.195652472
+Time elapsed for writing charge is
+0.031094871
+Time elapsed for writing storage is
+0.034447058
+Time elapsed for writing curtailment is
+0.271509303
+Time elapsed for writing nse is
+0.134018123
+Time elapsed for writing power balance is
+0.295170467
+Time elapsed for writing transmission flows is
+0.014512663
+Time elapsed for writing transmission losses is
+0.018790403
+Time elapsed for writing emissions is
+0.070352709
+Time elapsed for writing reliability is
+0.00909109
+Time elapsed for writing storage duals is
+0.076401793
+Time elapsed for writing commitment is
+0.050702545
+Time elapsed for writing startup is
+0.047456877
+Time elapsed for writing shutdown is
+0.047452207
+Time elapsed for writing fuel consumption is
+0.501772044
+Time elapsed for writing co2 is
+0.15038415
+Time elapsed for writing price is
+0.010809455
+Time elapsed for writing energy revenue is
+0.131797538
+Time elapsed for writing charging cost is
+0.020026655
+Time elapsed for writing subsidy is
+0.001718584
+Time elapsed for writing time weights is
+0.000473681
+Time elapsed for writing esr prices is
+0.000317771
+Time elapsed for writing esr revenue is
+0.000951122
+Time elapsed for writing reserve margin is
+0.005879943
+Time elapsed for writing reserve margin with weights is
+0.002839166
+Time elapsed for writing virtual discharge is
+0.036539553
+Time elapsed for writing reserve revenue is
+0.240119153
+Time elapsed for writing capacity value is
+1.23907804
+Time elapsed for writing co2 cap is
+0.002880827
+Time elapsed for writing net revenue is
+0.188612236
+Wrote outputs to /home/gm1710/GenX/example_systems/AZ/base_reference/results/results_p14
+Time elapsed for writing costs is
+0.662723847
+Time elapsed for writing capacity is
+0.002520436
+Time elapsed for writing power is
+0.160522673
+Time elapsed for writing charge is
+0.02229624
+Time elapsed for writing storage is
+0.026770211
+Time elapsed for writing curtailment is
+0.184462687
+Time elapsed for writing nse is
+0.075990772
+Time elapsed for writing power balance is
+0.222987094
+Time elapsed for writing transmission flows is
+0.01324789
+Time elapsed for writing transmission losses is
+0.015807215
+Time elapsed for writing emissions is
+0.062772692
+Time elapsed for writing reliability is
+0.009139511
+Time elapsed for writing storage duals is
+0.065143337
+Time elapsed for writing commitment is
+0.048345869
+Time elapsed for writing startup is
+0.050483194
+Time elapsed for writing shutdown is
+0.049826073
+Time elapsed for writing fuel consumption is
+0.612165954
+Time elapsed for writing co2 is
+0.151749323
+Time elapsed for writing price is
+0.010675044
+Time elapsed for writing energy revenue is
+0.156946275
+Time elapsed for writing charging cost is
+0.02218292
+Time elapsed for writing subsidy is
+0.002375445
+Time elapsed for writing time weights is
+0.000536711
+Time elapsed for writing esr prices is
+0.000284281
+Time elapsed for writing esr revenue is
+0.000980012
+Time elapsed for writing reserve margin is
+0.006369625
+Time elapsed for writing reserve margin with weights is
+0.003832808
+Time elapsed for writing virtual discharge is
+0.040928943
+Time elapsed for writing reserve revenue is
+0.232155005
+Time elapsed for writing capacity value is
+0.14630638
+Time elapsed for writing co2 cap is
+0.000557692
+Time elapsed for writing net revenue is
+0.167551848
+Wrote outputs to /home/gm1710/GenX/example_systems/AZ/base_reference/results/results_p15
+Time elapsed for writing costs is
+0.704526512
+Time elapsed for writing capacity is
+0.003264927
+Time elapsed for writing power is
+0.178804325
+Time elapsed for writing charge is
+0.023601163
+Time elapsed for writing storage is
+0.027576082
+Time elapsed for writing curtailment is
+0.185986961
+Time elapsed for writing nse is
+0.081989785
+Time elapsed for writing power balance is
+0.24349771
+Time elapsed for writing transmission flows is
+0.011659517
+Time elapsed for writing transmission losses is
+0.016222926
+Time elapsed for writing emissions is
+0.06607975
+Time elapsed for writing reliability is
+0.009525461
+Time elapsed for writing storage duals is
+0.063587014
+Time elapsed for writing commitment is
+0.050076103
+Time elapsed for writing startup is
+0.04854559
+Time elapsed for writing shutdown is
+0.050477474
+Time elapsed for writing fuel consumption is
+0.524203345
+Time elapsed for writing co2 is
+0.16388736
+Time elapsed for writing price is
+0.010592714
+Time elapsed for writing energy revenue is
+0.126297646
+Time elapsed for writing charging cost is
+0.019470314
+Time elapsed for writing subsidy is
+0.001588044
+Time elapsed for writing time weights is
+0.00042168
+Time elapsed for writing esr prices is
+0.00026296
+Time elapsed for writing esr revenue is
+0.000882012
+Time elapsed for writing reserve margin is
+0.007364907
+Time elapsed for writing reserve margin with weights is
+0.002905676
+Time elapsed for writing virtual discharge is
+0.036308882
+Time elapsed for writing reserve revenue is
+0.237164146
+Time elapsed for writing capacity value is
+0.10586253
+Time elapsed for writing co2 cap is
+0.000529311
+Time elapsed for writing net revenue is
+0.169640913
+Wrote outputs to /home/gm1710/GenX/example_systems/AZ/base_reference/results/results_p16
+Time elapsed for writing costs is
+0.762289703
+Time elapsed for writing capacity is
+0.003079507
+Time elapsed for writing power is
+0.179719586
+Time elapsed for writing charge is
+0.023939644
+Time elapsed for writing storage is
+0.032443593
+Time elapsed for writing curtailment is
+0.211882199
+Time elapsed for writing nse is
+0.079839881
+Time elapsed for writing power balance is
+0.233603318
+Time elapsed for writing transmission flows is
+0.011097095
+Time elapsed for writing transmission losses is
+0.016207086
+Time elapsed for writing emissions is
+0.065763699
+Time elapsed for writing reliability is
+0.009811002
+Time elapsed for writing storage duals is
+0.066857911
+Time elapsed for writing commitment is
+0.051324426
+Time elapsed for writing startup is
+0.061463669
+Time elapsed for writing shutdown is
+0.05719349
+Time elapsed for writing fuel consumption is
+0.696115053
+Time elapsed for writing co2 is
+0.167706929
+Time elapsed for writing price is
+0.011197755
+Time elapsed for writing energy revenue is
+0.152610725
+Time elapsed for writing charging cost is
+1.100431678
+Time elapsed for writing subsidy is
+0.007723387
+Time elapsed for writing time weights is
+0.000400431
+Time elapsed for writing esr prices is
+0.000378751
+Time elapsed for writing esr revenue is
+0.000907492
+Time elapsed for writing reserve margin is
+0.005307342
+Time elapsed for writing reserve margin with weights is
+0.003744508
+Time elapsed for writing virtual discharge is
+0.034250328
+Time elapsed for writing reserve revenue is
+0.227593974
+Time elapsed for writing capacity value is
+0.180291598
+Time elapsed for writing co2 cap is
+0.000553141
+Time elapsed for writing net revenue is
+0.167790699
+Wrote outputs to /home/gm1710/GenX/example_systems/AZ/base_reference/results/results_p17
