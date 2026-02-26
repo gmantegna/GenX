@@ -537,3 +537,21 @@ Crossover log...
     7746 DPushes remaining with DInf 0.0000000e+00              1746s
     6379 DPushes remaining with DInf 0.0000000e+00              1771s
     5094 DPushes remaining with DInf 0.0000000e+00              1788s
+    3637 DPushes remaining with DInf 0.0000000e+00              1808s
+    1911 DPushes remaining with DInf 0.0000000e+00              1841s
+     327 DPushes remaining with DInf 0.0000000e+00              1862s
+       0 DPushes remaining with DInf 0.0000000e+00              1869s
+Warning: Markowitz tolerance tightened to 0.5
+
+ 2767339 PPushes remaining with PInf 7.9113173e+00              1871s
+ 1898922 PPushes remaining with PInf 9.8900226e+00              2665s
+ 1664645 PPushes remaining with PInf 7.8742462e+00              2924s
+ 1519570 PPushes remaining with PInf 8.1498849e+00              3204s
+ 1408889 PPushes remaining with PInf 7.9368161e+00              3345s
+ 1332367 PPushes remaining with PInf 7.6548495e+00              3444s
+ 1265799 PPushes remaining with PInf 7.8206391e+00              3581s
+ 1192805 PPushes remaining with PInf 8.3576837e+00              3853s
+ 1139436 PPushes remaining with PInf 8.2567421e+00              4056s
+ 1093921 PPushes remaining with PInf 8.3520489e+00              4164s
+ 1049783 PPushes remaining with PInf 8.2375275e+00              4253s
+ 1013745 PPushes remaining with PInf 8.2046896e+00              4330s
