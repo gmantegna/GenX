@@ -1,0 +1,27 @@
+Resource,Zone,New_Build,Can_Retire,Existing_Cap_MW,cluster,heat_rate_mmbtu_mwh,fom_per_mwyr,vom_per_mwh,heat_rate_mmbtu_mwh_iqr,heat_rate_mmbtu_mwh_std,fom_per_mwyr_std,num_units,region,technology,Cap_Size,Fixed_OM_Cost_per_MWyr,Var_OM_Cost_per_MWh,Heat_Rate_MMBTU_per_MWh,Commit,variable_CF,LINK_STAGES
+AZ_biomass_1,1,0,0,27.9,1,16.43,124043.989,5.866,3.726,2.8,50919.649,4.0,AZ,Biomass,6.98,124043,5.87,16.43,1,0.0,0
+AZ_run_of_river_hydroelectric_1,1,0,0,23.9,1,0.0,9981.397,0.0,0.0,0.0,1351.61,5.0,AZ,Run of River Hydroelectric,4.78,9981,0.0,0.0,0,0.5456160286823097,0
+CA_N_biomass_1,2,0,0,412.1,1,16.615,102330.422,4.243,1.431,4.017,139834.657,80.0,CA_N,Biomass,5.15,102330,4.24,16.61,1,0.0,0
+CA_N_geothermal_1,2,0,0,0.0,1,9.771,53095.75,0.587,0.0,0.0,13808.469,0.0,CA_N,Geothermal,1.0,53095,0.59,9.77,0,0.0,0
+CA_N_run_of_river_hydroelectric_1,2,0,0,4731.2,1,0.0,7573.052,0.0,0.0,0.0,3855.155,165.0,CA_N,Run of River Hydroelectric,28.67,7573,0.0,0.0,0,0.3094153814085021,0
+CA_S_biomass_1,3,0,0,249.7,1,14.925,66757.02,2.225,0.18,2.607,81243.358,48.0,CA_S,Biomass,5.2,66757,2.22,14.92,1,0.0,0
+CA_S_geothermal_1,3,0,0,288.6,1,13.533,53800.691,0.587,0.0,5.139,14449.583,21.0,CA_S,Geothermal,13.74,53800,0.59,13.53,0,0.0,0
+CA_S_run_of_river_hydroelectric_1,3,0,0,884.3,1,0.0,9286.921,0.0,0.0,0.0,2465.355,83.0,CA_S,Run of River Hydroelectric,10.65,9286,0.0,0.0,0,0.1462364007385259,0
+MT_WY_CO_biomass_1,4,0,0,27.1,1,14.121,90400.284,3.774,1.179,1.882,87669.33,10.0,MT_WY_CO,Biomass,2.71,90400,3.77,14.12,1,0.0,0
+MT_WY_CO_run_of_river_hydroelectric_1,4,0,0,552.5,1,0.0,9788.477,0.0,0.0,0.0,4096.361,58.0,MT_WY_CO,Run of River Hydroelectric,9.53,9788,0.0,0.0,0,0.5852094235369618,0
+NM_biomass_1,5,0,0,6.4,1,13.5,79892.516,5.378,0.0,0.0,90018.118,4.0,NM,Biomass,1.6,79892,5.38,13.5,1,0.0,0
+NM_geothermal_1,5,0,0,8.6,1,9.771,65021.0,0.587,0.0,0.0,0.0,5.0,NM,Geothermal,1.72,65021,0.59,9.77,0,0.0,0
+NM_run_of_river_hydroelectric_1,5,0,0,82.7,1,0.0,9174.179,0.0,0.0,0.0,1246.366,9.0,NM,Run of River Hydroelectric,9.19,9174,0.0,0.0,0,0.2999504817063161,0
+PNW_biomass_1,6,0,0,115.0,1,17.321,127480.725,4.477,1.137,3.317,129031.83,51.0,PNW,Biomass,2.26,127480,4.48,17.32,1,0.0,0
+PNW_geothermal_1,6,0,0,29.5,1,9.771,44285.414,0.587,0.0,0.0,14305.236,5.0,PNW,Geothermal,5.9,44285,0.59,9.77,0,0.0,0
+PNW_run_of_river_hydroelectric_1,6,0,0,15141.4,1,0.0,7767.733,0.0,0.0,0.0,4508.69,420.0,PNW,Run of River Hydroelectric,36.05,7767,0.0,0.0,0,0.4266296156144014,0
+UT_NV_biomass_1,7,0,0,20.4,1,14.775,126340.559,3.326,0.0,1.387,224900.565,15.0,UT_NV,Biomass,1.36,126340,3.33,14.78,1,0.0,0
+UT_NV_geothermal_1,7,0,0,629.2,1,11.656,56998.953,0.587,0.0,6.796,11128.773,64.0,UT_NV,Geothermal,9.83,56998,0.59,11.66,0,0.0,0
+UT_NV_run_of_river_hydroelectric_1,7,0,0,61.4,1,0.0,13893.958,0.0,0.0,0.0,2863.879,35.0,UT_NV,Run of River Hydroelectric,1.75,13893,0.0,0.0,0,0.859984381469525,0
+AZ_distributed_generation_1,1,0,0,2581.0,1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,AZ,distributed_generation,0.0,0,0.0,0.0,0,0.1999922211350293,0
+NM_distributed_generation_1,5,0,0,757.0,1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,NM,distributed_generation,0.0,0,0.0,0.0,0,0.1993770058708414,0
+PNW_distributed_generation_1,6,0,0,1741.0,1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,PNW,distributed_generation,0.0,0,0.0,0.0,0,0.1983197162426614,0
+CA_S_distributed_generation_1,3,0,0,10102.0,1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,CA_S,distributed_generation,0.0,0,0.0,0.0,0,0.2005753261578604,0
+CA_N_distributed_generation_1,2,0,0,6223.0,1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,CA_N,distributed_generation,0.0,0,0.0,0.0,0,0.1958070939334638,0
+UT_NV_distributed_generation_1,7,0,0,1539.0,1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,UT_NV,distributed_generation,0.0,0,0.0,0.0,0,0.1996168786692758,0
+MT_WY_CO_distributed_generation_1,4,0,0,1486.0,1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,MT_WY_CO,distributed_generation,0.0,0,0.0,0.0,0,0.1972765166340508,0

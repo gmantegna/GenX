@@ -1,0 +1,8 @@
+Region_description,Network_zones,ESR_1,ESR_2
+AZ,1,0.0,0.0
+CA_N,2,0.58,0.58
+CA_S,3,0.58,0.58
+MT_WY_CO,4,0.16,0.16
+NM,5,0.45,0.45
+PNW,6,0.14,0.71
+UT_NV,7,0.22,0.22
