@@ -1,9 +1,9 @@
 ARCH: x86_64
-CPU_THREADS: 40
+CPU_THREADS: 192
 JULIA_STDLIB: "/scratch/gpfs/LICENSED/x86_64/julia/1.11.3/share/julia/stdlib/v1.11"
 JULIA_VERSION: 1.11.3
 KERNEL: Linux
 GENX_VERSION: 0.4.1-dev.19
 MACHINE: "x86_64-linux-gnu"
 JIT: "ORCJIT"
-CPU_NAME: "cascadelake"
+CPU_NAME: "znver4"

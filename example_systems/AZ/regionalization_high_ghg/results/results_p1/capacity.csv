@@ -6,8 +6,8 @@ MT_WY_CO_conventional_hydroelectric_1,4,None,2921.1,0.0,0.0,0.0,2921.1,0.0,0.0,0
 PNW_conventional_hydroelectric_1,6,None,16574.1,0.0,0.0,0.0,16574.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 UT_NV_conventional_hydroelectric_1,7,None,679.9,0.0,0.0,0.0,679.9,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 AZ_conventional_steam_coal_1,1,None,3790.0,0.0,0.0,0.0,3790.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-AZ_natural_gas_fired_combined_cycle_1,1,None,9856.1,0.0,0.0,0.0,9856.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-AZ_natural_gas_fired_combustion_turbine_1,1,None,2231.1,0.0,0.0,0.0,2231.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+AZ_natural_gas_fired_combined_cycle_1,1,None,10138.6,0.0,0.0,0.0,10138.6,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+AZ_natural_gas_fired_combustion_turbine_1,1,None,3639.2,0.0,0.0,0.0,3639.2,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 AZ_natural_gas_steam_turbine_1,1,None,842.0,0.0,0.0,0.0,842.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 AZ_nuclear_1,1,None,1834.2,0.0,0.0,0.0,1834.2,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 AZ_other_peaker_1,1,None,182.0,0.0,0.0,0.0,182.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
@@ -53,17 +53,17 @@ CA_S_naturalgas_combustion_turbine_fframe_moderate_0,3,None,0.0,0.0,0.0,0.0,0.0,
 CA_S_nuclear_nuclear__large_moderate_0,3,None,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 MT_WY_CO_naturalgas_2on1_combined_cycle_fframe_moderate_0,4,None,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 MT_WY_CO_naturalgas_2on1_combined_cycle_fframe_95_ccs_moderate_0,4,None,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-MT_WY_CO_naturalgas_combustion_turbine_fframe_moderate_0,4,None,0.0,0.0,0.0,1720.0273162847886,1720.0273162847886,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+MT_WY_CO_naturalgas_combustion_turbine_fframe_moderate_0,4,None,0.0,0.0,0.0,1151.2474292246409,1151.2474292246409,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 MT_WY_CO_nuclear_nuclear__large_moderate_0,4,None,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 NM_naturalgas_2on1_combined_cycle_fframe_moderate_0,5,None,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 NM_naturalgas_2on1_combined_cycle_fframe_95_ccs_moderate_0,5,None,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 NM_naturalgas_combustion_turbine_fframe_moderate_0,5,None,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 NM_nuclear_nuclear__large_moderate_0,5,None,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-PNW_naturalgas_2on1_combined_cycle_fframe_moderate_0,6,None,0.0,0.0,0.0,10234.115453377704,10234.115453377704,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+PNW_naturalgas_2on1_combined_cycle_fframe_moderate_0,6,None,0.0,0.0,0.0,10045.609178951689,10045.609178951689,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 PNW_naturalgas_2on1_combined_cycle_fframe_95_ccs_moderate_0,6,None,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 PNW_naturalgas_combustion_turbine_fframe_moderate_0,6,None,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 PNW_nuclear_nuclear__large_moderate_0,6,None,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-UT_NV_naturalgas_2on1_combined_cycle_fframe_moderate_0,7,None,0.0,0.0,0.0,11685.459712384269,11685.459712384269,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+UT_NV_naturalgas_2on1_combined_cycle_fframe_moderate_0,7,None,0.0,0.0,0.0,10890.183381710696,10890.183381710696,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 UT_NV_naturalgas_2on1_combined_cycle_fframe_95_ccs_moderate_0,7,None,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 UT_NV_naturalgas_combustion_turbine_fframe_moderate_0,7,None,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 UT_NV_nuclear_nuclear__large_moderate_0,7,None,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
@@ -114,7 +114,7 @@ CA_N_utilitypv_class1_moderate_3,2,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0,0.0
 CA_N_utilitypv_class1_moderate_4,2,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 CA_N_utilitypv_class1_moderate_5,2,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 CA_S_landbasedwind_class3_moderate_0,3,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-CA_S_landbasedwind_class3_moderate_1,3,None,0.0,0.0,0.0,228.9,228.9,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+CA_S_landbasedwind_class3_moderate_1,3,None,0.0,0.0,0.0,228.9,228.9,248741.57830687243,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 CA_S_landbasedwind_class3_moderate_2,3,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 CA_S_landbasedwind_class3_moderate_3,3,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 CA_S_landbasedwind_class3_moderate_4,3,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
@@ -128,7 +128,7 @@ CA_S_utilitypv_class1_moderate_2,3,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0,0.0
 CA_S_utilitypv_class1_moderate_3,3,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 CA_S_utilitypv_class1_moderate_4,3,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 CA_S_utilitypv_class1_moderate_5,3,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-MT_WY_CO_landbasedwind_class3_moderate_0,4,None,0.0,0.0,0.0,16887.31423573843,16887.31423573843,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+MT_WY_CO_landbasedwind_class3_moderate_0,4,None,0.0,0.0,0.0,16887.314235738435,16887.314235738435,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 MT_WY_CO_landbasedwind_class3_moderate_1,4,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 MT_WY_CO_landbasedwind_class3_moderate_2,4,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 MT_WY_CO_landbasedwind_class3_moderate_3,4,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
@@ -143,7 +143,7 @@ MT_WY_CO_utilitypv_class1_moderate_2,4,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0
 MT_WY_CO_utilitypv_class1_moderate_3,4,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 MT_WY_CO_utilitypv_class1_moderate_4,4,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 MT_WY_CO_utilitypv_class1_moderate_5,4,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-NM_landbasedwind_class3_moderate_0,5,None,0.0,0.0,0.0,1388.1553426478297,1388.1553426478297,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+NM_landbasedwind_class3_moderate_0,5,None,0.0,0.0,0.0,1303.6700984439537,1303.6700984439537,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 NM_landbasedwind_class3_moderate_1,5,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 NM_landbasedwind_class3_moderate_2,5,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 NM_landbasedwind_class3_moderate_3,5,None,0.0,0.0,0.0,0.0,0.0,-0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
@@ -207,9 +207,9 @@ PNW_batteries_1,6,None,1076.6,0.0,0.0,0.0,1076.6,0.0,3757.1,0.0,0.0,3757.1,0.0,0
 PNW_hydroelectric_pumped_storage_1,6,None,314.0,0.0,0.0,0.0,314.0,0.0,4867.0,0.0,0.0,4867.0,0.0,0.0,0.0,0.0
 UT_NV_batteries_1,7,None,2573.1,0.0,0.0,0.0,2573.1,0.0,6390.3,0.0,0.0,6390.3,0.0,0.0,0.0,0.0
 AZ_utilityscale_battery_storage_lithium_ion_moderate_0,1,None,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-CA_N_utilityscale_battery_storage_lithium_ion_moderate_0,2,None,0.0,0.0,0.0,3009.8175280738615,3009.8175280738615,0.0,0.0,0.0,12039.270112295446,12039.270112295446,0.0,0.0,0.0,0.0
-CA_S_utilityscale_battery_storage_lithium_ion_moderate_0,3,None,0.0,0.0,0.0,916.20405375552,916.20405375552,0.0,0.0,0.0,3664.81621502208,3664.81621502208,0.0,0.0,0.0,0.0
-MT_WY_CO_utilityscale_battery_storage_lithium_ion_moderate_0,4,None,0.0,0.0,0.0,147.24550961116537,147.24550961116537,0.0,0.0,0.0,588.9820384446615,588.9820384446615,0.0,0.0,0.0,0.0
+CA_N_utilityscale_battery_storage_lithium_ion_moderate_0,2,None,0.0,0.0,0.0,2987.438527957301,2987.438527957301,0.0,0.0,0.0,11949.754111829205,11949.754111829205,0.0,0.0,0.0,0.0
+CA_S_utilityscale_battery_storage_lithium_ion_moderate_0,3,None,0.0,0.0,0.0,916.2040537555216,916.2040537555216,0.0,0.0,0.0,3664.816215022087,3664.816215022087,0.0,0.0,0.0,0.0
+MT_WY_CO_utilityscale_battery_storage_lithium_ion_moderate_0,4,None,0.0,0.0,0.0,93.6206414289046,93.6206414289046,0.0,0.0,0.0,374.4825657156184,374.4825657156184,0.0,0.0,0.0,0.0
 NM_utilityscale_battery_storage_lithium_ion_moderate_0,5,None,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 PNW_utilityscale_battery_storage_lithium_ion_moderate_0,6,None,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 UT_NV_utilityscale_battery_storage_lithium_ion_moderate_0,7,None,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
@@ -246,4 +246,4 @@ CA_S_distributed_generation_1,3,None,10102.0,0.0,0.0,0.0,10102.0,0.0,0.0,0.0,0.0
 CA_N_distributed_generation_1,2,None,6223.0,0.0,0.0,0.0,6223.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 UT_NV_distributed_generation_1,7,None,1539.0,0.0,0.0,0.0,1539.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 MT_WY_CO_distributed_generation_1,4,None,1486.0,0.0,0.0,0.0,1486.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-Total,n/a,n/a,293428.0,0.0,0.0,46217.23915187357,339645.23915187357,n/a,171021.40000000002,0.0,16293.068365762187,187314.4683657622,0.0,0.0,0.0,0.0
+Total,n/a,n/a,295118.6,0.0,0.0,44504.18754721114,339622.78754721116,n/a,171021.40000000002,0.0,15989.05289256691,187010.45289256691,0.0,0.0,0.0,0.0
