@@ -1,7 +1,0 @@
-Resource,Zone,New_Build,Can_Retire,Existing_Cap_MW,cluster,fom_per_mwyr,fom_per_mwyr_std,num_units,region,technology,Cap_Size,Fixed_OM_Cost_per_MWyr,LDS,variable_CF,Min_Power,Eff_Up,Eff_Down,Ramp_Up_Percentage,Ramp_Dn_Percentage,Hydro_Energy_to_Power_Ratio,LINK_STAGES
-AZ_conventional_hydroelectric_1,1,0,0,1994.7,1,6615.107,933.743,33.0,AZ,Conventional Hydroelectric,111.51,6615,0,0.2576244596526829,0.0,1.0,1.0,3.0,3.0,1.0,0
-CA_N_conventional_hydroelectric_1,2,0,0,3278.4,1,6880.758,2291.87,58.0,CA_N,Conventional Hydroelectric,56.52,6880,0,0.3031614547334147,0.0,1.0,1.0,3.0,3.0,1.0,0
-CA_S_conventional_hydroelectric_1,3,0,0,1283.8,1,8031.589,5421.965,6.0,CA_S,Conventional Hydroelectric,20.22,8031,0,0.3804962063737347,0.0,1.0,1.0,3.0,3.0,1.0,0
-MT_WY_CO_conventional_hydroelectric_1,4,0,0,2921.1,1,7671.389,2153.842,67.0,MT_WY_CO,Conventional Hydroelectric,43.6,7671,0,0.3507110610955367,0.0,1.0,1.0,3.0,3.0,1.0,0
-PNW_conventional_hydroelectric_1,6,0,0,16574.1,1,7336.908,2232.54,165.0,PNW,Conventional Hydroelectric,100.45,7336,0,0.4570067874972942,0.0,1.0,1.0,3.0,3.0,1.8280271499894551,0
-UT_NV_conventional_hydroelectric_1,7,0,0,679.9,1,8319.987,2485.544,5.0,UT_NV,Conventional Hydroelectric,31.44,8319,0,0.8563263524669471,0.0,1.0,1.0,3.0,3.0,1.7126527049338185,0
