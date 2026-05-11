@@ -53,6 +53,15 @@ function thermal_no_commit!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
     THERM_NO_COMMIT = inputs["THERM_NO_COMMIT"]
 
+    THERM_NO_COMMIT_POWER_OUT = intersect(THERM_NO_COMMIT,
+        ids_with_positive(gen, num_vre_bins))
+    THERM_NO_COMMIT_NO_POWER_OUT = setdiff(THERM_NO_COMMIT, THERM_NO_COMMIT_POWER_OUT)
+
+    # Cluster capacity sum for a first-bin (or singleton) resource y.
+    cluster_cap(y) = sum(EP[:eTotalCap][yy] for yy in operational_bins(gen, y))
+    cluster_max_capacity(y, t) = sum(inputs["pP_Max"][yy, t] * EP[:eTotalCap][yy]
+        for yy in operational_bins(gen, y))
+
     ### Expressions ###
 
     ## Power Balance Expressions ##
@@ -68,14 +77,14 @@ function thermal_no_commit!(EP::AbstractModel, inputs::Dict, setup::Dict)
         begin
 
             ## Maximum ramp up between consecutive hours
-            [y in THERM_NO_COMMIT, t in 1:T],
+            [y in THERM_NO_COMMIT_POWER_OUT, t in 1:T],
             EP[:vP][y, t] - EP[:vP][y, hoursbefore(p, t, 1)] <=
-            ramp_up_fraction(gen[y]) * EP[:eTotalCap][y]
+            ramp_up_fraction(gen[y]) * cluster_cap(y)
 
             ## Maximum ramp down between consecutive hours
-            [y in THERM_NO_COMMIT, t in 1:T],
+            [y in THERM_NO_COMMIT_POWER_OUT, t in 1:T],
             EP[:vP][y, hoursbefore(p, t, 1)] - EP[:vP][y, t] <=
-            ramp_down_fraction(gen[y]) * EP[:eTotalCap][y]
+            ramp_down_fraction(gen[y]) * cluster_cap(y)
         end)
 
     ### Minimum and maximum power output constraints (Constraints #3-4)
@@ -86,13 +95,18 @@ function thermal_no_commit!(EP::AbstractModel, inputs::Dict, setup::Dict)
         @constraints(EP,
             begin
                 # Minimum stable power generated per technology "y" at hour "t" Min_Power
-                [y in THERM_NO_COMMIT, t = 1:T],
-                EP[:vP][y, t] >= min_power(gen[y]) * EP[:eTotalCap][y]
+                [y in THERM_NO_COMMIT_POWER_OUT, t = 1:T],
+                EP[:vP][y, t] >= min_power(gen[y]) * cluster_cap(y)
 
                 # Maximum power generated per technology "y" at hour "t"
-                [y in THERM_NO_COMMIT, t = 1:T],
-                EP[:vP][y, t] <= inputs["pP_Max"][y, t] * EP[:eTotalCap][y]
+                [y in THERM_NO_COMMIT_POWER_OUT, t = 1:T],
+                EP[:vP][y, t] <= cluster_max_capacity(y, t)
             end)
+    end
+
+    # Set power variables for all bins that are not being modeled for hourly output to be zero
+    for y in THERM_NO_COMMIT_NO_POWER_OUT
+        fix.(EP[:vP][y, :], 0.0, force = true)
     end
     # END Constraints for thermal resources not subject to unit commitment
 end
@@ -148,37 +162,52 @@ function thermal_no_commit_operational_reserves!(EP::AbstractModel, inputs::Dict
     T = inputs["T"]     # Number of time steps (hours)
 
     THERM_NO_COMMIT = setdiff(inputs["THERM_ALL"], inputs["COMMIT"])
+    THERM_NO_COMMIT_POWER_OUT = intersect(THERM_NO_COMMIT,
+        ids_with_positive(gen, num_vre_bins))
+    THERM_NO_COMMIT_NO_POWER_OUT = setdiff(THERM_NO_COMMIT, THERM_NO_COMMIT_POWER_OUT)
 
-    REG = intersect(THERM_NO_COMMIT, inputs["REG"]) # Set of thermal resources with regulation reserves
-    RSV = intersect(THERM_NO_COMMIT, inputs["RSV"]) # Set of thermal resources with spinning reserves
+    REG = intersect(THERM_NO_COMMIT_POWER_OUT, inputs["REG"]) # Set of thermal resources with regulation reserves
+    RSV = intersect(THERM_NO_COMMIT_POWER_OUT, inputs["RSV"]) # Set of thermal resources with spinning reserves
 
     vP = EP[:vP]
     vREG = EP[:vREG]
     vRSV = EP[:vRSV]
     eTotalCap = EP[:eTotalCap]
 
-    max_power(y, t) = inputs["pP_Max"][y, t]
+    cluster_cap(y) = sum(eTotalCap[yy] for yy in operational_bins(gen, y))
+    cluster_max_capacity(y, t) = sum(inputs["pP_Max"][yy, t] * eTotalCap[yy]
+        for yy in operational_bins(gen, y))
 
     # Maximum regulation and reserve contributions
     @constraint(EP,
         [y in REG, t in 1:T],
-        vREG[y, t]<=max_power(y, t) * reg_max(gen[y]) * eTotalCap[y])
+        vREG[y, t]<=reg_max(gen[y]) * cluster_max_capacity(y, t))
     @constraint(EP,
         [y in RSV, t in 1:T],
-        vRSV[y, t]<=max_power(y, t) * rsv_max(gen[y]) * eTotalCap[y])
+        vRSV[y, t]<=rsv_max(gen[y]) * cluster_max_capacity(y, t))
 
     # Minimum stable power generated per technology "y" at hour "t" and contribution to regulation must be > min power
-    expr = extract_time_series_to_expression(vP, THERM_NO_COMMIT)
+    expr = extract_time_series_to_expression(vP, THERM_NO_COMMIT_POWER_OUT)
     add_similar_to_expression!(expr[REG, :], -vREG[REG, :])
     @constraint(EP,
-        [y in THERM_NO_COMMIT, t in 1:T],
-        expr[y, t]>=min_power(gen[y]) * eTotalCap[y])
+        [y in THERM_NO_COMMIT_POWER_OUT, t in 1:T],
+        expr[y, t]>=min_power(gen[y]) * cluster_cap(y))
 
     # Maximum power generated per technology "y" at hour "t"  and contribution to regulation and reserves up must be < max power
-    expr = extract_time_series_to_expression(vP, THERM_NO_COMMIT)
+    expr = extract_time_series_to_expression(vP, THERM_NO_COMMIT_POWER_OUT)
     add_similar_to_expression!(expr[REG, :], vREG[REG, :])
     add_similar_to_expression!(expr[RSV, :], vRSV[RSV, :])
     @constraint(EP,
-        [y in THERM_NO_COMMIT, t in 1:T],
-        expr[y, t]<=max_power(y, t) * eTotalCap[y])
+        [y in THERM_NO_COMMIT_POWER_OUT, t in 1:T],
+        expr[y, t]<=cluster_max_capacity(y, t))
+
+    # Set reserve variables for non-first bins to zero (vP fix happens in caller)
+    REG_NO_POWER = intersect(THERM_NO_COMMIT_NO_POWER_OUT, inputs["REG"])
+    RSV_NO_POWER = intersect(THERM_NO_COMMIT_NO_POWER_OUT, inputs["RSV"])
+    for y in REG_NO_POWER
+        fix.(EP[:vREG][y, :], 0.0, force = true)
+    end
+    for y in RSV_NO_POWER
+        fix.(EP[:vRSV][y, :], 0.0, force = true)
+    end
 end

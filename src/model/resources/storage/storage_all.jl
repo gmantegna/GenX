@@ -25,6 +25,15 @@ function storage_all!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
     hours_per_subperiod = inputs["hours_per_subperiod"] #total number of hours per subperiod
 
+    # Operational binning: first-bin resources own the operational variables for
+    # their cluster. Non-first bins (num_vre_bins == 0) contribute investment-only
+    # capacity that is summed into their first bin's operating constraints.
+    STOR_ALL_POWER_OUT = intersect(STOR_ALL, ids_with_positive(gen, num_vre_bins))
+    STOR_ALL_NO_POWER_OUT = setdiff(STOR_ALL, STOR_ALL_POWER_OUT)
+
+    cluster_cap(y) = sum(EP[:eTotalCap][yy] for yy in operational_bins(gen, y))
+    cluster_cap_energy(y) = sum(EP[:eTotalCapEnergy][yy] for yy in operational_bins(gen, y))
+
     ### Variables ###
 
     # Storage level of resource "y" at hour "t" [MWh] on zone "z" - unbounded
@@ -107,8 +116,9 @@ function storage_all!(EP::AbstractModel, inputs::Dict, setup::Dict)
     else
         CONSTRAINTSET = STOR_ALL
     end
+    CONSTRAINTSET_POWER_OUT = intersect(CONSTRAINTSET, STOR_ALL_POWER_OUT)
     @constraint(EP,
-        cSoCBalStart[t in START_SUBPERIODS, y in CONSTRAINTSET],
+        cSoCBalStart[t in START_SUBPERIODS, y in CONSTRAINTSET_POWER_OUT],
         EP[:vS][y,
             t]==
         EP[:vS][y, t + hours_per_subperiod - 1] -
@@ -119,11 +129,11 @@ function storage_all!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
     @constraints(EP,
         begin
-            # Maximum energy stored must be less than energy capacity
-            [y in STOR_ALL, t in 1:T], EP[:vS][y, t] <= EP[:eTotalCapEnergy][y]
+            # Maximum energy stored must be less than energy capacity (summed across cluster bins)
+            [y in STOR_ALL_POWER_OUT, t in 1:T], EP[:vS][y, t] <= cluster_cap_energy(y)
 
             # energy stored for the next hour
-            cSoCBalInterior[t in INTERIOR_SUBPERIODS, y in STOR_ALL],
+            cSoCBalInterior[t in INTERIOR_SUBPERIODS, y in STOR_ALL_POWER_OUT],
             EP[:vS][y, t] ==
             EP[:vS][y, t - 1] - (1 / efficiency_down(gen[y]) * EP[:vP][y, t]) +
             (efficiency_up(gen[y]) * EP[:vCHARGE][y, t]) -
@@ -151,9 +161,9 @@ function storage_all!(EP::AbstractModel, inputs::Dict, setup::Dict)
             # wrapping from end of sample period to start of sample period for energy capacity constraint
             @constraints(EP,
                 begin
-                    [y in STOR_ALL, t = 1:T],
-                    EP[:vP][y, t] + EP[:vCAPRES_discharge][y, t] <= EP[:eTotalCap][y]
-                    [y in STOR_ALL, t = 1:T],
+                    [y in STOR_ALL_POWER_OUT, t = 1:T],
+                    EP[:vP][y, t] + EP[:vCAPRES_discharge][y, t] <= cluster_cap(y)
+                    [y in STOR_ALL_POWER_OUT, t = 1:T],
                     EP[:vP][y, t] + EP[:vCAPRES_discharge][y, t] <=
                     EP[:vS][y, hoursbefore(hours_per_subperiod, t, 1)] *
                     efficiency_down(gen[y])
@@ -161,8 +171,8 @@ function storage_all!(EP::AbstractModel, inputs::Dict, setup::Dict)
         else
             @constraints(EP,
                 begin
-                    [y in STOR_ALL, t = 1:T], EP[:vP][y, t] <= EP[:eTotalCap][y]
-                    [y in STOR_ALL, t = 1:T],
+                    [y in STOR_ALL_POWER_OUT, t = 1:T], EP[:vP][y, t] <= cluster_cap(y)
+                    [y in STOR_ALL_POWER_OUT, t = 1:T],
                     EP[:vP][y, t] <=
                     EP[:vS][y, hoursbefore(hours_per_subperiod, t, 1)] *
                     efficiency_down(gen[y])
@@ -183,7 +193,7 @@ function storage_all!(EP::AbstractModel, inputs::Dict, setup::Dict)
         # Links energy held in reserve in first time step with decisions in last time step of each subperiod
         # We use a modified formulation of this constraint (cVSoCBalLongDurationStorageStart) when operations wrapping and long duration storage are being modeled
         @constraint(EP,
-            cVSoCBalStart[t in START_SUBPERIODS, y in CONSTRAINTSET],
+            cVSoCBalStart[t in START_SUBPERIODS, y in CONSTRAINTSET_POWER_OUT],
             EP[:vCAPRES_socinreserve][y,
                 t]==
             EP[:vCAPRES_socinreserve][y, t + hours_per_subperiod - 1] +
@@ -194,7 +204,7 @@ function storage_all!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
         # energy held in reserve for the next hour
         @constraint(EP,
-            cVSoCBalInterior[t in INTERIOR_SUBPERIODS, y in STOR_ALL],
+            cVSoCBalInterior[t in INTERIOR_SUBPERIODS, y in STOR_ALL_POWER_OUT],
             EP[:vCAPRES_socinreserve][y,
                 t]==
             EP[:vCAPRES_socinreserve][y, t - 1] +
@@ -204,8 +214,23 @@ function storage_all!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
         # energy held in reserve acts as a lower bound on the total energy held in storage
         @constraint(EP,
-            cSOCMinCapRes[t in 1:T, y in STOR_ALL],
+            cSOCMinCapRes[t in 1:T, y in STOR_ALL_POWER_OUT],
             EP[:vS][y, t]>=EP[:vCAPRES_socinreserve][y, t])
+    end
+
+    # Fix operational variables to zero for non-first bins; their installed capacity
+    # is summed into the first bin's operational constraints above.
+    for y in STOR_ALL_NO_POWER_OUT
+        fix.(EP[:vS][y, :], 0.0, force = true)
+        fix.(EP[:vCHARGE][y, :], 0.0, force = true)
+        fix.(EP[:vP][y, :], 0.0, force = true)
+    end
+    if CapacityReserveMargin > 0
+        for y in STOR_ALL_NO_POWER_OUT
+            fix.(EP[:vCAPRES_discharge][y, :], 0.0, force = true)
+            fix.(EP[:vCAPRES_charge][y, :], 0.0, force = true)
+            fix.(EP[:vCAPRES_socinreserve][y, :], 0.0, force = true)
+        end
     end
 end
 
@@ -216,9 +241,11 @@ function storage_all_operational_reserves!(EP::AbstractModel, inputs::Dict, setu
     CapacityReserveMargin = setup["CapacityReserveMargin"] > 1
 
     STOR_ALL = inputs["STOR_ALL"]
+    STOR_ALL_POWER_OUT = intersect(STOR_ALL, ids_with_positive(gen, num_vre_bins))
+    STOR_ALL_NO_POWER_OUT = setdiff(STOR_ALL, STOR_ALL_POWER_OUT)
 
-    STOR_REG = intersect(STOR_ALL, inputs["REG"]) # Set of storage resources with REG reserves
-    STOR_RSV = intersect(STOR_ALL, inputs["RSV"]) # Set of storage resources with RSV reserves
+    STOR_REG = intersect(STOR_ALL_POWER_OUT, inputs["REG"]) # Set of storage resources with REG reserves
+    STOR_RSV = intersect(STOR_ALL_POWER_OUT, inputs["RSV"]) # Set of storage resources with RSV reserves
 
     vP = EP[:vP]
     vS = EP[:vS]
@@ -233,9 +260,12 @@ function storage_all_operational_reserves!(EP::AbstractModel, inputs::Dict, setu
     eTotalCap = EP[:eTotalCap]
     eTotalCapEnergy = EP[:eTotalCapEnergy]
 
+    cluster_cap(y) = sum(eTotalCap[yy] for yy in operational_bins(gen, y))
+    cluster_cap_energy(y) = sum(eTotalCapEnergy[yy] for yy in operational_bins(gen, y))
+
     # Maximum storage contribution to reserves is a specified fraction of installed capacity
-    @constraint(EP, [y in STOR_REG, t in 1:T], vREG[y, t]<=reg_max(gen[y]) * eTotalCap[y])
-    @constraint(EP, [y in STOR_RSV, t in 1:T], vRSV[y, t]<=rsv_max(gen[y]) * eTotalCap[y])
+    @constraint(EP, [y in STOR_REG, t in 1:T], vREG[y, t]<=reg_max(gen[y]) * cluster_cap(y))
+    @constraint(EP, [y in STOR_RSV, t in 1:T], vRSV[y, t]<=rsv_max(gen[y]) * cluster_cap(y))
 
     # Actual contribution to regulation and reserves is sum of auxilary variables for portions contributed during charging and discharging
     @constraint(EP,
@@ -247,10 +277,10 @@ function storage_all_operational_reserves!(EP::AbstractModel, inputs::Dict, setu
 
     # Maximum charging rate plus contribution to reserves up must be greater than zero
     # Note: when charging, reducing charge rate is contributing to upwards reserve & regulation as it drops net demand
-    expr = extract_time_series_to_expression(vCHARGE, STOR_ALL)
+    expr = extract_time_series_to_expression(vCHARGE, STOR_ALL_POWER_OUT)
     add_similar_to_expression!(expr[STOR_REG, :], -vREG_charge[STOR_REG, :])
     add_similar_to_expression!(expr[STOR_RSV, :], -vRSV_charge[STOR_RSV, :])
-    @constraint(EP, [y in STOR_ALL, t in 1:T], expr[y, t]>=0)
+    @constraint(EP, [y in STOR_ALL_POWER_OUT, t in 1:T], expr[y, t]>=0)
 
     # Maximum discharging rate and contribution to reserves down must be greater than zero
     # Note: when discharging, reducing discharge rate is contributing to downwards regulation as it drops net supply
@@ -261,21 +291,36 @@ function storage_all_operational_reserves!(EP::AbstractModel, inputs::Dict, setu
         [y in STOR_REG, t in 1:T],
         efficiency_up(gen[y]) *
         (vCHARGE[y, t] +
-         vREG_charge[y, t])<=eTotalCapEnergy[y] - vS[y, hoursbefore(p, t, 1)])
+         vREG_charge[y, t])<=cluster_cap_energy(y) - vS[y, hoursbefore(p, t, 1)])
     # Note: maximum charge rate is also constrained by maximum charge power capacity, but as this differs by storage type,
     # this constraint is set in functions below for each storage type
 
-    expr = extract_time_series_to_expression(vP, STOR_ALL)
+    expr = extract_time_series_to_expression(vP, STOR_ALL_POWER_OUT)
     add_similar_to_expression!(expr[STOR_REG, :], vREG_discharge[STOR_REG, :])
     add_similar_to_expression!(expr[STOR_RSV, :], vRSV_discharge[STOR_RSV, :])
     if CapacityReserveMargin
         vCAPRES_discharge = EP[:vCAPRES_discharge]
-        add_similar_to_expression!(expr[STOR_ALL, :], vCAPRES_discharge[STOR_ALL, :])
+        add_similar_to_expression!(expr[STOR_ALL_POWER_OUT, :],
+            vCAPRES_discharge[STOR_ALL_POWER_OUT, :])
     end
     # Maximum discharging rate and contribution to reserves up must be less than power rating
-    @constraint(EP, [y in STOR_ALL, t in 1:T], expr[y, t]<=eTotalCap[y])
+    @constraint(EP, [y in STOR_ALL_POWER_OUT, t in 1:T], expr[y, t]<=cluster_cap(y))
     # Maximum discharging rate and contribution to reserves up must be less than available stored energy in prior period
     @constraint(EP,
-        [y in STOR_ALL, t in 1:T],
+        [y in STOR_ALL_POWER_OUT, t in 1:T],
         expr[y, t]<=vS[y, hoursbefore(p, t, 1)] * efficiency_down(gen[y]))
+
+    # Fix reserve variables to zero for non-first bins
+    REG_NO_POWER = intersect(STOR_ALL_NO_POWER_OUT, inputs["REG"])
+    RSV_NO_POWER = intersect(STOR_ALL_NO_POWER_OUT, inputs["RSV"])
+    for y in REG_NO_POWER
+        fix.(EP[:vREG][y, :], 0.0, force = true)
+        fix.(EP[:vREG_charge][y, :], 0.0, force = true)
+        fix.(EP[:vREG_discharge][y, :], 0.0, force = true)
+    end
+    for y in RSV_NO_POWER
+        fix.(EP[:vRSV][y, :], 0.0, force = true)
+        fix.(EP[:vRSV_charge][y, :], 0.0, force = true)
+        fix.(EP[:vRSV_discharge][y, :], 0.0, force = true)
+    end
 end

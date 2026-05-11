@@ -104,6 +104,13 @@ function long_duration_storage!(EP::AbstractModel, inputs::Dict, setup::Dict)
     REP_PERIOD = inputs["REP_PERIOD"]     # Number of representative periods
 
     STOR_LONG_DURATION = inputs["STOR_LONG_DURATION"]
+    STOR_LONG_DURATION_POWER_OUT = intersect(STOR_LONG_DURATION,
+        ids_with_positive(gen, num_vre_bins))
+    STOR_LONG_DURATION_NO_POWER_OUT = setdiff(STOR_LONG_DURATION,
+        STOR_LONG_DURATION_POWER_OUT)
+
+    cluster_cap_energy(y) = sum(EP[:eTotalCapEnergy][yy]
+        for yy in operational_bins(gen, y))
 
     hours_per_subperiod = inputs["hours_per_subperiod"] #total number of hours per subperiod
 
@@ -146,7 +153,7 @@ function long_duration_storage!(EP::AbstractModel, inputs::Dict, setup::Dict)
     # Alternative to cSoCBalStart constraint which is included when not modeling operations wrapping and long duration storage
     # Note: tw_min = hours_per_subperiod*(w-1)+1; tw_max = hours_per_subperiod*w
     @constraint(EP,
-        cSoCBalLongDurationStorageStart[w = 1:REP_PERIOD, y in STOR_LONG_DURATION],
+        cSoCBalLongDurationStorageStart[w = 1:REP_PERIOD, y in STOR_LONG_DURATION_POWER_OUT],
         EP[:vS][y,
             hours_per_subperiod * (w - 1) + 1]==(1 - self_discharge(gen[y])) *
                                                 (EP[:vS][y, hours_per_subperiod * w] -
@@ -160,21 +167,23 @@ function long_duration_storage!(EP::AbstractModel, inputs::Dict, setup::Dict)
     # Storage at beginning of period w = storage at beginning of period w-1 + storage built up in period w (after n representative periods)
     ## Multiply storage build up term from prior period with corresponding weight
     @constraint(EP,
-        cSoCBalLongDurationStorage[y in STOR_LONG_DURATION, r in MODELED_PERIODS_INDEX],
+        cSoCBalLongDurationStorage[y in STOR_LONG_DURATION_POWER_OUT,
+            r in MODELED_PERIODS_INDEX],
         vSOCw[y,
             mod1(r + 1, NPeriods)]==vSOCw[y, r] +
                                     vdSOC[y, dfPeriodMap[r, :Rep_Period_Index]])
 
-    # Storage at beginning of each modeled period cannot exceed installed energy capacity
+    # Storage at beginning of each modeled period cannot exceed installed energy capacity (summed across cluster bins)
     @constraint(EP,
-        cSoCBalLongDurationStorageUpper[y in STOR_LONG_DURATION,
+        cSoCBalLongDurationStorageUpper[y in STOR_LONG_DURATION_POWER_OUT,
             r in MODELED_PERIODS_INDEX],
-        vSOCw[y, r]<=EP[:eTotalCapEnergy][y])
+        vSOCw[y, r]<=cluster_cap_energy(y))
 
     # Initial storage level for representative periods must also adhere to sub-period storage inventory balance
     # Initial storage = Final storage - change in storage inventory across representative period
     @constraint(EP,
-        cSoCBalLongDurationStorageSub[y in STOR_LONG_DURATION, r in REP_PERIODS_INDEX],
+        cSoCBalLongDurationStorageSub[y in STOR_LONG_DURATION_POWER_OUT,
+            r in REP_PERIODS_INDEX],
         vSOCw[y,
             r]==EP[:vS][y, hours_per_subperiod * dfPeriodMap[r, :Rep_Period_Index]] -
                 vdSOC[y, dfPeriodMap[r, :Rep_Period_Index]])
@@ -188,7 +197,8 @@ function long_duration_storage!(EP::AbstractModel, inputs::Dict, setup::Dict)
         # Alternative to cVSoCBalStart constraint which is included when not modeling operations wrapping and long duration storage
         # Note: tw_min = hours_per_subperiod*(w-1)+1; tw_max = hours_per_subperiod*w
         @constraint(EP,
-            cVSoCBalLongDurationStorageStart[w = 1:REP_PERIOD, y in STOR_LONG_DURATION],
+            cVSoCBalLongDurationStorageStart[w = 1:REP_PERIOD,
+                y in STOR_LONG_DURATION_POWER_OUT],
             EP[:vCAPRES_socinreserve][y,
                 hours_per_subperiod * (w - 1) + 1]==(1 - self_discharge(gen[y])) *
                                                     (EP[:vCAPRES_socinreserve][
@@ -204,7 +214,7 @@ function long_duration_storage!(EP::AbstractModel, inputs::Dict, setup::Dict)
         # Storage held in reserve at beginning of period w = storage at beginning of period w-1 + storage built up in period w (after n representative periods)
         ## Multiply storage build up term from prior period with corresponding weight
         @constraint(EP,
-            cVSoCBalLongDurationStorage[y in STOR_LONG_DURATION,
+            cVSoCBalLongDurationStorage[y in STOR_LONG_DURATION_POWER_OUT,
                 r in MODELED_PERIODS_INDEX],
             vCAPRES_socw[y,
                 mod1(r + 1, NPeriods)]==vCAPRES_socw[y, r] +
@@ -213,35 +223,54 @@ function long_duration_storage!(EP::AbstractModel, inputs::Dict, setup::Dict)
         # Initial reserve storage level for representative periods must also adhere to sub-period storage inventory balance
         # Initial storage = Final storage - change in storage inventory across representative period
         @constraint(EP,
-            cVSoCBalLongDurationStorageSub[y in STOR_LONG_DURATION, r in REP_PERIODS_INDEX],
+            cVSoCBalLongDurationStorageSub[y in STOR_LONG_DURATION_POWER_OUT,
+                r in REP_PERIODS_INDEX],
             vCAPRES_socw[y,r]==EP[:vCAPRES_socinreserve][y,
                 hours_per_subperiod * dfPeriodMap[r, :Rep_Period_Index]] -
                     vCAPRES_dsoc[y, dfPeriodMap[r, :Rep_Period_Index]])
 
         # energy held in reserve at the beginning of each modeled period acts as a lower bound on the total energy held in storage
         @constraint(EP,
-            cSOCMinCapResLongDurationStorage[y in STOR_LONG_DURATION,
+            cSOCMinCapResLongDurationStorage[y in STOR_LONG_DURATION_POWER_OUT,
                 r in MODELED_PERIODS_INDEX],
             vSOCw[y, r]>=vCAPRES_socw[y, r])
     end
 
     # Extract maximum storage level variation (positive) within subperiod
-	@constraint(EP, cMaxSoCVarPos[y in STOR_LONG_DURATION, w=1:REP_PERIOD, t=2:hours_per_subperiod],
+	@constraint(EP, cMaxSoCVarPos[y in STOR_LONG_DURATION_POWER_OUT,
+            w=1:REP_PERIOD, t=2:hours_per_subperiod],
                     vdSOC_maxPos[y,w] >= EP[:vS][y,hours_per_subperiod*(w-1)+t] - EP[:vS][y,hours_per_subperiod*(w-1)+1])
 
     # Extract maximum storage level variation (negative) within subperiod
-    @constraint(EP, cMaxSoCVarNeg[y in STOR_LONG_DURATION, w=1:REP_PERIOD, t=2:hours_per_subperiod],
+    @constraint(EP, cMaxSoCVarNeg[y in STOR_LONG_DURATION_POWER_OUT,
+            w=1:REP_PERIOD, t=2:hours_per_subperiod],
                     vdSOC_maxNeg[y,w] <= EP[:vS][y,hours_per_subperiod*(w-1)+t] - EP[:vS][y,hours_per_subperiod*(w-1)+1])
 
     # Max storage content within each modeled period cannot exceed installed energy capacity
-    @constraint(EP, cSoCLongDurationStorageMaxInt[y in STOR_LONG_DURATION, r in MODELED_PERIODS_INDEX],
+    @constraint(EP, cSoCLongDurationStorageMaxInt[y in STOR_LONG_DURATION_POWER_OUT,
+            r in MODELED_PERIODS_INDEX],
             (1-self_discharge(gen[y]))*vSOCw[y,r]-(1/efficiency_down(gen[y])*EP[:vP][y,hours_per_subperiod*(dfPeriodMap[r,:Rep_Period_Index]-1)+1])
             +(efficiency_up(gen[y])*EP[:vCHARGE][y,hours_per_subperiod*(dfPeriodMap[r,:Rep_Period_Index]-1)+1])
-            +vdSOC_maxPos[y,dfPeriodMap[r,:Rep_Period_Index]] <= EP[:eTotalCapEnergy][y])
+            +vdSOC_maxPos[y,dfPeriodMap[r,:Rep_Period_Index]] <= cluster_cap_energy(y))
 
     # Min storage content within each modeled period cannot be negative
-    @constraint(EP, cSoCLongDurationStorageMinInt[y in STOR_LONG_DURATION, r in MODELED_PERIODS_INDEX],
+    @constraint(EP, cSoCLongDurationStorageMinInt[y in STOR_LONG_DURATION_POWER_OUT,
+            r in MODELED_PERIODS_INDEX],
             (1-self_discharge(gen[y]))*vSOCw[y,r]-(1/efficiency_down(gen[y])*EP[:vP][y,hours_per_subperiod*(dfPeriodMap[r,:Rep_Period_Index]-1)+1])
             +(efficiency_up(gen[y])*EP[:vCHARGE][y,hours_per_subperiod*(dfPeriodMap[r,:Rep_Period_Index]-1)+1])
             +vdSOC_maxNeg[y,dfPeriodMap[r,:Rep_Period_Index]] >= 0)
+
+    # Fix LDS-specific variables to zero for non-first bins
+    for y in STOR_LONG_DURATION_NO_POWER_OUT
+        fix.(EP[:vSOCw][y, :], 0.0, force = true)
+        fix.(EP[:vdSOC][y, :], 0.0, force = true)
+        fix.(EP[:vdSOC_maxPos][y, :], 0.0, force = true)
+        fix.(EP[:vdSOC_maxNeg][y, :], 0.0, force = true)
+    end
+    if CapacityReserveMargin > 0
+        for y in STOR_LONG_DURATION_NO_POWER_OUT
+            fix.(EP[:vCAPRES_socw][y, :], 0.0, force = true)
+            fix.(EP[:vCAPRES_dsoc][y, :], 0.0, force = true)
+        end
+    end
 end

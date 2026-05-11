@@ -71,6 +71,14 @@ function electrolyzer!(EP::AbstractModel, inputs::Dict, setup::Dict)
     VRE_STOR = inputs["VRE_STOR"]           # Set of VRE-STOR generators (indices)
     VS_ELEC = !isempty(VRE_STOR) ? inputs["VS_ELEC"] : Vector{Int}[]    # Set of VRE-STOR co-located electrolyzers (indices)
 
+    ELECTROLYZERS_POWER_OUT = intersect(ELECTROLYZERS,
+        ids_with_positive(gen, num_vre_bins))
+    ELECTROLYZERS_NO_POWER_OUT = setdiff(ELECTROLYZERS, ELECTROLYZERS_POWER_OUT)
+
+    cluster_cap(y) = sum(EP[:eTotalCap][yy] for yy in operational_bins(gen, y))
+    cluster_max_capacity(y, t) = sum(inputs["pP_Max"][yy, t] * EP[:eTotalCap][yy]
+        for yy in operational_bins(gen, y))
+
     HYDROGEN_ZONES = unique(zone_id(gen[ELECTROLYZERS]))
     if !isempty(VS_ELEC)
         HYDROGEN_ZONES = unique(union(HYDROGEN_ZONES, zone_id(gen[VS_ELEC])))
@@ -117,14 +125,14 @@ function electrolyzer!(EP::AbstractModel, inputs::Dict, setup::Dict)
     @constraints(EP,
         begin
             ## Maximum ramp up between consecutive hours
-            [y in ELECTROLYZERS, t in 1:T],
+            [y in ELECTROLYZERS_POWER_OUT, t in 1:T],
             EP[:vUSE][y, t] - EP[:vUSE][y, hoursbefore(p, t, 1)] <=
-            ramp_up_fraction(gen[y]) * EP[:eTotalCap][y]
+            ramp_up_fraction(gen[y]) * cluster_cap(y)
 
             ## Maximum ramp down between consecutive hours
-            [y in ELECTROLYZERS, t in 1:T],
+            [y in ELECTROLYZERS_POWER_OUT, t in 1:T],
             EP[:vUSE][y, hoursbefore(p, t, 1)] - EP[:vUSE][y, t] <=
-            ramp_down_fraction(gen[y]) * EP[:eTotalCap][y]
+            ramp_down_fraction(gen[y]) * cluster_cap(y)
         end)
 
     ## Minimum and maximum power output constraints (Constraints #3-4)
@@ -134,13 +142,18 @@ function electrolyzer!(EP::AbstractModel, inputs::Dict, setup::Dict)
     @constraints(EP,
         begin
             # Minimum stable power generated per technology "y" at hour "t" Min_Power
-            [y in ELECTROLYZERS, t in 1:T],
-            EP[:vUSE][y, t] >= min_power(gen[y]) * EP[:eTotalCap][y]
+            [y in ELECTROLYZERS_POWER_OUT, t in 1:T],
+            EP[:vUSE][y, t] >= min_power(gen[y]) * cluster_cap(y)
 
             # Maximum power generated per technology "y" at hour "t"
-            [y in ELECTROLYZERS, t in 1:T],
-            EP[:vUSE][y, t] <= inputs["pP_Max"][y, t] * EP[:eTotalCap][y]
+            [y in ELECTROLYZERS_POWER_OUT, t in 1:T],
+            EP[:vUSE][y, t] <= cluster_max_capacity(y, t)
         end)
+
+    # Set vUSE for non-first bins to zero
+    for y in ELECTROLYZERS_NO_POWER_OUT
+        fix.(EP[:vUSE][y, :], 0.0, force = true)
+    end
 
     # Remove vP (electrolyzers do not produce power so vP = 0 for all periods)
     @constraints(EP, begin

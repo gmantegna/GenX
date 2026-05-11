@@ -14,6 +14,10 @@ if VERSION ≥ v"1.7"
     end
 end
 
+@testset "Operational bins" begin
+    include("test_operational_bins.jl")
+end
+
 # Test GenX modules
 @testset verbose=true "GenX modules" begin
     @testset "Three zones" begin

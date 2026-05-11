@@ -10,12 +10,17 @@ function storage_symmetric!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
     println("Storage Resources with Symmetric Charge/Discharge Capacity Module")
 
+    gen = inputs["RESOURCES"]
     OperationalReserves = setup["OperationalReserves"]
     CapacityReserveMargin = setup["CapacityReserveMargin"]
 
     T = inputs["T"]     # Number of time steps (hours)
 
     STOR_SYMMETRIC = inputs["STOR_SYMMETRIC"]
+    STOR_SYMMETRIC_POWER_OUT = intersect(STOR_SYMMETRIC,
+        ids_with_positive(gen, num_vre_bins))
+
+    cluster_cap(y) = sum(EP[:eTotalCap][yy] for yy in operational_bins(gen, y))
 
     ### Constraints ###
 
@@ -28,17 +33,17 @@ function storage_symmetric!(EP::AbstractModel, inputs::Dict, setup::Dict)
                 begin
                     # Maximum charging rate (including virtual charging to move energy held in reserve back to available storage) must be less than symmetric power rating
                     # Max simultaneous charge and discharge cannot be greater than capacity
-                    [y in STOR_SYMMETRIC, t in 1:T],
+                    [y in STOR_SYMMETRIC_POWER_OUT, t in 1:T],
                     EP[:vP][y, t] + EP[:vCHARGE][y, t] + EP[:vCAPRES_discharge][y, t] +
-                    EP[:vCAPRES_charge][y, t] <= EP[:eTotalCap][y]
+                    EP[:vCAPRES_charge][y, t] <= cluster_cap(y)
                 end)
         else
             @constraints(EP,
                 begin
                     # Maximum charging rate (including virtual charging to move energy held in reserve back to available storage) must be less than symmetric power rating
                     # Max simultaneous charge and discharge cannot be greater than capacity
-                    [y in STOR_SYMMETRIC, t in 1:T],
-                    EP[:vP][y, t] + EP[:vCHARGE][y, t] <= EP[:eTotalCap][y]
+                    [y in STOR_SYMMETRIC_POWER_OUT, t in 1:T],
+                    EP[:vP][y, t] + EP[:vCHARGE][y, t] <= cluster_cap(y)
                 end)
         end
     end
@@ -50,13 +55,15 @@ end
 Sets up variables and constraints specific to storage resources with symmetric charge and discharge capacities when reserves are modeled. See ```storage()``` in ```storage.jl``` for description of constraints.
 """
 function storage_symmetric_operational_reserves!(EP::AbstractModel, inputs::Dict, setup::Dict)
+    gen = inputs["RESOURCES"]
     T = inputs["T"]
     CapacityReserveMargin = setup["CapacityReserveMargin"] > 0
 
     SYMMETRIC = inputs["STOR_SYMMETRIC"]
+    SYMMETRIC_POWER_OUT = intersect(SYMMETRIC, ids_with_positive(gen, num_vre_bins))
 
-    REG = intersect(SYMMETRIC, inputs["REG"])
-    RSV = intersect(SYMMETRIC, inputs["RSV"])
+    REG = intersect(SYMMETRIC_POWER_OUT, inputs["REG"])
+    RSV = intersect(SYMMETRIC_POWER_OUT, inputs["RSV"])
 
     vP = EP[:vP]
     vCHARGE = EP[:vCHARGE]
@@ -66,17 +73,21 @@ function storage_symmetric_operational_reserves!(EP::AbstractModel, inputs::Dict
     vRSV_discharge = EP[:vRSV_discharge]
     eTotalCap = EP[:eTotalCap]
 
+    cluster_cap(y) = sum(eTotalCap[yy] for yy in operational_bins(gen, y))
+
     # Maximum charging rate plus contribution to regulation down must be less than symmetric power rating
     # Max simultaneous charge and discharge rates cannot be greater than symmetric charge/discharge capacity
-    expr = @expression(EP, [y in SYMMETRIC, t in 1:T], vP[y, t]+vCHARGE[y, t])
+    expr = @expression(EP, [y in SYMMETRIC_POWER_OUT, t in 1:T], vP[y, t]+vCHARGE[y, t])
     add_similar_to_expression!(expr[REG, :], vREG_charge[REG, :])
     add_similar_to_expression!(expr[REG, :], vREG_discharge[REG, :])
     add_similar_to_expression!(expr[RSV, :], vRSV_discharge[RSV, :])
     if CapacityReserveMargin
         vCAPRES_charge = EP[:vCAPRES_charge]
         vCAPRES_discharge = EP[:vCAPRES_discharge]
-        add_similar_to_expression!(expr[SYMMETRIC, :], vCAPRES_charge[SYMMETRIC, :])
-        add_similar_to_expression!(expr[SYMMETRIC, :], vCAPRES_discharge[SYMMETRIC, :])
+        add_similar_to_expression!(expr[SYMMETRIC_POWER_OUT, :],
+            vCAPRES_charge[SYMMETRIC_POWER_OUT, :])
+        add_similar_to_expression!(expr[SYMMETRIC_POWER_OUT, :],
+            vCAPRES_discharge[SYMMETRIC_POWER_OUT, :])
     end
-    @constraint(EP, [y in SYMMETRIC, t in 1:T], expr[y, t]<=eTotalCap[y])
+    @constraint(EP, [y in SYMMETRIC_POWER_OUT, t in 1:T], expr[y, t]<=cluster_cap(y))
 end

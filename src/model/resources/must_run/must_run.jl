@@ -26,6 +26,9 @@ function must_run!(EP::AbstractModel, inputs::Dict, setup::Dict)
     MUST_RUN = inputs["MUST_RUN"]
     CapacityReserveMargin = setup["CapacityReserveMargin"]
 
+    MUST_RUN_POWER_OUT = intersect(MUST_RUN, ids_with_positive(gen, num_vre_bins))
+    MUST_RUN_NO_POWER_OUT = setdiff(MUST_RUN, MUST_RUN_POWER_OUT)
+
     ### Expressions ###
 
     ## Power Balance Expressions ##
@@ -45,9 +48,21 @@ function must_run!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
     ### Constratints ###
 
-    @constraint(EP,
-        [y in MUST_RUN, t = 1:T],
-        EP[:vP][y, t]==inputs["pP_Max"][y, t] * EP[:eTotalCap][y])
+    # Output of each first-bin (or singleton) must-run resource equals the sum of
+    # availability * capacity across all bins in its operational cluster.
+    for y in MUST_RUN_POWER_OUT
+        MUST_RUN_BINS = operational_bins(gen, y)
+        @constraint(EP,
+            [t = 1:T],
+            EP[:vP][y, t]==sum(inputs["pP_Max"][yy, t] * EP[:eTotalCap][yy]
+            for yy in MUST_RUN_BINS))
+    end
+
+    # Set power variables for all bins that are not being modeled for hourly output to be zero
+    for y in MUST_RUN_NO_POWER_OUT
+        fix.(EP[:vP][y, :], 0.0, force = true)
+    end
+
     ##CO2 Polcy Module Must Run Generation by zone
     @expression(EP, eGenerationByMustRun[z = 1:Z, t = 1:T], # the unit is GW
         sum(EP[:vP][y, t] for y in intersect(MUST_RUN, resources_in_zone_by_rid(gen, z))))

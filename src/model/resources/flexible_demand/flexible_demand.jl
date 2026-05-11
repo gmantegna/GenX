@@ -52,6 +52,13 @@ function flexible_demand!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
     gen = inputs["RESOURCES"]
 
+    FLEX_POWER_OUT = intersect(FLEX, ids_with_positive(gen, num_vre_bins))
+    FLEX_NO_POWER_OUT = setdiff(FLEX, FLEX_POWER_OUT)
+
+    cluster_cap(y) = sum(EP[:eTotalCap][yy] for yy in operational_bins(gen, y))
+    cluster_max_capacity(y, t) = sum(inputs["pP_Max"][yy, t] * EP[:eTotalCap][yy]
+        for yy in operational_bins(gen, y))
+
     hours_per_subperiod = inputs["hours_per_subperiod"] # Total number of hours per subperiod
 
     ### Variables ###
@@ -96,7 +103,7 @@ function flexible_demand!(EP::AbstractModel, inputs::Dict, setup::Dict)
     ## Flexible demand is available only during specified hours with time delay or time advance (virtual storage-shiftable demand)
     for z in 1:Z
         # NOTE: Flexible demand operates by zone since capacity is now related to zone demand
-        FLEX_Z = intersect(FLEX, resources_in_zone_by_rid(gen, z))
+        FLEX_Z = intersect(FLEX_POWER_OUT, resources_in_zone_by_rid(gen, z))
 
         @constraints(EP,
             begin
@@ -109,12 +116,12 @@ function flexible_demand!(EP::AbstractModel, inputs::Dict, setup::Dict)
                 flexible_demand_energy_eff(gen[y]) * EP[:vP][y, t] +
                 EP[:vCHARGE_FLEX][y, t]
 
-                # Maximum charging rate
+                # Maximum charging rate (summed across cluster bins)
                 [y in FLEX_Z, t = 1:T],
-                EP[:vCHARGE_FLEX][y, t] <= inputs["pP_Max"][y, t] * EP[:eTotalCap][y]
-                # Maximum discharging rate
+                EP[:vCHARGE_FLEX][y, t] <= cluster_max_capacity(y, t)
+                # Maximum discharging rate (summed across cluster bins)
                 [y in FLEX_Z, t = 1:T],
-                flexible_demand_energy_eff(gen[y]) * EP[:vP][y, t] <= EP[:eTotalCap][y]
+                flexible_demand_energy_eff(gen[y]) * EP[:vP][y, t] <= cluster_cap(y)
             end)
         for y in FLEX_Z
 
@@ -134,6 +141,13 @@ function flexible_demand!(EP::AbstractModel, inputs::Dict, setup::Dict)
                 sum(EP[:vCHARGE_FLEX][y, e]
                 for e in hoursafter(hours_per_subperiod, t, 1:max_flex_demand_advance))>=-EP[:vS_FLEX][y,t])
         end
+    end
+
+    # Set operational variables for non-first bins to zero
+    for y in FLEX_NO_POWER_OUT
+        fix.(EP[:vP][y, :], 0.0, force = true)
+        fix.(EP[:vCHARGE_FLEX][y, :], 0.0, force = true)
+        fix.(EP[:vS_FLEX][y, :], 0.0, force = true)
     end
 
     return EP

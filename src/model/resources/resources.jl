@@ -586,6 +586,25 @@ cap_size(r::AbstractResource) = get(r, :cap_size, 1)
 
 num_vre_bins(r::AbstractResource) = get(r, :num_vre_bins, default_zero)
 num_vre_bins(r::Vre) = get(r, :num_vre_bins, 1)
+num_vre_bins(r::Thermal) = get(r, :num_vre_bins, 1)
+num_vre_bins(r::Storage) = get(r, :num_vre_bins, 1)
+num_vre_bins(r::MustRun) = get(r, :num_vre_bins, 1)
+num_vre_bins(r::FlexDemand) = get(r, :num_vre_bins, 1)
+num_vre_bins(r::Electrolyzer) = get(r, :num_vre_bins, 1)
+
+"""
+    operational_bins(gen, y)
+
+Return the set of resource IDs that form the operational-binning cluster
+anchored at first-bin resource `y`. The cluster spans `num_vre_bins(gen[y])`
+consecutive resource IDs starting at `y`. Used to share a single set of
+operational variables across multiple capacity-investment bins of the same
+resource type.
+"""
+function operational_bins(gen, y)
+    return intersect(resource_id.(gen[resource_id.(gen) .>= y]),
+        resource_id.(gen[resource_id.(gen) .<= y + num_vre_bins(gen[y]) - 1]))
+end
 
 function hydro_energy_to_power_ratio(r::AbstractResource)
     get(r, :hydro_energy_to_power_ratio, default_zero)

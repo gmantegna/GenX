@@ -70,7 +70,22 @@ function test_load_scaled_resources_data(gen, dfGen)
     @test GenX.existing_cap_mw.(gen) == dfGen.existing_cap_mw
     @test GenX.existing_cap_mwh.(gen) == dfGen.existing_cap_mwh
 
-    @test GenX.num_vre_bins.(gen) == dfGen.num_vre_bins
+    # Per-type defaults: Thermal/Storage/MustRun/FlexDemand/Electrolyzer
+    # default to 1 when the column is missing in the per-type CSV
+    # (operational-binning support). The legacy reference CSV explicitly stores 0
+    # for these types; treat 0 here as "column missing" and apply the new default.
+    # Vre is unchanged: its per-type CSV always has the column explicitly.
+    expected_num_vre_bins = map(eachindex(gen)) do i
+        v = dfGen.num_vre_bins[i]
+        if v == 0 && (gen[i] isa GenX.Thermal || gen[i] isa GenX.Storage ||
+                      gen[i] isa GenX.MustRun || gen[i] isa GenX.FlexDemand ||
+                      gen[i] isa GenX.Electrolyzer)
+            1
+        else
+            v
+        end
+    end
+    @test GenX.num_vre_bins.(gen) == expected_num_vre_bins
 
     @test GenX.qualified_hydrogen_supply.(gen) == dfGen.qualified_hydrogen_supply
 
