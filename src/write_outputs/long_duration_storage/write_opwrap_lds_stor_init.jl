@@ -1,19 +1,21 @@
 function write_opwrap_lds_stor_init(path::AbstractString,
         inputs::Dict,
         setup::Dict,
-        EP::Model)
+        EP::AbstractModel)
     ## Extract data frames from input dictionary
     gen = inputs["RESOURCES"]
     zones = zone_id.(gen)
 
     G = inputs["G"]
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
 
     # Initial level of storage in each modeled period
     NPeriods = size(inputs["Period_Map"])[1]
     dfStorageInit = DataFrame(Resource = inputs["RESOURCE_NAMES"], Zone = zones)
     socw = zeros(G, NPeriods)
-    for i in 1:G
-        if i in inputs["STOR_LONG_DURATION"]
+    for i in generators
+        if i in intersect(inputs["STOR_LONG_DURATION"], inputs["STOR_OPERATIONAL"])
             socw[i, :] = value.(EP[:vSOCw])[i, :]
         end
         if !isempty(inputs["VRE_STOR"])
@@ -38,7 +40,7 @@ function write_opwrap_lds_stor_init(path::AbstractString,
     t_interior = 2:hours_per_subperiod
     T_hor = hours_per_subperiod*NPeriods # total number of time steps in time horizon
     SOC_t = zeros(G, T_hor)
-    stor_long_duration = inputs["STOR_LONG_DURATION"]
+    stor_long_duration = intersect(inputs["STOR_LONG_DURATION"], inputs["STOR_OPERATIONAL"])
     stor_hydro_long_duration = inputs["STOR_HYDRO_LONG_DURATION"]
     period_map = inputs["Period_Map"].Rep_Period_Index
     pP_max = inputs["pP_Max"]

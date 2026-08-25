@@ -1,9 +1,9 @@
 @doc raw"""
-	write_vre_stor(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_vre_stor(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for writing the vre-storage specific files.
 """
-function write_vre_stor(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_vre_stor(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
     ### CAPACITY DECISIONS ###
     dfVreStor = write_vre_stor_capacity(path, inputs, setup, EP)
@@ -18,11 +18,11 @@ function write_vre_stor(path::AbstractString, inputs::Dict, setup::Dict, EP::Mod
 end
 
 @doc raw"""
-	write_vre_stor_capacity(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_vre_stor_capacity(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for writing the vre-storage capacities.
 """
-function write_vre_stor_capacity(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_vre_stor_capacity(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     gen = inputs["RESOURCES"]
     gen_VRE_STOR = gen.VreStorage
 
@@ -336,11 +336,11 @@ function write_vre_stor_capacity(path::AbstractString, inputs::Dict, setup::Dict
 end
 
 @doc raw"""
-	write_vre_stor_charge(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_vre_stor_charge(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for writing the vre-storage charging decision variables/expressions.
 """
-function write_vre_stor_charge(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_vre_stor_charge(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     gen = inputs["RESOURCES"]
     gen_VRE_STOR = gen.VreStorage
     T = inputs["T"]
@@ -387,14 +387,14 @@ function write_vre_stor_charge(path::AbstractString, inputs::Dict, setup::Dict, 
 end
 
 @doc raw"""
-	write_vre_stor_discharge(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_vre_stor_discharge(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for writing the vre-storage discharging decision variables/expressions.
 """
 function write_vre_stor_discharge(path::AbstractString,
         inputs::Dict,
         setup::Dict,
-        EP::Model)
+        EP::AbstractModel)
     gen = inputs["RESOURCES"]
     gen_VRE_STOR = gen.VreStorage
     T = inputs["T"]

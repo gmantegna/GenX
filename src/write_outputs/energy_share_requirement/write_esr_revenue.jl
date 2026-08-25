@@ -1,5 +1,5 @@
 @doc raw"""
-    write_esr_revenue(path::AbstractString, inputs::Dict, setup::Dict, dfPower::DataFrame, dfESR::DataFrame, EP::Model)
+    write_esr_revenue(path::AbstractString, inputs::Dict, setup::Dict, dfPower::DataFrame, dfESR::DataFrame, EP::AbstractModel)
 
 Function for reporting the renewable/clean credit revenue earned by each generator listed in the input file. GenX will print this file only when RPS/CES is modeled and the shadow price can be obtained form the solver. Each row corresponds to a generator, and each column starting from the 6th to the second last is the total revenue earned from each RPS constraint. The revenue is calculated as the total annual generation (if elgible for the corresponding constraint) multiplied by the RPS/CES price. The last column is the total revenue received from all constraint. The unit is \$.
 """
@@ -8,7 +8,7 @@ function write_esr_revenue(path::AbstractString,
         setup::Dict,
         dfPower::DataFrame,
         dfESR::DataFrame,
-        EP::Model)
+        EP::AbstractModel)
     gen = inputs["RESOURCES"]
     regions = region.(gen)
     clusters = cluster.(gen)
@@ -22,6 +22,8 @@ function write_esr_revenue(path::AbstractString,
         Cluster = clusters,
         R_ID = rid)
     G = inputs["G"]
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     nESR = inputs["nESR"]
     weight = inputs["omega"]
     # Load VRE-storage inputs
@@ -39,7 +41,9 @@ function write_esr_revenue(path::AbstractString,
     for i in 1:nESR
         esr_col = Symbol("ESR_$i")
         price = dfESR[i, :ESR_Price]
-        derated_annual_net_generation = dfPower[1:G, :AnnualSum] .* esr.(gen, tag = i)
+        derated_annual_net_generation = zeros(G)
+        derated_annual_net_generation[generators] = dfPower[generators, :AnnualSum] .*
+                                                    esr.(gen[generators], tag = i)
         derated_annual_net_generation[FUSION] .+= thermal_fusion_annual_parasitic_power(
             EP, inputs, setup) .* esr.(gen[FUSION], tag = i)
         revenue = derated_annual_net_generation * price

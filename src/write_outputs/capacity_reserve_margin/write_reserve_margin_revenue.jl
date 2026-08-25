@@ -1,5 +1,5 @@
 @doc raw"""
-	write_reserve_margin_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_reserve_margin_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for reporting the capacity revenue earned by each generator listed in the input file.
     GenX will print this file only when capacity reserve margin is modeled and the shadow price can be obtained form the solver.
@@ -11,7 +11,7 @@ Function for reporting the capacity revenue earned by each generator listed in t
 function write_reserve_margin_revenue(path::AbstractString,
         inputs::Dict,
         setup::Dict,
-        EP::Model)
+        EP::AbstractModel)
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
 
     gen = inputs["RESOURCES"]
@@ -20,11 +20,13 @@ function write_reserve_margin_revenue(path::AbstractString,
     zones = zone_id.(gen)
 
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     T = inputs["T"]     # Number of time steps (hours)
     THERM_ALL = inputs["THERM_ALL"]
     VRE = inputs["VRE"]
     HYDRO_RES = inputs["HYDRO_RES"]
-    STOR_ALL = inputs["STOR_ALL"]
+    STOR_ALL = inputs["STOR_OPERATIONAL"]
     FLEX = inputs["FLEX"]
     MUST_RUN = inputs["MUST_RUN"]
     VRE_STOR = inputs["VRE_STOR"]
@@ -55,10 +57,10 @@ function write_reserve_margin_revenue(path::AbstractString,
                                (value.(EP[:eTotalCap][MUST_RUN])) .*
                                (inputs["pP_Max"][MUST_RUN, :] * weighted_price)
         tempresrev[HYDRO_RES] = derating_factor.(gen.Hydro, tag = i) .*
-                                (value.(EP[:vP][HYDRO_RES, :]) * weighted_price)
+                                (value.(EP[:vP][HYDRO_RES, :]).data * weighted_price)
         if !isempty(STOR_ALL)
             tempresrev[STOR_ALL] = derating_factor.(gen.Storage, tag = i) .*
-                                   ((value.(EP[:vP][STOR_ALL, :]) -
+                                   ((value.(EP[:vP][STOR_ALL, :]).data -
                                      value.(EP[:vCHARGE][STOR_ALL, :]).data +
                                      value.(EP[:vCAPRES_discharge][STOR_ALL, :]).data -
                                      value.(EP[:vCAPRES_charge][STOR_ALL, :]).data) *
@@ -67,7 +69,7 @@ function write_reserve_margin_revenue(path::AbstractString,
         if !isempty(FLEX)
             tempresrev[FLEX] = derating_factor.(gen.FlexDemand, tag = i) .*
                                ((value.(EP[:vCHARGE_FLEX][FLEX, :]).data -
-                                 value.(EP[:vP][FLEX, :])) * weighted_price)
+                                 value.(EP[:vP][FLEX, :]).data) * weighted_price)
         end
         if !isempty(VRE_STOR)
             gen_VRE_STOR = gen.VreStorage

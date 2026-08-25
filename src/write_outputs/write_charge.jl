@@ -1,15 +1,18 @@
 @doc raw"""
-	write_charge(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_charge(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for writing the charging energy values of the different storage technologies.
 """
-function write_charge(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_charge(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     gen = inputs["RESOURCES"]   # Resources (objects) 
     resources = inputs["RESOURCE_NAMES"]    # Resource names
     zones = zone_id.(gen)
 
+    G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     T = inputs["T"]     # Number of time steps (hours)
-    STOR_ALL = inputs["STOR_ALL"]
+    STOR_ALL = inputs["STOR_OPERATIONAL"]
     FLEX = inputs["FLEX"]
     ELECTROLYZER = inputs["ELECTROLYZER"]
     VRE_STOR = inputs["VRE_STOR"]

@@ -1,5 +1,5 @@
 @doc raw"""
-	thermal_commit!(EP::Model, inputs::Dict, setup::Dict)
+	thermal_commit!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
 This function defines the operating constraints for thermal power plants subject to unit commitment constraints on power plant start-ups and shut-down decision ($y \in UC$).
 
@@ -124,7 +124,7 @@ where $\tau_{y,z}^{up|down}$ is the minimum up or down time for units in generat
 Like with the ramping constraints, the minimum up and down constraint time also wrap around from the start of each time period to the end of each period.
 It is recommended that users of GenX must use longer subperiods than the longest min up/down time if modeling UC. Otherwise, the model will report error.
 """
-function thermal_commit!(EP::Model, inputs::Dict, setup::Dict)
+function thermal_commit!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("Thermal (Unit Commitment) Resources Module")
 
     gen = inputs["RESOURCES"]
@@ -132,6 +132,8 @@ function thermal_commit!(EP::Model, inputs::Dict, setup::Dict)
     T = inputs["T"]     # Number of time steps (hours)
     Z = inputs["Z"]     # Number of zones
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
 
     p = inputs["hours_per_subperiod"] #total number of hours per subperiod
 
@@ -264,7 +266,7 @@ function thermal_commit!(EP::Model, inputs::Dict, setup::Dict)
 end
 
 @doc raw"""
-	thermal_commit_operational_reserves!(EP::Model, inputs::Dict)
+	thermal_commit_operational_reserves!(EP::AbstractModel, inputs::Dict)
 
 This function is called by the ```thermal_commit()``` function when regulation and reserves constraints are active and defines reserve related constraints for thermal power plants subject to unit commitment constraints on power plant start-ups and shut-down decisions.
 
@@ -305,7 +307,7 @@ When modeling frequency regulation and spinning reserves contributions, thermal 
 ```
 
 """
-function thermal_commit_operational_reserves!(EP::Model, inputs::Dict)
+function thermal_commit_operational_reserves!(EP::AbstractModel, inputs::Dict)
     println("Thermal Commit Operational Reserves Module")
 
     gen = inputs["RESOURCES"]
@@ -349,11 +351,11 @@ function thermal_commit_operational_reserves!(EP::Model, inputs::Dict)
 end
 
 @doc raw"""
-    maintenance_formulation_thermal_commit!(EP::Model, inputs::Dict, setup::Dict)
+    maintenance_formulation_thermal_commit!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
 Creates maintenance variables and constraints for thermal-commit plants.
 """
-function maintenance_formulation_thermal_commit!(EP::Model, inputs::Dict, setup::Dict)
+function maintenance_formulation_thermal_commit!(EP::AbstractModel, inputs::Dict, setup::Dict)
     @info "Maintenance Module for Thermal plants"
 
     ensure_maintenance_variable_records!(inputs)
@@ -391,11 +393,11 @@ function maintenance_formulation_thermal_commit!(EP::Model, inputs::Dict, setup:
 end
 
 @doc raw"""
-    thermal_maintenance_capacity_reserve_margin_adjustment!(EP::Model, inputs::Dict)
+    thermal_maintenance_capacity_reserve_margin_adjustment!(EP::AbstractModel, inputs::Dict)
 
 Eliminates the contribution of a plant to the capacity reserve margin while it is down for maintenance.
 """
-function thermal_maintenance_capacity_reserve_margin_adjustment!(EP::Model,
+function thermal_maintenance_capacity_reserve_margin_adjustment!(EP::AbstractModel,
         inputs::Dict)
     gen = inputs["RESOURCES"]
 
@@ -414,7 +416,7 @@ function thermal_maintenance_capacity_reserve_margin_adjustment!(EP::Model,
     add_similar_to_expression!(EP[:eCapResMarBalance], maint_adj)
 end
 
-function thermal_maintenance_capacity_reserve_margin_adjustment(EP::Model,
+function thermal_maintenance_capacity_reserve_margin_adjustment(EP::AbstractModel,
         inputs::Dict,
         y::Int,
         capres::Int,
@@ -428,12 +430,12 @@ function thermal_maintenance_capacity_reserve_margin_adjustment(EP::Model,
 end
 
 @doc raw"""
-    fusion_formulation_thermal_commit!(EP::Model, inputs::Dict)
+    fusion_formulation_thermal_commit!(EP::AbstractModel, inputs::Dict)
 
 Apply fusion-core-specific constraints to the model.
 
 """
-function fusion_formulation_thermal_commit!(EP::Model, inputs::Dict, setup::Dict)
+function fusion_formulation_thermal_commit!(EP::AbstractModel, inputs::Dict, setup::Dict)
     @info "Fusion Module for Thermal-commit plants"
 
     integer_operational_unit_commitment = setup["UCommit"] == 1

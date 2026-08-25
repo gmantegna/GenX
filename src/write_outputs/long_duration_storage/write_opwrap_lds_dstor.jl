@@ -1,16 +1,18 @@
-function write_opwrap_lds_dstor(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_opwrap_lds_dstor(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     ## Extract data frames from input dictionary
     gen = inputs["RESOURCES"]
     zones = zone_id.(gen)
 
     W = inputs["REP_PERIOD"]     # Number of subperiods
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
 
     #Excess inventory of storage period built up during representative period w
     dfdStorage = DataFrame(Resource = inputs["RESOURCE_NAMES"], Zone = zones)
     dsoc = zeros(G, W)
-    for i in 1:G
-        if i in inputs["STOR_LONG_DURATION"]
+    for i in generators
+        if i in intersect(inputs["STOR_LONG_DURATION"], inputs["STOR_OPERATIONAL"])
             dsoc[i, :] = value.(EP[:vdSOC])[i, :]
         end
         if !isempty(inputs["VRE_STOR"])

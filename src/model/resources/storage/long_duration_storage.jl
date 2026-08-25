@@ -1,5 +1,5 @@
 @doc raw"""
-	long_duration_storage!(EP::Model, inputs::Dict, setup::Dict)
+	long_duration_storage!(EP::AbstractModel, inputs::Dict, setup::Dict)
 This function creates variables and constraints enabling modeling of long duration storage resources when modeling representative time periods.\
 
 **Storage inventory balance at beginning of each representative period**
@@ -94,7 +94,7 @@ Similarly, the minimum storage content is imposed to be positive in every period
 
 Additional details on this approach are available in [Parolin et al., 2024](https://doi.org/10.48550/arXiv.2409.19079).
 """
-function long_duration_storage!(EP::Model, inputs::Dict, setup::Dict)
+function long_duration_storage!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("Long Duration Storage Module")
 
     gen = inputs["RESOURCES"]
@@ -103,7 +103,9 @@ function long_duration_storage!(EP::Model, inputs::Dict, setup::Dict)
 
     REP_PERIOD = inputs["REP_PERIOD"]     # Number of representative periods
 
-    STOR_LONG_DURATION = inputs["STOR_LONG_DURATION"]
+    # operational constraints apply only to the operational storage set (op-group
+    # representatives + standalone), sized by the group capacity expression
+    STOR_LONG_DURATION = intersect(inputs["STOR_LONG_DURATION"], inputs["STOR_OPERATIONAL"])
 
     hours_per_subperiod = inputs["hours_per_subperiod"] #total number of hours per subperiod
 
@@ -169,7 +171,7 @@ function long_duration_storage!(EP::Model, inputs::Dict, setup::Dict)
     @constraint(EP,
         cSoCBalLongDurationStorageUpper[y in STOR_LONG_DURATION,
             r in MODELED_PERIODS_INDEX],
-        vSOCw[y, r]<=EP[:eTotalCapEnergy][y])
+        vSOCw[y, r]<=EP[:eTotalCapEnergyStorOp][y])
 
     # Initial storage level for representative periods must also adhere to sub-period storage inventory balance
     # Initial storage = Final storage - change in storage inventory across representative period
@@ -237,7 +239,7 @@ function long_duration_storage!(EP::Model, inputs::Dict, setup::Dict)
     @constraint(EP, cSoCLongDurationStorageMaxInt[y in STOR_LONG_DURATION, r in MODELED_PERIODS_INDEX],
             (1-self_discharge(gen[y]))*vSOCw[y,r]-(1/efficiency_down(gen[y])*EP[:vP][y,hours_per_subperiod*(dfPeriodMap[r,:Rep_Period_Index]-1)+1])
             +(efficiency_up(gen[y])*EP[:vCHARGE][y,hours_per_subperiod*(dfPeriodMap[r,:Rep_Period_Index]-1)+1])
-            +vdSOC_maxPos[y,dfPeriodMap[r,:Rep_Period_Index]] <= EP[:eTotalCapEnergy][y])
+            +vdSOC_maxPos[y,dfPeriodMap[r,:Rep_Period_Index]] <= EP[:eTotalCapEnergyStorOp][y])
 
     # Min storage content within each modeled period cannot be negative
     @constraint(EP, cSoCLongDurationStorageMinInt[y in STOR_LONG_DURATION, r in MODELED_PERIODS_INDEX],

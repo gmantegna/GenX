@@ -76,7 +76,8 @@ function run_genx_case_simple!(case::AbstractString, mysetup::Dict, optimizer::A
     myinputs = load_inputs(mysetup, case)
 
     println("Generating the Optimization Model")
-    time_elapsed = @elapsed EP = generate_model(mysetup, myinputs, OPTIMIZER)
+    EP = Model(OPTIMIZER)
+    time_elapsed = @elapsed generate_model!(EP,mysetup, myinputs)
     println("Time elapsed for model building is")
     println(time_elapsed)
 
@@ -111,6 +112,13 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
     multistage_settings = get_settings_path(case, "multi_stage_settings.yml") # Multi stage settings YAML file path
     # merge default settings with those specified in the YAML file
     mysetup["MultiStageSettingsDict"] = configure_settings_multistage(multistage_settings)
+    if mysetup["ARO"] == 1
+        aro_edges_path = get_settings_path(case, "Graph_edges.csv")
+        aro_edges = load_dataframe(aro_edges_path)
+        mysetup["MultiStageSettingsDict"]["aro_edges"] = aro_edges
+
+        mysetup["MultiStageSettingsDict"]["aro_objective"] = load_dataframe(get_settings_path(case,"Objective.csv"))
+    end
 
     ### Cluster time series inputs if necessary and if specified by the user
     if mysetup["TimeDomainReduction"] == 1
@@ -142,8 +150,23 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
     solver_name = lowercase(get(mysetup, "Solver", ""))
     OPTIMIZER = configure_solver(settings_path, optimizer; solver_name=solver_name)
 
-    model_dict = Dict()
     inputs_dict = Dict()
+
+    if mysetup["MultiStageSettingsDict"]["DDP"] == 0
+
+        if mysetup["MultiStageSettingsDict"]["DirectMode"] == 0
+            multistage_graph =  Plasmo.OptiGraph();
+            set_optimizer(multistage_graph, OPTIMIZER);
+        else
+            opt_instance = MOI.instantiate(OPTIMIZER)
+            multistage_graph = Plasmo.direct_moi_graph(opt_instance);
+        end
+
+        @optinode(multistage_graph , model_dict[1:mysetup["MultiStageSettingsDict"]["NumStages"]])
+
+    else
+        model_dict = Dict(t=> Model() for t in 1:mysetup["MultiStageSettingsDict"]["NumStages"])
+    end
 
     for t in 1:mysetup["MultiStageSettingsDict"]["NumStages"]
 
@@ -154,25 +177,99 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
         inpath_sub = joinpath(case, "inputs", string("inputs_p", t))
 
         inputs_dict[t] = load_inputs(mysetup, inpath_sub)
-        inputs_dict[t] = configure_multi_stage_inputs(inputs_dict[t],
-            mysetup["MultiStageSettingsDict"],
-            mysetup["NetworkExpansion"])
+        inputs_dict[t] = configure_multi_stage_inputs(inputs_dict[t],mysetup)
 
         compute_cumulative_min_retirements!(inputs_dict, t)
+        
         # Step 2) Generate model
-        model_dict[t] = generate_model(mysetup, inputs_dict[t], OPTIMIZER)
+                
+        generate_model!(model_dict[t],mysetup, inputs_dict[t])
+
+        set_optimizer(model_dict[t], OPTIMIZER)
+
+        discount_objective_function!(model_dict[t],mysetup,inputs_dict[t])
+        
     end
 
     # check that resources do not switch from can_retire = 0 to can_retire = 1 between stages
-    validate_can_retire_multistage(
-        inputs_dict, mysetup["MultiStageSettingsDict"]["NumStages"])
+    validate_can_retire_multistage(inputs_dict, mysetup["MultiStageSettingsDict"]["NumStages"])
+
+    if mysetup["MultiStageSettingsDict"]["DDP"] == 0
+        define_multi_stage_linking_constraints!(multistage_graph,mysetup,inputs_dict)
+        
+        if mysetup["ARO"]==0
+            @objective(multistage_graph, 
+            Min, 
+            sum(model_dict[t][:eDiscountedObj] for t in 1:mysetup["MultiStageSettingsDict"]["NumStages"])
+            )
+        elseif mysetup["ARO"]==1
+            aro_objective = mysetup["MultiStageSettingsDict"]["aro_objective"]
+            aro_objective_sum = Int.(collect(skipmissing(aro_objective.Sum)))
+            aro_objective_max = Int.(collect(skipmissing(aro_objective.Max)))
+            if :Lambda in Symbol.(names(aro_objective))
+                lambda = collect(skipmissing(aro_objective.Lambda))[1]
+                aro_objective_upside = Int.(collect(skipmissing(aro_objective.Upside)))
+                weights = collect(skipmissing(aro_objective.Upside_weights))
+            end
+            i=1
+            for stage in aro_objective_max
+                EP_stage=model_dict[stage]
+                @variable(EP_stage,t>=0)
+                if i>1
+                    EP_prev_stage=model_dict[aro_objective_max[i-1]]
+                    @linkconstraint(multistage_graph,EP_stage[:t] == EP_prev_stage[:t])
+                end
+                @constraint(EP_stage,EP_stage[:eDiscountedObj]<=EP_stage[:t])
+                i+=1
+            end
+            if :Lambda in Symbol.(names(aro_objective))
+                @objective(
+                    multistage_graph,
+                    Min,
+                    (
+                        sum(model_dict[t][:eDiscountedObj] for t in aro_objective_sum)
+                        + lambda * model_dict[aro_objective_max[1]][:t]
+                        + (1 - lambda) * sum(
+                            model_dict[t][:eDiscountedObj]
+                            * weights[aro_objective_upside.==t][1]
+                            for t in aro_objective_upside
+                        )
+                    )
+                )
+            else
+                @objective(
+                    multistage_graph,
+                    Min,
+                    (
+                        sum(model_dict[t][:eDiscountedObj] for t in aro_objective_sum)
+                        + model_dict[aro_objective_max[1]][:t]
+                    )
+                )
+            end
+
+        end
+
+        if mysetup["PrintModel"] == 1
+            println("Writing to file")
+            filename = (@__DIR__)*"/YourModel.lp"
+            m = MOI.FileFormats.Model(filename=filename)
+            f = () -> MOI.FileFormats.Model(filename=filename)
+            inner = MOI.instantiate(f)
+            moi_g_model = multistage_graph.backend.moi_backend.model_cache.model
+            inner_map = MOI.copy_to(inner, moi_g_model)
+            ub = JuMP.unsafe_backend(inner)
+            MOI.write_to_file(ub, filename)
+        end
+    
+    end
 
     ### Solve model
     println("Solving Model")
 
+    # Step 3) Solve Model
+
     # Prepare folder for results    
     outpath = get_default_output_folder(case)
-
     if mysetup["OverwriteResults"] == 1
         # Overwrite existing results if dir exists
         # This is the default behaviour when there is no flag, to avoid breaking existing code
@@ -185,21 +282,54 @@ function run_genx_case_multistage!(case::AbstractString, mysetup::Dict, optimize
         mkdir(outpath)
     end
 
-    # Step 3) Run DDP Algorithm
-    ## Solve Model
-    model_dict, mystats_d, inputs_dict = run_ddp(outpath, model_dict, mysetup, inputs_dict)
+    if  mysetup["MultiStageSettingsDict"]["DDP"] == 1
+        ## Run DDP Algorithm
+        model_dict, mystats_d, inputs_dict = run_ddp(outpath, model_dict, mysetup, inputs_dict)
 
-    # Step 4) Write final outputs from each stage
-    if mysetup["MultiStageSettingsDict"]["Myopic"] == 0 ||
-       mysetup["MultiStageSettingsDict"]["WriteIntermittentOutputs"] == 0
-        for p in 1:mysetup["MultiStageSettingsDict"]["NumStages"]
-            mysetup["MultiStageSettingsDict"]["CurStage"] = p
-            outpath_cur = joinpath(outpath, "results_p$p")
-            write_outputs(model_dict[p], outpath_cur, mysetup, inputs_dict[p])
+        # Write final outputs from each stage
+        myopic = mysetup["MultiStageSettingsDict"]["Myopic"] == 1
+        if !myopic ||
+            mysetup["MultiStageSettingsDict"]["WriteIntermittentOutputs"] == 0
+            for p in 1:mysetup["MultiStageSettingsDict"]["NumStages"]
+                mysetup["MultiStageSettingsDict"]["CurStage"] = p
+                outpath_cur = joinpath(outpath, "results_p$p")
+                write_outputs(model_dict[p], outpath_cur, mysetup, inputs_dict[p])
+            end
         end
+ 
+        # Write multistage summary outputs
+        write_multi_stage_outputs(outpath, mysetup, inputs_dict)
+
+        # write stats 
+        !myopic && write_multi_stage_stats(outpath, mystats_d)
+    else
+        solver_start_time = time()
+        optimize!(multistage_graph)
+        inputs_dict["solve_time"] = time() - solver_start_time
+
+        if !has_duals(multistage_graph)
+            # compute_conflict!(graph_backend(multistage_graph))
+            MOI.compute_conflict!(backend(graph_backend(multistage_graph)))
+            list_of_conflicting_constraints = ConstraintRef[]
+            if get_attribute(multistage_graph, MOI.ConflictStatus()) == MOI.CONFLICT_FOUND
+                for (F, S) in list_of_constraint_types(multistage_graph)
+                    for con in all_constraints(multistage_graph, F, S)
+                        if get_attribute(con, MOI.ConstraintConflictStatus()) == MOI.IN_CONFLICT
+                            push!(list_of_conflicting_constraints, con)
+                        end
+                    end
+                end
+                display(list_of_conflicting_constraints)
+                CSV.write("conflict_constraints.csv", list_of_conflicting_constraints)
+            else
+                @info "Conflicts computation failed."
+            end
+        end
+        
+        # Write outputs for the multistage graph
+        write_outputs(multistage_graph, outpath, mysetup, inputs_dict)
     end
 
-    # Step 5) Write DDP summary outputs
 
-    write_multi_stage_outputs(mystats_d, outpath, mysetup, inputs_dict)
+    
 end

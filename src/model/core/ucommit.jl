@@ -1,5 +1,5 @@
 @doc raw"""
-	ucommit!(EP::Model, inputs::Dict, setup::Dict)
+	ucommit!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
 This function creates decision variables and cost expressions associated with thermal plant unit commitment or start-up and shut-down decisions (cycling on/off)
 
@@ -22,7 +22,7 @@ The total cost of start-ups across all generators subject to unit commitment ($y
 
 The sum of start-up costs is added to the objective function.
 """
-function ucommit!(EP::Model, inputs::Dict, setup::Dict)
+function ucommit!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("Unit Commitment Module")
 
     T = inputs["T"]     # Number of time steps (hours)

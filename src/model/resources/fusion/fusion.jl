@@ -235,7 +235,7 @@ end
 # to the model
 ############################################################################
 
-function fusion_pulse_variables!(EP::Model,
+function fusion_pulse_variables!(EP::AbstractModel,
         inputs::Dict,
         integer_operational_unit_commitment::Bool,
         resource_component::AbstractString,
@@ -291,7 +291,7 @@ function fusion_pulse_variables!(EP::Model,
 end
 
 function fusion_pulse_status_linking_constraints!(
-        EP::Model,
+        EP::AbstractModel,
         inputs::Dict,
         resource_component::AbstractString,
         r_id::Int,
@@ -313,7 +313,7 @@ function fusion_pulse_status_linking_constraints!(
 end
 
 @doc raw"""
-    fusion_pulse_thermal_power_generation_constraint!(EP::Model,
+    fusion_pulse_thermal_power_generation_constraint!(EP::AbstractModel,
                               inputs::Dict,
                               resource_component::AbstractString,
                               r_id::Int,
@@ -324,7 +324,7 @@ end
     Add constraint which acts on the power-output-like variable.
 """
 function fusion_pulse_thermal_power_generation_constraint!(
-        EP::Model,
+        EP::AbstractModel,
         inputs::Dict,
         resource_component::AbstractString,
         r_id::Int,
@@ -361,7 +361,7 @@ function _fusion_dwell_avoided_operation(dwell_time::Float64, ePulseStart::AffEx
 end
 
 function fusion_parasitic_power!(
-        EP::Model,
+        EP::AbstractModel,
         inputs::Dict,
         resource_component,
         r_id::Int,
@@ -413,7 +413,7 @@ function fusion_parasitic_power!(
 end
 
 function fusion_max_fpy_per_year_constraint!(
-        EP::Model,
+        EP::AbstractModel,
         inputs::Dict,
         r_id::Int,
         reactor::FusionReactorData,
@@ -433,7 +433,7 @@ function fusion_max_fpy_per_year_constraint!(
 end
 
 function fusion_total_parasitic_power!(
-        EP::Model,
+        EP::AbstractModel,
         inputs::Dict,
         resource_component,
         r_id::Int
@@ -481,7 +481,7 @@ function fusion_annual_parasitic_power(
 end
 
 function thermal_fusion_annual_parasitic_power(
-        EP::Model, inputs::Dict, setup::Dict)::Vector{Float64}
+        EP::AbstractModel, inputs::Dict, setup::Dict)::Vector{Float64}
     gen = inputs["RESOURCES"]
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
     FUSION = ids_with(gen, fusion)

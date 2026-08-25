@@ -17,6 +17,7 @@ function load_inputs(setup::Dict, path::AbstractString)
     system_path = joinpath(path, setup["SystemFolder"])
     resources_path = joinpath(path, setup["ResourcesFolder"])
     policies_path = joinpath(path, setup["PoliciesFolder"])
+
     ## Declare Dict (dictionary) object used to store parameters
     inputs = Dict()
     # Read input data about power network topology, operating and expansion attributes
@@ -33,8 +34,40 @@ function load_inputs(setup::Dict, path::AbstractString)
     load_fuels_data!(setup, path, inputs)
     # Read in generator/resource related inputs
     load_resources_data!(inputs, setup, path, resources_path)
+
+    # Read per-resource fully-deliverable flags, if the file exists
+    fully_deliverable_path = joinpath(resources_path, "policy_assignments", "Resource_fully_deliverable.csv")
+    if isfile(fully_deliverable_path)
+        load_fully_deliverable!(setup, fully_deliverable_path, inputs)
+    end
+
     # Read in generator/resource availability profiles
     load_generators_variability!(setup, path, inputs)
+
+    if setup["Hourly_Pmin"] == 1
+        load_generators_pmin!(setup,path,inputs)
+    end
+
+    if setup["Fixed_Dispatch"] == 1
+        load_generators_fixed_dispatch!(setup,path,inputs)
+    end
+
+    # Read hourly energy budget if the file exists
+    hourly_energy_budget_path = joinpath(system_path,"Hourly_energy_budget.csv")
+    if isfile(hourly_energy_budget_path)
+        load_hourly_energy_budget!(setup,path,inputs)
+    end
+
+    # Read custom constraints, if the folder exists
+    custom_constraint_path = joinpath(system_path,"custom_constraints")
+    if isdir(custom_constraint_path)
+        load_custom_constraints!(setup,custom_constraint_path,inputs)
+    end
+
+    # Read CAISO tx deliverability constraints, if the file exists
+    if isfile(joinpath(system_path, "Caiso_tx_constraints.csv"))
+        load_caiso_tx_constraints!(setup, system_path, inputs)
+    end
 
     validatetimebasis(inputs)
 
@@ -43,6 +76,10 @@ function load_inputs(setup::Dict, path::AbstractString)
         if inputs["Z"] > 1
             load_cap_reserve_margin_trans!(setup, inputs, network_var)
         end
+    end
+
+    if setup["CapResELCC"] == 1
+        load_ELCC_inputs!(setup,path,inputs)
     end
 
     # Read in general configuration parameters for operational reserves (resource-specific reserve parameters are read in load_resources_data)
@@ -64,6 +101,9 @@ function load_inputs(setup::Dict, path::AbstractString)
 
     if setup["CO2Cap"] >= 1
         load_co2_cap!(setup, policies_path, inputs)
+        if inputs["Z"] > 1
+            load_co2_cap_trans!(setup, inputs, network_var)
+        end
     end
 
     if !isempty(inputs["VRE_STOR"])

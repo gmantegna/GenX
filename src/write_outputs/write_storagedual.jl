@@ -1,19 +1,21 @@
 @doc raw"""
-	write_storagedual(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_storagedual(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for reporting dual of storage level (state of charge) balance of each resource in each time step.
 """
-function write_storagedual(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_storagedual(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     gen = inputs["RESOURCES"]
     zones = zone_id.(gen)
 
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     T = inputs["T"]     # Number of time steps (hours)
 
     START_SUBPERIODS = inputs["START_SUBPERIODS"]
     INTERIOR_SUBPERIODS = inputs["INTERIOR_SUBPERIODS"]
     REP_PERIOD = inputs["REP_PERIOD"]
-    STOR_ALL = inputs["STOR_ALL"]
+    STOR_ALL = inputs["STOR_OPERATIONAL"]
     VRE_STOR = inputs["VRE_STOR"]
     if !isempty(VRE_STOR)
         VS_STOR = inputs["VS_STOR"]

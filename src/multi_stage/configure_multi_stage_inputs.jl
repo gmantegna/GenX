@@ -1,5 +1,5 @@
 @doc raw"""
-	function compute_overnight_capital_cost(settings_d::Dict,inv_costs_yr::Array,crp::Array,tech_wacc::Array)
+	function compute_overnight_capital_cost(mysetup::Dict,inv_costs_yr::Array,crp::Array,tech_wacc::Array)
 
 This function computes overnight capital costs incured within the model horizon, assuming that annualized costs to be paid after the model horizon are fully recoverable, and so are not included in the cost computation.
 
@@ -13,7 +13,7 @@ where $WACC_y$ is the technology-specific weighted average cost of capital (set 
 
 inputs:
 
-  * settings\_d - dict object containing settings dictionary configured in the multi-stage settings file multi\_stage\_settings.yml.
+  * mysetup- dict object containing model settings dictionary
   * inv\_costs\_yr - array object containing annualized investment costs.
   * crp - array object of capital recovery period values.
   * tech_wacc - array object containing technology-specific weighted costs of capital.
@@ -21,25 +21,30 @@ NOTE: The inv\_costs\_yr and crp arrays must be the same length; values with the
 
 returns: array object containing overnight capital costs, the discounted sum of annual investment costs incured within the model horizon.
 """
-function compute_overnight_capital_cost(settings_d::Dict,
+function compute_overnight_capital_cost(mysetup::Dict,
         inv_costs_yr::Array,
         crp::Array,
         tech_wacc::Array)
 
-    # Check for resources with non-zero investment costs and a Capital_Recovery_Period value of 0 years
-    if any((crp .== 0) .& (inv_costs_yr .> 0))
-        msg = "You have some resources with non-zero investment costs and a Capital_Recovery_Period value of 0 years.\n" *
-              "These resources will have a calculated overnight capital cost of \$0. Correct your inputs if this is a mistake.\n"
-        error(msg)
-    end
+    # # Check for resources with non-zero investment costs and a Capital_Recovery_Period value of 0 years
+    # if any((crp .== 0) .& (inv_costs_yr .> 0))
+    #     msg = "You have some resources with non-zero investment costs and a Capital_Recovery_Period value of 0 years.\n" *
+    #           "These resources will have a calculated overnight capital cost of \$0. Correct your inputs if this is a mistake.\n"
+    #     error(msg)
+    # end
 
-    cur_stage = settings_d["CurStage"] # Current model
-    num_stages = settings_d["NumStages"] # Total number of model stages
-    stage_lens = settings_d["StageLengths"]
+    settings_d=mysetup["MultiStageSettingsDict"]
+    cur_stage = settings_d["CurStage"] # Current model stage
 
     # 1) For each resource, find the minimum of the capital recovery period and the end of the model horizon
     # Total time between the end of the final model stage and the start of the current stage
-    model_yrs_remaining = sum(stage_lens[cur_stage:end]; init = 0)
+    # ModelYrsRemaining may be provided explicitly (always in ARO mode; optionally otherwise,
+    # e.g. to match an external model's discounting exactly); values may be fractional
+    if mysetup["ARO"] == 1 || haskey(settings_d, "ModelYrsRemaining")
+        model_yrs_remaining = settings_d["ModelYrsRemaining"][cur_stage]
+    else
+        model_yrs_remaining = sum(settings_d["StageLengths"][cur_stage:end]; init = 0)
+    end
 
     # We will sum annualized costs through the full capital recovery period or the end of planning horizon, whichever comes first
     payment_yrs_remaining = min.(crp, model_yrs_remaining)
@@ -47,12 +52,19 @@ function compute_overnight_capital_cost(settings_d::Dict,
     # KEY ASSUMPTION: Investment costs after the planning horizon are fully recoverable, so we don't need to include these costs
     # 2) Compute the present value of investment associated with capital recovery period within the model horizon - discounting to year 1 and not year 0
     #    (Factor to adjust discounting to year 0 for capital cost is included in the discounting coefficient applied to all terms in the objective function value.)
+    # Fractional payment years are supported: the final fractional year contributes
+    # a proportional share of that year's discounted payment.
     occ = zeros(length(inv_costs_yr))
     for i in 1:length(occ)
+        whole_yrs = floor(Int, payment_yrs_remaining[i])
+        frac_yr = payment_yrs_remaining[i] - whole_yrs
         occ[i] = sum(
             inv_costs_yr[i] / (1 + tech_wacc[i]) .^ (p)
-            for p in 1:payment_yrs_remaining[i];
+            for p in 1:whole_yrs;
             init = 0)
+        if frac_yr > 0
+            occ[i] += frac_yr * inv_costs_yr[i] / (1 + tech_wacc[i])^(whole_yrs + 1)
+        end
     end
 
     # 3) Return the overnight capital cost (discounted sum of annual investment costs incured within the model horizon)
@@ -60,7 +72,7 @@ function compute_overnight_capital_cost(settings_d::Dict,
 end
 
 @doc raw"""
-	function configure_multi_stage_inputs(inputs_d::Dict, settings_d::Dict, NetworkExpansion::Int64)
+	function configure_multi_stage_inputs(inputs_d::Dict, mysetup::Dict)
 
 This function overwrites input parameters read in via the load\_inputs() method for proper configuration of multi-stage modeling:
 
@@ -75,14 +87,13 @@ This function overwrites input parameters read in via the load\_inputs() method 
 inputs:
 
   * inputs\_d - dict object containing model inputs dictionary generated by load\_inputs().
-  * settings\_d - dict object containing settings dictionary configured in the multi-stage settings file multi\_stage\_settings.yml.
-  * NetworkExpansion - integer flag (0/1) indicating whether network expansion is on, set via the "NetworkExpansion" field in genx\_settings.yml.
+  * mysetup - dict object containing settings dictionary
 
 returns: dictionary containing updated model inputs, to be used in the generate\_model() method.
 """
-function configure_multi_stage_inputs(inputs_d::Dict,
-        settings_d::Dict,
-        NetworkExpansion::Int64)
+function configure_multi_stage_inputs(inputs_d::Dict,mysetup::Dict)
+    settings_d=mysetup["MultiStageSettingsDict"]
+    NetworkExpansion=mysetup["NetworkExpansion"]
     gen = inputs_d["RESOURCES"]
 
     # Parameter inputs when multi-year discounting is activated
@@ -99,15 +110,15 @@ function configure_multi_stage_inputs(inputs_d::Dict,
     if !myopic ### Leave myopic costs in annualized form and do not scale OPEX costs
         # 1. Convert annualized investment costs incured within the model horizon into overnight capital costs
         # NOTE: Although the "yr" suffix is still in use in these parameter names, they no longer represent annualized costs but rather truncated overnight capital costs
-        gen.inv_cost_per_mwyr = compute_overnight_capital_cost(settings_d,
+        gen.inv_cost_per_mwyr = compute_overnight_capital_cost(mysetup,
             inv_cost_per_mwyr.(gen),
             capital_recovery_period.(gen),
             tech_wacc.(gen))
-        gen.inv_cost_per_mwhyr = compute_overnight_capital_cost(settings_d,
+        gen.inv_cost_per_mwhyr = compute_overnight_capital_cost(mysetup,
             inv_cost_per_mwhyr.(gen),
             capital_recovery_period.(gen),
             tech_wacc.(gen))
-        gen.inv_cost_charge_per_mwyr = compute_overnight_capital_cost(settings_d,
+        gen.inv_cost_charge_per_mwyr = compute_overnight_capital_cost(mysetup,
             inv_cost_charge_per_mwyr.(gen),
             capital_recovery_period.(gen),
             tech_wacc.(gen))
@@ -122,42 +133,42 @@ function configure_multi_stage_inputs(inputs_d::Dict,
         if !isempty(inputs_d["VRE_STOR"])
             gen_VRE_STOR = gen.VreStorage
             gen_VRE_STOR.inv_cost_inverter_per_mwyr = compute_overnight_capital_cost(
-                settings_d,
+                mysetup,
                 inv_cost_inverter_per_mwyr.(gen_VRE_STOR),
                 capital_recovery_period_dc.(gen_VRE_STOR),
                 tech_wacc_dc.(gen_VRE_STOR))
             gen_VRE_STOR.inv_cost_solar_per_mwyr = compute_overnight_capital_cost(
-                settings_d,
+                mysetup,
                 inv_cost_solar_per_mwyr.(gen_VRE_STOR),
                 capital_recovery_period_solar.(gen_VRE_STOR),
                 tech_wacc_solar.(gen_VRE_STOR))
             gen_VRE_STOR.inv_cost_wind_per_mwyr = compute_overnight_capital_cost(
-                settings_d,
+                mysetup,
                 inv_cost_wind_per_mwyr.(gen_VRE_STOR),
                 capital_recovery_period_wind.(gen_VRE_STOR),
                 tech_wacc_wind.(gen_VRE_STOR))
             gen_VRE_STOR.inv_cost_elec_per_mwyr = compute_overnight_capital_cost(
-                settings_d,
+                mysetup,
                 inv_cost_elec_per_mwyr.(gen_VRE_STOR),
                 capital_recovery_period_elec.(gen_VRE_STOR),
                 tech_wacc_elec.(gen_VRE_STOR))
             gen_VRE_STOR.inv_cost_discharge_dc_per_mwyr = compute_overnight_capital_cost(
-                settings_d,
+                mysetup,
                 inv_cost_discharge_dc_per_mwyr.(gen_VRE_STOR),
                 capital_recovery_period_discharge_dc.(gen_VRE_STOR),
                 tech_wacc_discharge_dc.(gen_VRE_STOR))
             gen_VRE_STOR.inv_cost_charge_dc_per_mwyr = compute_overnight_capital_cost(
-                settings_d,
+                mysetup,
                 inv_cost_charge_dc_per_mwyr.(gen_VRE_STOR),
                 capital_recovery_period_charge_dc.(gen_VRE_STOR),
                 tech_wacc_charge_dc.(gen_VRE_STOR))
             gen_VRE_STOR.inv_cost_discharge_ac_per_mwyr = compute_overnight_capital_cost(
-                settings_d,
+                mysetup,
                 inv_cost_discharge_ac_per_mwyr.(gen_VRE_STOR),
                 capital_recovery_period_discharge_ac.(gen_VRE_STOR),
                 tech_wacc_discharge_ac.(gen_VRE_STOR))
             gen_VRE_STOR.inv_cost_charge_ac_per_mwyr = compute_overnight_capital_cost(
-                settings_d,
+                mysetup,
                 inv_cost_charge_ac_per_mwyr.(gen_VRE_STOR),
                 capital_recovery_period_charge_ac.(gen_VRE_STOR),
                 tech_wacc_charge_ac.(gen_VRE_STOR))
@@ -208,7 +219,7 @@ function configure_multi_stage_inputs(inputs_d::Dict,
     if NetworkExpansion == 1 && inputs_d["Z"] > 1
         if !myopic ### Leave myopic costs in annualized form
             # 1. Convert annualized tramsmission investment costs incured within the model horizon into overnight capital costs
-            inputs_d["pC_Line_Reinforcement"] = compute_overnight_capital_cost(settings_d,
+            inputs_d["pC_Line_Reinforcement"] = compute_overnight_capital_cost(mysetup,
                 inputs_d["pC_Line_Reinforcement"],
                 inputs_d["Capital_Recovery_Period_Trans"],
                 inputs_d["transmission_WACC"])

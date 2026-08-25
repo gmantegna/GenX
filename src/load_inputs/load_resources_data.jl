@@ -15,7 +15,8 @@ function _get_resource_info()
         flex_demand = (filename = "Flex_demand.csv", type = FlexDemand),
         must_run = (filename = "Must_run.csv", type = MustRun),
         electrolyzer = (filename = "Electrolyzer.csv", type = Electrolyzer),
-        vre_stor = (filename = "Vre_stor.csv", type = VreStorage))
+        vre_stor = (filename = "Vre_stor.csv", type = VreStorage),
+        generic_assets = (filename = "Generic_assets.csv", type = GenericAsset))
     return resource_info
 end
 
@@ -63,7 +64,8 @@ function _get_summary_map()
         :Thermal => "Thermal",
         :Vre => "VRE",
         :MustRun => "Must_run",
-        :VreStorage => "VRE_and_storage")
+        :VreStorage => "VRE_and_storage",
+        :GenericAsset => "Generic_assets")
     max_length = maximum(length.(values(names_map)))
     for (k, v) in names_map
         names_map[k] = v * repeat(" ", max_length - length(v))
@@ -1088,6 +1090,44 @@ function add_resources_to_input_data!(inputs::Dict,
     inputs["STOR_LONG_DURATION"] = intersect(inputs["STOR_ALL"], is_LDS(gen))
     inputs["STOR_SHORT_DURATION"] = intersect(inputs["STOR_ALL"], is_SDS(gen))
 
+    # Storage operational groups (Stor_Op_Group column): members of a group share one
+    # operational (dispatch/SOC) block sized by the group's total capacity, mirroring
+    # RESOLVE's aggregated operational groups; investment stays per member resource.
+    # The representative (lowest R_ID) member carries the operational variables.
+    stor_op_members = Dict{Int, Vector{Int}}()
+    stor_bin_only = Int[]
+    stor_groups = Dict{String, Vector{Int}}()
+    for y in inputs["STOR_ALL"]
+        g = stor_op_group(gen[y])
+        if g != "None" && g != ""
+            push!(get!(stor_groups, g, Int[]), y)
+        end
+    end
+    for (g, members) in stor_groups
+        sort!(members)
+        rep = members[1]
+        stor_op_members[rep] = members
+        append!(stor_bin_only, members[2:end])
+        for y in members
+            if zone_id(gen[y]) != zone_id(gen[rep]) ||
+               min_duration(gen[y]) != min_duration(gen[rep]) ||
+               max_duration(gen[y]) != max_duration(gen[rep]) ||
+               efficiency_up(gen[y]) != efficiency_up(gen[rep]) ||
+               efficiency_down(gen[y]) != efficiency_down(gen[rep]) ||
+               self_discharge(gen[y]) != self_discharge(gen[rep]) ||
+               (y in is_LDS(gen)) != (rep in is_LDS(gen)) ||
+               (y in inputs["STOR_ASYMMETRIC"])
+                throw("storage operational group $g has inconsistent members (zone, duration, efficiency, self-discharge, LDS flag must match; asymmetric storage not supported)")
+            end
+        end
+    end
+    inputs["STOR_OP_MEMBERS"] = stor_op_members
+    inputs["STOR_BIN_ONLY"] = stor_bin_only
+    inputs["STOR_OPERATIONAL"] = setdiff(inputs["STOR_ALL"], stor_bin_only)
+    if !isempty(stor_bin_only)
+        println("Storage operational groups: $(length(stor_op_members)) groups aggregate $(length(stor_bin_only) + length(stor_op_members)) storage resources")
+    end
+
     ## VRE
     # Set of controllable variable renewable resources
     inputs["VRE"] = vre(gen)
@@ -1099,6 +1139,9 @@ function add_resources_to_input_data!(inputs::Dict,
     ## MUST_RUN
     # Set of must-run plants - could be behind-the-meter PV, hydro run-of-river, must-run fossil or thermal plants
     inputs["MUST_RUN"] = must_run(gen)
+
+    ## GENERIC_ASSET
+    inputs["GENERIC_ASSETS"] = generic_asset(gen)
 
     ## ELECTROLYZER
     # Set of hydrogen electolyzer resources:
@@ -1161,6 +1204,8 @@ function add_resources_to_input_data!(inputs::Dict,
     inputs["RETROFIT_CAP"] = intersect(units_can_retrofit,
         ids_with_nonneg(gen, existing_cap_mw))
     inputs["RETROFIT_OPTIONS"] = ids_retrofit_options(gen)
+
+    inputs["STAGE_LINK_CAP"] = has_stage_linking(gen)
 
     # Retrofit
     # append region name to the retrofit_id if it is not None
@@ -1367,6 +1412,10 @@ function add_resources_to_input_data!(inputs::Dict,
     # Resource identifiers by zone (just zones in resource order + resource and zone concatenated)
     inputs["R_ZONES"] = zones
     inputs["RESOURCE_ZONES"] = inputs["RESOURCE_NAMES"] .* "_z" .* string.(zones)
+
+    generators = setdiff(collect(1:G),inputs["GENERIC_ASSETS"])
+    inputs["GENERATORS"] = generators
+    inputs["GENERATOR_ZONES"] = inputs["RESOURCE_NAMES"][generators] .* "_z" .* string.(zone_id(gen[generators]))
 
     # Fuel
     inputs["HAS_FUEL"] = ids_with_fuel(gen)

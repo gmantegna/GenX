@@ -1,16 +1,18 @@
 @doc raw"""
-	write_storage(path::AbstractString, inputs::Dict,setup::Dict, EP::Model)
+	write_storage(path::AbstractString, inputs::Dict,setup::Dict, EP::AbstractModel)
 
 Function for writing the capacities of different storage technologies, including hydro reservoir, flexible storage tech etc.
 """
-function write_storage(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_storage(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     gen = inputs["RESOURCES"]   # Resources (objects)
     resources = inputs["RESOURCE_NAMES"]   # Resource names
     zones = zone_id.(gen)
 
     T = inputs["T"]     # Number of time steps (hours)
     G = inputs["G"]
-    STOR_ALL = inputs["STOR_ALL"]
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
+    STOR_ALL = inputs["STOR_OPERATIONAL"]
     HYDRO_RES = inputs["HYDRO_RES"]
     FLEX = inputs["FLEX"]
     VRE_STOR = inputs["VRE_STOR"]

@@ -1,9 +1,9 @@
 @doc raw"""
-	storage_asymmetric!(EP::Model, inputs::Dict, setup::Dict)
+	storage_asymmetric!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
 Sets up variables and constraints specific to storage resources with asymmetric charge and discharge capacities. See ```storage()``` in ```storage.jl``` for description of constraints.
 """
-function storage_asymmetric!(EP::Model, inputs::Dict, setup::Dict)
+function storage_asymmetric!(EP::AbstractModel, inputs::Dict, setup::Dict)
     # Set up additional variables, constraints, and expressions associated with storage resources with asymmetric charge & discharge capacity
     # (e.g. most chemical, thermal, and mechanical storage options with distinct charge & discharge components/processes)
     # STOR = 2 corresponds to storage with distinct power and energy capacity decisions and distinct charge and discharge power capacity decisions/ratings
@@ -15,7 +15,7 @@ function storage_asymmetric!(EP::Model, inputs::Dict, setup::Dict)
 
     T = inputs["T"]     # Number of time steps (hours)
 
-    STOR_ASYMMETRIC = inputs["STOR_ASYMMETRIC"]
+    STOR_ASYMMETRIC = intersect(inputs["STOR_ASYMMETRIC"], inputs["STOR_OPERATIONAL"])
 
     ### Constraints ###
 
@@ -38,15 +38,15 @@ function storage_asymmetric!(EP::Model, inputs::Dict, setup::Dict)
 end
 
 @doc raw"""
-	storage_asymmetric_operational_reserves!(EP::Model, inputs::Dict)
+	storage_asymmetric_operational_reserves!(EP::AbstractModel, inputs::Dict)
 
 Sets up variables and constraints specific to storage resources with asymmetric charge and discharge capacities when reserves are modeled. See ```storage()``` in ```storage.jl``` for description of constraints.
 """
-function storage_asymmetric_operational_reserves!(EP::Model, inputs::Dict, setup::Dict)
+function storage_asymmetric_operational_reserves!(EP::AbstractModel, inputs::Dict, setup::Dict)
     T = inputs["T"]
     CapacityReserveMargin = setup["CapacityReserveMargin"] > 0
 
-    STOR_ASYMMETRIC = inputs["STOR_ASYMMETRIC"]
+    STOR_ASYMMETRIC = intersect(inputs["STOR_ASYMMETRIC"], inputs["STOR_OPERATIONAL"])
     STOR_ASYM_REG = intersect(STOR_ASYMMETRIC, inputs["REG"]) # Set of asymmetric storage resources with REG reserves
 
     vCHARGE = EP[:vCHARGE]

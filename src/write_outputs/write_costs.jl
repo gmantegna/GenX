@@ -1,9 +1,9 @@
 @doc raw"""
-	write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for writing the costs pertaining to the objective function (fixed, variable O&M etc.).
 """
-function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     ## Cost results
     gen = inputs["RESOURCES"]
     SEG = inputs["SEG"]  # Number of lines
@@ -173,11 +173,15 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
         tempCVar = sum(value.(EP[:eCVar_out][Y_ZONE, :]))
         tempCTotal += tempCVar
 
-        tempCFuel = sum(value.(EP[:ePlantCFuelOut][Y_ZONE, :]))
+        tempCFuel = sum(value.(EP[:ePlantCFuelOut][Y_ZONE]))
         tempCTotal += tempCFuel
 
         if !isempty(STOR_ALL_ZONE)
-            eCVar_in = sum(value.(EP[:eCVar_in][STOR_ALL_ZONE, :]))
+            # variable charging costs exist only for operational storage (op-group
+            # representatives + standalone); energy fixed costs exist for all storage
+            STOR_OP_ZONE = intersect(inputs["STOR_OPERATIONAL"], Y_ZONE)
+            eCVar_in = isempty(STOR_OP_ZONE) ? 0.0 :
+                       sum(value.(EP[:eCVar_in][STOR_OP_ZONE, :]))
             tempCVar += eCVar_in
             eCFixEnergy = sum(value.(EP[:eCFixEnergy][STOR_ALL_ZONE]))
             tempCFix += eCFixEnergy
@@ -268,7 +272,7 @@ function write_costs(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
 
         if setup["UCommit"] >= 1 && !isempty(COMMIT_ZONE)
             eCStart = sum(value.(EP[:eCStart][COMMIT_ZONE, :])) +
-                      sum(value.(EP[:ePlantCFuelStart][COMMIT_ZONE, :]))
+                      sum(value.(EP[:ePlantCFuelStart][COMMIT_ZONE]))
             tempCStart += eCStart
             tempCTotal += eCStart
         end

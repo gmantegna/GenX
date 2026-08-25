@@ -1,4 +1,4 @@
-function write_power_balance(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_power_balance(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     gen = inputs["RESOURCES"]
     T = inputs["T"]     # Number of time steps (hours)
     Z = inputs["Z"]     # Number of zones
@@ -7,7 +7,7 @@ function write_power_balance(path::AbstractString, inputs::Dict, setup::Dict, EP
     VRE = inputs["VRE"]
     MUST_RUN = inputs["MUST_RUN"]
     HYDRO_RES = inputs["HYDRO_RES"]
-    STOR_ALL = inputs["STOR_ALL"]
+    STOR_ALL = inputs["STOR_OPERATIONAL"]
     FLEX = inputs["FLEX"]
     ELECTROLYZER = inputs["ELECTROLYZER"]
     VRE_STOR = inputs["VRE_STOR"]
@@ -35,10 +35,10 @@ function write_power_balance(path::AbstractString, inputs::Dict, setup::Dict, EP
     for z in 1:Z
         POWER_ZONE = intersect(resources_in_zone_by_rid(gen, z),
             union(THERM_ALL, VRE, MUST_RUN, HYDRO_RES))
-        powerbalance[(z - 1) * L + 1, :] = sum(value.(EP[:vP][POWER_ZONE, :]), dims = 1)
+        powerbalance[(z - 1) * L + 1, :] = sum(value.(EP[:vP].data[POWER_ZONE, :]), dims = 1)
         if !isempty(intersect(resources_in_zone_by_rid(gen, z), STOR_ALL))
             STOR_ALL_ZONE = intersect(resources_in_zone_by_rid(gen, z), STOR_ALL)
-            powerbalance[(z - 1) * L + 2, :] = sum(value.(EP[:vP][STOR_ALL_ZONE, :]),
+            powerbalance[(z - 1) * L + 2, :] = sum(value.(EP[:vP].data[STOR_ALL_ZONE, :]),
                 dims = 1)
             powerbalance[(z - 1) * L + 3, :] = (-1) * sum(
                 (value.(EP[:vCHARGE][STOR_ALL_ZONE,:]).data),
@@ -50,7 +50,7 @@ function write_power_balance(path::AbstractString, inputs::Dict, setup::Dict, EP
                 (value.(EP[:vCHARGE_FLEX][FLEX_ZONE,:]).data),
                 dims = 1)
             powerbalance[(z - 1) * L + 5, :] = (-1) *
-                                               sum(value.(EP[:vP][FLEX_ZONE, :]), dims = 1)
+                                               sum(value.(EP[:vP].data[FLEX_ZONE, :]), dims = 1)
         end
         if SEG > 1
             powerbalance[(z - 1) * L + 6, :] = sum(value.(EP[:vNSE][2:SEG, :, z]), dims = 1)

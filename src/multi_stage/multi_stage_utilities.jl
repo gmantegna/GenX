@@ -1,0 +1,301 @@
+function define_multi_stage_linking_constraints!(graph::Plasmo.OptiGraph,setup::Dict,inputs::Dict)
+    
+    start_cap_d, cap_track_d = configure_ddp_dicts(setup, inputs[1])
+
+    if setup["ARO"] == 0
+        println("Linking stages in series.")
+        for t in 2:setup["MultiStageSettingsDict"]["NumStages"]
+            link_stages!(graph,setup,inputs,start_cap_d,cap_track_d,t-1,t)
+        end
+    elseif setup["ARO"] == 1
+        println("Linking stages according to edge input.")
+        aro_edges = setup["MultiStageSettingsDict"]["aro_edges"]
+        for edge in eachrow(aro_edges)
+            link_stages!(graph,setup,inputs,start_cap_d,cap_track_d,Int(edge.Stage_from),Int(edge.Stage_to))
+        end
+    else
+        throw("Invalid ARO setting. Expected 0 or 1.")
+    end
+
+    return nothing
+end
+
+function link_stages!(graph,setup,inputs,start_cap_d,cap_track_d,stage_from,stage_to)
+
+    EP_cur = graph.optinodes[stage_to];
+    EP_prev = graph.optinodes[stage_from];
+
+    for (e,c) in start_cap_d
+        if c==Symbol("cExistingTransCap")
+            # transmission capacity is not linked between stages: each stage's existing
+            # transmission capacity comes from its own Network.csv, and expansion
+            # decisions are stage-specific
+            println("Note: transmission capacity is not linked between stages; each stage uses its own Network.csv capacities.")
+            continue
+        end
+        for y in 1:inputs[stage_to]["G"]
+            if c==Symbol("cExistingCap")
+                if y in inputs[stage_to]["STAGE_LINK_CAP"]
+                    @linkconstraint(graph, EP_cur[:vEXISTINGCAP][y] == EP_prev[e][y])
+                end
+            elseif c==Symbol("cExistingCapEnergy")
+                if (y in inputs[stage_to]["STAGE_LINK_CAP"]) && (y in inputs[stage_to]["STOR_ALL"])
+                    @linkconstraint(graph, EP_cur[:vEXISTINGCAPENERGY][y] == EP_prev[e][y])
+                end
+            else
+                println(c)
+                throw("stage linking only supported for existing cap and existing energy cap.")
+            end
+        end
+    end
+
+    # FCDS (deliverability) persistence for non-fully-deliverable resources, matching
+    # RESOLVE's _maintain_reliability_capacity_constraint: reliability capacity claimed
+    # by capacity built in an earlier stage carries forward unchanged, and only capacity
+    # newly built in the later stage can claim additional reliability capacity there.
+    # Valid for resources with no planned capacity and no retirements (asserted by the
+    # translation layer for all non-fully-deliverable resources).
+    if haskey(inputs[stage_to], "NOT_FULLY_DELIVERABLE")
+        for y in intersect(inputs[stage_to]["NOT_FULLY_DELIVERABLE"],
+            inputs[stage_to]["STAGE_LINK_CAP"])
+            @linkconstraint(graph, EP_cur[:vReliabilityCap][y] >= EP_prev[:vReliabilityCap][y])
+            @linkconstraint(graph,
+                EP_cur[:vReliabilityCap][y] <=
+                EP_prev[:vReliabilityCap][y] + EP_cur[:eTotalCap][y] - EP_prev[:eTotalCap][y])
+        end
+    end
+
+    # First-stage transmission (TxFirstStage=1, ARO cases): the tx expansion plan is a
+    # single here-and-now decision — every stage/node's line expansion is forced equal
+    # to stage 1's (which carries the expansion options and their full cost; node-side
+    # reinforcement costs are zeroed by the case generator to avoid double-charging).
+    if get(setup, "TxFirstStage", 0) == 1 &&
+       haskey(inputs[stage_to], "EXPANSION_LINES") && haskey(inputs[stage_from], "EXPANSION_LINES")
+        for l in intersect(inputs[stage_to]["EXPANSION_LINES"],
+            inputs[stage_from]["EXPANSION_LINES"])
+            @linkconstraint(graph, EP_cur[:vNEW_TRANS_CAP][l] == EP_prev[:vNEW_TRANS_CAP][l])
+        end
+    end
+
+    # for (v, c) in cap_track_d
+
+    #     # Tracking variables and constraints for retired capacity are named identicaly to those for newly
+    #     # built capacity, except have the prefex "vRET" and "cRet", accordingly
+    #     rv = Symbol("vRET", string(v)[2:end]) # Retired capacity tracking variable name (rv)
+    #     rc = Symbol("cRet", string(c)[2:end]) # Retired capacity tracking constraint name (rc)
+
+    #     for y in keys(EP_cur[c])
+    #         y = y[1] # Extract integer index value from keys tuple - corresponding to generator index
+
+    #         # For all previous stages, set the right hand side value of the tracking constraint in the current
+    #         # stage to the value of the tracking constraint observed in the previous stage
+    #         for p in 1:stage_from
+    #             # Tracking newly buily capacity over all previous stages
+    #             cobj = constraint_object(EP_cur[c][y,p])
+    #             @linkconstraint(graph, cobj.func == EP_prev[v][y,p])
+    #             # Tracking retired capacity over all previous stages
+    #             rcobj = constraint_object(EP_cur[rc][y,p])
+    #             @linkconstraint(graph, rcobj.func == EP_prev[rv][y,p])
+    #         end
+    #     end
+    #     for k in keys(EP_cur[c])
+    #         delete(EP_cur,EP_cur[c][k])
+    #         delete(EP_cur,EP_cur[rc][k])
+    #     end
+
+    # end
+end
+
+@doc raw"""
+	discount_objective_function!(EP::AbstractModel, settings_d::Dict, inputs::Dict)
+This function scales the model objective function so that costs are consistent with multi-stage modeling and introduces a cost-to-go function variable to the objective function.
+
+    The updated objective function $OBJ^{*}$ returned by this method takes the form:
+    ```math
+    \begin{aligned}
+        OBJ^{*} = DF * OPEXMULT * OBJ
+    \end{aligned}
+    ```
+    where $OBJ$ is the original objective function. $OBJ$ is scaled by two terms. The first is a discount factor (applied only in the non-myopic case), which discounts costs associated with the model stage $p$ to year-0 dollars:
+    ```math
+    \begin{aligned}
+        DF = \frac{1}{(1+WACC)^{\sum^{(p-1)}_{k=0}L_{k}}}
+    \end{aligned}
+    ```
+    where $WACC$ is the weighted average cost of capital, and $L_{p}$ is the length of each stage in years (both set in multi\_stage\_settings.yml)
+    
+    The second term is a discounted sum of annual operational expenses incurred each year of a multi-year model stage:
+    ```math
+    \begin{aligned}
+        & OPEXMULT = \sum^{L}_{l=1}\frac{1}{(1+WACC)^{l-1}}
+    \end{aligned}
+    ```
+    Note that although the objective function contains investment costs, which occur only once and thus do not need to be scaled by OPEXMULT, these costs are multiplied by a factor of $\frac{1}{WACC}$ before being added to the objective function in investment\_discharge\_multi\_stage(), investment\_charge\_multi\_stage(), investment\_energy\_multi\_stage(), and transmission\_multi\_stage(). Thus, this step scales these costs back to their correct value.
+"""    
+function discount_objective_function!(EP::AbstractModel, settings::Dict, inputs::Dict)
+    settings_d = settings["MultiStageSettingsDict"]
+    cur_stage = settings_d["CurStage"] # Current DDP Investment Planning Stage
+    # StageCumYears may be provided explicitly (always in ARO mode; optionally otherwise,
+    # e.g. to match an external model's discounting exactly); values may be fractional
+    if settings["ARO"] == 1 || haskey(settings_d, "StageCumYears")
+        cum_years = settings_d["StageCumYears"][cur_stage]
+    else
+        cum_years = 0
+        for stage_count in 1:(cur_stage - 1)
+            cum_years += settings_d["StageLengths"][stage_count]
+        end
+    end
+    wacc = settings_d["WACC"] # Interest Rate  and also the discount rate unless specified other wise
+    myopic = settings_d["Myopic"] == 1 # 1 if myopic (only one forward pass), 0 if full DDP
+    OPEXMULT = inputs["OPEXMULT"] # OPEX multiplier to count multiple years between two model stages, set in configure_multi_stage_inputs.jl
+
+
+    if myopic
+        ### Do nothing: no discount factor or OPEX multiplier applied in myopic case as costs are left annualized.
+    else
+        # Multiply discount factor to all terms except the alpha term or the cost-to-go function
+        # All OPEX terms get an additional adjustment factor
+
+        DF = 1 / (1 + wacc)^(cum_years)  # Discount factor applied all to costs in each stage ###
+        # Initialize the cost-to-go variable
+        EP[:eDiscountedObj] = DF * OPEXMULT * EP[:eObj];
+    end
+
+    return nothing
+end
+
+@doc raw"""
+    configure_ddp_dicts(setup::Dict, inputs::Dict)
+
+This function instantiates Dictionary objects containing the names of linking expressions, constraints, and variables used in multi-stage modeling.
+
+inputs:
+
+* setup - Dictionary object containing GenX settings and key parameters.
+* inputs – Dictionary of inputs for each model period, generated by the load\_inputs() method.
+
+returns:
+
+* start\_cap\_d – Dictionary which contains linking expression names as keys and linking constraint names as values, used for setting the end capacity in stage $p$ to the starting capacity in stage $p+1$.
+* cap\_track\_d – Dictionary which contains linking variable names as keys and linking constraint names as values, used for enforcing endogenous retirements.
+"""
+function configure_ddp_dicts(setup::Dict, inputs::Dict)
+
+    # start_cap_d dictionary contains key-value pairs of available capacity investment expressions
+    # as keys and their corresponding linking constraints as values
+    start_cap_d = Dict([(Symbol("eTotalCap"), Symbol("cExistingCap"))])
+
+    if !isempty(inputs["STOR_ALL"])
+        start_cap_d[Symbol("eTotalCapEnergy")] = Symbol("cExistingCapEnergy")
+    end
+
+    if !isempty(inputs["STOR_ASYMMETRIC"])
+        start_cap_d[Symbol("eTotalCapCharge")] = Symbol("cExistingCapCharge")
+    end
+
+    if setup["NetworkExpansion"] == 1 && inputs["Z"] > 1
+        start_cap_d[Symbol("eAvail_Trans_Cap")] = Symbol("cExistingTransCap")
+    end
+
+    if !isempty(inputs["VRE_STOR"])
+        if !isempty(inputs["VS_DC"])
+            start_cap_d[Symbol("eTotalCap_DC")] = Symbol("cExistingCapDC")
+        end
+
+        if !isempty(inputs["VS_SOLAR"])
+            start_cap_d[Symbol("eTotalCap_SOLAR")] = Symbol("cExistingCapSolar")
+        end
+
+        if !isempty(inputs["VS_WIND"])
+            start_cap_d[Symbol("eTotalCap_WIND")] = Symbol("cExistingCapWind")
+        end
+
+        if !isempty(inputs["VS_ELEC"])
+            start_cap_d[Symbol("eTotalCap_ELEC")] = Symbol("cExistingCapElec")
+        end
+
+        if !isempty(inputs["VS_STOR"])
+            start_cap_d[Symbol("eTotalCap_STOR")] = Symbol("cExistingCapEnergy_VS")
+        end
+
+        if !isempty(inputs["VS_ASYM_DC_DISCHARGE"])
+            start_cap_d[Symbol("eTotalCapDischarge_DC")] = Symbol("cExistingCapDischargeDC")
+        end
+
+        if !isempty(inputs["VS_ASYM_DC_CHARGE"])
+            start_cap_d[Symbol("eTotalCapCharge_DC")] = Symbol("cExistingCapChargeDC")
+        end
+
+        if !isempty(inputs["VS_ASYM_AC_DISCHARGE"])
+            start_cap_d[Symbol("eTotalCapDischarge_AC")] = Symbol("cExistingCapDischargeAC")
+        end
+
+        if !isempty(inputs["VS_ASYM_AC_CHARGE"])
+            start_cap_d[Symbol("eTotalCapCharge_AC")] = Symbol("cExistingCapChargeAC")
+        end
+    end
+
+    # This dictionary contains the endogenous retirement constraint name as a key,
+    # and a tuple consisting of the associated tracking array constraint and variable as the value
+    cap_track_d = Dict([(Symbol("vCAPTRACK"), Symbol("cCapTrack"))])
+
+    if !isempty(inputs["STOR_ALL"])
+        cap_track_d[Symbol("vCAPTRACKENERGY")] = Symbol("cCapTrackEnergy")
+    end
+
+    if !isempty(inputs["STOR_ASYMMETRIC"])
+        cap_track_d[Symbol("vCAPTRACKCHARGE")] = Symbol("cCapTrackCharge")
+    end
+
+    if !isempty(inputs["VRE_STOR"])
+        if !isempty(inputs["VS_DC"])
+            cap_track_d[Symbol("vCAPTRACKDC")] = Symbol("cCapTrackDC")
+        end
+
+        if !isempty(inputs["VS_SOLAR"])
+            cap_track_d[Symbol("vCAPTRACKSOLAR")] = Symbol("cCapTrackSolar")
+        end
+
+        if !isempty(inputs["VS_WIND"])
+            cap_track_d[Symbol("vCAPTRACKWIND")] = Symbol("cCapTrackWind")
+        end
+
+        if !isempty(inputs["VS_ELEC"])
+            cap_track_d[Symbol("vCAPTRACKELEC")] = Symbol("cCapTrackElec")
+        end
+
+        if !isempty(inputs["VS_STOR"])
+            cap_track_d[Symbol("vCAPTRACKENERGY_VS")] = Symbol("cCapTrackEnergy_VS")
+        end
+
+        if !isempty(inputs["VS_ASYM_DC_DISCHARGE"])
+            cap_track_d[Symbol("vCAPTRACKDISCHARGEDC")] = Symbol("cCapTrackDischargeDC")
+        end
+
+        if !isempty(inputs["VS_ASYM_DC_CHARGE"])
+            cap_track_d[Symbol("vCAPTRACKCHARGEDC")] = Symbol("cCapTrackChargeDC")
+        end
+
+        if !isempty(inputs["VS_ASYM_AC_DISCHARGE"])
+            cap_track_d[Symbol("vCAPTRACKDISCHARGEAC")] = Symbol("cCapTrackDischargeAC")
+        end
+
+        if !isempty(inputs["VS_ASYM_AC_CHARGE"])
+            cap_track_d[Symbol("vCAPTRACKCHARGEAC")] = Symbol("cCapTrackChargeAC")
+        end
+    end
+
+    return start_cap_d, cap_track_d
+end
+
+function JuMP.has_duals(model::Plasmo.OptiGraph; result::Int = 1)
+    return dual_status(model; result = result) != MOI.NO_SOLUTION
+end
+
+function JuMP.has_duals(model::Plasmo.OptiNode; result::Int = 1)
+    return has_duals(model.source_graph[]; result = result)
+end
+
+function Plasmo.termination_status(EP::Plasmo.OptiNode)
+    return termination_status(EP.source_graph[])
+end

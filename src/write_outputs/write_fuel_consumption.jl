@@ -1,23 +1,23 @@
 
 @doc raw"""
-    write_fuel_consumption(path::AbstractString, inputs::Dict, setup::Dict, EP::Model). 
+    write_fuel_consumption(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel). 
 Write fuel consumption of each power plant. 
 """
-function write_fuel_consumption(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
-    write_fuel_consumption_plant(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_fuel_consumption(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
+    write_fuel_consumption_plant(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     if setup["WriteOutputs"] != "annual"
         write_fuel_consumption_ts(path::AbstractString,
             inputs::Dict,
             setup::Dict,
-            EP::Model)
+            EP::AbstractModel)
     end
-    write_fuel_consumption_tot(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+    write_fuel_consumption_tot(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 end
 
 function write_fuel_consumption_plant(path::AbstractString,
         inputs::Dict,
         setup::Dict,
-        EP::Model)
+        EP::AbstractModel)
     gen = inputs["RESOURCES"]
 
     HAS_FUEL = inputs["HAS_FUEL"]
@@ -28,8 +28,8 @@ function write_fuel_consumption_plant(path::AbstractString,
         Fuel = fuel.(gen[HAS_FUEL]),
         Zone = zone_id.(gen[HAS_FUEL]),
         AnnualSumCosts = zeros(length(HAS_FUEL)))
-    tempannualsum = value.(EP[:ePlantCFuelOut][HAS_FUEL]) +
-                    value.(EP[:ePlantCFuelStart][HAS_FUEL])
+    tempannualsum = value.(EP[:ePlantCFuelOut][HAS_FUEL]).data +
+                    value.(EP[:ePlantCFuelStart][HAS_FUEL]).data
 
     if !isempty(MULTI_FUELS)
         fuel_cols_num = inputs["FUEL_COLS"]# TODO: rename it
@@ -71,13 +71,13 @@ end
 function write_fuel_consumption_ts(path::AbstractString,
         inputs::Dict,
         setup::Dict,
-        EP::Model)
+        EP::AbstractModel)
     T = inputs["T"]     # Number of time steps (hours)
     HAS_FUEL = inputs["HAS_FUEL"]
 
     # Fuel consumption by each resource per time step, unit is MMBTU
     dfPlantFuel_TS = DataFrame(Resource = inputs["RESOURCE_NAMES"][HAS_FUEL])
-    tempts = value.(EP[:ePlantFuel_generation] + EP[:ePlantFuel_start])[HAS_FUEL, :]
+    tempts = (value.(EP[:ePlantFuel_generation]).data + value.(EP[:ePlantFuel_start]).data)[HAS_FUEL, :]
     if setup["ParameterScale"] == 1
         tempts *= ModelScalingFactor # kMMBTU to MMBTU
     end
@@ -96,7 +96,7 @@ end
 function write_fuel_consumption_tot(path::AbstractString,
         inputs::Dict,
         setup::Dict,
-        EP::Model)
+        EP::AbstractModel)
     # types of fuel
     fuel_types = inputs["fuels"]
     fuel_number = length(fuel_types)

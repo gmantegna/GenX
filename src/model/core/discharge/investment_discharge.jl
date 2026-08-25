@@ -1,5 +1,5 @@
 @doc raw"""
-	investment_discharge!(EP::Model, inputs::Dict, setup::Dict)
+	investment_discharge!(EP::AbstractModel, inputs::Dict, setup::Dict)
 This function defines the expressions and constraints keeping track of total available power generation/discharge capacity across all resources as well as constraints on capacity retirements.
 The total capacity of each resource is defined as the sum of the existing capacity plus the newly invested capacity minus any retired capacity. Note for storage and co-located resources, additional energy and charge power capacity decisions and constraints are defined in the storage and co-located VRE and storage module respectively.
 ```math
@@ -32,18 +32,21 @@ In addition, this function adds investment and fixed O&M related costs related t
 \end{aligned}
 ```
 """
-function investment_discharge!(EP::Model, inputs::Dict, setup::Dict)
+function investment_discharge!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("Investment Discharge Module")
     MultiStage = setup["MultiStage"]
 
     gen = inputs["RESOURCES"]
 
     G = inputs["G"] # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
 
     NEW_CAP = inputs["NEW_CAP"] # Set of all resources eligible for new capacity
     RET_CAP = inputs["RET_CAP"] # Set of all resources eligible for capacity retirements
     COMMIT = inputs["COMMIT"] # Set of all resources eligible for unit commitment
     RETROFIT_CAP = inputs["RETROFIT_CAP"]  # Set of all resources being retrofitted
+    STAGE_LINK_CAP = inputs["STAGE_LINK_CAP"]
 
     ### Variables ###
 
@@ -105,6 +108,50 @@ function investment_discharge!(EP::Model, inputs::Dict, setup::Dict)
             eExistingCap[y]
         end)
 
+    # add vReliability Cap for purposes of de-rating resources' capacity to PRM via custom constraints
+    # resources flagged in Resource_fully_deliverable.csv must count their entire capacity as
+    # deliverable (equality), matching RESOLVE's fully_deliverable ReliabilityContribution linkages
+    @variable(EP, vReliabilityCap[y in 1:G]>=0)
+    FULLY_DELIVERABLE = get(inputs, "FULLY_DELIVERABLE", Set{Int}())
+    @constraint(EP, cReliabilityCap[y in setdiff(1:G, FULLY_DELIVERABLE)], vReliabilityCap[y]<=eTotalCap[y])
+    @constraint(EP, cReliabilityCapFD[y in FULLY_DELIVERABLE], vReliabilityCap[y]==eTotalCap[y])
+
+    if setup["Hourly_Pmin"] == 1
+        @constraint(
+            EP,
+            [t = 1:inputs["T"], g in generators],
+            EP[:vP][g,t] >= inputs["pP_Min"][g, t] * EP[:eTotalCap][g]
+        )
+    end
+
+    if setup["Fixed_Dispatch"] == 1
+        df_fixed_dispatch=inputs["df_fixed_dispatch"]
+        resource_names = inputs["RESOURCE_NAMES"]
+        fixed_dispatch_rids = [x for x in 1:length(resource_names) if resource_names[x] in names(df_fixed_dispatch)]
+        @constraint(
+            EP,
+            [t =1:inputs["T"], g in fixed_dispatch_rids],
+            EP[:vP][g,t] == df_fixed_dispatch[t,resource_names[g]]
+        )
+    end
+
+    if haskey(inputs,"df_hourly_energy_budget")
+        df_hourly_energy_budget = inputs["df_hourly_energy_budget"]
+        resource_names = inputs["RESOURCE_NAMES"]
+        hourly_budget_rids = [x for x in 1:length(resource_names) if resource_names[x] in names(df_hourly_energy_budget)]
+        hours_per_subperiod = inputs["hours_per_subperiod"]
+        START_SUBPERIODS = inputs["START_SUBPERIODS"]
+        @constraint(
+            EP,
+            cHourlyBudget[t in START_SUBPERIODS, g in hourly_budget_rids],
+            (
+                sum(EP[:vP][g,tau] for tau in t:(t+hours_per_subperiod-1))
+                == EP[:eTotalCap][g] * sum(df_hourly_energy_budget[tau,resource_names[g]] for tau in t:(t+hours_per_subperiod-1))
+            )
+        )
+    end
+    
+
     ### Need editting ##
     @expression(EP, eCFix[y in 1:G],
         if y in NEW_CAP # Resources eligible for new capacity (Non-Retrofit)
@@ -136,7 +183,7 @@ function investment_discharge!(EP::Model, inputs::Dict, setup::Dict)
     if MultiStage == 1
         # Existing capacity variable is equal to existing capacity specified in the input file
         @constraint(EP,
-            cExistingCap[y in 1:G],
+            cExistingCap[y in setdiff(1:G,STAGE_LINK_CAP)],
             EP[:vEXISTINGCAP][y]==existing_cap_mw(gen[y]))
     end
 

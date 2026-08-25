@@ -5,11 +5,11 @@
 #################################
 
 @doc raw"""
-    fusion_capacity_reserve_margin_adjustment!(EP::Model, inputs::Dict)
+    fusion_capacity_reserve_margin_adjustment!(EP::AbstractModel, inputs::Dict)
 
     Subtracts parasitic power from the capacity reserve margin.
 """
-function fusion_capacity_reserve_margin_adjustment!(EP::Model,
+function fusion_capacity_reserve_margin_adjustment!(EP::AbstractModel,
         inputs::Dict)
     gen = inputs["RESOURCES"]
     THERM_COMMIT = inputs["THERM_COMMIT"]
@@ -25,7 +25,7 @@ end
 
 # inner-loop function: loops over Capacity Reserve Margin zones, for one resource
 # and actually adjusts the eCapResMarBalance expression
-function _fusion_capacity_reserve_margin_adjustment!(EP::Model,
+function _fusion_capacity_reserve_margin_adjustment!(EP::AbstractModel,
         inputs::Dict,
         resource_component,
         y::Int)
@@ -44,7 +44,7 @@ function _fusion_capacity_reserve_margin_adjustment!(EP::Model,
 end
 
 # Get the amount for one resource component in one CRM zone
-function fusion_capacity_reserve_margin_adjustment(EP::Model,
+function fusion_capacity_reserve_margin_adjustment(EP::AbstractModel,
         inputs::Dict,
         resource_component::AbstractString,
         y::Int,

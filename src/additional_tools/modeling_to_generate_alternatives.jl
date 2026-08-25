@@ -1,5 +1,5 @@
 @doc raw"""
-	mga(EP::Model, path::AbstractString, setup::Dict, inputs::Dict)
+	mga(EP::AbstractModel, path::AbstractString, setup::Dict, inputs::Dict)
 
 We have implemented an updated Modeling to Generate Alternatives (MGA) Algorithm proposed by [Berntsen and Trutnevyte (2017)](https://www.sciencedirect.com/science/article/pii/S0360544217304097) to generate a set of feasible, near cost-optimal technology portfolios. This algorithm was developed by [Brill Jr, E. D., 1979](https://pubsonline.informs.org/doi/abs/10.1287/mnsc.25.5.413) and introduced to energy system planning by [DeCarolia, J. F., 2011](https://www.sciencedirect.com/science/article/pii/S0140988310000721).
 
@@ -33,7 +33,7 @@ where, $\beta_{z,r}$ is a random objective function coefficient betwen $[0,1]$ f
 
 In the second constraint in both the above formulations, $\delta$ denote the increase in budget from the least-cost solution and $f$ represents the expression for the total system cost. The constraint $Ax = b$ represents all other constraints in the power system model. We then solve the formulation with minimization and maximization objective function to explore near optimal solution space.
 """
-function mga(EP::Model, path::AbstractString, setup::Dict, inputs::Dict)
+function mga(EP::AbstractModel, path::AbstractString, setup::Dict, inputs::Dict)
     if setup["ModelingToGenerateAlternatives"] == 1
         # Start MGA Algorithm
         println("MGA Module")
@@ -117,7 +117,7 @@ function mga(EP::Model, path::AbstractString, setup::Dict, inputs::Dict)
 end
 
 @doc raw"""
-    mga!(EP::Model, inputs::Dict, setup::Dict)
+    mga!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
 This function reads the input data, collect the resources with MGA flag on and creates a set of unique technology types. 
 The function then adds a constraint to the model to compute total capacity in each zone from a given Technology Type.
@@ -135,13 +135,13 @@ P_{z,r} = \sum_{y \in \mathcal{G}}\sum_{t \in \mathcal{T}} \omega_{t} \Theta_{y,
 where $\Theta_{y,t,z,r}$ is a generation of technology $y$ in zone $z$ in time period $t$ that belongs to a resource type $r$. $\Theta_{y,t,z,r}$ is aggregated into a new variable $P_{z,r}$ that represents total generation from technology type $r$ in a zone $z$. 
 
 # Arguments
-- `EP::Model`: GenX model object
+- `EP::AbstractModel`: GenX model object
 - `inputs::Dict`: Dictionary containing input data
 
 # Returns
 - This function updates the model object `EP` with the MGA variables and constraints in-place.
 """
-function mga!(EP::Model, inputs::Dict, setup::Dict)
+function mga!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("MGA Module")
 
     T = inputs["T"]     # Number of time steps (hours)

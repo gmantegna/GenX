@@ -1,9 +1,9 @@
 @doc raw"""
-	write_angles(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_angles(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for reporting the bus angles for each model zone and time step if the DC_OPF flag is activated
 """
-function write_angles(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_angles(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     T = inputs["T"]     # Number of time steps (hours)
     Z = inputs["Z"]     # Number of zones
 

@@ -67,7 +67,7 @@ function controlling_maintenance_start_hours(p::Int,
 end
 
 @doc raw"""
-    maintenance_formulation!(EP::Model,
+    maintenance_formulation!(EP::AbstractModel,
         inputs::Dict,
         resource_component::AbstractString,
         r_id::Int,
@@ -101,7 +101,7 @@ end
     Creates maintenance-tracking variables and adds their Symbols to two Sets in `inputs`.
     Adds constraints which act on the vCOMMIT-like variable.
 """
-function maintenance_formulation!(EP::Model,
+function maintenance_formulation!(EP::AbstractModel,
         inputs::Dict,
         resource_component::AbstractString,
         r_id::Int,

@@ -1,4 +1,4 @@
-function write_reg(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_reg(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     REG = inputs["REG"]
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
 

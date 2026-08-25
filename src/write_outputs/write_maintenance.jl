@@ -34,12 +34,12 @@ function strip_common_prefix(v::Vector{Symbol}, prefix::AbstractString)
     return Symbol.(chopprefix.(s, prefix))
 end
 
-function prepare_maintenance_downvars_matrix(EP::Model, inputs::Dict)
+function prepare_maintenance_downvars_matrix(EP::AbstractModel, inputs::Dict)
     downvars = maintenance_down_variables(inputs)
     return prepare_timeseries_variables(EP, inputs, downvars, "vMDOWN_")
 end
 
-function write_maintenance(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_maintenance(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     set, data = prepare_maintenance_downvars_matrix(EP, inputs)
     df = _create_annualsum_df(inputs, set, data)
     write_temporal_data(df, data, path, setup, "maint_down")

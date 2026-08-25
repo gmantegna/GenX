@@ -1,7 +1,7 @@
 function write_hourly_matching_prices(path::AbstractString,
         inputs::Dict,
         setup::Dict,
-        EP::Model)
+        EP::AbstractModel)
     T = inputs["T"]     # Number of time steps (hours)
     Z = inputs["Z"]     # Number of zones
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1

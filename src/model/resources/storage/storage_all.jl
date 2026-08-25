@@ -1,9 +1,9 @@
 @doc raw"""
-	storage_all!(EP::Model, inputs::Dict, setup::Dict)
+	storage_all!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
 Sets up variables and constraints common to all storage resources. See ```storage()``` in ```storage.jl``` for description of constraints.
 """
-function storage_all!(EP::Model, inputs::Dict, setup::Dict)
+function storage_all!(EP::AbstractModel, inputs::Dict, setup::Dict)
     # Setup variables, constraints, and expressions common to all storage resources
     println("Storage Core Resources Module")
 
@@ -16,8 +16,11 @@ function storage_all!(EP::Model, inputs::Dict, setup::Dict)
     T = inputs["T"]     # Number of time steps (hours)
     Z = inputs["Z"]     # Number of zones
 
-    STOR_ALL = inputs["STOR_ALL"]
-    STOR_SHORT_DURATION = inputs["STOR_SHORT_DURATION"]
+    # operational variables and constraints are built only for the operational storage
+    # set (storage op group representatives + standalone storage); the representatives'
+    # blocks are sized by the group capacity expressions eTotalCap(Energy)StorOp
+    STOR_ALL = inputs["STOR_OPERATIONAL"]
+    STOR_SHORT_DURATION = intersect(STOR_ALL, inputs["STOR_SHORT_DURATION"])
     representative_periods = inputs["REP_PERIOD"]
 
     START_SUBPERIODS = inputs["START_SUBPERIODS"]
@@ -102,7 +105,7 @@ function storage_all!(EP::Model, inputs::Dict, setup::Dict)
 
     # Links state of charge in first time step with decisions in last time step of each subperiod
     # We use a modified formulation of this constraint (cSoCBalLongDurationStorageStart) when operations wrapping and long duration storage are being modeled
-    if representative_periods > 1 && !isempty(inputs["STOR_LONG_DURATION"])
+    if representative_periods > 1 && !isempty(intersect(inputs["STOR_LONG_DURATION"], STOR_ALL))
         CONSTRAINTSET = STOR_SHORT_DURATION
     else
         CONSTRAINTSET = STOR_ALL
@@ -119,8 +122,8 @@ function storage_all!(EP::Model, inputs::Dict, setup::Dict)
 
     @constraints(EP,
         begin
-            # Maximum energy stored must be less than energy capacity
-            [y in STOR_ALL, t in 1:T], EP[:vS][y, t] <= EP[:eTotalCapEnergy][y]
+            # Maximum energy stored must be less than energy capacity (group total for op groups)
+            [y in STOR_ALL, t in 1:T], EP[:vS][y, t] <= EP[:eTotalCapEnergyStorOp][y]
 
             # energy stored for the next hour
             cSoCBalInterior[t in INTERIOR_SUBPERIODS, y in STOR_ALL],
@@ -149,10 +152,12 @@ function storage_all!(EP::Model, inputs::Dict, setup::Dict)
 
             # Maximum discharging rate must be less than power rating OR available stored energy in the prior period, whichever is less
             # wrapping from end of sample period to start of sample period for energy capacity constraint
+            # maximum discharge is derated by the availability profile (pP_Max defaults to 1.0
+            # when no Generators_variability column is provided for a storage resource)
             @constraints(EP,
                 begin
                     [y in STOR_ALL, t = 1:T],
-                    EP[:vP][y, t] + EP[:vCAPRES_discharge][y, t] <= EP[:eTotalCap][y]
+                    EP[:vP][y, t] + EP[:vCAPRES_discharge][y, t] <= inputs["pP_Max"][y, t] * EP[:eTotalCapStorOp][y]
                     [y in STOR_ALL, t = 1:T],
                     EP[:vP][y, t] + EP[:vCAPRES_discharge][y, t] <=
                     EP[:vS][y, hoursbefore(hours_per_subperiod, t, 1)] *
@@ -161,7 +166,7 @@ function storage_all!(EP::Model, inputs::Dict, setup::Dict)
         else
             @constraints(EP,
                 begin
-                    [y in STOR_ALL, t = 1:T], EP[:vP][y, t] <= EP[:eTotalCap][y]
+                    [y in STOR_ALL, t = 1:T], EP[:vP][y, t] <= inputs["pP_Max"][y, t] * EP[:eTotalCapStorOp][y]
                     [y in STOR_ALL, t = 1:T],
                     EP[:vP][y, t] <=
                     EP[:vS][y, hoursbefore(hours_per_subperiod, t, 1)] *
@@ -209,13 +214,13 @@ function storage_all!(EP::Model, inputs::Dict, setup::Dict)
     end
 end
 
-function storage_all_operational_reserves!(EP::Model, inputs::Dict, setup::Dict)
+function storage_all_operational_reserves!(EP::AbstractModel, inputs::Dict, setup::Dict)
     gen = inputs["RESOURCES"]
     T = inputs["T"]
     p = inputs["hours_per_subperiod"]
     CapacityReserveMargin = setup["CapacityReserveMargin"] > 1
 
-    STOR_ALL = inputs["STOR_ALL"]
+    STOR_ALL = inputs["STOR_OPERATIONAL"]
 
     STOR_REG = intersect(STOR_ALL, inputs["REG"]) # Set of storage resources with REG reserves
     STOR_RSV = intersect(STOR_ALL, inputs["RSV"]) # Set of storage resources with RSV reserves
@@ -230,8 +235,8 @@ function storage_all_operational_reserves!(EP::Model, inputs::Dict, setup::Dict)
     vREG_discharge = EP[:vREG_discharge]
     vRSV_discharge = EP[:vRSV_discharge]
 
-    eTotalCap = EP[:eTotalCap]
-    eTotalCapEnergy = EP[:eTotalCapEnergy]
+    eTotalCap = EP[:eTotalCapStorOp]
+    eTotalCapEnergy = EP[:eTotalCapEnergyStorOp]
 
     # Maximum storage contribution to reserves is a specified fraction of installed capacity
     @constraint(EP, [y in STOR_REG, t in 1:T], vREG[y, t]<=reg_max(gen[y]) * eTotalCap[y])
@@ -273,7 +278,8 @@ function storage_all_operational_reserves!(EP::Model, inputs::Dict, setup::Dict)
         add_similar_to_expression!(expr[STOR_ALL, :], vCAPRES_discharge[STOR_ALL, :])
     end
     # Maximum discharging rate and contribution to reserves up must be less than power rating
-    @constraint(EP, [y in STOR_ALL, t in 1:T], expr[y, t]<=eTotalCap[y])
+    # (derated by the availability profile; pP_Max defaults to 1.0 when no column is provided)
+    @constraint(EP, [y in STOR_ALL, t in 1:T], expr[y, t]<=inputs["pP_Max"][y, t] * eTotalCap[y])
     # Maximum discharging rate and contribution to reserves up must be less than available stored energy in prior period
     @constraint(EP,
         [y in STOR_ALL, t in 1:T],

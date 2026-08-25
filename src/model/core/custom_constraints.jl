@@ -1,0 +1,125 @@
+@doc raw"""
+	custom_constraints!(EP, inputs, setup)
+
+This module adds any custom constraints defined by the user.
+"""
+function custom_constraints!(EP, inputs, setup)
+    println("Custom Constraints")
+
+    gen = inputs["RESOURCES"]
+    resource_names = inputs["RESOURCE_NAMES"]
+    G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
+    THERM_COMMIT = inputs["THERM_COMMIT"]
+
+    if setup["ParameterScale"] == 1
+        throw("Custom constraints with ParameterScale=1 not implemented")
+    end
+
+    constraint_name_list=[]
+
+    for (constraint_type,contents) in inputs["custom_constraints"]
+        println(constraint_type)
+        target=contents["target"]
+        operator=contents["operator"]
+        for constraint in operator[!,"Sum Range ID"]
+
+            exp_name = Symbol(constraint*"_LHS")
+            create_empty_expression!(EP, exp_name)
+            constraint_equality_type = operator[operator[!,"Sum Range ID"].==constraint,"Operator"][1]
+            constraint_target = target[target[!,"Sum Range ID"].==constraint,"Target"][1]
+            if haskey(contents,"vCAP")
+                vCAP=contents["vCAP"]
+                if constraint in vCAP[!,"Sum Range ID"]
+                    vCAP_cur = vCAP[vCAP[!,"Sum Range ID"].==constraint,:]
+                    for resource in vCAP_cur[:,"Index 1"]
+                        matching_rids = findall(>(0),[String(x)==resource for x in resource_names])
+                        if length(matching_rids) > 1
+                            throw("more than one matching RID found for resource $resource")
+                        end
+                        if length(matching_rids) == 0
+                            println("did  not find matching resource for resource $resource")
+                        else
+                            rid=matching_rids[1]
+                            if rid in axes(EP[:vCAP])[1]
+                                if rid in THERM_COMMIT
+                                    EP[exp_name] += EP[:vCAP][rid] * cap_size(gen[rid]) * vCAP_cur[vCAP_cur[!,"Index 1"].==resource,"Multiplier"][1]
+                                else
+                                    EP[exp_name] += EP[:vCAP][rid] * vCAP_cur[vCAP_cur[!,"Index 1"].==resource,"Multiplier"][1]
+                                end
+                            else
+                                println("did not find vCAP for resource $resource")
+                            end
+                        end
+                    end
+                end
+            end
+
+            if haskey(contents,"eTotalCap")
+                eTotalCap=contents["eTotalCap"]
+                if constraint in eTotalCap[!,"Sum Range ID"]
+                    eTotalCap_cur = eTotalCap[eTotalCap[!,"Sum Range ID"].==constraint,:]
+                    for resource in eTotalCap_cur[:,"Index 1"]
+                        matching_rids = findall(>(0),[String(x)==resource for x in resource_names])
+                        if length(matching_rids) > 1
+                            throw("more than one matching RID found for resource $resource")
+                        end
+                        if length(matching_rids) == 0
+                            println("did  not find matching resource for resource $resource")
+                        else
+                            rid=matching_rids[1]
+                            if rid in axes(EP[:eTotalCap])[1]
+                                # eTotalCap is already in MW for all resources (cap_size is applied
+                                # inside the eTotalCap expression for COMMIT resources)
+                                EP[exp_name] += EP[:eTotalCap][rid] * eTotalCap_cur[eTotalCap_cur[!,"Index 1"].==resource,"Multiplier"][1]
+                            else
+                                println("did not find eTotalCap for resource $resource")
+                            end
+                        end
+                    end
+                end
+            end
+
+            if haskey(contents,"vReliabilityCap")
+                vReliabilityCap=contents["vReliabilityCap"]
+                if constraint in vReliabilityCap[!,"Sum Range ID"]
+                    vReliabilityCap_cur = vReliabilityCap[vReliabilityCap[!,"Sum Range ID"].==constraint,:]
+                    for resource in vReliabilityCap_cur[:,"Index 2"]
+                        matching_rids = findall(>(0),[String(x)==resource for x in resource_names])
+                        if length(matching_rids) > 1
+                            throw("more than one matching RID found for resource $resource")
+                        end
+                        if length(matching_rids) == 0
+                            println("did  not find matching resource for resource $resource")
+                        else
+                            rid=matching_rids[1]
+                            if rid in axes(EP[:vReliabilityCap])[1]
+                                # vReliabilityCap is bounded by eTotalCap and hence already in MW
+                                EP[exp_name] += EP[:vReliabilityCap][rid] * vReliabilityCap_cur[vReliabilityCap_cur[!,"Index 2"].==resource,"Multiplier"][1]
+                            else
+                                println("did not find vReliabilityCap for resource $resource")
+                            end
+                        end
+                    end
+                end
+            end
+            
+            if EP[exp_name] != 0
+                if constraint_equality_type == "=="
+                    @constraint(EP,EP[exp_name] == constraint_target,base_name=String(constraint))
+                elseif constraint_equality_type == "<="
+                    @constraint(EP,EP[exp_name] <= constraint_target,base_name=String(constraint))
+                elseif constraint_equality_type == ">="
+                    @constraint(EP,EP[exp_name] >= constraint_target,base_name=String(constraint))
+                else
+                    throw("not a valid constraint equality type")
+                end
+            end
+            push!(constraint_name_list,String(constraint))
+        end
+    end
+
+    inputs["CustomConstraintList"]=constraint_name_list
+
+end

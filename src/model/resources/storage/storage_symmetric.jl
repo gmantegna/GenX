@@ -1,9 +1,9 @@
 @doc raw"""
-	storage_symmetric!(EP::Model, inputs::Dict, setup::Dict)
+	storage_symmetric!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
 Sets up variables and constraints specific to storage resources with symmetric charge and discharge capacities. See ```storage()``` in ```storage.jl``` for description of constraints.
 """
-function storage_symmetric!(EP::Model, inputs::Dict, setup::Dict)
+function storage_symmetric!(EP::AbstractModel, inputs::Dict, setup::Dict)
     # Set up additional variables, constraints, and expressions associated with storage resources with symmetric charge & discharge capacity
     # (e.g. most electrochemical batteries that use same components for charge & discharge)
     # STOR = 1 corresponds to storage with distinct power and energy capacity decisions but symmetric charge/discharge power ratings
@@ -15,7 +15,9 @@ function storage_symmetric!(EP::Model, inputs::Dict, setup::Dict)
 
     T = inputs["T"]     # Number of time steps (hours)
 
-    STOR_SYMMETRIC = inputs["STOR_SYMMETRIC"]
+    # operational constraints apply only to the operational storage set (op-group
+    # representatives + standalone), sized by the group capacity expression
+    STOR_SYMMETRIC = intersect(inputs["STOR_SYMMETRIC"], inputs["STOR_OPERATIONAL"])
 
     ### Constraints ###
 
@@ -30,7 +32,7 @@ function storage_symmetric!(EP::Model, inputs::Dict, setup::Dict)
                     # Max simultaneous charge and discharge cannot be greater than capacity
                     [y in STOR_SYMMETRIC, t in 1:T],
                     EP[:vP][y, t] + EP[:vCHARGE][y, t] + EP[:vCAPRES_discharge][y, t] +
-                    EP[:vCAPRES_charge][y, t] <= EP[:eTotalCap][y]
+                    EP[:vCAPRES_charge][y, t] <= EP[:eTotalCapStorOp][y]
                 end)
         else
             @constraints(EP,
@@ -38,22 +40,22 @@ function storage_symmetric!(EP::Model, inputs::Dict, setup::Dict)
                     # Maximum charging rate (including virtual charging to move energy held in reserve back to available storage) must be less than symmetric power rating
                     # Max simultaneous charge and discharge cannot be greater than capacity
                     [y in STOR_SYMMETRIC, t in 1:T],
-                    EP[:vP][y, t] + EP[:vCHARGE][y, t] <= EP[:eTotalCap][y]
+                    EP[:vP][y, t] + EP[:vCHARGE][y, t] <= EP[:eTotalCapStorOp][y]
                 end)
         end
     end
 end
 
 @doc raw"""
-	storage_symmetric_operational_reserves!(EP::Model, inputs::Dict)
+	storage_symmetric_operational_reserves!(EP::AbstractModel, inputs::Dict)
 
 Sets up variables and constraints specific to storage resources with symmetric charge and discharge capacities when reserves are modeled. See ```storage()``` in ```storage.jl``` for description of constraints.
 """
-function storage_symmetric_operational_reserves!(EP::Model, inputs::Dict, setup::Dict)
+function storage_symmetric_operational_reserves!(EP::AbstractModel, inputs::Dict, setup::Dict)
     T = inputs["T"]
     CapacityReserveMargin = setup["CapacityReserveMargin"] > 0
 
-    SYMMETRIC = inputs["STOR_SYMMETRIC"]
+    SYMMETRIC = intersect(inputs["STOR_SYMMETRIC"], inputs["STOR_OPERATIONAL"])
 
     REG = intersect(SYMMETRIC, inputs["REG"])
     RSV = intersect(SYMMETRIC, inputs["RSV"])
@@ -64,7 +66,7 @@ function storage_symmetric_operational_reserves!(EP::Model, inputs::Dict, setup:
     vRSV_charge = EP[:vRSV_charge]
     vREG_discharge = EP[:vREG_discharge]
     vRSV_discharge = EP[:vRSV_discharge]
-    eTotalCap = EP[:eTotalCap]
+    eTotalCap = EP[:eTotalCapStorOp]
 
     # Maximum charging rate plus contribution to regulation down must be less than symmetric power rating
     # Max simultaneous charge and discharge rates cannot be greater than symmetric charge/discharge capacity

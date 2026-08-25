@@ -1,4 +1,4 @@
-function write_reserve_margin_w(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_reserve_margin_w(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     T = inputs["T"]     # Number of time steps (hours)
     #dfResMar dataframe with weights included for calculations
     dfResMar_w = DataFrame(Constraint = [Symbol("t$t") for t in 1:T])

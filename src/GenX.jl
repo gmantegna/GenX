@@ -37,6 +37,7 @@ using RecursiveArrayTools
 using Statistics
 using HiGHS
 using Logging
+using Plasmo
 
 using PrecompileTools: @compile_workload
 

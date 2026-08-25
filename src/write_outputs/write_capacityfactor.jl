@@ -1,12 +1,14 @@
 @doc raw"""
-	write_capacityfactor(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_capacityfactor(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for writing the capacity factor of different resources. For co-located VRE-storage resources, this
     value is calculated if the site has either or both a solar PV or wind resource.
 """
-function write_capacityfactor(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_capacityfactor(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     gen = inputs["RESOURCES"]
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     T = inputs["T"]     # Number of time steps (hours)
     THERM_ALL = inputs["THERM_ALL"]
     VRE = inputs["VRE"]
@@ -79,14 +81,14 @@ function write_capacityfactor(path::AbstractString, inputs::Dict, setup::Dict, E
 end
 
 @doc raw"""
-	write_fusion_net_capacity_factor(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_fusion_net_capacity_factor(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 The "net capacity factor" for fusion plants is the ratio of the annual net output to the
 net time-averaged capacity. The net output is the gross output less parasitic power.
 The net time-averaged capacity accounts for parasitic power and average capacity due to
 the need to pulse the plant, if any.
 """
-function write_fusion_net_capacity_factor(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_fusion_net_capacity_factor(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     gen = inputs["RESOURCES"]
     FUSION = ids_with(gen, fusion)
     gen_fusion = gen[FUSION]

@@ -20,7 +20,8 @@ const resource_types = (:Thermal,
     :MustRun,
     :FlexDemand,
     :VreStorage,
-    :Electrolyzer)
+    :Electrolyzer,
+    :GenericAsset)
 
 # Create composite types (structs) for each resource type in resource_types
 for r in resource_types
@@ -542,6 +543,11 @@ function new_build(r::AbstractResource)
     return Bool(get(r, :new_build, false))
 end
 
+function link_stages(r::AbstractResource)
+    validate_boolean_attribute(r, :link_stages)
+    return Bool(get(r, :link_stages, false))
+end
+
 function can_retire(r::AbstractResource)
     validate_boolean_attribute(r, :can_retire)
     return Bool(get(r, :can_retire, false))
@@ -580,6 +586,11 @@ cap_size(r::AbstractResource) = get(r, :cap_size, 1)
 
 num_vre_bins(r::AbstractResource) = get(r, :num_vre_bins, default_zero)
 num_vre_bins(r::Vre) = get(r, :num_vre_bins, 1)
+
+# operational group for storage resources: members of a group share one set of
+# operational (dispatch/SOC) variables sized by the group's total capacity, while
+# keeping individual investment decisions ("None" = standalone)
+stor_op_group(r::AbstractResource) = string(get(r, :stor_op_group, "None"))
 
 function hydro_energy_to_power_ratio(r::AbstractResource)
     get(r, :hydro_energy_to_power_ratio, default_zero)
@@ -664,6 +675,9 @@ const VarPower = Union{Electrolyzer, Hydro, Thermal}
 min_power(r::VarPower) = get(r, :min_power, default_zero)
 ramp_up_fraction(r::VarPower) = get(r, :ramp_up_percentage, default_percent)
 ramp_down_fraction(r::VarPower) = get(r, :ramp_dn_percentage, default_percent)
+ramp_fraction_2hr(r::VarPower) = get(r, :ramp_percentage_2_hour, default_percent)
+ramp_fraction_3hr(r::VarPower) = get(r, :ramp_percentage_3_hour, default_percent)
+ramp_fraction_4hr(r::VarPower) = get(r, :ramp_percentage_4_hour, default_percent)
 
 # Retirement - Multistage
 lifetime(r::Storage) = get(r, :lifetime, 15)
@@ -724,6 +738,11 @@ end
 function is_buildable(rs::Vector{T}) where {T <: AbstractResource}
     findall(r -> new_build(r) == true, rs)
 end
+
+function has_stage_linking(rs::Vector{T}) where {T <: AbstractResource}
+    findall(r -> link_stages(r) == true, rs)
+end
+
 function is_retirable(rs::Vector{T}) where {T <: AbstractResource}
     findall(r -> can_retire(r) == true, rs)
 end
@@ -851,6 +870,15 @@ var_om_cost_per_mwh_in(r::FlexDemand) = get(r, :var_om_cost_per_mwh_in, default_
 Returns the indices of all must-run resources in the vector `rs`.
 """
 must_run(rs::Vector{T}) where {T <: AbstractResource} = findall(r -> isa(r, MustRun), rs)
+
+
+# GENERIC_ASSET interface
+"""
+    generic_asset(rs::Vector{T}) where T <: AbstractResource
+
+Returns the indices of all generic asset resources in the vector `rs`.
+"""
+generic_asset(rs::Vector{T}) where {T <: AbstractResource} = findall(r -> isa(r, GenericAsset), rs)
 
 # VRE_STOR interface
 """

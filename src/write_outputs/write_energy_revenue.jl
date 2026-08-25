@@ -1,18 +1,20 @@
 @doc raw"""
-	write_energy_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_energy_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for writing energy revenue from the different generation technologies.
 """
-function write_energy_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_energy_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     gen = inputs["RESOURCES"]
     regions = region.(gen)
     clusters = cluster.(gen)
     zones = zone_id.(gen)
 
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     T = inputs["T"]     # Number of time steps (hours)
     FLEX = inputs["FLEX"]
-    NONFLEX = setdiff(collect(1:G), FLEX)
+    NONFLEX = setdiff(generators, FLEX)
     dfEnergyRevenue = DataFrame(Region = regions,
         Resource = inputs["RESOURCE_NAMES"],
         Zone = zones,

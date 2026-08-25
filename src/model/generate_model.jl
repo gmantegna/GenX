@@ -60,14 +60,14 @@ The power balance constraint of the model ensures that electricity demand is met
 ```
 
 # Arguments
+- `EP`: The GenX model
 - `setup::Dict`: Dictionary containing the settings for the model.
 - `inputs::Dict`: Dictionary containing the inputs for the model.
-- `OPTIMIZER::MOI.OptimizerWithAttributes`: The optimizer to use for solving the model.
 
 # Returns
-- `Model`: The model object containing the entire optimization problem model to be solved by solve_model.jl
+- nothing: The GenX model is modified in place adding all variables and constraints
 """
-function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithAttributes)
+function generate_model!(EP::AbstractModel,setup::Dict, inputs::Dict)
     T = inputs["T"]     # Number of time steps (hours)
     Z = inputs["Z"]     # Number of zones
 
@@ -75,15 +75,17 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
     presolver_start_time = time()
 
     # Generate Energy Portfolio (EP) Model
-    EP = Model(OPTIMIZER)
-    set_string_names_on_creation(EP, Bool(setup["EnableJuMPStringNames"]))
 
+    if isa(EP, JuMP.Model)
+        set_string_names_on_creation(EP, Bool(setup["EnableJuMPStringNames"]))
+    end
+    
     # Initialize Power Balance Expression
     # Expression for "baseline" power balance constraint
     create_empty_expression!(EP, :ePowerBalance, (T, Z))
 
     # Initialize Objective Function Expression
-    EP[:eObj] = AffExpr(0.0)
+    create_empty_expression!(EP, :eObj)
 
     create_empty_expression!(EP, :eGenerationByZone, (Z, T))
 
@@ -132,8 +134,6 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
 
     fuel!(EP, inputs, setup)
 
-    co2!(EP, inputs)
-
     if setup["OperationalReserves"] > 0
         operational_reserves!(EP, inputs, setup)
     end
@@ -142,6 +142,8 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
         investment_transmission!(EP, inputs, setup)
         transmission!(EP, inputs, setup)
     end
+
+    co2!(EP, inputs)
 
     if Z > 1 && setup["DC_OPF"] != 0
         dcopf_transmission!(EP, inputs, setup)
@@ -194,6 +196,16 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
         vre_stor!(EP, inputs, setup)
     end
 
+    # Custom constraints
+    if haskey(inputs,"custom_constraints")
+        custom_constraints!(EP, inputs, setup)
+    end
+
+    # CAISO tx deliverability constraints
+    if haskey(inputs, "caiso_tx_constraints")
+        caiso_tx_constraints!(EP, inputs, setup)
+    end
+
     # Model constraints, variables, expressions related to telectrolyzers
     if !isempty(inputs["ELECTROLYZER"]) ||
        (!isempty(inputs["VRE_STOR"]) && !isempty(inputs["VS_ELEC"]))
@@ -212,7 +224,7 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
 
     # Endogenous Retirements
     if setup["MultiStage"] > 0
-        endogenous_retirement!(EP, inputs, setup)
+        # endogenous_retirement!(EP, inputs, setup)
     end
 
     # Energy Share Requirement
@@ -228,6 +240,11 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
     #Capacity Reserve Margin
     if setup["CapacityReserveMargin"] > 0
         cap_reserve_margin!(EP, inputs, setup)
+    end
+
+    #ELCC version of capacity reserve margin
+    if setup["CapResELCC"] > 0
+        capres_ELCC!(EP, inputs, setup)
     end
 
     if (setup["MinCapReq"] == 1)
@@ -259,11 +276,11 @@ function generate_model(setup::Dict, inputs::Dict, OPTIMIZER::MOI.OptimizerWithA
 
     ## Record pre-solver time
     presolver_time = time() - presolver_start_time
-    if setup["PrintModel"] == 1
-        filepath = joinpath(pwd(), "YourModel.lp")
-        JuMP.write_to_file(EP, filepath)
-        println("Model Printed")
-    end
+    # if setup["PrintModel"] == 1
+    #     filepath = joinpath(pwd(), "YourModel.lp")
+    #     JuMP.write_to_file(EP, filepath)
+    #     println("Model Printed")
+    # end
 
-    return EP
+    return nothing
 end

@@ -6,11 +6,11 @@
 ## returns: path directory
 ################################################################################
 @doc raw"""
-	write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dict)
+	write_outputs(EP::AbstractModel, path::AbstractString, setup::Dict, inputs::Dict)
 
 Function for the entry-point for writing the different output files. From here, onward several other functions are called, each for writing specific output files, like costs, capacities, etc.
 """
-function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dict)
+function write_outputs(EP::AbstractModel, path::AbstractString, setup::Dict, inputs::Dict)
     if setup["OverwriteResults"] == 1
         # Overwrite existing results if dir exists
         # This is the default behaviour when there is no flag, to avoid breaking existing code
@@ -67,6 +67,12 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
         println(elapsed_time_costs)
     end
 
+    # if haskey(inputs,"CustomConstraintList")
+    #     elapsed_time_custom_constraints = @elapsed dfCustom = write_custom(path, inputs, setup, EP)
+    #     println("Time elapsed for writing custom constraints is")
+    #     println(elapsed_time_custom_constraints)
+    # end
+
     if output_settings_d["WriteCapacity"] || output_settings_d["WriteNetRevenue"]
         elapsed_time_capacity = @elapsed dfCap = write_capacity(path, inputs, setup, EP)
         println("Time elapsed for writing capacity is")
@@ -85,11 +91,11 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
         println(elapsed_time_charge)
     end
 
-    if output_settings_d["WriteCapacityFactor"]
-        elapsed_time_capacityfactor = @elapsed write_capacityfactor(path, inputs, setup, EP)
-        println("Time elapsed for writing capacity factor is")
-        println(elapsed_time_capacityfactor)
-    end
+    # if output_settings_d["WriteCapacityFactor"]
+    #     elapsed_time_capacityfactor = @elapsed write_capacityfactor(path, inputs, setup, EP)
+    #     println("Time elapsed for writing capacity factor is")
+    #     println(elapsed_time_capacityfactor)
+    # end
 
     if output_settings_d["WriteStorage"]
         elapsed_time_storage = @elapsed write_storage(path, inputs, setup, EP)
@@ -248,7 +254,7 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
         println(elapsed_time_fuel_consumption)
     end
 
-    if output_settings_d["WriteCO2"]
+    if setup["CO2Cap"]>0 && output_settings_d["WriteCO2"]
         elapsed_time_emissions = @elapsed write_co2(path, inputs, setup, EP)
         println("Time elapsed for writing co2 is")
         println(elapsed_time_emissions)
@@ -341,6 +347,15 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
                 println("Time elapsed for writing esr revenue is")
                 println(elapsed_time_esr_revenue)
             end
+        end
+
+        if setup["CapResELCC"] > 0
+            elapsed_time_PRM = @elapsed write_reserve_margin_ELCC(path, setup, EP)
+            println("Time elapsed for writing PRM is")
+            println(elapsed_time_PRM)
+            elapsed_time_NQC = @elapsed dfNQC = write_NQC(path, inputs, setup, EP)
+            println("Time elapsed for writing NQC is")
+            println(elapsed_time_NQC)
         end
 
         dfResRevenue = DataFrame()
@@ -483,6 +498,25 @@ function write_outputs(EP::Model, path::AbstractString, setup::Dict, inputs::Dic
 
     return path
 end # END output()
+
+function write_outputs(optigraph::Plasmo.OptiGraph, path::AbstractString, setup::Dict, inputs::Dict)
+    # Write status for the multistage graph
+    setup["WriteOutputsSettingsDict"]["WriteStatus"] && write_status(path, inputs, setup, optigraph)
+
+    # loop over each optinode in multistage_graph and write outputs
+    for (i, optinode) in enumerate(all_nodes(optigraph))
+        setup["MultiStageSettingsDict"]["CurStage"] = i
+        outpath_cur = joinpath(path, "results_p$i")
+        setup["WriteOutputsSettingsDict"]["WriteStatus"] = false # disable writing status for each node
+        write_outputs(optinode, outpath_cur, setup, inputs[i])
+    end
+
+    # Write multistage summary outputs
+    write_multi_stage_outputs(path, setup, inputs)
+
+    return nothing
+end
+
 
 """
 	write_annual(fullpath::AbstractString, dfOut::DataFrame)

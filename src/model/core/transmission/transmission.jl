@@ -1,5 +1,5 @@
 @doc raw"""
-	transmission!(EP::Model, inputs::Dict, setup::Dict)
+	transmission!(EP::AbstractModel, inputs::Dict, setup::Dict)
 This function establishes decisions, expressions, and constraints related to transmission power flows between model zones and associated transmission losses (if modeled).
 
 Power flow and transmission loss terms are also added to the power balance constraint for each zone:
@@ -83,7 +83,7 @@ As with losses option 2, this segment-wise approximation of a quadratic loss fun
 \end{aligned}
 ```
 """
-function transmission!(EP::Model, inputs::Dict, setup::Dict)
+function transmission!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("Transmission Module")
     T = inputs["T"]     # Number of time steps (hours)
     Z = inputs["Z"]     # Number of zones
@@ -167,6 +167,21 @@ function transmission!(EP::Model, inputs::Dict, setup::Dict)
         end
     end
 
+    ### Objective Function Expressions ###
+    @expression(
+        EP,
+        eCHurdle[l = 1:L, t = 1:T],
+        (
+            inputs["omega"][t]*(inputs["Hurdle_Rate_Forward"][l] * vTAUX_POS[l, t])
+            + inputs["omega"][t]*(inputs["Hurdle_Rate_Reverse"][l] * vTAUX_NEG[l, t])
+        )
+    )
+    # Sum hurdle costs
+    @expression(EP, eTotalCHurdleT[t = 1:T], sum(eCHurdle[l, t] for l in 1:L))
+    @expression(EP, eTotalCHurdle, sum(eTotalCHurdleT[t] for t in 1:T))
+    # Add total hurdle cost to objective function
+    add_to_expression!(EP[:eObj], eTotalCHurdle)
+
     ### Constraints ###
 
     ## Power flow and transmission (between zone) loss related constraints
@@ -194,7 +209,38 @@ function transmission!(EP::Model, inputs::Dict, setup::Dict)
                 # Sum of auxiliary flow variables in either direction cannot exceed maximum line flow capacity
                 cTAuxLimit[l in LOSS_LINES, t = 1:T],
                 vTAUX_POS[l, t] + vTAUX_NEG[l, t] <= EP[:eAvail_Trans_Cap][l]
+
+                # Directional flows cannot exceed maximum set by profile
+                cTAuxPosProfile[l in LOSS_LINES, t = 1:T], vTAUX_POS[l, t] <= EP[:eAvail_Trans_Cap][l] * inputs["Profile_Forward"][l]
+                cTAuxNegProfile[l in LOSS_LINES, t = 1:T], vTAUX_NEG[l, t] <= EP[:eAvail_Trans_Cap][l] * inputs["Profile_Reverse"][l]
             end)
+        
+        if haskey(inputs,"df_simflow")
+            df_simflow=inputs["df_simflow"]
+            simultaneous_flow_constraint_names=unique(df_simflow[!,"Simultaneous Flow Group"])
+            for constraint in simultaneous_flow_constraint_names
+                cur_constraint_rows=df_simflow[df_simflow[!,"Simultaneous Flow Group"].==constraint,:]
+                for row in eachrow(cur_constraint_rows)
+                    if !(row.Direction in ("forward","reverse"))
+                        throw("simultaneous flow constraint direction must be forward or reverse, got $(row.Direction)")
+                    end
+                    if !(row.Line_Number in LOSS_LINES)
+                        throw("simultaneous flow constraint line $(row.Line_Number) is not a loss line, so directional flow variables do not exist")
+                    end
+                end
+                limit=unique(cur_constraint_rows[!,:limit_MW])[1]
+                constraint_name="cSimFlow"*constraint
+                @constraint(
+                    EP,
+                    [t=1:T],
+                    sum(
+                        (row.Direction=="forward" ? vTAUX_POS[row.Line_Number,t] : vTAUX_NEG[row.Line_Number,t])
+                        for row in eachrow(cur_constraint_rows)
+                    ) <= limit,
+                    base_name=constraint_name
+                )
+            end
+        end
 
         if UCommit == 1
             # Constraints to limit phantom losses that can occur to avoid discrete cycling costs/opportunity costs due to min down

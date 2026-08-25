@@ -1,5 +1,5 @@
 @doc raw"""
-	discharge!(EP::Model, inputs::Dict, setup::Dict)
+	discharge!(EP::AbstractModel, inputs::Dict, setup::Dict)
 
 This module defines the power decision variable $\Theta_{y,t} \forall y \in \mathcal{G}, t \in \mathcal{T}$, representing energy injected into the grid by resource $y$ by at time period $t$.
 This module additionally defines contributions to the objective function from variable costs of generation (variable O&M) from all resources $y \in \mathcal{G}$ over all time periods $t \in \mathcal{T}$:
@@ -10,19 +10,21 @@ This module additionally defines contributions to the objective function from va
 \end{aligned}
 ```
 """
-function discharge!(EP::Model, inputs::Dict, setup::Dict)
+function discharge!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("Discharge Module")
 
     gen = inputs["RESOURCES"]
 
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     T = inputs["T"]     # Number of time steps
     Z = inputs["Z"]     # Number of zones
 
     ### Variables ###
 
     # Energy injected into the grid by resource "y" at hour "t"
-    @variable(EP, vP[y = 1:G, t = 1:T]>=0)
+    @variable(EP, vP[y = generators, t = 1:T]>=0)
 
     ### Expressions ###
 
@@ -30,10 +32,10 @@ function discharge!(EP::Model, inputs::Dict, setup::Dict)
 
     # Variable costs of "generation" for resource "y" during hour "t" = variable O&M
     @expression(EP,
-        eCVar_out[y = 1:G, t = 1:T],
+        eCVar_out[y = generators, t = 1:T],
         (inputs["omega"][t]*(var_om_cost_per_mwh(gen[y]) * vP[y, t])))
     # Sum individual resource contributions to variable discharging costs to get total variable discharging costs
-    @expression(EP, eTotalCVarOutT[t = 1:T], sum(eCVar_out[y, t] for y in 1:G))
+    @expression(EP, eTotalCVarOutT[t = 1:T], sum(eCVar_out[y, t] for y in generators))
     @expression(EP, eTotalCVarOut, sum(eTotalCVarOutT[t] for t in 1:T))
 
     # Add total variable discharging cost contribution to the objective function

@@ -1,9 +1,9 @@
 @doc raw"""
-	write_reliability(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_reliability(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for reporting dual variable of maximum non-served energy constraint (shadow price of reliability constraint) for each model zone and time step.
 """
-function write_reliability(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_reliability(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     T = inputs["T"]     # Number of time steps (hours)
     Z = inputs["Z"]     # Number of zones
 

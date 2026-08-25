@@ -1,4 +1,4 @@
-function write_charging_cost(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+function write_charging_cost(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
     gen = inputs["RESOURCES"]  # Resources (objects)
     resources = inputs["RESOURCE_NAMES"] # Resource names
 
@@ -7,8 +7,10 @@ function write_charging_cost(path::AbstractString, inputs::Dict, setup::Dict, EP
     zones = zone_id.(gen)
 
     G = inputs["G"]     # Number of resources (generators, storage, DR, and DERs)
+    assets = inputs["GENERIC_ASSETS"]
+    generators = setdiff(collect(1:G),assets)
     T = inputs["T"]     # Number of time steps (hours)
-    STOR_ALL = inputs["STOR_ALL"]
+    STOR_ALL = inputs["STOR_OPERATIONAL"]
     FLEX = inputs["FLEX"]
     ELECTROLYZER = inputs["ELECTROLYZER"]
     VRE_STOR = inputs["VRE_STOR"]
@@ -23,10 +25,10 @@ function write_charging_cost(path::AbstractString, inputs::Dict, setup::Dict, EP
     chargecost = zeros(G, T)
     if !isempty(STOR_ALL)
         chargecost[STOR_ALL, :] .= (value.(EP[:vCHARGE][STOR_ALL, :]).data) .*
-                                   transpose(price)[zone_id.(gen.Storage), :]
+                                   transpose(price)[zones[STOR_ALL], :]
     end
     if !isempty(FLEX)
-        chargecost[FLEX, :] .= value.(EP[:vP][FLEX, :]) .*
+        chargecost[FLEX, :] .= value.(EP[:vP][FLEX, :]).data .*
                                transpose(price)[zone_id.(gen.FlexDemand), :]
     end
     if !isempty(ELECTROLYZER)

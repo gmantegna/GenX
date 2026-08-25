@@ -1,5 +1,5 @@
 @doc raw"""
-	storage!(EP::Model, inputs::Dict, setup::Dict)
+	storage!(EP::AbstractModel, inputs::Dict, setup::Dict)
 A wide range of energy storage devices (all $o \in \mathcal{O}$) can be modeled in GenX, using one of two generic storage formulations: (1) storage technologies with symmetric charge and discharge capacity (all $o \in \mathcal{O}^{sym}$), such as Lithium-ion batteries and most other electrochemical storage devices that use the same components for both charge and discharge; and (2) storage technologies that employ distinct and potentially asymmetric charge and discharge capacities (all $o \in \mathcal{O}^{asym}$), such as most thermal storage technologies or hydrogen electrolysis/storage/fuel cell or combustion turbine systems.
 
 If a capacity reserve margin is modeled, variables for virtual charge, $\Pi^{CRM}_{o,z,t}$, and virtual discharge, $\Theta^{CRM}_{o,z,t}$, are created to represent 
@@ -128,7 +128,7 @@ Finally, the constraints on maximum discharge rate are replaced by the following
 ```
 The above reserve related constraints are established by ```storage_all_operational_reserves!()``` in ```storage_all.jl```
 """
-function storage!(EP::Model, inputs::Dict, setup::Dict)
+function storage!(EP::AbstractModel, inputs::Dict, setup::Dict)
     println("Storage Resources Module")
     gen = inputs["RESOURCES"]
     T = inputs["T"]
@@ -144,10 +144,25 @@ function storage!(EP::Model, inputs::Dict, setup::Dict)
 
     if !isempty(STOR_ALL)
         investment_energy!(EP, inputs, setup)
+
+        # group capacity expressions for storage operational groups: the representative
+        # member's operational block is sized by the group's total power/energy capacity
+        # (identity for standalone storage); investment stays per member resource
+        stor_op_members = inputs["STOR_OP_MEMBERS"]
+        @expression(EP, eTotalCapStorOp[y in inputs["STOR_OPERATIONAL"]],
+            sum(EP[:eTotalCap][yy] for yy in get(stor_op_members, y, [y])))
+        @expression(EP, eTotalCapEnergyStorOp[y in inputs["STOR_OPERATIONAL"]],
+            sum(EP[:eTotalCapEnergy][yy] for yy in get(stor_op_members, y, [y])))
+
+        # non-representative group members have no operational variables
+        for y in inputs["STOR_BIN_ONLY"]
+            fix.(EP[:vP][y, :], 0.0, force = true)
+        end
+
         storage_all!(EP, inputs, setup)
 
         # Include Long Duration Storage only when modeling representative periods and long-duration storage
-        if rep_periods > 1 && !isempty(inputs["STOR_LONG_DURATION"])
+        if rep_periods > 1 && !isempty(intersect(inputs["STOR_LONG_DURATION"], inputs["STOR_OPERATIONAL"]))
             long_duration_storage!(EP, inputs, setup)
         end
     end
@@ -167,7 +182,7 @@ function storage!(EP::Model, inputs::Dict, setup::Dict)
             @expression(EP,
                 eESRStor[ESR = 1:inputs["nESR"]],
                 sum(inputs["dfESR"][z, ESR] * sum(EP[:eELOSS][y]
-                    for y in intersect(resources_in_zone_by_rid(gen, z), STOR_ALL))
+                    for y in intersect(resources_in_zone_by_rid(gen, z), inputs["STOR_OPERATIONAL"]))
                 for z in findall(x -> x > 0, inputs["dfESR"][:, ESR])))
             add_similar_to_expression!(EP[:eESR], -eESRStor)
         end
@@ -178,14 +193,14 @@ function storage!(EP::Model, inputs::Dict, setup::Dict)
         @expression(EP,
             eCapResMarBalanceStor[res = 1:inputs["NCapacityReserveMargin"], t = 1:T],
             sum(derating_factor(gen[y], tag = res) * (EP[:vP][y, t] - EP[:vCHARGE][y, t])
-            for y in STOR_ALL))
+            for y in inputs["STOR_OPERATIONAL"]))
         if StorageVirtualDischarge > 0
             @expression(EP,
                 eCapResMarBalanceStorVirtual[res = 1:inputs["NCapacityReserveMargin"],
                     t = 1:T],
                 sum(derating_factor(gen[y], tag = res) *
                     (EP[:vCAPRES_discharge][y, t] - EP[:vCAPRES_charge][y, t])
-                for y in STOR_ALL))
+                for y in inputs["STOR_OPERATIONAL"]))
             add_similar_to_expression!(eCapResMarBalanceStor, eCapResMarBalanceStorVirtual)
         end
         add_similar_to_expression!(EP[:eCapResMarBalance], eCapResMarBalanceStor)

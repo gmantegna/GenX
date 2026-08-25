@@ -6,13 +6,13 @@ This function writes the file costs\_multi\_stage.csv to the Results directory. 
 inputs:
 
   * outpath – String which represents the path to the Results directory.
-  * settings\_d - Dictionary containing settings dictionary configured in the multi-stage settings file multi\_stage\_settings.yml.
+  * settings\_d - Dictionary containing settings dictionary.
 """
 function write_multi_stage_costs(outpath::String, settings_d::Dict, inputs_dict::Dict)
-    num_stages = settings_d["NumStages"] # Total number of DDP stages
-    wacc = settings_d["WACC"] # Interest Rate and also the discount rate unless specified other wise
-    stage_lens = settings_d["StageLengths"]
-    myopic = settings_d["Myopic"] == 1 # 1 if myopic (only one forward pass), 0 if full DDP
+    num_stages = settings_d["MultiStageSettingsDict"]["NumStages"] # Total number of DDP stages
+    wacc = settings_d["MultiStageSettingsDict"]["WACC"] # Interest Rate and also the discount rate unless specified other wise
+    stage_lens = settings_d["MultiStageSettingsDict"]["StageLengths"]
+    myopic = settings_d["MultiStageSettingsDict"]["Myopic"] == 1 # 1 if myopic (only one forward pass), 0 if full DDP
 
     costs_d = Dict()
     for p in 1:num_stages
@@ -30,10 +30,14 @@ function write_multi_stage_costs(outpath::String, settings_d::Dict, inputs_dict:
         if myopic
             DF = 1 # DF=1 because we do not apply discount factor in myopic case
         else
-            cum_stage_length = 0
-            if p > 1
-                for stage_counter in 1:(p - 1)
-                    cum_stage_length += stage_lens[stage_counter]
+            if settings_d["ARO"] == 1
+                cum_stage_length=settings_d["MultiStageSettingsDict"]["StageCumYears"][p]
+            else
+                cum_stage_length = 0
+                if p > 1
+                    for stage_counter in 1:(p - 1)
+                        cum_stage_length += stage_lens[stage_counter]
+                    end
                 end
             end
             DF = 1 / (1 + wacc)^(cum_stage_length)  # Discount factor applied to ALL costs in each stage

@@ -36,7 +36,9 @@ function default_settings()
         "ResourcePoliciesFolder" => "policy_assignments",
         "SystemFolder" => "system",
         "PoliciesFolder" => "policies",
-        "ObjScale" => 1)
+        "ObjScale" => 1,
+        "ARO" => 0
+    )
 end
 
 @doc raw"""
@@ -177,7 +179,8 @@ function default_settings_multistage()
         "WACC" => 0.045,
         "ConvergenceTolerance" => 0.01,
         "Myopic" => 1,
-        "WriteIntermittentOutputs" => 0)
+        "WriteIntermittentOutputs" => 0,
+        "DirectMode" => 0)
 end
 
 @doc raw"""

@@ -1,5 +1,5 @@
 @doc raw"""
-	write_operating_reserve_regulation_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::Model)
+	write_operating_reserve_regulation_revenue(path::AbstractString, inputs::Dict, setup::Dict, EP::AbstractModel)
 
 Function for reporting the operating reserve and regulation revenue earned by generators listed in the input file.
     GenX will print this file only when operating reserve and regulation are modeled and the shadow price can be obtained from the solver.
@@ -10,7 +10,7 @@ Function for reporting the operating reserve and regulation revenue earned by ge
 function write_operating_reserve_regulation_revenue(path::AbstractString,
         inputs::Dict,
         setup::Dict,
-        EP::Model)
+        EP::AbstractModel)
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
 
     gen = inputs["RESOURCES"]
@@ -51,7 +51,7 @@ function write_operating_reserve_regulation_revenue(path::AbstractString,
 end
 
 @doc raw"""
-    operating_regulation_price(EP::Model,
+    operating_regulation_price(EP::AbstractModel,
                                   inputs::Dict,
                                   setup::Dict)::Vector{Float64}
 
@@ -61,14 +61,14 @@ This is equal to the dual variable of the regulation requirement constraint.
     Returns a vector, with units of $/MW
 """
 
-function operating_regulation_price(EP::Model, inputs::Dict, setup::Dict)::Vector{Float64}
+function operating_regulation_price(EP::AbstractModel, inputs::Dict, setup::Dict)::Vector{Float64}
     ω = inputs["omega"]
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
     return dual.(EP[:cReg]) ./ ω * scale_factor
 end
 
 @doc raw"""
-    operating_reserve_price(EP::Model,
+    operating_reserve_price(EP::AbstractModel,
                                   inputs::Dict,
                                   setup::Dict)::Vector{Float64}
 
@@ -78,7 +78,7 @@ This is equal to the dual variable of the reserve requirement constraint.
     Returns a vector, with units of $/MW
 """
 
-function operating_reserve_price(EP::Model, inputs::Dict, setup::Dict)::Vector{Float64}
+function operating_reserve_price(EP::AbstractModel, inputs::Dict, setup::Dict)::Vector{Float64}
     ω = inputs["omega"]
     scale_factor = setup["ParameterScale"] == 1 ? ModelScalingFactor : 1
     return dual.(EP[:cRsvReq]) ./ ω * scale_factor
