@@ -27,6 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated tests to run with a Project.toml so we can specify HiGHS version to avoid test hanging
 
 ### Fixed
+- Benders output writer no longer errors on single-zone cases (network-only inputs `L` and `LOSS_LINES` are absent when `Z == 1`).
+- Benders planning problem no longer errors on resources with fixed capacity (no new build and no retirement), whose total-capacity expression is a constant rather than an `AffExpr`.
+- Time domain reduction demand multipliers now normalize the original demand total to the weight total (one year), so multi-year input series are no longer scaled up by the number of years in the representative periods.
 - Corrected investment and operational constraints in `allamcyclelox.jl` that caused incorrect capacity accounting for the Allam Cycle with LOX storage resource type.
 - Fixed effective capacity calculation in the capacity reserve margin subproblem for co-located VRE+storage resources with long-duration storage.
 - Fix writing of net revenue to include all sources of revenue, not just energy revenue (#855).

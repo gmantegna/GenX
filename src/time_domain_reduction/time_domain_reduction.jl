@@ -488,10 +488,16 @@ function get_demand_multipliers(ClusterOutputData,
         NClusters,
         Ncols,
         v = false)
-    # Compute original zonal total demands
+    # Compute original zonal total demands, expressed per sum(W) hours (normally one 8760-h year).
+    # When the input series spans several years (nrow(InputData) > sum(W)), the raw total would be
+    # several years' worth of demand while the weights only cover one year, and the multiplier would
+    # inflate the representative demand by the number of years. Normalizing by the ratio of the
+    # weight total to the input length keeps the target at the average year. For a one-year input
+    # the ratio is 1 and nothing changes.
+    year_fraction = sum(W) / nrow(InputData)
     zone_sums = Dict()
     for demandcol in DemandCols
-        zone_sums[demandcol] = sum(InputData[:, demandcol])
+        zone_sums[demandcol] = sum(InputData[:, demandcol]) * year_fraction
     end
 
     # Compute zonal demands per representative period

@@ -54,12 +54,15 @@ function generate_planning_problem(setup::Dict, inputs::Dict, OPTIMIZER::MOI.Opt
 	# eTotalCap[y] is an affine expression per resource; keys(cap_exp.terms) are the capacity
 	# variables in it (e.g. vCAP, vRETCAP). Register every variable across all resources.
 	for cap_exp in EP[:eTotalCap]
+		# Resources with fixed capacity (no new build, no retirement) have a constant here, not an AffExpr.
+		cap_exp isa AffExpr || continue
 		for v in keys(cap_exp.terms)
 			EP[:eAvailableCapacity][length(EP[:eAvailableCapacity]) + 1] = v
 		end
 	end
 	if haskey(EP, :eTotalCap_AllamcycleLOX)
 		for cap_exp in EP[:eTotalCap_AllamcycleLOX]
+			cap_exp isa AffExpr || continue
 			for v in keys(cap_exp.terms)
 				EP[:eAvailableCapacity][length(EP[:eAvailableCapacity]) + 1] = v
 			end
@@ -67,6 +70,7 @@ function generate_planning_problem(setup::Dict, inputs::Dict, OPTIMIZER::MOI.Opt
 	end
 	if haskey(EP, :eTotalCapCharge)
 		for cap_exp in EP[:eTotalCapCharge]
+			cap_exp isa AffExpr || continue
 			for v in keys(cap_exp.terms)
 				EP[:eAvailableCapacity][length(EP[:eAvailableCapacity]) + 1] = v
 			end
@@ -74,6 +78,7 @@ function generate_planning_problem(setup::Dict, inputs::Dict, OPTIMIZER::MOI.Opt
 	end
 	if haskey(EP, :eTotalCapEnergy)
 		for cap_exp in EP[:eTotalCapEnergy]
+			cap_exp isa AffExpr || continue
 			for v in keys(cap_exp.terms)
 				EP[:eAvailableCapacity][length(EP[:eAvailableCapacity]) + 1] = v
 			end

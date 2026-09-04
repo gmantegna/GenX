@@ -1567,8 +1567,9 @@ function get_local_output_bundle(inputs::Dict, setup::Dict, subproblems_local::V
 	WIND = !isempty(VRE_STOR) ? setdiff(inputs["VS_WIND"], inputs["VS_SOLAR"]) : Int[]
 	SOLAR_WIND = !isempty(VRE_STOR) ? intersect(inputs["VS_SOLAR"], inputs["VS_WIND"]) : Int[]
 	HYDRO_RES = inputs["HYDRO_RES"]
-	L = inputs["L"]
-	LOSS_LINES = inputs["LOSS_LINES"]
+	# Network keys exist only for multi-zone cases (load_network_data is skipped when Z == 1).
+	L = get(inputs, "L", 0)
+	LOSS_LINES = get(inputs, "LOSS_LINES", Int[])
 	HAS_FUEL = inputs["HAS_FUEL"]
 	MULTI_FUELS = inputs["MULTI_FUELS"]
 	MAX_NUM_FUELS = get(inputs, "MAX_NUM_FUELS", 0)
